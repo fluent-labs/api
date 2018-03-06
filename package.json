@@ -1,0 +1,23 @@
+{
+  "name": "foreign-language-reader",
+  "version": "1.0.0",
+  "description": "Website for foreign language reader",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucaskjaero/foreign-language-reader.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucaskjaero/foreign-language-reader/issues"
+  },
+  "homepage": "https://github.com/lucaskjaero/foreign-language-reader#readme",
+  "devDependencies": {
+    "webpack": "^4.1.0"
+  }
+}
