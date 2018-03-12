@@ -4,3 +4,4 @@ django-filter==1.1.0
 django-heroku
 djangorestframework==3.7.7
 gunicorn==19.7.1
+rq==0.10.0

@@ -102,3 +102,6 @@ ENV/
 
 # Front end
 node_modules
+
+# Intellij
+.idea
