@@ -31,7 +31,10 @@ class ChineseVocab extends Component {
           }
         }
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        this.setState({definition: "Error loading definition"});
+        console.log(error);
+      });
   }
 
   render() {
