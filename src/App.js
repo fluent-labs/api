@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import './App.css';
+import ChineseVocab from './ChineseVocab';
+
 import axios from "axios";
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {text: ''};
+    this.state = {
+      text: '',
+      words: []
+    };
+
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,14 +25,17 @@ class App extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const postBody = this.state.text;
-    console.log(postBody);
 
     axios
       .post("http://localhost:8000/v1/chinese/document", {
       	"text": postBody
       })
       .then(response => {
-        console.log(response);
+        const responseBody = response.data;
+
+        if (responseBody.status === "OK") {
+          this.setState({words: responseBody.words})
+        }
       })
       .catch(error => console.log(error));
   }
@@ -39,7 +48,10 @@ class App extends Component {
             <label>Enter some new text here:</label><br></br>
             <textarea className="form-control" rows="5" id="new-text" value={this.state.text} onChange={this.handleChange}></textarea><br></br>
             <input type="submit" value="Submit"></input>
-          </form>
+          </form><br />
+        </div>
+        <div>
+          { this.state.words.map(word => <ChineseVocab character={word} key={word} />) }
         </div>
       </div>
     );
