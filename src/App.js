@@ -27,7 +27,7 @@ class App extends Component {
     const postBody = this.state.text;
 
     axios
-      .post("http://localhost:8000/v1/chinese/document", {
+      .post("https://stemming-service-dev.herokuapp.com/v1/chinese/document", {
       	"text": postBody
       })
       .then(response => {
