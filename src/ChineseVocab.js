@@ -12,7 +12,7 @@ class ChineseVocab extends Component {
   }
 
   componentDidMount() {
-    const url = "https://dictionary-service-dev.herokuapp.com/v1/chinese/definition/" + this.state.vocab;
+    const url = "https://" + window.location.hostname + "/dictionary/v1/chinese/definition/" + this.state.vocab;
 
     axios
       .get(url)

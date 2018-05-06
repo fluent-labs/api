@@ -26,8 +26,10 @@ class App extends Component {
     event.preventDefault();
     const postBody = this.state.text;
 
+    const apiUrl = "https://" + window.location.hostname + "/stemming/v1/chinese/document"
+
     axios
-      .post("https://stemming-service-dev.herokuapp.com/v1/chinese/document", {
+      .post(apiUrl, {
       	"text": postBody
       })
       .then(response => {
