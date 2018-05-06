@@ -1,5 +1,5 @@
 {
-  "root": "build/",
+  "root": "public/",
   "proxies": {
     "/dictionary/": {
       "origin": "${DICTIONARY_SERVICE_URL}"
