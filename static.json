@@ -6,6 +6,9 @@
     },
     "/stemming/": {
       "origin": "${STEMMING_SERVICE_URL}"
+    },
+    "/google/": {
+      "origin": "https://www.google.com"
     }
   }
 }
