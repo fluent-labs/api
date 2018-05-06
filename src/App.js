@@ -26,7 +26,7 @@ class App extends Component {
     event.preventDefault();
     const postBody = this.state.text;
 
-    const apiUrl = "https://" + window.location.hostname + "/stemming/v1/chinese/document"
+    const apiUrl = "http://" + window.location.hostname + "/stemming/v1/chinese/document"
 
     axios
       .post(apiUrl, {
