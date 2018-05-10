@@ -45,6 +45,8 @@ class App extends Component {
   }
 
   render() {
+    const statusText = this.state.words.length === 0 ? this.state.statusText : "Words in your text: ";
+
     return (
       <div className="App">
         <div className="form-group">
@@ -55,7 +57,7 @@ class App extends Component {
           </form><br />
         </div>
         <div>
-          { this.state.words.length === 0 ? this.state.statusText : "" }
+          <b>{ statusText }</b><br />
           { this.state.words.map(word => <ChineseVocab character={word} key={word} />) }
         </div>
       </div>
