@@ -13,19 +13,5 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  },
-  "proxy": {
-    "/dictionary/": {
-      "target": "https://dictionary-service-dev.herokuapp.com",
-      "pathRewrite": {
-        "^/dictionary/": "/"
-      }
-    },
-    "/stemming/": {
-      "target": "https://stemming-service-dev.herokuapp.com",
-      "pathRewrite": {
-        "^/stemming/": "/"
-      }
-    }
   }
 }
