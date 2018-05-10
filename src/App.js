@@ -23,7 +23,7 @@ class App extends Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault
+    event.preventDefault();
 
     this.setState({statusText: "Loading..."});
 

@@ -16,13 +16,13 @@
   },
   "proxy": {
     "/dictionary/": {
-      "target": "https://localhost:8001",
+      "target": "https://dictionary-service-dev.herokuapp.com",
       "pathRewrite": {
         "^/dictionary/": "/"
       }
     },
     "/stemming/": {
-      "target": "https://localhost:8002",
+      "target": "https://stemming-service-dev.herokuapp.com",
       "pathRewrite": {
         "^/stemming/": "/"
       }
