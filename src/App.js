@@ -9,10 +9,10 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      statusText: "Submit to get definitions",
       text: '',
       words: []
     };
-
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,9 +23,11 @@ class App extends Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault();
-    const postBody = this.state.text;
+    event.preventDefault
 
+    this.setState({statusText: "Loading..."});
+
+    const postBody = this.state.text;
     const apiUrl = "http://" + window.location.hostname + "/stemming/v1/chinese/document"
 
     axios
@@ -53,6 +55,7 @@ class App extends Component {
           </form><br />
         </div>
         <div>
+          { this.state.words.length === 0 ? this.state.statusText : "" }
           { this.state.words.map(word => <ChineseVocab character={word} key={word} />) }
         </div>
       </div>
