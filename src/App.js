@@ -41,7 +41,10 @@ class App extends Component {
           this.setState({words: responseBody.words})
         }
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        this.setState({statusText: "Error loading words"});
+        console.log(error);
+      });
   }
 
   render() {
