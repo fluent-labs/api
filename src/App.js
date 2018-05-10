@@ -28,7 +28,7 @@ class App extends Component {
     this.setState({statusText: "Loading..."});
 
     const postBody = this.state.text;
-    const apiUrl = "http://" + window.location.hostname + "/stemming/v1/chinese/document"
+    const apiUrl = "https://" + window.location.hostname + "/stemming/v1/chinese/document"
 
     axios
       .post(apiUrl, {
