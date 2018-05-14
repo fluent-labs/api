@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import axios from "axios";
 
-class ChineseVocab extends Component {
+class Definition extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       vocab: props.character,
+      language: props.language,
       definition: ""
     };
   }
 
   componentDidMount() {
-    const url = "https://" + window.location.hostname + "/dictionary/v1/chinese/definition/" + this.state.vocab;
+    const url = "https://dictionary-service-dev.herokuapp.com/v1/" + this.state.language + "/definition/" + this.state.vocab;
 
     axios
       .get(url)
@@ -39,11 +40,11 @@ class ChineseVocab extends Component {
 
   render() {
     return (
-      <div className="ChineseVocab">
+      <div className="Definition">
         {this.state.vocab} - {this.state.definition}<br />
       </div>
     );
   }
 }
 
-export default ChineseVocab;
+export default Definition;

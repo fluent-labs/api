@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import ChineseVocab from './ChineseVocab';
+import Definition from './Definition';
 
 import axios from "axios";
 
@@ -61,7 +61,7 @@ class App extends Component {
         </div>
         <div>
           <b>{ statusText }</b><br />
-          { this.state.words.map(word => <ChineseVocab character={word} key={word} />) }
+          { this.state.words.map(word => <Definition character={word} key={word} language={"chinese"} />) }
         </div>
       </div>
     );
