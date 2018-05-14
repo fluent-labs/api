@@ -27,8 +27,13 @@ class App extends Component {
 
     this.setState({statusText: "Loading..."});
 
+    const language = this.refs.Language.value;
+    this.setState({language: language});
+
+    const domain = window.location.hostname;
+    const apiUrl = "https://" + domain + "/stemming/v1/" + language + "/document"
+
     const postBody = this.state.text;
-    const apiUrl = "https://" + window.location.hostname + "/stemming/v1/chinese/document"
 
     axios
       .post(apiUrl, {
@@ -55,13 +60,16 @@ class App extends Component {
         <div className="form-group">
           <form onSubmit={this.handleSubmit}>
             <label>Enter some new text here:</label><br></br>
-            <textarea className="form-control" rows="5" id="new-text" value={this.state.text} onChange={this.handleChange}></textarea><br></br>
+            <textarea className="form-control" rows="5" id="new-text" value={this.state.text} onChange={this.handleChange} ref="Text"></textarea><br></br>
+            <select ref="Language">
+              <option value="chinese">Chinese</option>
+            </select>
             <input type="submit" value="Submit"></input>
           </form><br />
         </div>
         <div>
           <b>{ statusText }</b><br />
-          { this.state.words.map(word => <Definition character={word} key={word} language={"chinese"} />) }
+          { this.state.words.map(word => <Definition character={word} key={word} language={this.state.language} />) }
         </div>
       </div>
     );
