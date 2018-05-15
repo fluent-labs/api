@@ -18,6 +18,7 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  // Needed to keep data in the field
   handleChange(event) {
     this.setState({text: event.target.value});
   }
@@ -31,12 +32,13 @@ class App extends Component {
     this.setState({language: language});
 
     const domain = window.location.hostname;
-    const apiUrl = "https://" + domain + "/stemming/v1/" + language + "/document"
+    const urlBase = "https://" + domain + "/stemming/v1/";
+    const url = urlBase + language + "/document"
 
     const postBody = this.state.text;
 
     axios
-      .post(apiUrl, {
+      .post(url, {
       	"text": postBody
       })
       .then(response => {
