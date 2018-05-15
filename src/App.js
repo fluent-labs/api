@@ -31,8 +31,7 @@ class App extends Component {
     const language = this.refs.Language.value;
     this.setState({language: language});
 
-    const domain = window.location.hostname;
-    const urlBase = "https://" + domain + "/stemming/v1/";
+    const urlBase = "https://" + window.location.hostname + "/stemming/v1/";
     const url = urlBase + language + "/document"
 
     const postBody = this.state.text;
