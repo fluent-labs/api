@@ -32,7 +32,7 @@ class App extends Component {
     this.setState({language: language});
 
     const urlBase = "https://" + window.location.hostname + "/stemming/v1/";
-    const url = urlBase + language + "/document"
+    const url = urlBase + language + "/document";
 
     const postBody = this.state.text;
 
@@ -44,7 +44,7 @@ class App extends Component {
         const responseBody = response.data;
 
         if (responseBody.status === "OK") {
-          this.setState({words: responseBody.words})
+          this.setState({words: responseBody.words});
         }
       })
       .catch(error => {

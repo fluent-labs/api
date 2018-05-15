@@ -13,7 +13,7 @@ class Definition extends Component {
   }
 
   componentDidMount() {
-    const url_base = "https://" + window.location.hostname + "/dictionary/v1/";
+    const urlBase = "https://" + window.location.hostname + "/dictionary/v1/";
     const url = urlBase + this.state.language + "/definition/" + this.state.vocab;
 
     axios
