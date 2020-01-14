@@ -11,10 +11,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-      with:
-        path: repo
-    - name: Display directory names
-      run: ls -la && ls -la repo 
+    - name: Move build files to root of build worker
+      run: mv frontend/* .
     - uses: actions/setup-node@v1
       name: Install node 12
       with:
