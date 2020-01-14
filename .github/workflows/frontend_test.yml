@@ -12,7 +12,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Move build files to root of build worker
-      run: mv frontend/* .
+      run: |
+        shopt -s dotglob
+        mv frontend/* .
     - uses: actions/setup-node@v1
       name: Install node 12
       with:
