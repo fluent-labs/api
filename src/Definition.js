@@ -47,8 +47,8 @@ class Definition extends Component {
 }
 
 Definition.propTypes = {
-  language: PropTypes.String.isRequired,
-  vocab: PropTypes.String.isRequired
+  language: PropTypes.string.isRequired,
+  vocab: PropTypes.string.isRequired
 };
 
 export default Definition;
