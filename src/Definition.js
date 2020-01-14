@@ -1,20 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import axios from "axios";
 
 class Definition extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      vocab: props.character,
-      language: props.language,
       definition: ""
     };
   }
 
   componentDidMount() {
     const urlBase = "https://" + window.location.hostname + "/dictionary/v1/";
-    const url = urlBase + this.state.language + "/definition/" + this.state.vocab;
+    const url =
+      urlBase + this.props.language + "/definition/" + this.props.vocab;
 
     axios
       .get(url)
@@ -25,27 +24,31 @@ class Definition extends Component {
           const entries = responseBody.entries;
 
           if (entries.length === 0) {
-            this.setState({definition: "No entry found"});
-          }
-          else {
+            this.setState({ definition: "No entry found" });
+          } else {
             const definitions = entries[0].definitions.join(", ");
-            this.setState({definition: definitions});
+            this.setState({ definition: definitions });
           }
         }
       })
       .catch(error => {
-        this.setState({definition: "Error loading definition"});
-        console.log(error);
+        this.setState({ definition: "Error loading definition" });
       });
   }
 
   render() {
     return (
       <div className="Definition">
-        {this.state.vocab} - {this.state.definition}<br />
+        {this.state.vocab} - {this.state.definition}
+        <br />
       </div>
     );
   }
 }
+
+Definition.propTypes = {
+  language: PropTypes.string.isRequired,
+  vocab: PropTypes.string.isRequired
+};
 
 export default Definition;
