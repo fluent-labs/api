@@ -5,7 +5,8 @@
     "prettier",
     "prettier/react",
     "eslint:recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:jest/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": 2016,
@@ -14,7 +15,7 @@
       "jsx": true
     }
   },
-  "plugins": ["prettier", "react", "jsx-a11y", "import"],
+  "plugins": ["prettier", "react", "jsx-a11y", "import", "jest"],
   "env": {
     "browser": true,
     "es6": true,
