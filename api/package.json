@@ -1,0 +1,25 @@
+{
+  "name": "foreign-language-reader-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API lambda for foreign language reader",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint '**/*.js'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucaskjaero/foreign-language-reader.git"
+  },
+  "author": "Lucas Kjaero-Zhang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucaskjaero/foreign-language-reader/issues"
+  },
+  "homepage": "https://github.com/lucaskjaero/foreign-language-reader#readme",
+  "dependencies": {
+    "apollo-server": "^2.9.16",
+    "graphql": "^14.5.8"
+  }
+}
