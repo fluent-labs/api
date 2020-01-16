@@ -12,7 +12,7 @@
       "jsx": true
     }
   },
-  "plugins": ["prettier", "jsx-a11y", "import"],
+  "plugins": ["prettier", "import"],
   "env": {
     "browser": true,
     "es6": true,
