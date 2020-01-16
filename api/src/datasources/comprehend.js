@@ -9,25 +9,17 @@ class AWSComprehendAPI extends RESTDataSource {
     super();
   }
 
-  detectSyntaxReducer(response) {
-    return {
-      language: "ENGLISH",
-      text: response.Text,
-      partOfSpeech: response.PartOfSpeech.Tag
-    };
-  }
-
-  getWordsInText({ text }) {
-    comprehend.detectSyntax({ LanguageCode: "en", Text: text }, (err, data) => {
-      if (err) {
-        throw err;
-      } else {
-        const words = data["SyntaxTokens"];
-        return Array.isArray(words)
-          ? words.map(word => this.detectSyntaxReducer(word))
-          : [];
-      }
+  async getWordsInText({ text }) {
+    console.log("running");
+    const response = await comprehend.detectSyntax({
+      LanguageCode: "en",
+      Text: text
     });
+    console.log("processing");
+    const tokens = response["SyntaxTokens"];
+    const words = Array.isArray(tokens) ? tokens.map(token => token.Text) : [];
+    console.log(words);
+    return words;
   }
 }
 
