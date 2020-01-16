@@ -8,7 +8,7 @@ const typeDefs = gql`
   }
 
   type Word {
-    language: Language!
+    language: Language
     text: String!
     partOfSpeech: String
     definition: String
