@@ -7,13 +7,14 @@ provider:
   runtime: nodejs12.x
 
 functions:
-  handler: graphql.graphqlHandler
-  events:
-  - http:
-      path: graphql
-      method: post
-      cors: true
-  - http:
-      path: graphql
-      method: get
-      cors: true
+  foreign-language-reader:
+    handler: graphql.graphqlHandler
+    events:
+    - http:
+        path: graphql
+        method: post
+        cors: true
+    - http:
+        path: graphql
+        method: get
+        cors: true
