@@ -1,4 +1,5 @@
 const { RESTDataSource } = require("apollo-datasource-rest");
+
 const AWS = require("aws-sdk");
 AWS.config.update({ region: "us-west-2" });
 
@@ -9,17 +10,17 @@ class AWSComprehendAPI extends RESTDataSource {
     super();
   }
 
-  async getWordsInText({ text }) {
-    console.log("running");
-    const response = await comprehend.detectSyntax({
-      LanguageCode: "en",
-      Text: text
-    });
-    console.log("processing");
-    const tokens = response["SyntaxTokens"];
-    const words = Array.isArray(tokens) ? tokens.map(token => token.Text) : [];
-    console.log(words);
-    return words;
+  getWordsInText({ text }) {
+    return comprehend
+      .detectSyntax({
+        LanguageCode: "en",
+        Text: text
+      })
+      .promise()
+      .then(response => {
+        const tokens = response["SyntaxTokens"];
+        return Array.isArray(tokens) ? tokens.map(token => token.Text) : [];
+      });
   }
 }
 
