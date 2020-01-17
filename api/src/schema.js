@@ -2,15 +2,16 @@ const { gql } = require('apollo-server');
 
 const typeDefs = gql`
   type Query {
-    wordsInText(text: String!, language: Language!): [String]
+    wordsInText(text: String!): [Word!]!
     wordInformation(words: [String!]!): [Word!]!
     me: User
   }
 
   type Word {
-    language: Language
+    language: Language!
     text: String!
     partOfSpeech: String
+    lemma: String
     definition: String
   }
 
