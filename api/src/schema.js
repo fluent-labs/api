@@ -5,6 +5,7 @@ const typeDefs = gql`
     wordsInText(text: String!): [Word!]!
     wordInformation(words: [String!]!): [Word!]!
     me: User
+    health: String
   }
 
   type Word {
