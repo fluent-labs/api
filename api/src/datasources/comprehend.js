@@ -10,10 +10,15 @@ class AWSComprehendAPI extends RESTDataSource {
     super();
   }
 
-  getWordsInText({ text }) {
+  getWordsInText({ text, language }) {
+    let languageCode;
+    if (language == "ENGLISH") languageCode = "en";
+    else if (language == "SPANISH") languageCode = "es";
+    else throw Error("Unsupported language");
+
     return comprehend
       .detectSyntax({
-        LanguageCode: "en",
+        LanguageCode: languageCode,
         Text: text
       })
       .promise()
