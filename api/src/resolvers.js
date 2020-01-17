@@ -1,7 +1,7 @@
 module.exports = {
   Query: {
-    wordsInText: async (_, { text, language }, { dataSources }) => {
-      return await dataSources.comprehendAPI.getWordsInText({ text: text, language: language });
+    wordsInText: async (_, { text }, { dataSources }) => {
+      return dataSources.googleAPI.getWordsInText({ text: text});
     }
   }
 };
