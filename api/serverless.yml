@@ -18,3 +18,9 @@ functions:
         path: graphql
         method: get
         cors: true
+
+package:
+  exclude:
+    - .terraform/**
+    - .DS_Store
+    - **.tf
