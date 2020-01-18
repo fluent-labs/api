@@ -1,7 +1,7 @@
-const { ApolloServer } = require('apollo-server');
-const typeDefs = require('./schema');
-const resolvers = require('./resolvers');
-const GoogleNaturalLanguageAPI = require('./datasources/google');
+const { ApolloServer } = require("apollo-server");
+const typeDefs = require("./schema");
+const resolvers = require("./resolvers");
+const GoogleNaturalLanguageAPI = require("./datasources/google");
 
 const server = new ApolloServer({
   typeDefs,
