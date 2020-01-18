@@ -6,15 +6,13 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
     - name: Move build files to root of build worker
       run: |
         shopt -s dotglob
-        mv frontend/* .
+        mv api/* .
     - uses: actions/setup-node@v1
       name: Install node 12
       with:
