@@ -1,0 +1,30 @@
+name: API PR Review
+
+on: 
+  pull_request:
+    paths: "api/*"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Move build files to root of build worker
+      run: |
+        shopt -s dotglob
+        mv frontend/* .
+    - uses: actions/setup-node@v1
+      name: Install node 12
+      with:
+        node-version: '12.x'
+    - name: npm install, build, and test
+      run: |
+        npm ci
+      env:
+        CI: true
+    - name: Validate security of dependencies
+      run: npx audit-ci --moderate
+    - name: Lint
+      run: npm run lint
