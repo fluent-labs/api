@@ -16,6 +16,14 @@ const typeDefs = gql`
     definitions: [String!]
   }
 
+  type GenericWord implements Word {
+    language: Language!
+    text: String!
+    partOfSpeech: String
+    lemma: String
+    definitions: [String!]
+  }
+
   type ChineseWord implements Word {
     language: Language!
     text: String!

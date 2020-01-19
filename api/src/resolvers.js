@@ -19,6 +19,7 @@ module.exports = {
   Word: {
     __resolveType: (word, _context, _info) => {
       if (word.language == "CHINESE") return "ChineseWord";
+      else return GenericWord;
     }
   },
   ChineseWord: {
