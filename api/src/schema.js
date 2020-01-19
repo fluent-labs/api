@@ -13,7 +13,7 @@ const typeDefs = gql`
     text: String!
     partOfSpeech: String
     lemma: String
-    definition: String
+    definitions: [String!]
   }
 
   enum Language {
