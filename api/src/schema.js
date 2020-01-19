@@ -8,12 +8,22 @@ const typeDefs = gql`
     health: String
   }
 
-  type Word {
+  interface Word {
     language: Language!
     text: String!
     partOfSpeech: String
     lemma: String
     definitions: [String!]
+  }
+
+  type ChineseWord implements Word {
+    language: Language!
+    text: String!
+    partOfSpeech: String
+    lemma: String
+    definitions: [String!]
+    hsk: Int
+    pinyin: [String!]
   }
 
   enum Language {
