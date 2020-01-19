@@ -47,7 +47,7 @@ resource "aws_lambda_function" "foreign-language-reader-api" {
   function_name = "ForeignLanguageReaderAPI"
 
   s3_bucket = "foreign-language-reader-deploy"
-  s3_key    = "foreign-language-reader.zip"
+  s3_key    = "package.zip"
 
   handler = "graphql.graphqlHandler"
   runtime = "nodejs12.x"
