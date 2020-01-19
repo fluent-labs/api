@@ -1,5 +1,9 @@
 const chinese = require("../content/chinese/cedict.json").reduce((acc, word) => {
-  acc[word.simplified] = word;
+  if (acc.hasOwnProperty(word.simplified)) {
+    acc[word.simplified].push(word);
+  } else {
+    acc[word.simplified] = [word];
+  }
   return acc;
 }, {});
 
@@ -13,11 +17,30 @@ module.exports = {
     }
   },
   Word: {
+    __resolveType: (word, _context, _info) => {
+      if (word.language == "CHINESE") return "ChineseWord";
+    }
+  },
+  ChineseWord: {
     definitions: (word, _args, _context) => {
-      if (word.language == 'CHINESE') {
-        if (chinese.hasOwnProperty(word.text)) {
-          return chinese[word.text].definitions;
+      if (chinese.hasOwnProperty(word.text)) {
+        return chinese[word.text].flatMap(word => word.definitions);
+      }
+    },
+    hsk: (word, _args, _context) => {
+      if (chinese.hasOwnProperty(word.text)) {
+        const levels = chinese[word.text]
+          .filter(word => word.hasOwnProperty("HSK"))
+          .map(word => word["HSK"]);
+
+        if (levels != []) {
+          return Math.min(levels);
         }
+      }
+    },
+    pinyin: (word, _args, _context) => {
+      if (chinese.hasOwnProperty(word.text)) {
+        return chinese[word.text].map(word => word.pinyin);
       }
     }
   }
