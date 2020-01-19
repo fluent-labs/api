@@ -6,24 +6,42 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
     - name: Move build files to root of build worker
       run: |
         shopt -s dotglob
-        mv frontend/* .
+        mv api/* .
     - uses: actions/setup-node@v1
       name: Install node 12
       with:
         node-version: '12.x'
     - name: npm install, build, and test
-      run: |
-        npm ci
+      run: npm ci
       env:
         CI: true
+    - name: Validate security of dependencies
+      run: npx audit-ci --moderate
+    - name: Set up serverless
+      run: npm install -g serverless
+    - name: Build deployment package
+      run: serverless package --package build
+  
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Move build files to root of build worker
+      run: |
+        shopt -s dotglob
+        mv api/* .
+    - uses: actions/setup-node@v1
+      name: Install node 12
+      with:
+        node-version: '12.x'
+    - name: npm install
+      run: npm install
     - name: Validate security of dependencies
       run: npx audit-ci --moderate
     - name: Lint

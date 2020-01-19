@@ -23,4 +23,3 @@ package:
   exclude:
     - .terraform/**
     - .DS_Store
-    - **.tf
