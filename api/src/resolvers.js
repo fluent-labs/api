@@ -1,11 +1,14 @@
-const chinese = require("../content/chinese/cedict.json").reduce((acc, word) => {
-  if (acc.hasOwnProperty(word.simplified)) {
-    acc[word.simplified].push(word);
-  } else {
-    acc[word.simplified] = [word];
-  }
-  return acc;
-}, {});
+const chinese = require("../content/chinese/cedict.json").reduce(
+  (acc, word) => {
+    if (word.simplified in acc) {
+      acc[word.simplified].push(word);
+    } else {
+      acc[word.simplified] = [word];
+    }
+    return acc;
+  },
+  {}
+);
 
 module.exports = {
   Query: {
@@ -19,20 +22,20 @@ module.exports = {
   Word: {
     __resolveType: (word, _context, _info) => {
       if (word.language == "CHINESE") return "ChineseWord";
-      else return GenericWord;
+      else return "GenericWord";
     }
   },
   ChineseWord: {
     definitions: (word, _args, _context) => {
-      if (chinese.hasOwnProperty(word.text)) {
-        return chinese[word.text].flatMap(word => word.definitions);
+      if (word.text in chinese) {
+        return chinese[word.text].flatMap(x => x.definitions);
       }
     },
     hsk: (word, _args, _context) => {
-      if (chinese.hasOwnProperty(word.text)) {
+      if (word.text in chinese) {
         const levels = chinese[word.text]
-          .filter(word => word.hasOwnProperty("HSK"))
-          .map(word => word["HSK"]);
+          .filter(x => "HSK" in x)
+          .map(x => x["HSK"]);
 
         if (levels != []) {
           return Math.min(levels);
@@ -40,8 +43,8 @@ module.exports = {
       }
     },
     pinyin: (word, _args, _context) => {
-      if (chinese.hasOwnProperty(word.text)) {
-        return chinese[word.text].map(word => word.pinyin);
+      if (word.text in chinese) {
+        return chinese[word.text].map(x => x.pinyin);
       }
     }
   }
