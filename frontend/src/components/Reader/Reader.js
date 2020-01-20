@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Dimmer, Loader } from "semantic-ui-react";
 import LanguageInput from "./LanguageInput";
 
 import data from "../../testData";
@@ -25,7 +26,11 @@ class Reader extends Component {
     if (!this.state.submitted) {
       return <LanguageInput onSubmit={this.handleSubmit} />;
     } else if (this.state.data === "") {
-      return <label>Loading</label>;
+      return (
+        <Dimmer active>
+          <Loader />
+        </Dimmer>
+      );
     } else {
       return <label>Loaded</label>;
     }
