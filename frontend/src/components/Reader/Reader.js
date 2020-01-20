@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Dimmer, Loader } from "semantic-ui-react";
-import LanguageInput from "./LanguageInput";
+import { Dimmer, List, Loader } from "semantic-ui-react";
 
 import data from "../../testData";
+import LanguageInput from "./LanguageInput";
+import GenericWord from "./Words/GenericWord";
 
 class Reader extends Component {
   state = {
@@ -14,6 +15,7 @@ class Reader extends Component {
   };
 
   handleSubmit = ({ text, language }) => {
+    // TODO hook this up to data source
     this.setState({
       data: data.data.wordsInText,
       language: language,
@@ -32,7 +34,13 @@ class Reader extends Component {
         </Dimmer>
       );
     } else {
-      return <label>Loaded</label>;
+      return (
+        <List>
+          {this.state.data.map(word => (
+            <GenericWord key={word.text} {...word} />
+          ))}
+        </List>
+      );
     }
   };
 }
