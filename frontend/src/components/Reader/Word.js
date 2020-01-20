@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Card, List } from "semantic-ui-react";
+import { Button, Card, List } from "semantic-ui-react";
 
 const Word = props => {
   const { language, text, partOfSpeech, lemma, definitions } = props;
@@ -40,9 +40,14 @@ const Word = props => {
               definitions != null &&
               definitions.map(definition => {
                 return <List.Header key={definition}>{definition}</List.Header>;
-            })}
+              })}
           </List>
         </Card.Description>
+      </Card.Content>
+      <Card.Content extra>
+        <Button basic color="green">
+          Add to vocabulary
+        </Button>
       </Card.Content>
     </Card>
   );
