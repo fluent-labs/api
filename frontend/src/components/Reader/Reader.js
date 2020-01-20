@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import LanguageInput from "./LanguageInput";
 
-import data from "../../src/testData";
+import data from "../../testData";
 
 class Reader extends Component {
   state = {

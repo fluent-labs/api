@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Reader from "./components/Reader";
+import Reader from "./components/Reader/Reader";
 
 import "./App.css";
 import "semantic-ui-css/semantic.min.css";
