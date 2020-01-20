@@ -4,7 +4,7 @@ import { Dimmer, List, Loader } from "semantic-ui-react";
 
 import data from "../../testData";
 import LanguageInput from "./LanguageInput";
-import GenericWord from "./Words/GenericWord";
+import Word from "./Word";
 
 class Reader extends Component {
   state = {
@@ -37,7 +37,7 @@ class Reader extends Component {
       return (
         <List>
           {this.state.data.map(word => (
-            <GenericWord key={word.text} {...word} />
+            <Word key={word.text} {...word} />
           ))}
         </List>
       );
