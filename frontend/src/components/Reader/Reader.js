@@ -1,23 +1,17 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Card, Dimmer, Loader } from "semantic-ui-react";
 
-import data from "../../testData";
 import LanguageInput from "./LanguageInput";
-import Word from "./Word";
+import Vocabulary from "./Vocabulary";
 
 class Reader extends Component {
   state = {
     language: "",
     text: "",
-    data: "",
     submitted: false
   };
 
   handleSubmit = ({ text, language }) => {
-    // TODO hook this up to data source
     this.setState({
-      data: data.data.wordsInText,
       language: language,
       submitted: true,
       text: text
@@ -25,31 +19,13 @@ class Reader extends Component {
   };
 
   render = () => {
-    if (!this.state.submitted) {
-      return <LanguageInput onSubmit={this.handleSubmit} />;
-    } else if (this.state.data === "") {
-      return (
-        <Dimmer active>
-          <Loader />
-        </Dimmer>
-      );
-    } else {
-      return (
-        <div>
-          <LanguageInput onSubmit={this.handleSubmit} />
-          <Card.Group>
-            {this.state.data.map(word => (
-              <Word key={word.text} {...word} />
-            ))}
-          </Card.Group>
-        </div>
-      );
-    }
+    return (
+      <div>
+        <LanguageInput onSubmit={this.handleSubmit} />
+        <Vocabulary text={this.state.text} submitted={this.state.submitted} />
+      </div>
+    );
   };
 }
-
-Reader.propTypes = {
-  onSubmit: PropTypes.func.isRequired
-};
 
 export default Reader;
