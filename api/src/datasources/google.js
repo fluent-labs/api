@@ -29,14 +29,16 @@ class GoogleNaturalLanguageAPI extends RESTDataSource {
     const [words] = await client.analyzeSyntax({ document });
     const wordLanguage = this.mapLanguage(words.language);
 
-    return words.tokens.map(token => {
-      return {
-        language: wordLanguage,
-        text: token.text.content,
-        partOfSpeech: token.partOfSpeech.tag,
-        lemma: token.lemma
-      };
-    });
+    return words.tokens
+      .filter(word => word.partOfSpeech.tag != "PUNCT")
+      .map(token => {
+        return {
+          language: wordLanguage,
+          text: token.text.content,
+          partOfSpeech: token.partOfSpeech.tag,
+          lemma: token.lemma
+        };
+      });
   }
 }
 
