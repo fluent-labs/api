@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import Definition from "./Definition";
+import Definition from "./components/Definition";
 
 import axios from "axios";
 
