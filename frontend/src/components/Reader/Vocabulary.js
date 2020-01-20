@@ -43,12 +43,12 @@ const Vocabulary = props => {
 
   return (
     <Card.Group>
-      {data.map(word => (
+      {data.wordsInText.map(word => (
         <Word key={word.text} {...word} />
       ))}
     </Card.Group>
   );
-}
+};
 
 Vocabulary.propTypes = {
   text: PropTypes.string.isRequired,
