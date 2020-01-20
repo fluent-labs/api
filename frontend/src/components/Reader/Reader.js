@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Dimmer, List, Loader } from "semantic-ui-react";
+import { Card, Dimmer, Loader } from "semantic-ui-react";
 
 import data from "../../testData";
 import LanguageInput from "./LanguageInput";
@@ -35,11 +35,14 @@ class Reader extends Component {
       );
     } else {
       return (
-        <List>
-          {this.state.data.map(word => (
-            <Word key={word.text} {...word} />
-          ))}
-        </List>
+        <div>
+          <LanguageInput onSubmit={this.handleSubmit} />
+          <Card.Group>
+            {this.state.data.map(word => (
+              <Word key={word.text} {...word} />
+            ))}
+          </Card.Group>
+        </div>
       );
     }
   };
