@@ -1,22 +1,39 @@
-import React from "react";
-import { Button, Form, Select, TextArea } from "semantic-ui-react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import LanguageInput from "./LanguageInput";
 
-const Reader = props => {
-  const languages = [
-    { key: "en", value: "ENGLISH", text: "English" },
-    { key: "es", value: "SPANISH", text: "Spanish" },
-    { key: "zh", value: "CHINESE", text: "Chinese" }
-  ];
+import data from "../../src/testData";
 
-  return (
-    <React.Fragment>
-      <Form>
-        <TextArea placeholder="Enter some text that you would like to read" />
-        <Select placeholder="Which language is it in?" options={languages} />
-        <Button type="submit">Submit</Button>
-      </Form>
-    </React.Fragment>
-  );
+class Reader extends Component {
+  state = {
+    language: "",
+    text: "",
+    data: "",
+    submitted: false
+  };
+
+  handleSubmit = ({ text, language }) => {
+    this.setState({
+      data: data.data.wordsInText,
+      language: language,
+      submitted: true,
+      text: text
+    });
+  };
+
+  render = () => {
+    if (!this.state.submitted) {
+      return <LanguageInput onSubmit={this.handleSubmit} />;
+    } else if (this.state.data === "") {
+      return <label>Loading</label>;
+    } else {
+      return <label>Loaded</label>;
+    }
+  };
+}
+
+Reader.propTypes = {
+  onSubmit: PropTypes.func.isRequired
 };
 
 export default Reader;
