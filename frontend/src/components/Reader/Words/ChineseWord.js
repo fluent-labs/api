@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { List } from "semantic-ui-react";
+import { Card } from "semantic-ui-react";
 import Definition from "./Definition";
 
 const ChineseWord = props => {
@@ -11,20 +11,22 @@ const ChineseWord = props => {
   if (pinyin && pinyin != null) {
     header += ` (${pinyin.join(", ")})`;
   }
-  if (partOfSpeech && partOfSpeech != null) {
-    header += ` - ${partOfSpeech}`;
-  }
-  if (hsk && hsk != null) {
-    header += ` HSK: ${hsk}`;
-  }
 
   return (
-    <List.Item>
-      <List.Content>
-        <List.Header>{header}</List.Header>
-        <Definition definitions={definitions} />
-      </List.Content>
-    </List.Item>
+    <Card>
+      <Card.Content>
+        <Card.Header>{header}</Card.Header>
+        <Card.Meta>
+          <span>
+            {partOfSpeech}
+            {hsk && hsk != null && ` - HSK: ${hsk}`}
+          </span>
+        </Card.Meta>
+        <Card.Description>
+          <Definition definitions={definitions} />
+        </Card.Description>
+      </Card.Content>
+    </Card>
   );
 };
 

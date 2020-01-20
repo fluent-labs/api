@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { List } from "semantic-ui-react";
+import { Card } from "semantic-ui-react";
 import ChineseWord from "./ChineseWord";
 import Definition from "./Definition";
 
@@ -15,17 +15,19 @@ const GenericWord = props => {
     if (lemma && lemma != null) {
       header += ` (${lemma})`;
     }
-    if (partOfSpeech && partOfSpeech != null) {
-      header += ` - ${partOfSpeech}`;
-    }
 
     return (
-      <List.Item>
-        <List.Content>
-          <List.Header>{header}</List.Header>
-          <Definition definitions={definitions} />
-        </List.Content>
-      </List.Item>
+      <Card>
+        <Card.Content>
+          <Card.Header>{header}</Card.Header>
+          <Card.Meta>
+            <span>{partOfSpeech}</span>
+          </Card.Meta>
+          <Card.Description>
+            <Definition definitions={definitions} />
+          </Card.Description>
+        </Card.Content>
+      </Card>
     );
   }
 };

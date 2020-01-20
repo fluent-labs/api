@@ -8,16 +8,14 @@ const Definition = props => {
 
   if (definitions && definitions != null) {
     return (
-      <List.Description>
-        <List>
-          {definitions.map(definition => {
-            return <List.Header key={definition}>{definition}</List.Header>;
-          })}
-        </List>
-      </List.Description>
+      <List bulleted>
+        {definitions.map(definition => {
+          return <List.Header key={definition}>{definition}</List.Header>;
+        })}
+      </List>
     );
   } else {
-    return <List.Description>No definitions found</List.Description>;
+    return <label>No definitions found</label>;
   }
 };
 Definition.propTypes = {
