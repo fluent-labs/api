@@ -7,10 +7,7 @@
   ],
   "parserOptions": {
     "ecmaVersion": 2016,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
+    "sourceType": "module"
   },
   "plugins": ["prettier", "import"],
   "env": {

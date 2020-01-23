@@ -1,4 +1,5 @@
 const { RESTDataSource } = require("apollo-datasource-rest");
+const _ = require("lodash");
 
 const language = require("@google-cloud/language");
 const client = new language.LanguageServiceClient();
@@ -29,8 +30,8 @@ class GoogleNaturalLanguageAPI extends RESTDataSource {
     const [words] = await client.analyzeSyntax({ document });
     const wordLanguage = this.mapLanguage(words.language);
 
-    return words.tokens
-      .filter(word => word.partOfSpeech.tag != "PUNCT")
+    const processedWords = words.tokens
+      .filter(word => word.partOfSpeech.tag != "PUNCT" && word.partOfSpeech.tag != "NUM")
       .map(token => {
         return {
           language: wordLanguage,
@@ -39,6 +40,7 @@ class GoogleNaturalLanguageAPI extends RESTDataSource {
           lemma: token.lemma
         };
       });
+    return _.uniqBy(processedWords, x => x.text);
   }
 }
 

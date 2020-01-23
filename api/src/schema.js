@@ -8,7 +8,12 @@ const typeDefs = gql`
     health: String
   }
 
+  type Mutation {
+    addVocabulary(vocabularyID: Int!): AddVocabularyResponse!
+  }
+
   interface Word {
+    id: Int!
     language: Language!
     text: String!
     partOfSpeech: String
@@ -17,6 +22,7 @@ const typeDefs = gql`
   }
 
   type GenericWord implements Word {
+    id: Int!
     language: Language!
     text: String!
     partOfSpeech: String
@@ -25,6 +31,7 @@ const typeDefs = gql`
   }
 
   type ChineseWord implements Word {
+    id: Int!
     language: Language!
     text: String!
     partOfSpeech: String
