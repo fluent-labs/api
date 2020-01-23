@@ -31,7 +31,7 @@ class GoogleNaturalLanguageAPI extends RESTDataSource {
     const wordLanguage = this.mapLanguage(words.language);
 
     const processedWords = words.tokens
-      .filter(word => word.partOfSpeech.tag != "PUNCT")
+      .filter(word => word.partOfSpeech.tag != "PUNCT" && word.partOfSpeech.tag != "NUM")
       .map(token => {
         return {
           language: wordLanguage,
