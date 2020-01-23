@@ -26,6 +26,7 @@
     "apollo-server-lambda": "^2.9.16",
     "datasource-sql": "^1.1.0",
     "graphql": "^14.5.8",
+    "lodash": "^4.17.15",
     "mysql": "^2.18.0"
   },
   "devDependencies": {
