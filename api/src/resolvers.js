@@ -13,14 +13,21 @@ const chinese = require("../content/chinese/cedict.json").reduce(
 module.exports = {
   Query: {
     wordsInText: async (_parent, { text }, { dataSources }) => {
-      const words = await dataSources.googleAPI.getWordsInText({ text: text });
+      const unaddedWords = await dataSources.googleAPI.getWordsInText({ text: text });
 
       // Register the words in the database as users request them
-      console.log(words);
-      words.forEach(word => {
-        dataSources.database.addWord(word)
-          .then(error => console.log(error));
-      });
+      const words = unaddedWords.map( async word => {
+        const existingWord = await dataSources.database.getWord({ text: word.text })
+
+        if (existingWord.length > 1) {
+          word["id"] = existingWord[0].id
+        } else {
+          const id = await dataSources.database.addWord(word);
+          word["id"] = id[0];
+        }
+
+        return word;
+      })
 
       return words;
     },
