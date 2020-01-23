@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS `foreign-language-reader`;
+CREATE DATABASE IF NOT EXISTS `foreign-language-reader` CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `foreign-language-reader`;
 
 --
