@@ -12,8 +12,17 @@ const chinese = require("../content/chinese/cedict.json").reduce(
 
 module.exports = {
   Query: {
-    wordsInText: (_parent, { text }, { dataSources }) => {
-      return dataSources.googleAPI.getWordsInText({ text: text });
+    wordsInText: async (_parent, { text }, { dataSources }) => {
+      const words = await dataSources.googleAPI.getWordsInText({ text: text });
+
+      // Register the words in the database as users request them
+      console.log(words);
+      words.forEach(word => {
+        dataSources.database.addWord(word)
+          .then(error => console.log(error));
+      });
+
+      return words;
     },
     health: (_parent, _args, { dataSources }) => {
       return "OK";
