@@ -1,5 +1,7 @@
 # Foreign Language Reader API
 
+This is the api server for the foreign language reader.
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
