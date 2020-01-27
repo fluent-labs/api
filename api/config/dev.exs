@@ -2,10 +2,11 @@ use Mix.Config
 
 # Configure your database
 config :api, Api.Repo,
-  username: "thisisdevconfig",
-  password: "my-secret-pw",
+  username: "dev-user",
+  password: "dev-password",
   database: "foreign-language-reader",
   hostname: "localhost",
+  port: 33061,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 

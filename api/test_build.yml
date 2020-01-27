@@ -8,7 +8,9 @@ services:
       - "4000:4000"
   database:
     image: "mysql:5.7"
-    environment:
-      MYSQL_ROOT_PASSWORD: my-secret-pw
+    env:
+      MYSQL_USER: dev-user
+      MYSQL_PASSWORD: dev-password
+      MYSQL_DATABASE: foreign-language-reader
     ports:
-      3306:3306
+    - 33061:3306

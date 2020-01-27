@@ -20,9 +20,9 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_USER: ci-user
-          MYSQL_PASSWORD: ci-password
-          MYSQL_DATABASE: api-test
+          MYSQL_USER: dev-user
+          MYSQL_PASSWORD: dev-password
+          MYSQL_DATABASE: foreign-language-reader
         ports:
         - 33061:3306
     steps:
