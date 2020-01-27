@@ -80,6 +80,6 @@ jobs:
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: foreign-language-reader-api
+        service: foreign-language-reader
         cluster: default
         wait-for-service-stability: true
