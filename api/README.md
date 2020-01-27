@@ -1,4 +1,4 @@
-# Api
+# Foreign Language Reader API
 
 To start your Phoenix server:
 
