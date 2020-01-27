@@ -2,8 +2,9 @@ use Mix.Config
 
 # Configure your database
 config :api, Api.Repo,
-  username: "postgres",
-  password: "postgres",
+  # This is present with github actions by default.
+  username: "root",
+  password: "root",
   database: "api_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
