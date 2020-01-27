@@ -2,7 +2,7 @@ use Mix.Config
 
 # Configure your database
 config :api, Api.Repo,
-  username: "root",
+  username: "thisisdevconfig",
   password: "my-secret-pw",
   database: "foreign-language-reader",
   hostname: "localhost",
