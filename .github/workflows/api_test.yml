@@ -18,6 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: elixir:1.9.1-slim
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+        - 3306
     steps:
     - uses: actions/checkout@v1
     - name: Move build files to root of build worker
