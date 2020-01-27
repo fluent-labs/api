@@ -40,6 +40,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v1
+    - name: Move build files to root of build worker
+      run: mv api/* .
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
