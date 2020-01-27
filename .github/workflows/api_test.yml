@@ -21,9 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Move build files to root of build worker
-      run: |
-        shopt -s dotglob
-        mv api/* .
+      run: mv api/* .
     - name: Install Dependencies
       run: |
         mix local.rebar --force
