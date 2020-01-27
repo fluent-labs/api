@@ -8,9 +8,10 @@ services:
       - "4000:4000"
   database:
     image: "mysql:5.7"
-    env:
+    environment:
       MYSQL_USER: dev-user
       MYSQL_PASSWORD: dev-password
       MYSQL_DATABASE: foreign-language-reader
+      MYSQL_RANDOM_ROOT_PASSWORD: "true"
     ports:
     - 33061:3306

@@ -5,7 +5,7 @@ config :api, Api.Repo,
   username: "dev-user",
   password: "dev-password",
   database: "foreign-language-reader",
-  hostname: "localhost",
+  hostname: "127.0.0.1",
   port: 33061,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10

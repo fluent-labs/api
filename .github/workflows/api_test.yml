@@ -20,9 +20,10 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_USER: dev-user
-          MYSQL_PASSWORD: dev-password
-          MYSQL_DATABASE: foreign-language-reader
+          MYSQL_USER: ci-user
+          MYSQL_PASSWORD: ci-password
+          MYSQL_DATABASE: api-test
+          MYSQL_RANDOM_ROOT_PASSWORD: "true"
         ports:
         - 33061:3306
     steps:
@@ -39,7 +40,5 @@ jobs:
         mix local.rebar --force
         mix local.hex --force
         mix deps.get
-    - name: Reset test database
-      run: mix ecto.reset
     - name: Run Tests
       run: mix test
