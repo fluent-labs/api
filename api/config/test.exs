@@ -2,10 +2,10 @@ use Mix.Config
 
 # Configure your database
 config :api, Api.Repo,
-  # This is present with github actions by default.
-  username: "root",
-  password: "root",
-  database: "api_test",
+  # This is set up by github actions
+  username: "ci-user",
+  password: "ci-password",
+  database: "api-test",
   hostname: "127.0.0.1",
   port: 33061,
   pool: Ecto.Adapters.SQL.Sandbox
