@@ -13,12 +13,23 @@ jobs:
       run: |
         shopt -s dotglob
         mv api/* .
+    - name: Build container
+      run: docker build .
   
   test:
     runs-on: ubuntu-latest
+    container:
+      image: elixir:1.9.1-slim
     steps:
     - uses: actions/checkout@v1
     - name: Move build files to root of build worker
       run: |
         shopt -s dotglob
         mv api/* .
+    - name: Install Dependencies
+      run: |
+        mix local.rebar --force
+        mix local.hex --force
+        mix deps.get
+    - name: Run Tests
+      run: mix test
