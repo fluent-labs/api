@@ -2,7 +2,7 @@ name: API PR Review
 
 on:
   pull_request:
-    paths: "api/*"
+    paths: "api/**/*"
 
 jobs:
   build:
