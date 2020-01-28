@@ -30,7 +30,16 @@
       "dnsServers": null,
       "mountPoints": [],
       "workingDirectory": null,
-      "secrets": null,
+      "secrets": [
+        {
+          "valueFrom": "arn:aws:secretsmanager:us-west-2:037187302622:secret:foreign-language-reader-api-database-P8riCU",
+          "name": "DATABASE_URL"
+        },
+        {
+          "valueFrom": "arn:aws:secretsmanager:us-west-2:037187302622:secret:foreign-language-reader-secret-key-base-QoTToR",
+          "name": "SECRET_KEY_BASE"
+        }
+      ],
       "dockerSecurityOptions": null,
       "memory": 128,
       "memoryReservation": null,
