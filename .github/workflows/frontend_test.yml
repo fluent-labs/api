@@ -1,8 +1,8 @@
 name: PR Review
 
-on: 
+on:
   pull_request:
-    paths: "frontend/*"
+    paths: "frontend/**/*"
 
 jobs:
   build:
