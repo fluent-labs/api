@@ -2,8 +2,9 @@ version: '3'
 services:
   api:
     build: .
-    links:
-      - database
+    environment:
+      DATABASE_URL: "ecto://dev-user:dev-password@database:3306/foreign-language-reader"
+      SECRET_KEY_BASE: "KN4rxjPOfxRk3uo7fD928e6nt12jzrvy5t90fp7Snlp63ckc0rRZTglirGt+WiB6"
     ports:
       - "4000:4000"
   database:

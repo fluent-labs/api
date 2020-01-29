@@ -20,10 +20,6 @@ COPY config config
 RUN mix deps.get
 RUN mix deps.compile
 
-# build assets
-COPY priv priv
-RUN mix phx.digest
-
 # build project
 COPY lib lib
 RUN mix compile
