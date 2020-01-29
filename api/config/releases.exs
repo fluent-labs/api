@@ -39,3 +39,9 @@ config :api, ApiWeb.Endpoint,
 #
 # Then you can assemble a release by calling `mix release`.
 # See `mix help release` for more information.
+config :api, ApiWeb.Endpoint,
+  url: [host: "example.com", port: 80],
+  server: true
+
+# Do not print debug messages in production
+config :logger, level: :info
