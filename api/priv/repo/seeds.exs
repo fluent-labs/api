@@ -12,7 +12,7 @@
 
 alias Api.{Repo, Language}
 
-Repo.insert(Language.changeset(%Language{:name "Chinese"}))
-Repo.insert(Language.changeset(%Language{:name "Danish"}))
-Repo.insert(Language.changeset(%Language{:name "English"}))
-Repo.insert(Language.changeset(%Language{:name "Spanish"}))
+Repo.insert(Language.changeset(%Language{}, %{name: "Chinese"}))
+Repo.insert(Language.changeset(%Language{}, %{name: "Danish"}))
+Repo.insert(Language.changeset(%Language{}, %{name: "English"}))
+Repo.insert(Language.changeset(%Language{}, %{name: "Spanish"}))
