@@ -23,5 +23,5 @@ def handler(event, context):
     return {
         "statusCode": 200,
         "headers": {"Content-Type": "application/json"},
-        "body": get_vocabulary(word, language)
+        "body": json.dumps(get_vocabulary(word, language))
         }
