@@ -12,8 +12,10 @@ def get_vocabulary(word, language):
 def handler(event, context):
     print(event)
 
-    language = event.get('language')
-    word = event.get('word')
+    body = event.get('body')
+
+    language = body.get('language')
+    word = body.get('word')
 
     print("Getting vocabulary for language: %s and word: %s" % (language, word))
 
