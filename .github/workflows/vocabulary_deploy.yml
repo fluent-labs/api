@@ -2,7 +2,9 @@ name: Deploy vocabulary lambda
 
 on:
   pull_request:
-    paths: "vocabulary/*"
+    paths:
+    - "vocabulary/*"
+    - "!**.tf"
     types: closed
     branches: master
 
