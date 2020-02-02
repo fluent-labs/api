@@ -1,8 +1,8 @@
-name: Test vocabulary lambda
+name: Deploy vocabulary lambda
 
 on:
   pull_request:
-    paths: "vocabulary/**/*"
+    paths: "vocabulary/*"
     types: closed
     branches: master
 
