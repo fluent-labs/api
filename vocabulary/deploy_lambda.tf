@@ -10,13 +10,13 @@ terraform {
 }
 
 provider "aws" {
-  profile    = "default"
-  region     = "us-west-2"
+  profile = "default"
+  region  = "us-west-2"
 }
 resource "aws_iam_role" "lambda_exec" {
-   name = "foreign-language-reader-vocabulary-lambda"
+  name = "foreign-language-reader-vocabulary-lambda"
 
-   assume_role_policy = <<EOF
+  assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
