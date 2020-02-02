@@ -14,8 +14,8 @@ def handler(event, context):
 
     body = event.get('body')
 
-    language = body.get('language')
-    word = body.get('word')
+    language = body['language']
+    word = body['word']
 
     print("Getting vocabulary for language: %s and word: %s" % (language, word))
 
