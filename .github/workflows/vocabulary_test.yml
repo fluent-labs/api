@@ -3,6 +3,7 @@ name: Test vocabulary lambda
 on:
   pull_request:
     paths: "vocabulary/*"
+    paths-ignore: "**.tf"
 
 jobs:
   build:
