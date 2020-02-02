@@ -12,4 +12,9 @@ def get_vocabulary(word, language):
 def handler(event, context):
     language = event.get('language')
     word = event.get('word')
-    return get_vocabulary(word, language)
+
+    return {
+        "statusCode": 200,
+        "headers": {"Content-Type": "application/json"},
+        "body": get_vocabulary(word, language)
+        }
