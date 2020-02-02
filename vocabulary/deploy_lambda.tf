@@ -11,10 +11,10 @@ terraform {
 
 provider "aws" {
   profile    = "default"
-  region     = "us-west-1"
+  region     = "us-west-2"
 }
 resource "aws_iam_role" "lambda_exec" {
-   name = "foreign_language_reader_api"
+   name = "foreign-language-reader-vocabulary-lambda"
 
    assume_role_policy = <<EOF
 {
@@ -43,21 +43,18 @@ resource "aws_iam_role" "lambda_exec" {
 
  }
 
-resource "aws_lambda_function" "foreign-language-reader-api" {
-  function_name = "ForeignLanguageReaderAPI"
+resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
+  function_name = "ForeignLanguageReaderVocabularyLambda"
 
-  s3_bucket = "foreign-language-reader-deploy"
-  s3_key    = "package.zip"
-
-  handler = "graphql.graphqlHandler"
-  runtime = "nodejs12.x"
+  handler = "service.handler"
+  runtime = "python3.6"
 
   role = aws_iam_role.lambda_exec.arn
 }
 
 resource "aws_api_gateway_rest_api" "rest_api" {
-  name        = "ForeignLanguageReaderAPI"
-  description = "Gateway for the foreign language reader API"
+  name        = "ForeignLanguageReaderVocabularyLambda"
+  description = "Gateway for the foreign language reader vocabulary lambda"
 }
 
  resource "aws_api_gateway_resource" "proxy" {
@@ -80,7 +77,7 @@ resource "aws_api_gateway_method" "proxy" {
 
    integration_http_method = "POST"
    type                    = "AWS_PROXY"
-   uri                     = aws_lambda_function.foreign-language-reader-api.invoke_arn
+   uri                     = aws_lambda_function.foreign-language-reader-vocabulary-lambda.invoke_arn
  }
 
  resource "aws_api_gateway_deployment" "deployment" {
@@ -95,7 +92,7 @@ resource "aws_api_gateway_method" "proxy" {
   resource "aws_lambda_permission" "apigw" {
    statement_id  = "AllowAPIGatewayInvoke"
    action        = "lambda:InvokeFunction"
-   function_name = aws_lambda_function.foreign-language-reader-api.function_name
+   function_name = aws_lambda_function.foreign-language-reader-vocabulary-lambda.function_name
    principal     = "apigateway.amazonaws.com"
 
    source_arn = "${aws_api_gateway_rest_api.rest_api.execution_arn}/*/*"
