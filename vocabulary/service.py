@@ -11,9 +11,13 @@ def get_vocabulary(word, language):
 
 
 def handler(event, context):
-    body = json.loads(event.get("body"))
-
     error = None
+    try:
+        body = json.loads(event.get("body"))
+    except Exception as e:
+        print(e)
+        error = "Could not parse request body, is it valid?"
+
     if body is None or body == "":
         error = "You must post properties to this endpoint."
     elif "language" not in body:
