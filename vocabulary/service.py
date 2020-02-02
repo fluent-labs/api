@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 from wiktionaryparser import WiktionaryParser
 
 
@@ -12,7 +13,7 @@ def get_vocabulary(word, language):
 def handler(event, context):
     print(event)
 
-    body = event.get('body')
+    body = json.loads(event.get('body'))
 
     language = body['language']
     word = body['word']
