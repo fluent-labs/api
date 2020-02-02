@@ -10,5 +10,5 @@ terraform {
 }
 
 module "vocabulary-lambda" {
-  source = "./vocabulary_lambda_infrastructure"
+  source = "./vocabulary"
 }
