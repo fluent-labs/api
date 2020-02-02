@@ -2,8 +2,9 @@ name: Test vocabulary lambda
 
 on:
   pull_request:
-    paths: "vocabulary/*"
-    paths-ignore: "**.tf"
+    paths:
+    - "vocabulary/*"
+    - "!**.tf"
 
 jobs:
   build:
