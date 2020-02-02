@@ -1,6 +1,6 @@
 terraform {
   backend "remote" {
-    hostname = "app.terraform.io"
+    hostname     = "app.terraform.io"
     organization = "foreign-language-reader"
 
     workspaces {
@@ -41,7 +41,7 @@ resource "aws_iam_role" "lambda_exec" {
 }
  EOF
 
- }
+}
 
 resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
   function_name = "ForeignLanguageReaderVocabularyLambda"
