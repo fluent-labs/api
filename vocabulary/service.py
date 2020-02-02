@@ -11,17 +11,37 @@ def get_vocabulary(word, language):
 
 
 def handler(event, context):
-    print(event)
+    body = json.loads(event.get("body"))
 
-    body = json.loads(event.get('body'))
+    error = None
+    if body is None or body == "":
+        error = "You must post properties to this endpoint."
+    elif "language" not in body:
+        error = "You must specify a language."
+    elif "word" not in body:
+        error = "You must specify a word."
 
-    language = body['language']
-    word = body['word']
+    if error is not None:
+        return {
+            "statusCode": 400,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps({"error": error})
+            }
 
+    language = body["language"]
+    word = body["word"]
     print("Getting vocabulary for language: %s and word: %s" % (language, word))
 
-    return {
-        "statusCode": 200,
-        "headers": {"Content-Type": "application/json"},
-        "body": json.dumps(get_vocabulary(word, language))
-        }
+    try:
+        return {
+            "statusCode": 200,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps(get_vocabulary(word, language))
+            }
+    except Exception as e:
+        print(e)
+        return {
+            "statusCode": 500,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps({"error": "Error getting data from Wikimedia"})
+            }
