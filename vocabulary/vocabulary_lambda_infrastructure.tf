@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "lambda-assume-role-policy" {
 }
 
 resource "aws_iam_role" "lambda_exec" {
-  name = "foreign-language-reader-vocabulary-lambda"
+  name               = "foreign-language-reader-vocabulary-lambda"
   assume_role_policy = "${data.aws_iam_policy_document.lambda-assume-role-policy.json}"
 }
 
