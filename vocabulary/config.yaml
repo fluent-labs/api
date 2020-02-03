@@ -4,7 +4,7 @@ function_name: wiktionary-vocabulary-lookup
 handler: service.handler
 description: Wiktionary vocabulary lookup
 runtime: python3.6
-role: foreign_language_reader_api
+role: foreign-language-reader-vocabulary-lambda
 
 # S3 upload requires appropriate role with s3:PutObject permission
 # (ex. basic_s3_upload), a destination bucket, and the key prefix
