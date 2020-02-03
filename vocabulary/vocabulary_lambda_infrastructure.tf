@@ -20,6 +20,10 @@ resource "aws_iam_role" "lambda_exec" {
 }
 
 resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
+  depends_on = [
+    aws_s3_bucket.vocabulary-lambda-deploy,
+  ]
+
   function_name = "ForeignLanguageReaderVocabularyLambda"
 
   s3_bucket = "vocabulary-lambda-deploy"
