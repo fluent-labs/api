@@ -2,6 +2,7 @@ provider "aws" {
   profile = "default"
   region  = "us-west-2"
 }
+
 resource "aws_iam_role" "lambda_exec" {
   name = "foreign-language-reader-vocabulary-lambda"
 
@@ -27,8 +28,7 @@ resource "aws_iam_role" "lambda_exec" {
     }
   ]
 }
- EOF
-
+EOF
 }
 
 resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
