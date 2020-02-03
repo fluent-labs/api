@@ -1,33 +1,30 @@
-provider "aws" {
-  profile = "default"
-  region  = "us-west-2"
+data "aws_iam_policy_document" "lambda-assume-role-policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+  }
+
+  statement {
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
 }
+
 resource "aws_iam_role" "lambda_exec" {
   name = "foreign-language-reader-vocabulary-lambda"
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents"
-      ]
-    }
-  ]
-}
- EOF
+  assume_role_policy = "${data.aws_iam_policy_document.lambda-assume-role-policy.json}"
 
 }
 
