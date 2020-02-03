@@ -25,7 +25,7 @@ resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
   ]
 
   function_name = "wiktionary-vocabulary-lookup"
-  description = "Wiktionary vocabulary lookup"
+  description   = "Wiktionary vocabulary lookup"
 
   s3_bucket = "vocabulary-lambda-deploy"
   s3_key    = "package.zip"
