@@ -7,18 +7,6 @@ data "aws_iam_policy_document" "lambda-assume-role-policy" {
       identifiers = ["lambda.amazonaws.com"]
     }
   }
-
-  statement {
-    actions = [
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-    ]
-
-    resources = [
-      "*",
-    ]
-  }
 }
 
 resource "aws_iam_role" "lambda_exec" {
