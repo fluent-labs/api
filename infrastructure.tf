@@ -14,6 +14,10 @@ provider "aws" {
   region  = "us-west-2"
 }
 
+module "frontend" {
+  source = "./frontend"
+}
+
 module "vocabulary-lambda" {
   source = "./vocabulary"
 }
