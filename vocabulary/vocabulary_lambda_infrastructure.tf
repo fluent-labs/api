@@ -23,8 +23,7 @@ resource "aws_iam_role" "lambda_exec" {
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents"
-      ],
-      "Resource": "*"
+      ]
     }
   ]
 }
