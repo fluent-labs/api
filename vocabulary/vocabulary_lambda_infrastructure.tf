@@ -24,13 +24,13 @@ resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
     aws_s3_bucket.vocabulary-lambda-deploy,
   ]
 
-  function_name = "ForeignLanguageReaderVocabularyLambda"
+  function_name = "wiktionary-vocabulary-lookup"
 
   s3_bucket = "vocabulary-lambda-deploy"
   s3_key    = "package.zip"
 
   handler = "service.handler"
-  runtime = "python3.6"
+  runtime = "python3.7"
 
   role = aws_iam_role.lambda_exec.arn
 }
