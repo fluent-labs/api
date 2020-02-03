@@ -1,3 +1,8 @@
+resource "aws_s3_bucket" "vocabulary-lambda-deploy" {
+  bucket = "vocabulary-lambda-deploy"
+  acl    = "private"
+}
+
 data "aws_iam_policy_document" "lambda-assume-role-policy" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -16,6 +21,9 @@ resource "aws_iam_role" "lambda_exec" {
 
 resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
   function_name = "ForeignLanguageReaderVocabularyLambda"
+
+  s3_bucket = "vocabulary-lambda-deploy"
+  s3_key    = "package.zip"
 
   handler = "service.handler"
   runtime = "python3.6"
