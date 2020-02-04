@@ -1,8 +1,3 @@
-resource "aws_s3_bucket" "vocabulary-lambda-deploy" {
-  bucket = "vocabulary-lambda-deploy-${var.env}"
-  acl    = "private"
-}
-
 data "aws_iam_policy_document" "lambda-assume-role-policy" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -27,8 +22,7 @@ resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
   function_name = "wiktionary-vocabulary-lookup-${var.env}"
   description   = "Wiktionary vocabulary lookup"
 
-  s3_bucket = aws_s3_bucket.vocabulary-lambda-deploy.id
-  s3_key    = "package.zip"
+  filename      = "infrastructure/vocabulary/package.zip"
 
   handler = "service.handler"
   runtime = "python3.7"
