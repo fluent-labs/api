@@ -16,4 +16,5 @@ module "frontend" {
 
 module "vocabulary-lambda" {
   source = "./vocabulary"
+  env    = var.env
 }
