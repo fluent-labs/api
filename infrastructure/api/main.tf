@@ -13,11 +13,6 @@ resource "aws_security_group" "database" {
     protocol    = "tcp"
     cidr_blocks = [data.aws_subnet.main.cidr_block]
   }
-
-  egress {
-    protocol    = "all"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 }
 
 resource "aws_db_instance" "default" {
