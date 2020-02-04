@@ -15,7 +15,7 @@ resource "aws_security_group" "database" {
   }
 
   egress {
-    protocol    = "any"
+    protocol    = "all"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
