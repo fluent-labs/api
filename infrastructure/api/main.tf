@@ -3,8 +3,8 @@ data "aws_subnet" "main" {
 }
 
 resource "aws_security_group" "database" {
-  name        = "database-${var.env}"
-  description = "Database security group for ${var.env}"
+  name        = "foreign-language-reader-database-${var.env}"
+  description = "Database security group for foreign language reader ${var.env}. Only allows connections from inside the subnet."
   vpc_id      = data.aws_subnet.main.vpc_id
 
   ingress {
