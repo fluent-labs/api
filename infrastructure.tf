@@ -14,10 +14,6 @@ provider "aws" {
   region  = "us-west-2"
 }
 
-module "frontend" {
-  source = "./frontend"
-}
-
 module "dev" {
   source        = "./infrastructure"
   env           = "dev"
