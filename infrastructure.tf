@@ -19,6 +19,6 @@ module "frontend" {
 }
 
 module "dev" {
-  source = "./vocabulary"
-  env = "dev"  
+  source = "./infrastructure"
+  env = "dev"
 }
