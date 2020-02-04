@@ -3,8 +3,8 @@ data "aws_subnet" "main" {
 }
 
 resource "aws_security_group" "database" {
-  name        = "database_${env}"
-  description = "Database security group for ${env}"
+  name        = "database-${var.env}"
+  description = "Database security group for ${var.env}"
   vpc_id      = aws_subnet.main.vpc_id
 
   ingress {
