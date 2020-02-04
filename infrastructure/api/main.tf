@@ -5,7 +5,7 @@ data "aws_subnet" "main" {
 resource "aws_security_group" "database" {
   name        = "database_${env}"
   description = "Database security group for ${env}"
-  vpc_id      = "${aws_vpc.main.id}"
+  vpc_id      = aws_subnet.main.vpc_id
 
   ingress {
     from_port   = 3306
