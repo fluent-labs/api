@@ -15,14 +15,10 @@ resource "aws_iam_role" "lambda_exec" {
 }
 
 resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
-  depends_on = [
-    aws_s3_bucket.vocabulary-lambda-deploy,
-  ]
-
   function_name = "wiktionary-vocabulary-lookup-${var.env}"
   description   = "Wiktionary vocabulary lookup"
 
-  filename      = "infrastructure/vocabulary/package.zip"
+  filename = "infrastructure/vocabulary/package.zip"
 
   handler = "service.handler"
   runtime = "python3.7"
