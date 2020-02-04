@@ -23,10 +23,10 @@ variable "rds_password" {
 }
 
 module "dev" {
-  source             = "./infrastructure"
-  env                = "dev"
-  instance_size      = "t2.micro"
-  cidr_block         = "10.0.0.0/16"
-  rds_username       = var.rds_username
-  rds_password       = var.rds_password
+  source        = "./infrastructure"
+  env           = "dev"
+  instance_size = "t2.micro"
+  cidr_block    = "10.0.0.0/16"
+  rds_username  = var.rds_username
+  rds_password  = var.rds_password
 }
