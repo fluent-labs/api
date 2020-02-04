@@ -1,8 +1,3 @@
-resource "aws_s3_bucket" "vocabulary-lambda-deploy" {
-  bucket = "vocabulary-lambda-deploy"
-  acl    = "private"
-}
-
 data "aws_iam_policy_document" "lambda-assume-role-policy" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -15,20 +10,15 @@ data "aws_iam_policy_document" "lambda-assume-role-policy" {
 }
 
 resource "aws_iam_role" "lambda_exec" {
-  name               = "foreign-language-reader-vocabulary-lambda"
+  name               = "foreign-language-reader-vocabulary-lambda-${var.env}"
   assume_role_policy = data.aws_iam_policy_document.lambda-assume-role-policy.json
 }
 
 resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
-  depends_on = [
-    aws_s3_bucket.vocabulary-lambda-deploy,
-  ]
-
-  function_name = "wiktionary-vocabulary-lookup"
+  function_name = "wiktionary-vocabulary-lookup-${var.env}"
   description   = "Wiktionary vocabulary lookup"
 
-  s3_bucket = "vocabulary-lambda-deploy"
-  s3_key    = "package.zip"
+  filename = "infrastructure/vocabulary/package.zip"
 
   handler = "service.handler"
   runtime = "python3.7"
@@ -37,7 +27,7 @@ resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
 }
 
 resource "aws_api_gateway_rest_api" "rest_api" {
-  name        = "ForeignLanguageReaderVocabularyLambda"
+  name        = "foreign-language-reader-vocabulary-lambda-${var.env}"
   description = "Gateway for the foreign language reader vocabulary lambda"
 }
 
@@ -70,7 +60,7 @@ resource "aws_api_gateway_deployment" "deployment" {
   ]
 
   rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  stage_name  = "test"
+  stage_name  = var.env
 }
 
 resource "aws_lambda_permission" "apigw" {
