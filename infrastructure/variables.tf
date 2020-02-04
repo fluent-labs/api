@@ -9,3 +9,7 @@ variable "instance_size" {
 variable "cidr_block" {
   description = "What CIDR block to use"
 }
+
+variable "subnet_cidr_blocks" {
+  description = "CIDR blocks to create subnets in"
+}
