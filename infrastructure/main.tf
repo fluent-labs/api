@@ -4,7 +4,7 @@ resource "aws_vpc" "main" {
 
 resource "aws_subnet" "main" {
   vpc_id     = aws_vpc.main.id
-  cidr_block = cidrsubnet(var.cidr_block, 8, 1)
+  cidr_block = var.cidr_block
 }
 
 resource "aws_network_acl" "main" {
