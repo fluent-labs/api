@@ -9,7 +9,7 @@ resource "aws_subnet" "main" {
 
 resource "aws_network_acl" "main" {
   vpc_id     = aws_vpc.main.id
-  subnet_ids = aws_subnet.main.id
+  subnet_ids = [aws_subnet.main.id]
 }
 
 resource "aws_network_acl_rule" "block_all_inbound_unless_allowed" {
