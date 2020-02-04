@@ -22,7 +22,7 @@ resource "aws_db_instance" "default" {
   engine                 = "mysql"
   engine_version         = "5.7"
   instance_class         = "db.${var.instance_size}"
-  name                   = "foreign-language-reader-${var.env}"
+  identifier             = "foreign-language-reader-${var.env}"
   username               = var.rds_username
   password               = var.rds_password
   parameter_group_name   = "default.mysql5.7"
