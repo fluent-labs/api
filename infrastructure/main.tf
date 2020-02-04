@@ -3,15 +3,13 @@ resource "aws_vpc" "main" {
 }
 
 resource "aws_subnet" "main" {
-  for_each = toset(var.subnet_cidr_blocks)
-
   vpc_id     = aws_vpc.main.id
-  cidr_block = each.value
+  cidr_block = cidrsubnet(var.cidr_block, 8, 1)
 }
 
 resource "aws_network_acl" "main" {
   vpc_id     = aws_vpc.main.id
-  subnet_ids = [aws_subnet.main.id]
+  subnet_ids = aws_subnet.main.id
 }
 
 resource "aws_network_acl_rule" "block_all_inbound_unless_allowed" {
