@@ -67,6 +67,7 @@ module "api" {
   source        = "./api"
   env           = var.env
   instance_size = var.instance_size
+  subnet_id     = aws_subnet.main.id
 }
 
 module "frontend" {
