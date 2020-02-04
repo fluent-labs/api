@@ -21,8 +21,8 @@ resource "aws_db_instance" "default" {
   storage_type           = "gp2"
   engine                 = "mysql"
   engine_version         = "5.7"
-  instance_class         = "db.${instance_size}"
-  name                   = "foreign-language-reader-${env}"
+  instance_class         = "db.${var.instance_size}"
+  name                   = "foreign-language-reader-${var.env}"
   username               = var.rds_username
   password               = var.rds_password
   parameter_group_name   = "default.mysql5.7"
