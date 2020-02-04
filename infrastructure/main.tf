@@ -52,6 +52,13 @@ resource "aws_network_acl_rule" "inbound_ssh_traffic" {
   to_port        = 22
 }
 
+resource "aws_subnet" "main" {
+  for_each = toset(var.subnet_cidr_blocks)
+
+  vpc_id     = aws_vpc.main.id
+  cidr_block = each.value
+}
+
 module "api" {
   source        = "./api"
   env           = var.env
