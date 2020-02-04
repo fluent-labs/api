@@ -7,11 +7,14 @@ resource "aws_network_acl" "main" {
 }
 
 module "api" {
-  source = "./api"
+  source        = "./api"
+  env           = var.env
+  instance_size = var.instance_size
 }
 
 module "frontend" {
   source = "./frontend"
+  env    = var.env
 }
 
 module "vocabulary-lambda" {
