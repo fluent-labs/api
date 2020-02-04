@@ -68,6 +68,8 @@ module "api" {
   env           = var.env
   instance_size = var.instance_size
   subnet_id     = aws_subnet.main.id
+  rds_username  = var.rds_username
+  rds_password  = var.rds_password
 }
 
 module "frontend" {
