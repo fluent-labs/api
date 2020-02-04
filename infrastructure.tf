@@ -19,6 +19,8 @@ module "frontend" {
 }
 
 module "dev" {
-  source = "./infrastructure"
-  env = "dev"
+  source        = "./infrastructure"
+  env           = "dev"
+  instance_size = "t2.micro"
+  cidr_block    = "10.0.0.0/16"
 }
