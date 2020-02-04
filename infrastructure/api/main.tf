@@ -14,13 +14,13 @@ resource "aws_db_subnet_group" "main" {
 resource "aws_security_group" "database" {
   name        = "foreign-language-reader-database-${var.env}"
   description = "Database security group for foreign language reader ${var.env}. Only allows connections from inside the subnet."
-  vpc_id      = data.aws_subnet.main.vpc_id
+  vpc_id      = data.aws_subnet.one.vpc_id
 
   ingress {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = [data.aws_subnet.main.cidr_block]
+    cidr_blocks = [data.aws_subnet.one.cidr_block, data.aws_subnet.two.cidr_block]
   }
 }
 
