@@ -18,6 +18,7 @@ module "frontend" {
   source = "./frontend"
 }
 
-module "vocabulary-lambda" {
+module "dev" {
   source = "./vocabulary"
+  env = "dev"  
 }
