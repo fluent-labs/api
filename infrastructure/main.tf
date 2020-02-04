@@ -2,8 +2,16 @@ resource "aws_vpc" "main" {
   cidr_block = var.cidr_block
 }
 
+resource "aws_subnet" "main" {
+  for_each = toset(var.subnet_cidr_blocks)
+
+  vpc_id     = aws_vpc.main.id
+  cidr_block = each.value
+}
+
 resource "aws_network_acl" "main" {
-  vpc_id = aws_vpc.main.id
+  vpc_id     = aws_vpc.main.id
+  subnet_ids = aws_subnet.main
 }
 
 resource "aws_network_acl_rule" "block_all_inbound_unless_allowed" {
@@ -55,13 +63,6 @@ resource "aws_network_acl_rule" "inbound_ssh_traffic" {
   rule_action    = "allow"
   from_port      = 22
   to_port        = 22
-}
-
-resource "aws_subnet" "main" {
-  for_each = toset(var.subnet_cidr_blocks)
-
-  vpc_id     = aws_vpc.main.id
-  cidr_block = each.value
 }
 
 module "api" {
