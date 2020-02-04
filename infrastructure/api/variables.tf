@@ -6,8 +6,12 @@ variable "instance_size" {
   description = "Default size of instances created"
 }
 
-variable "subnet_id" {
-  description = "The subnet to set up the server on"
+variable "subnet_id_one" {
+  description = "The first subnet to set up the server on"
+}
+
+variable "subnet_id_two" {
+  description = "The second subnet to set up the server on"
 }
 
 variable "rds_username" {

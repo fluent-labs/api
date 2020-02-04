@@ -2,9 +2,14 @@ resource "aws_vpc" "main" {
   cidr_block = var.cidr_block
 }
 
-resource "aws_subnet" "main" {
+resource "aws_subnet" "one" {
   vpc_id     = aws_vpc.main.id
   cidr_block = cidrsubnet(var.cidr_block, 8, 1)
+}
+
+resource "aws_subnet" "two" {
+  vpc_id     = aws_vpc.main.id
+  cidr_block = cidrsubnet(var.cidr_block, 8, 2)
 }
 
 resource "aws_network_acl" "main" {
@@ -67,7 +72,8 @@ module "api" {
   source        = "./api"
   env           = var.env
   instance_size = var.instance_size
-  subnet_id     = aws_subnet.main.id
+  subnet_id_one = aws_subnet.one.id
+  subnet_id_two = aws_subnet.two.id
   rds_username  = var.rds_username
   rds_password  = var.rds_password
 }

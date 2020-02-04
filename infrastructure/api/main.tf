@@ -1,10 +1,14 @@
-data "aws_subnet" "main" {
-  id = "${var.subnet_id}"
+data "aws_subnet" "one" {
+  id = "${var.subnet_id_one}"
+}
+
+data "aws_subnet" "two" {
+  id = "${var.subnet_id_two}"
 }
 
 resource "aws_db_subnet_group" "main" {
   name       = "foreign-language-reader-${var.env}"
-  subnet_ids = [data.aws_subnet.main.id]
+  subnet_ids = [data.aws_subnet.one.id, data.aws_subnet.two.id]
 }
 
 resource "aws_security_group" "database" {
