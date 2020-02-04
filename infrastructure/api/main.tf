@@ -2,6 +2,11 @@ data "aws_subnet" "main" {
   id = "${var.subnet_id}"
 }
 
+resource "aws_db_subnet_group" "main" {
+  name       = "foreign-language-reader-${var.env}"
+  subnet_ids = [data.aws_subnet.main.id]
+}
+
 resource "aws_security_group" "database" {
   name        = "foreign-language-reader-database-${var.env}"
   description = "Database security group for foreign language reader ${var.env}. Only allows connections from inside the subnet."
@@ -28,4 +33,5 @@ resource "aws_db_instance" "default" {
   parameter_group_name   = "default.mysql5.7"
   deletion_protection    = true
   vpc_security_group_ids = [aws_security_group.database.id]
+  db_subnet_group_name   = aws_db_subnet_group.main.id
 }
