@@ -27,6 +27,5 @@ resource "aws_db_instance" "default" {
   password               = var.rds_password
   parameter_group_name   = "default.mysql5.7"
   deletion_protection    = true
-  storage_encrypted      = true
   vpc_security_group_ids = [aws_security_group.database.id]
 }
