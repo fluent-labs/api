@@ -23,7 +23,7 @@ resource "aws_s3_bucket_policy" "public-access" {
         "AWS": "*"
       },
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::${aws_s3_bucket.foreign-language-reader-frontend.arn}/*",
+      "Resource": "arn:aws:s3:::foreign-language-reader-frontend-dev/*",
     }
   ]
 }
