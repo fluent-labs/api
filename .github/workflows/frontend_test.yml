@@ -1,4 +1,4 @@
-name: PR Review
+name: Frontend Test
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-
+    name: Build and test frontend
     runs-on: ubuntu-latest
 
     steps:
@@ -39,6 +39,3 @@ jobs:
       run: npm run build
       env:
         CI: true
-
-    - name: Test build
-      run: npm test
