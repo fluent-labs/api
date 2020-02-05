@@ -24,6 +24,11 @@ data "aws_iam_policy_document" "allow_logging" {
     effect    = "Allow"
     resources = ["*"]
   }
+  statement {
+    actions   = ["s3:PutObject"]
+    effect    = "Allow"
+    resources = ["${aws_s3_bucket.vocabulary-lambda-deploy.arn}/*"]
+  }
 }
 
 resource "aws_iam_policy" "logging_policy" {
