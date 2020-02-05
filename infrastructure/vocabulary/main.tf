@@ -1,23 +1,15 @@
 data "aws_iam_policy_document" "lambda-assume-role-policy" {
   statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-  }
-
-  statement {
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents"
     ]
 
-    resources = [
-      "arn:aws:logs:::*",
-    ]
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:logs:::*"]
+    }
   }
 
 
