@@ -20,13 +20,13 @@ resource "aws_subnet" "public" {
   count                   = 2
   cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 2 + count.index)
   availability_zone       = data.aws_availability_zones.available.names[count.index]
-  vpc_id                  = aws_vpc.main.id}
+  vpc_id                  = aws_vpc.main.id
   map_public_ip_on_launch = true
 }
 
 resource "aws_network_acl" "main" {
   vpc_id     = aws_vpc.main.id
-  subnet_ids = [aws_subnet.one.id, aws_subnet.two.id]
+  subnet_ids = [aws_subnet.public[0].id, aws_subnet.public[1].id]
 }
 
 resource "aws_network_acl_rule" "block_all_inbound_unless_allowed" {
@@ -81,13 +81,13 @@ resource "aws_network_acl_rule" "inbound_ssh_traffic" {
 }
 
 module "api" {
-  source        = "./api"
-  env           = var.env
-  instance_size = var.instance_size
-  subnet_id_one = aws_subnet.one.id
-  subnet_id_two = aws_subnet.two.id
-  rds_username  = var.rds_username
-  rds_password  = var.rds_password
+  source             = "./api"
+  env                = var.env
+  instance_size      = var.instance_size
+  private_subnet_ids = [aws_subnet.private[0].id, aws_subnet.private[1].id]
+  puhlic_subnet_ids  = [aws_subnet.public[0].id, aws_subnet.public[1].id]
+  rds_username       = var.rds_username
+  rds_password       = var.rds_password
 }
 
 module "frontend" {
