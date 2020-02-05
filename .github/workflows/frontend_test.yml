@@ -15,6 +15,7 @@ jobs:
     - name: Move build files to root of build worker
       run: |
         shopt -s dotglob
+        rm -rf nodeapi
         mv frontend/* .
 
     - uses: actions/setup-node@v1
