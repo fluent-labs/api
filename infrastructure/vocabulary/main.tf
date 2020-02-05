@@ -55,6 +55,8 @@ resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
   handler = "service.handler"
   runtime = "python3.7"
 
+  timeout = 30
+
   role = aws_iam_role.lambda_exec.arn
 }
 
