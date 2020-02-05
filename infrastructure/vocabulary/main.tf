@@ -6,10 +6,9 @@ data "aws_iam_policy_document" "lambda-assume-role-policy" {
       "logs:PutLogEvents"
     ]
 
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:logs:::*"]
-    }
+    resources = [
+      "*",
+    ]
   }
 
 
