@@ -1,28 +1,50 @@
+# Allow running
+
 data "aws_iam_policy_document" "lambda-assume-role-policy" {
   statement {
-    actions = [
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents"
-    ]
+    actions = ["sts:AssumeRole"]
 
-    resources = [
-      "*",
-    ]
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
   }
-
-
-}
-
-resource "aws_s3_bucket" "vocabulary-lambda-deploy" {
-  bucket = "vocabulary-lambda-deploy-${var.env}"
-  acl    = "private"
 }
 
 resource "aws_iam_role" "lambda_exec" {
   name               = "foreign-language-reader-vocabulary-lambda-${var.env}"
   assume_role_policy = data.aws_iam_policy_document.lambda-assume-role-policy.json
 }
+
+# Allow Logging
+
+data "aws_iam_policy_document" "allow_logging" {
+  statement {
+    actions   = ["logs:CreateLogStream", "logs:CreateLogGroup", "logs:PutLogEvents"]
+    effect    = "Allow"
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "logging_policy" {
+  description = "IAM policy for logging from a lambda"
+
+  policy = data.aws_iam_policy_document.allow_logging.json
+}
+
+resource "aws_iam_role_policy_attachment" "allow_logging" {
+  role       = aws_iam_role.lambda_exec.name
+  policy_arn = aws_iam_policy.logging_policy.arn
+}
+
+# Deployment bucket
+
+resource "aws_s3_bucket" "vocabulary-lambda-deploy" {
+  bucket = "vocabulary-lambda-deploy-${var.env}"
+  acl    = "private"
+}
+
+# Function
 
 resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
   function_name = "wiktionary-vocabulary-lookup-${var.env}"
@@ -35,6 +57,8 @@ resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
 
   role = aws_iam_role.lambda_exec.arn
 }
+
+# API Gateway
 
 resource "aws_api_gateway_rest_api" "rest_api" {
   name        = "foreign-language-reader-vocabulary-lambda-${var.env}"
