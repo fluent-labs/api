@@ -1,9 +1,9 @@
 data "aws_subnet" "one" {
-  id = "${var.subnet_id_one}"
+  id = "${var.private_subnet_ids[0]}"
 }
 
 data "aws_subnet" "two" {
-  id = "${var.subnet_id_two}"
+  id = "${var.private_subnet_ids[1]}"
 }
 
 resource "aws_db_subnet_group" "main" {

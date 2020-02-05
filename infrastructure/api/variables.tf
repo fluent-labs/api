@@ -6,11 +6,11 @@ variable "instance_size" {
   description = "Default size of instances created"
 }
 
-variable "subnet_id_one" {
+variable "private_subnet_ids" {
   description = "The first subnet to set up the server on"
 }
 
-variable "subnet_id_two" {
+variable "puhlic_subnet_ids" {
   description = "The second subnet to set up the server on"
 }
 
