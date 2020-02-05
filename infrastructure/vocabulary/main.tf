@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "lambda-assume-role-policy" {
 }
 
 resource "aws_s3_bucket" "vocabulary-lambda-deploy" {
-  bucket = "foreign-language-reader-frontend-${var.env}"
+  bucket = "vocabulary-lambda-deploy-${var.env}"
   acl    = "private"
 }
 
