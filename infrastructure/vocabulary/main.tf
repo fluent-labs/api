@@ -55,7 +55,8 @@ resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
   handler = "service.handler"
   runtime = "python3.7"
 
-  timeout = 30
+  timeout     = 30
+  memory_size = 512
 
   role = aws_iam_role.lambda_exec.arn
 }
@@ -70,7 +71,7 @@ resource "aws_api_gateway_rest_api" "rest_api" {
 resource "aws_api_gateway_resource" "proxy" {
   rest_api_id = aws_api_gateway_rest_api.rest_api.id
   parent_id   = aws_api_gateway_rest_api.rest_api.root_resource_id
-  path_part   = "{proxy+}"
+  path_part   = "wiktionary-vocabulary-lookup-${env}"
 }
 
 resource "aws_api_gateway_method" "proxy" {
