@@ -9,6 +9,11 @@ data "aws_iam_policy_document" "lambda-assume-role-policy" {
   }
 }
 
+resource "aws_s3_bucket" "vocabulary-lambda-deploy" {
+  bucket = "foreign-language-reader-frontend-${var.env}"
+  acl    = "private"
+}
+
 resource "aws_iam_role" "lambda_exec" {
   name               = "foreign-language-reader-vocabulary-lambda-${var.env}"
   assume_role_policy = data.aws_iam_policy_document.lambda-assume-role-policy.json

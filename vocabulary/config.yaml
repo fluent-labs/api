@@ -4,12 +4,12 @@ function_name: wiktionary-vocabulary-lookup-dev
 handler: service.handler
 description: Wiktionary vocabulary lookup
 runtime: python3.7
-role: foreign-language-reader-vocabulary-lambda
+role: foreign-language-reader-vocabulary-lambda-dev
 
 # S3 upload requires appropriate role with s3:PutObject permission
 # (ex. basic_s3_upload), a destination bucket, and the key prefix
-# bucket_name: 'vocabulary-lambda-deploy'
-# s3_key_prefix: ''
+bucket_name: 'vocabulary-lambda-deploy'
+s3_key_prefix: ''
 
 # if access key and secret are left blank, boto will use the credentials
 # defined in the [default] section of ~/.aws/credentials.
