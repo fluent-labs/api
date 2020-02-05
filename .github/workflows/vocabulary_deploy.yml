@@ -39,4 +39,4 @@ jobs:
         aws-region: us-west-2
 
     - name: Deploy with python-lambda
-      run: lambda deploy
+      run: lambda deploy-s3
