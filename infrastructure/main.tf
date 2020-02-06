@@ -11,7 +11,7 @@ resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.main.id
 
   tags = {
-    Name = "Private-Subnet-${count.index}"
+    Name = "API-Private-Subnet-${count.index}"
   }
 }
 
@@ -23,7 +23,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "Public-Subnet-${count.index}"
+    Name = "API-Public-Subnet-${count.index}"
   }
 }
 

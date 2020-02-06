@@ -22,6 +22,10 @@ resource "aws_security_group" "database" {
     protocol    = "tcp"
     cidr_blocks = [data.aws_subnet.one.cidr_block, data.aws_subnet.two.cidr_block]
   }
+
+  tags = {
+    Name = "database-api-foreign-language-reader"
+  }
 }
 
 resource "aws_db_instance" "default" {
