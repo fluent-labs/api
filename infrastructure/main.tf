@@ -102,12 +102,20 @@ resource "aws_eip" "gw" {
   count      = 2
   vpc        = true
   depends_on = [aws_internet_gateway.gw]
+
+  tags = {
+    Name = "API-Public-Subnet-${count.index}"
+  }
 }
 
 resource "aws_nat_gateway" "gw" {
   count         = 2
   subnet_id     = element(aws_subnet.public.*.id, count.index)
   allocation_id = element(aws_eip.gw.*.id, count.index)
+
+  tags = {
+    Name = "API-Public-Subnet-${count.index}"
+  }
 }
 
 # Create a new route table for the private subnets
