@@ -76,6 +76,15 @@ resource "aws_alb_listener" "front_end" {
   }
 }
 
+resource "aws_ecr_repository" "foreign-language-reader-api" {
+  name                 = "foreign-language-reader"
+  image_tag_mutability = "IMMUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}
+
 # Database
 resource "aws_db_subnet_group" "main" {
   name       = "foreign-language-reader-${var.env}"
@@ -110,7 +119,8 @@ resource "aws_db_instance" "default" {
   username               = var.rds_username
   password               = var.rds_password
   parameter_group_name   = "default.mysql5.7"
-  deletion_protection    = true
+  skip_final_snapshot    = true
+  snapshot_identifier    = "foreign-language-reader-${var.env}-snapshot"
   vpc_security_group_ids = [aws_security_group.database.id]
   db_subnet_group_name   = aws_db_subnet_group.main.id
 }
