@@ -142,13 +142,15 @@ resource "aws_route_table_association" "private" {
 }
 
 module "api" {
-  source             = "./api"
-  env                = var.env
-  instance_size      = var.instance_size
-  private_subnet_ids = [aws_subnet.private[0].id, aws_subnet.private[1].id]
-  puhlic_subnet_ids  = [aws_subnet.public[0].id, aws_subnet.public[1].id]
-  rds_username       = var.rds_username
-  rds_password       = var.rds_password
+  source               = "./api"
+  env                  = var.env
+  instance_size        = var.instance_size
+  vpc_id               = aws_vpc.main.id
+  private_subnet_ids   = aws_subnet.private.*.id
+  public_subnet_ids    = aws_subnet.public.*.id
+  private_subnet_cidrs = aws_subnet.private.*.cidr_block
+  rds_username         = var.rds_username
+  rds_password         = var.rds_password
 }
 
 module "frontend" {
