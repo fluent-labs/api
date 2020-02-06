@@ -1,6 +1,6 @@
 # ALB Security group
 resource "aws_security_group" "api-loadbalancer" {
-  name        = "foreign-language-reader-api-loadbalancer-${env}"
+  name        = "foreign-language-reader-api-loadbalancer-${var.env}"
   description = "Allows access to the api"
   vpc_id      = var.vpc_id
 
@@ -21,7 +21,7 @@ resource "aws_security_group" "api-loadbalancer" {
 }
 
 resource "aws_security_group" "ecs_tasks" {
-  name        = "foreign-language-reader-api-tasks-${env}"
+  name        = "foreign-language-reader-api-tasks-${var.env}"
   description = "Only permits access from the load balancer"
   vpc_id      = var.vpc_id
 
@@ -42,13 +42,13 @@ resource "aws_security_group" "ecs_tasks" {
 
 # Load balancer to service
 resource "aws_alb" "main" {
-  name            = "foreign-language-reader-${env}"
+  name            = "foreign-language-reader-${var.env}"
   subnets         = var.public_subnet_ids
   security_groups = [aws_security_group.api-loadbalancer.id]
 }
 
 resource "aws_alb_target_group" "app" {
-  name        = "foreign-language-reader-api-${env}"
+  name        = "foreign-language-reader-api-${var.env}"
   port        = 4000
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
@@ -69,13 +69,13 @@ resource "aws_alb_listener" "front_end" {
 # Database
 resource "aws_db_subnet_group" "main" {
   name       = "foreign-language-reader-${var.env}"
-  subnet_ids = [data.aws_subnet.one.id, data.aws_subnet.two.id]
+  subnet_ids = var.private_subnet_ids
 }
 
 resource "aws_security_group" "database" {
   name        = "foreign-language-reader-database-${var.env}"
   description = "Database security group for foreign language reader ${var.env}. Only allows connections from inside the subnet."
-  vpc_id      = data.aws_subnet.main.id
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 3306
