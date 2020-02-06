@@ -1,0 +1,33 @@
+
+[
+  {
+    "name": "foreign-language-reader-api",
+    "image": "${image}",
+    "portMappings": [
+      {
+        "containerPort": 4000,
+        "hostPort": 4000
+      }
+    ],
+    "memory": 300,
+    "networkMode": "awsvpc",
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "us-west-2",
+        "awslogs-stream-prefix": "foreign-language-reader-api${env}"
+      }
+    },
+    "environment": [
+      {
+        "name": "DATABASE_URL",
+        "value": "${database_url}"
+      },
+      {
+        "name": "SECRET_KEY_BASE",
+        "value": "${secret_key_base}"
+      }
+    ]
+  }
+]
