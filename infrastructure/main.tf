@@ -120,6 +120,10 @@ resource "aws_route_table" "private" {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = element(aws_nat_gateway.gw.*.id, count.index)
   }
+
+  tags = {
+    Name = "API-Private-Subnet-${count.index}"
+  }
 }
 
 # Explicitly associate the newly created route tables to the private subnets (so they don't default to the main route table)
