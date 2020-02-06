@@ -61,7 +61,7 @@ resource "aws_alb_target_group" "app" {
 
   health_check {
     matcher = "200-299"
-    path = "/health"
+    path    = "/health"
   }
 }
 
@@ -123,4 +123,21 @@ resource "aws_db_instance" "default" {
   snapshot_identifier    = "foreign-language-reader-${var.env}-snapshot"
   vpc_security_group_ids = [aws_security_group.database.id]
   db_subnet_group_name   = aws_db_subnet_group.main.id
+}
+
+# The fargate cluster
+resource "aws_ecs_cluster" "cluster" {
+  name = "foreign-language-reader-${var.env}"
+}
+
+data "template_file" "api_task" {
+  template = file("container_definition.json")
+
+  vars {
+    image           = aws_ecr_repository.foreign-language-reader-api.repository_url
+    secret_key_base = var.secret_key_base
+    database_url    = "ecto://${var.rds_username}:${var.rds_password}@${aws_db_instance.endpoint}/${var.database_name}"
+    log_group       = "foreign-language-reader-api-${var.env}"
+    env             = var.env
+  }
 }

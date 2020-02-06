@@ -151,6 +151,7 @@ module "api" {
   private_subnet_cidrs = aws_subnet.private.*.cidr_block
   rds_username         = var.rds_username
   rds_password         = var.rds_password
+  secret_key_base      = var.secret_key_base
 }
 
 module "frontend" {

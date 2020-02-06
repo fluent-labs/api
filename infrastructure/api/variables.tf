@@ -29,3 +29,7 @@ variable "rds_username" {
 variable "rds_password" {
   default = "test_username"
 }
+
+variable "secret_key_base" {
+  description = "The key to use for encryption within the service"
+}

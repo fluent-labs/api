@@ -17,3 +17,7 @@ variable "rds_username" {
 variable "rds_password" {
   description = "The database password to use for the api"
 }
+
+variable "secret_key_base" {
+  description = "The key to use for encryption within the service"
+}
