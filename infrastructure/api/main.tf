@@ -189,7 +189,7 @@ resource "aws_ecs_service" "api" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.app.id
-    container_name   = aws_ecs_task_definition.api.arn.family
+    container_name   = aws_ecs_task_definition.api.family
     container_port   = 4000
   }
 
