@@ -145,12 +145,15 @@ module "api" {
   source               = "./api"
   env                  = var.env
   instance_size        = var.instance_size
+  cpu                  = var.cpu
+  memory               = var.memory
   vpc_id               = aws_vpc.main.id
   private_subnet_ids   = aws_subnet.private.*.id
   public_subnet_ids    = aws_subnet.public.*.id
   private_subnet_cidrs = aws_subnet.private.*.cidr_block
   rds_username         = var.rds_username
   rds_password         = var.rds_password
+  secret_key_base      = var.secret_key_base
 }
 
 module "frontend" {

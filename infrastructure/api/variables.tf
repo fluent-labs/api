@@ -6,6 +6,14 @@ variable "instance_size" {
   description = "Default size of instances created"
 }
 
+variable "cpu" {
+  description = "Default size of instances created"
+}
+
+variable "memory" {
+  description = "Default size of instances created"
+}
+
 variable "vpc_id" {
   description = "The id of the VPC this app will be installed in"
 }
@@ -28,4 +36,8 @@ variable "rds_username" {
 
 variable "rds_password" {
   default = "test_username"
+}
+
+variable "secret_key_base" {
+  description = "The key to use for encryption within the service"
 }

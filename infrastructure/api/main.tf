@@ -25,26 +25,6 @@ resource "aws_security_group" "api-loadbalancer" {
   }
 }
 
-resource "aws_security_group" "ecs_tasks" {
-  name        = "foreign-language-reader-api-tasks-${var.env}"
-  description = "Only permits access from the load balancer"
-  vpc_id      = var.vpc_id
-
-  ingress {
-    protocol        = "tcp"
-    from_port       = "4000"
-    to_port         = "4000"
-    security_groups = [aws_security_group.api-loadbalancer.id]
-  }
-
-  egress {
-    protocol    = "-1"
-    from_port   = 0
-    to_port     = 0
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
 # Load balancer to service
 resource "aws_alb" "main" {
   name            = "foreign-language-reader-${var.env}"
@@ -58,6 +38,11 @@ resource "aws_alb_target_group" "app" {
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
   target_type = "ip"
+
+  health_check {
+    matcher = "200-299"
+    path    = "/health"
+  }
 }
 
 resource "aws_alb_listener" "front_end" {
@@ -68,6 +53,15 @@ resource "aws_alb_listener" "front_end" {
   default_action {
     target_group_arn = aws_alb_target_group.app.id
     type             = "forward"
+  }
+}
+
+resource "aws_ecr_repository" "foreign-language-reader-api" {
+  name                 = "foreign-language-reader"
+  image_tag_mutability = "IMMUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
   }
 }
 
@@ -105,7 +99,102 @@ resource "aws_db_instance" "default" {
   username               = var.rds_username
   password               = var.rds_password
   parameter_group_name   = "default.mysql5.7"
-  deletion_protection    = true
+  skip_final_snapshot    = true
+  snapshot_identifier    = "foreign-language-reader-${var.env}-snapshot"
   vpc_security_group_ids = [aws_security_group.database.id]
   db_subnet_group_name   = aws_db_subnet_group.main.id
+}
+
+# The fargate cluster
+resource "aws_ecs_cluster" "main" {
+  name = "foreign-language-reader-${var.env}"
+}
+
+# The task role
+data "aws_iam_policy_document" "task-assume-role-policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "task_exec" {
+  name               = "foreign-language-reader-api-${var.env}"
+  assume_role_policy = data.aws_iam_policy_document.task-assume-role-policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "allow_logging" {
+  role       = aws_iam_role.task_exec.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+# The task
+data "template_file" "api_task" {
+  template = file("${path.module}/container_definition.json")
+
+  vars = {
+    image           = aws_ecr_repository.foreign-language-reader-api.repository_url
+    secret_key_base = var.secret_key_base
+    database_url    = "ecto://${var.rds_username}:${var.rds_password}@${aws_db_instance.default.endpoint}/foreign-language-reader"
+    log_group       = "foreign-language-reader-api-${var.env}"
+    env             = var.env
+  }
+}
+
+resource "aws_ecs_task_definition" "api" {
+  family                   = "foreign-language-reader-api-${var.env}"
+  container_definitions    = data.template_file.api_task.rendered
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = var.cpu
+  memory                   = var.memory
+  execution_role_arn       = aws_iam_role.task_exec.arn
+  task_role_arn            = aws_iam_role.task_exec.arn
+}
+
+resource "aws_security_group" "ecs_tasks" {
+  name        = "foreign-language-reader-api-tasks-${var.env}"
+  description = "Only permits access from the load balancer"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    protocol        = "tcp"
+    from_port       = "4000"
+    to_port         = "4000"
+    security_groups = [aws_security_group.api-loadbalancer.id]
+  }
+
+  egress {
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_ecs_service" "api" {
+  name            = "foreign-language-reader-api-${var.env}"
+  cluster         = aws_ecs_cluster.main.id
+  task_definition = aws_ecs_task_definition.api.arn
+  desired_count   = 1 # TODO handle scaling
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    security_groups = [aws_security_group.ecs_tasks.id]
+    subnets         = data.aws_subnet.private.*.id
+  }
+
+  load_balancer {
+    target_group_arn = aws_alb_target_group.app.id
+    container_name   = "api"
+    container_port   = 4000
+  }
+
+  depends_on = [
+    aws_alb_listener.front_end
+  ]
 }
