@@ -131,12 +131,12 @@ resource "aws_ecs_cluster" "cluster" {
 }
 
 data "template_file" "api_task" {
-  template = file("container_definition.json")
+  template = file("${path.module}/container_definition.json")
 
-  vars {
+  vars = {
     image           = aws_ecr_repository.foreign-language-reader-api.repository_url
     secret_key_base = var.secret_key_base
-    database_url    = "ecto://${var.rds_username}:${var.rds_password}@${aws_db_instance.endpoint}/${var.database_name}"
+    database_url    = "ecto://${var.rds_username}:${var.rds_password}@${aws_db_instance.default.endpoint}/foreign-language-reader"
     log_group       = "foreign-language-reader-api-${var.env}"
     env             = var.env
   }
