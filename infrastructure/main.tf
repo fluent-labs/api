@@ -4,11 +4,6 @@ resource "aws_vpc" "main" {
 
 data "aws_availability_zones" "available" {}
 
-resource "aws_subnet" "one" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = cidrsubnet(var.cidr_block, 4, 1)
-}
-
 resource "aws_subnet" "private" {
   count             = 2
   cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 4, count.index)
