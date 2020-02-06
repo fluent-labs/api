@@ -130,6 +130,29 @@ resource "aws_ecs_cluster" "cluster" {
   name = "foreign-language-reader-${var.env}"
 }
 
+# The task role
+data "aws_iam_policy_document" "task-assume-role-policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "task_exec" {
+  name               = "foreign-language-reader-api-${var.env}"
+  assume_role_policy = data.aws_iam_policy_document.task-assume-role-policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "allow_logging" {
+  role       = aws_iam_role.task_exec.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+# The task
 data "template_file" "api_task" {
   template = file("${path.module}/container_definition.json")
 
@@ -140,4 +163,15 @@ data "template_file" "api_task" {
     log_group       = "foreign-language-reader-api-${var.env}"
     env             = var.env
   }
+}
+
+resource "aws_ecs_task_definition" "api" {
+  family                   = "foreign_language_reader_api_${var.env}"
+  container_definitions    = data.template_file.api_task.rendered
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = var.cpu
+  memory                   = var.memory
+  execution_role_arn       = aws_iam_role.task_exec.arn
+  task_role_arn            = aws_iam_role.task_exec.arn
 }

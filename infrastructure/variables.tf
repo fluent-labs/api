@@ -6,6 +6,14 @@ variable "instance_size" {
   description = "Default size of instances created"
 }
 
+variable "cpu" {
+  description = "Default size of instances created"
+}
+
+variable "memory" {
+  description = "Default size of instances created"
+}
+
 variable "cidr_block" {
   description = "What CIDR block to use"
 }

@@ -145,6 +145,8 @@ module "api" {
   source               = "./api"
   env                  = var.env
   instance_size        = var.instance_size
+  cpu                  = var.cpu
+  memory               = var.memory
   vpc_id               = aws_vpc.main.id
   private_subnet_ids   = aws_subnet.private.*.id
   public_subnet_ids    = aws_subnet.public.*.id
