@@ -89,19 +89,19 @@ resource "aws_network_acl_rule" "inbound_ssh_traffic" {
 
 # Route the public subnet traffic through the IGW
 resource "aws_route" "internet_access" {
-  route_table_id         = "${aws_vpc.main.main_route_table_id}"
+  route_table_id         = aws_vpc.main.main_route_table_id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = "${aws_internet_gateway.gw.id}"
+  gateway_id             = aws_internet_gateway.gw.id
 }
 
 resource "aws_internet_gateway" "gw" {
-  vpc_id = "${aws_vpc.main.id}"
+  vpc_id = aws_vpc.main.id
 }
 
 resource "aws_eip" "gw" {
   count      = 2
   vpc        = true
-  depends_on = ["aws_internet_gateway.gw"]
+  depends_on = [aws_internet_gateway.gw]
 }
 
 resource "aws_nat_gateway" "gw" {
