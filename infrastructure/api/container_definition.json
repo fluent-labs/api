@@ -1,7 +1,7 @@
 
 [
   {
-    "name": "foreign-language-reader-api",
+    "name": "foreign-language-reader-api-${env}",
     "image": "${image}",
     "portMappings": [
       {
