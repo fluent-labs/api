@@ -25,26 +25,6 @@ resource "aws_security_group" "api-loadbalancer" {
   }
 }
 
-resource "aws_security_group" "ecs_tasks" {
-  name        = "foreign-language-reader-api-tasks-${var.env}"
-  description = "Only permits access from the load balancer"
-  vpc_id      = var.vpc_id
-
-  ingress {
-    protocol        = "tcp"
-    from_port       = "4000"
-    to_port         = "4000"
-    security_groups = [aws_security_group.api-loadbalancer.id]
-  }
-
-  egress {
-    protocol    = "-1"
-    from_port   = 0
-    to_port     = 0
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
 # Load balancer to service
 resource "aws_alb" "main" {
   name            = "foreign-language-reader-${var.env}"
@@ -126,7 +106,7 @@ resource "aws_db_instance" "default" {
 }
 
 # The fargate cluster
-resource "aws_ecs_cluster" "cluster" {
+resource "aws_ecs_cluster" "main" {
   name = "foreign-language-reader-${var.env}"
 }
 
@@ -166,7 +146,7 @@ data "template_file" "api_task" {
 }
 
 resource "aws_ecs_task_definition" "api" {
-  family                   = "foreign_language_reader_api_${var.env}"
+  family                   = "foreign-language-reader-api-${var.env}"
   container_definitions    = data.template_file.api_task.rendered
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
@@ -174,4 +154,47 @@ resource "aws_ecs_task_definition" "api" {
   memory                   = var.memory
   execution_role_arn       = aws_iam_role.task_exec.arn
   task_role_arn            = aws_iam_role.task_exec.arn
+}
+
+resource "aws_security_group" "ecs_tasks" {
+  name        = "foreign-language-reader-api-tasks-${var.env}"
+  description = "Only permits access from the load balancer"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    protocol        = "tcp"
+    from_port       = "4000"
+    to_port         = "4000"
+    security_groups = [aws_security_group.api-loadbalancer.id]
+  }
+
+  egress {
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_ecs_service" "api" {
+  name            = "foreign-language-reader-api-${var.env}"
+  cluster         = aws_ecs_cluster.main.id
+  task_definition = aws_ecs_task_definition.api.arn
+  desired_count   = 1 # TODO handle scaling
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    security_groups = [aws_security_group.ecs_tasks.id]
+    subnets         = [data.aws_subnet.private.*.id]
+  }
+
+  load_balancer {
+    target_group_arn = aws_alb_target_group.app.id
+    container_name   = "api"
+    container_port   = 4000
+  }
+
+  depends_on = [
+    aws_alb_listener.front_end
+  ]
 }
