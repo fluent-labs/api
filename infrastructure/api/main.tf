@@ -185,7 +185,7 @@ resource "aws_ecs_service" "api" {
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
-    subnets         = [data.aws_subnet.private.*.id]
+    subnets         = data.aws_subnet.private.*.id
   }
 
   load_balancer {
