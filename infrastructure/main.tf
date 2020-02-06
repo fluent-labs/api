@@ -145,6 +145,7 @@ module "api" {
   source             = "./api"
   env                = var.env
   instance_size      = var.instance_size
+  vpc_id             = aws_vpc.main.id
   private_subnet_ids = [aws_subnet.private[0].id, aws_subnet.private[1].id]
   puhlic_subnet_ids  = [aws_subnet.public[0].id, aws_subnet.public[1].id]
   rds_username       = var.rds_username

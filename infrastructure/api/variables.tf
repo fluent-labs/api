@@ -6,12 +6,16 @@ variable "instance_size" {
   description = "Default size of instances created"
 }
 
-variable "private_subnet_ids" {
-  description = "The first subnet to set up the server on"
+variable "vpc_id" {
+  description = "The id of the VPC this app will be installed in"
 }
 
-variable "puhlic_subnet_ids" {
-  description = "The second subnet to set up the server on"
+variable "private_subnet_ids" {
+  description = "The private subnet ids to install this service on"
+}
+
+variable "public_subnet_ids" {
+  description = "The public subnet ids to install the load balancer on"
 }
 
 variable "rds_username" {

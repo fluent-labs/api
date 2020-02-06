@@ -1,11 +1,72 @@
-data "aws_subnet" "one" {
-  id = "${var.private_subnet_ids[0]}"
+# ALB Security group
+resource "aws_security_group" "api-loadbalancer" {
+  name        = "foreign-language-reader-api-loadbalancer-${env}"
+  description = "Allows access to the api"
+  vpc_id      = var.vpc_id
+
+  # TODO serve TLS when I have a domain name
+  ingress {
+    protocol    = "tcp"
+    from_port   = 80
+    to_port     = 80
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
-data "aws_subnet" "two" {
-  id = "${var.private_subnet_ids[1]}"
+resource "aws_security_group" "ecs_tasks" {
+  name        = "foreign-language-reader-api-tasks-${env}"
+  description = "Only permits access from the load balancer"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    protocol        = "tcp"
+    from_port       = "4000"
+    to_port         = "4000"
+    security_groups = [aws_security_group.api-loadbalancer.id]
+  }
+
+  egress {
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
+# Load balancer to service
+resource "aws_alb" "main" {
+  name            = "foreign-language-reader-${env}"
+  subnets         = var.public_subnet_ids
+  security_groups = [aws_security_group.api-loadbalancer.id]
+}
+
+resource "aws_alb_target_group" "app" {
+  name        = "foreign-language-reader-api-${env}"
+  port        = 4000
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
+}
+
+resource "aws_alb_listener" "front_end" {
+  load_balancer_arn = aws_alb.main.id
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    target_group_arn = aws_alb_target_group.app.id
+    type             = "forward"
+  }
+}
+
+# Database
 resource "aws_db_subnet_group" "main" {
   name       = "foreign-language-reader-${var.env}"
   subnet_ids = [data.aws_subnet.one.id, data.aws_subnet.two.id]
@@ -14,7 +75,7 @@ resource "aws_db_subnet_group" "main" {
 resource "aws_security_group" "database" {
   name        = "foreign-language-reader-database-${var.env}"
   description = "Database security group for foreign language reader ${var.env}. Only allows connections from inside the subnet."
-  vpc_id      = data.aws_subnet.one.vpc_id
+  vpc_id      = data.aws_subnet.main.id
 
   ingress {
     from_port   = 3306
