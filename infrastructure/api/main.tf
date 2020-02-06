@@ -1,3 +1,8 @@
+data "aws_subnet" "private" {
+  count = length(var.private_subnet_ids)
+  id    = var.private_subnet_ids[count.index]
+}
+
 # ALB Security group
 resource "aws_security_group" "api-loadbalancer" {
   name        = "foreign-language-reader-api-loadbalancer-${var.env}"
@@ -81,7 +86,7 @@ resource "aws_security_group" "database" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = [data.aws_subnet.one.cidr_block, data.aws_subnet.two.cidr_block]
+    cidr_blocks = [data.aws_subnet.private.*.cidr_block]
   }
 
   tags = {
