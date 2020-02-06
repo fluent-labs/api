@@ -94,6 +94,22 @@ resource "aws_route" "internet_access" {
   gateway_id             = "${aws_internet_gateway.gw.id}"
 }
 
+resource "aws_internet_gateway" "gw" {
+  vpc_id = "${aws_vpc.main.id}"
+}
+
+resource "aws_eip" "gw" {
+  count      = 2
+  vpc        = true
+  depends_on = ["aws_internet_gateway.gw"]
+}
+
+resource "aws_nat_gateway" "gw" {
+  count         = 2
+  subnet_id     = element(aws_subnet.public.*.id, count.index)
+  allocation_id = element(aws_eip.gw.*.id, count.index)
+}
+
 module "api" {
   source             = "./api"
   env                = var.env
