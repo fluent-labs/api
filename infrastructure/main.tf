@@ -1,5 +1,9 @@
 resource "aws_vpc" "main" {
   cidr_block = var.cidr_block
+
+  tags = {
+    Name = "Foreign-Language-Reader-${var.env}"
+  }
 }
 
 data "aws_availability_zones" "available" {}
