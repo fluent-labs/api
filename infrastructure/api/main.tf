@@ -58,6 +58,11 @@ resource "aws_alb_target_group" "app" {
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
   target_type = "ip"
+
+  health_check {
+    matcher = "200-299"
+    path = "/health"
+  }
 }
 
 resource "aws_alb_listener" "front_end" {
