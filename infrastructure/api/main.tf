@@ -322,7 +322,7 @@ resource "aws_codebuild_project" "api_build" {
   }
 
   vpc_config {
-    vpc_id  = var.vpc_id
+    vpc_id = var.vpc_id
 
     security_group_ids = [aws_security_group.codebuild.id]
   }
