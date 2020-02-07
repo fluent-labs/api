@@ -243,6 +243,11 @@ data "aws_iam_policy_document" "build_in_vpc" {
       values = data.aws_subnet.private.*.arn
     }
   }
+  statement {
+    actions   = ["logs:CreateLogStream", "logs:CreateLogGroup", "logs:PutLogEvents"]
+    effect    = "Allow"
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_policy" "codebuild_permissions" {
