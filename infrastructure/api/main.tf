@@ -96,19 +96,19 @@ resource "aws_security_group" "database" {
 }
 
 resource "aws_db_instance" "default" {
-  allocated_storage         = 20
-  max_allocated_storage     = 1000
-  storage_type              = "gp2"
-  engine                    = "mysql"
-  engine_version            = "5.7"
-  instance_class            = "db.${var.instance_size}"
-  identifier                = "foreign-language-reader-${var.env}"
-  username                  = var.rds_username
-  password                  = var.rds_password
-  parameter_group_name      = "default.mysql5.7"
-  skip_final_snapshot       = true
-  vpc_security_group_ids    = [aws_security_group.database.id]
-  db_subnet_group_name      = aws_db_subnet_group.main.id
+  allocated_storage      = 20
+  max_allocated_storage  = 1000
+  storage_type           = "gp2"
+  engine                 = "mysql"
+  engine_version         = "5.7"
+  instance_class         = "db.${var.instance_size}"
+  identifier             = "foreign-language-reader-${var.env}"
+  username               = var.rds_username
+  password               = var.rds_password
+  parameter_group_name   = "default.mysql5.7"
+  skip_final_snapshot    = true
+  vpc_security_group_ids = [aws_security_group.database.id]
+  db_subnet_group_name   = aws_db_subnet_group.main.id
 }
 
 # The fargate cluster
