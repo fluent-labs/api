@@ -3,7 +3,7 @@ on:
   - pull_request
 jobs:
   terraform:
-    name: 'Create terraform plan'
+    name: 'Validate infrastructure configurations'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'

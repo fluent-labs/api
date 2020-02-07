@@ -29,3 +29,7 @@ variable "rds_password" {
 variable "secret_key_base" {
   description = "The key to use for encryption within the service"
 }
+
+variable "github_token" {
+  description = "The github token to use when building projects in this repo"
+}

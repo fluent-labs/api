@@ -208,7 +208,7 @@ resource "aws_ecs_service" "api" {
   ]
 }
 
-# Build job
+# Codebuild role
 
 data "aws_iam_policy_document" "codebuild_policy" {
   statement {
@@ -254,4 +254,11 @@ resource "aws_iam_policy" "codebuild_permissions" {
 resource "aws_iam_role_policy_attachment" "codebuild_permissions" {
   role       = aws_iam_role.codebuild_role.name
   policy_arn = aws_iam_policy.codebuild_permissions.arn
+}
+
+
+resource "aws_codebuild_source_credential" "github" {
+  auth_type   = "PERSONAL_ACCESS_TOKEN"
+  server_type = "GITHUB"
+  token       = var.github_token
 }
