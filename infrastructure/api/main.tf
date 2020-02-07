@@ -323,7 +323,7 @@ resource "aws_codebuild_project" "api_build" {
 
   vpc_config {
     vpc_id  = var.vpc_id
-    subnets = [var.public_subnet_ids[0].id, var.public_subnet_ids[1].id]
+    subnets = var.public_subnet_ids
 
     security_group_ids = [aws_security_group.codebuild.id]
   }
