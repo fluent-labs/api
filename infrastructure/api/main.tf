@@ -240,7 +240,7 @@ data "aws_iam_policy_document" "build_in_vpc" {
       test     = "StringEquals"
       variable = "ec2:Subnet"
 
-      values = [data.aws_subnet.private.*.arn]
+      values = data.aws_subnet.private.*.arn
     }
   }
 }
