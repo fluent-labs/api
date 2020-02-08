@@ -3,6 +3,11 @@ data "aws_subnet" "private" {
   id    = var.private_subnet_ids[count.index]
 }
 
+data "aws_subnet" "public" {
+  count = length(var.public_subnet_ids)
+  id    = var.public_subnet_ids[count.index]
+}
+
 # Used to get AWS account number without putting it in the repo
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
