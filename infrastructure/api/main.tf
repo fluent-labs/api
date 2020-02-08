@@ -245,7 +245,7 @@ data "aws_iam_policy_document" "build_in_vpc" {
       test     = "StringEquals"
       variable = "ec2:Subnet"
 
-      values = data.aws_subnet.public.*.arn
+      values = data.aws_subnet.private.*.arn
     }
   }
   statement {
@@ -299,7 +299,7 @@ resource "aws_security_group" "codebuild" {
 resource "aws_codebuild_project" "api_build" {
   name          = "foreign-language-reader-api"
   description   = "The build job for the foreign language reader"
-  build_timeout = "15"
+  build_timeout = "5"
   service_role  = aws_iam_role.codebuild_role.arn
 
   artifacts {
@@ -333,7 +333,7 @@ resource "aws_codebuild_project" "api_build" {
 
   vpc_config {
     vpc_id  = var.vpc_id
-    subnets = var.public_subnet_ids
+    subnets = var.private_subnet_ids
 
     security_group_ids = [aws_security_group.codebuild.id]
   }
