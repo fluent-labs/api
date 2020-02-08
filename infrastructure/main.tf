@@ -127,7 +127,7 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "API-Public-Subnet-${count.index}"
+    Name = "API-Public-Subnet"
   }
 }
 
