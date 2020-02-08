@@ -33,6 +33,10 @@ resource "aws_security_group" "api-loadbalancer" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = {
+    Name = "loadbalancer-api-foreign-language-reader"
+  }
 }
 
 # Load balancer to service
@@ -187,6 +191,10 @@ resource "aws_security_group" "ecs_tasks" {
     from_port   = 0
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "task-api-foreign-language-reader"
   }
 }
 
