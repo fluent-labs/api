@@ -1,13 +1,13 @@
 # Deployment bucket
 
-resource "aws_s3_bucket" "vocabulary-lambda-deploy" {
+resource "aws_s3_bucket" "vocabulary_lambda_deploy" {
   bucket = var.vocabulary_deploy_bucket
   acl    = "private"
 }
 
 # Function
 
-resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
+resource "aws_lambda_function" "foreign_language_reader_vocabulary_lambda" {
   function_name = "wiktionary-vocabulary-lookup-${var.env}"
   description   = "Wiktionary vocabulary lookup"
 
@@ -49,7 +49,7 @@ resource "aws_api_gateway_integration" "lambda" {
 
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = aws_lambda_function.foreign-language-reader-vocabulary-lambda.invoke_arn
+  uri                     = aws_lambda_function.foreign_language_reader_vocabulary_lambda.invoke_arn
 }
 
 resource "aws_api_gateway_deployment" "deployment" {
@@ -64,7 +64,7 @@ resource "aws_api_gateway_deployment" "deployment" {
 resource "aws_lambda_permission" "apigw" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.foreign-language-reader-vocabulary-lambda.function_name
+  function_name = aws_lambda_function.foreign_language_reader_vocabulary_lambda.function_name
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_api_gateway_rest_api.rest_api.execution_arn}/*/*"

@@ -10,7 +10,7 @@ data "aws_subnet" "public" {
 
 # ALB Security group
 
-resource "aws_security_group" "api-loadbalancer" {
+resource "aws_security_group" "api_loadbalancer" {
   name        = "foreign-language-reader-api-loadbalancer-${var.env}"
   description = "Allows access to the api"
   vpc_id      = var.vpc_id
@@ -40,7 +40,7 @@ resource "aws_security_group" "api-loadbalancer" {
 resource "aws_alb" "main" {
   name            = "foreign-language-reader-${var.env}"
   subnets         = var.public_subnet_ids
-  security_groups = [aws_security_group.api-loadbalancer.id]
+  security_groups = [aws_security_group.api_loadbalancer.id]
 }
 
 resource "aws_alb_target_group" "app" {
@@ -67,7 +67,7 @@ resource "aws_alb_listener" "front_end" {
   }
 }
 
-resource "aws_ecr_repository" "foreign-language-reader-api" {
+resource "aws_ecr_repository" "foreign_language_reader_api" {
   name                 = "foreign-language-reader"
   image_tag_mutability = "IMMUTABLE"
 
@@ -88,7 +88,7 @@ data "template_file" "api_task" {
   template = file("${path.module}/container_definition.json")
 
   vars = {
-    image           = aws_ecr_repository.foreign-language-reader-api.repository_url
+    image           = aws_ecr_repository.foreign_language_reader_api.repository_url
     secret_key_base = var.secret_key_base
     database_url    = "ecto://${var.rds_username}:${var.rds_password}@${var.database_endpoint}/foreign-language-reader-${var.env}"
     log_group       = "foreign-language-reader-api-${var.env}"
@@ -116,7 +116,7 @@ resource "aws_security_group" "ecs_tasks" {
     protocol        = "tcp"
     from_port       = "4000"
     to_port         = "4000"
-    security_groups = [aws_security_group.api-loadbalancer.id]
+    security_groups = [aws_security_group.api_loadbalancer.id]
   }
 
   egress {

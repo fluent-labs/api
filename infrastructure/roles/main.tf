@@ -13,7 +13,7 @@ data "aws_s3_bucket" "vocabulary_deploy_bucket" {
 
 # API fargate container role
 
-data "aws_iam_policy_document" "task-assume-role-policy" {
+data "aws_iam_policy_document" "task_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRole"]
 
@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "task-assume-role-policy" {
 
 resource "aws_iam_role" "api_task_exec" {
   name               = "api-task-foreign-language-reader"
-  assume_role_policy = data.aws_iam_policy_document.task-assume-role-policy.json
+  assume_role_policy = data.aws_iam_policy_document.task_assume_role_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "allow_logging_lambda" {
@@ -89,7 +89,7 @@ resource "aws_iam_role_policy_attachment" "codebuild_permissions" {
 
 # Allow running
 
-data "aws_iam_policy_document" "lambda-assume-role-policy" {
+data "aws_iam_policy_document" "lambda_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRole"]
 
@@ -102,7 +102,7 @@ data "aws_iam_policy_document" "lambda-assume-role-policy" {
 
 resource "aws_iam_role" "vocabulary_lambda_exec" {
   name               = "vocabulary-lambda-foreign-language-reader"
-  assume_role_policy = data.aws_iam_policy_document.lambda-assume-role-policy.json
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
 }
 
 # Vocabulary lambda

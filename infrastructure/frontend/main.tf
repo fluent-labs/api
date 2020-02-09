@@ -1,4 +1,4 @@
-resource "aws_s3_bucket" "foreign-language-reader-frontend" {
+resource "aws_s3_bucket" "foreign_language_reader_frontend" {
   bucket = "foreign-language-reader-frontend-${var.env}"
   acl    = "public-read"
 
@@ -8,8 +8,8 @@ resource "aws_s3_bucket" "foreign-language-reader-frontend" {
   }
 }
 
-resource "aws_s3_bucket_policy" "public-access" {
-  bucket = aws_s3_bucket.foreign-language-reader-frontend.id
+resource "aws_s3_bucket_policy" "public_access" {
+  bucket = aws_s3_bucket.foreign_language_reader_frontend.id
 
   policy = <<POLICY
 {
