@@ -6,10 +6,6 @@ variable "api_role" {
   description = "IAM role for the api container"
 }
 
-variable "codebuild_role" {
-  description = "IAM role for the codebuild job"
-}
-
 variable "instance_size" {
   description = "Default size of instances created"
 }
@@ -44,8 +40,4 @@ variable "rds_password" {
 
 variable "secret_key_base" {
   description = "The key to use for encryption within the service"
-}
-
-variable "github_token" {
-  description = "The github token to use when building projects in this repo"
 }
