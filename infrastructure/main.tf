@@ -49,6 +49,7 @@ module "vocabulary-lambda" {
   vocabulary_role          = module.roles.vocabulary_role
 }
 
+# The CI/CD configuration for this application
 module "pipeline" {
   source             = "./pipeline"
   codebuild_role     = module.roles.codebuild_role
