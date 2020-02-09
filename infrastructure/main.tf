@@ -3,13 +3,16 @@ module "network" {
   cidr_block = var.cidr_block
 }
 
-# module "database" {
-#
-# }
+module "roles" {
+  source = "./roles"
+  private_subnet_ids   = module.network.private_subnet_ids
+}
 
 module "api" {
   source               = "./api"
   env                  = var.env
+  api_role             = module.roles.api_role
+  codebuild_role       = module.roles.codebuild_role
   instance_size        = var.instance_size
   cpu                  = var.cpu
   memory               = var.memory

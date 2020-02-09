@@ -2,6 +2,14 @@ variable "env" {
   description = "Name of the environment"
 }
 
+variable "api_role" {
+  description = "IAM role for the api container"
+}
+
+variable "codebuild_role" {
+  description = "IAM role for the codebuild job"
+}
+
 variable "instance_size" {
   description = "Default size of instances created"
 }
