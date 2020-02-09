@@ -12,6 +12,15 @@ data "aws_subnet" "public" {
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
+module "database" {
+  source             = "./database"
+  vpc_id             = var.vpc_id
+  private_subnet_ids = var.private_subnet_ids
+  instance_size      = var.instance_size
+  rds_username       = var.rds_username
+  rds_password       = var.rds_password
+}
+
 # ALB Security group
 
 resource "aws_security_group" "api-loadbalancer" {
@@ -80,46 +89,6 @@ resource "aws_ecr_repository" "foreign-language-reader-api" {
   }
 }
 
-# Database
-
-resource "aws_db_subnet_group" "main" {
-  name       = "foreign-language-reader-${var.env}"
-  subnet_ids = var.private_subnet_ids
-}
-
-resource "aws_security_group" "database" {
-  name        = "foreign-language-reader-database-${var.env}"
-  description = "Database security group for foreign language reader ${var.env}. Only allows connections from inside the subnet."
-  vpc_id      = var.vpc_id
-
-  ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = data.aws_subnet.private.*.cidr_block
-  }
-
-  tags = {
-    Name = "database-api-foreign-language-reader"
-  }
-}
-
-resource "aws_db_instance" "default" {
-  allocated_storage      = 20
-  max_allocated_storage  = 1000
-  storage_type           = "gp2"
-  engine                 = "mysql"
-  engine_version         = "5.7"
-  instance_class         = "db.${var.instance_size}"
-  identifier             = "foreign-language-reader-${var.env}"
-  username               = var.rds_username
-  password               = var.rds_password
-  parameter_group_name   = "default.mysql5.7"
-  skip_final_snapshot    = true
-  vpc_security_group_ids = [aws_security_group.database.id]
-  db_subnet_group_name   = aws_db_subnet_group.main.id
-}
-
 # The fargate cluster
 
 resource "aws_ecs_cluster" "main" {
@@ -157,7 +126,7 @@ data "template_file" "api_task" {
   vars = {
     image           = aws_ecr_repository.foreign-language-reader-api.repository_url
     secret_key_base = var.secret_key_base
-    database_url    = "ecto://${var.rds_username}:${var.rds_password}@${aws_db_instance.default.endpoint}/foreign-language-reader"
+    database_url    = "ecto://${var.rds_username}:${var.rds_password}@${module.database.database_endpoint}/foreign-language-reader"
     log_group       = "foreign-language-reader-api-${var.env}"
     env             = var.env
   }
