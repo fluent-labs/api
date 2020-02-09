@@ -96,7 +96,7 @@ resource "aws_security_group" "database" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = var.private_subnet_cidrs
+    cidr_blocks = data.aws_subnet.private.*.cidr_block
   }
 
   tags = {

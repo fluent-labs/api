@@ -26,10 +26,6 @@ variable "public_subnet_ids" {
   description = "The public subnet ids to install the load balancer on"
 }
 
-variable "private_subnet_cidrs" {
-  description = "The public subnet cidr blocks to install the load balancer on"
-}
-
 variable "rds_username" {
   default = "test_username"
 }
