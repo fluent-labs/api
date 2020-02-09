@@ -1,57 +1,13 @@
-# Allow running
-
-data "aws_iam_policy_document" "lambda-assume-role-policy" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-  }
-}
-
-resource "aws_iam_role" "lambda_exec" {
-  name               = "foreign-language-reader-vocabulary-lambda-${var.env}"
-  assume_role_policy = data.aws_iam_policy_document.lambda-assume-role-policy.json
-}
-
-# Allow Logging
-
-data "aws_iam_policy_document" "allow_logging" {
-  statement {
-    actions   = ["logs:CreateLogStream", "logs:CreateLogGroup", "logs:PutLogEvents"]
-    effect    = "Allow"
-    resources = ["*"]
-  }
-  statement {
-    actions   = ["s3:PutObject"]
-    effect    = "Allow"
-    resources = ["${aws_s3_bucket.vocabulary-lambda-deploy.arn}/*"]
-  }
-}
-
-resource "aws_iam_policy" "logging_policy" {
-  description = "IAM policy for logging from a lambda"
-
-  policy = data.aws_iam_policy_document.allow_logging.json
-}
-
-resource "aws_iam_role_policy_attachment" "allow_logging" {
-  role       = aws_iam_role.lambda_exec.name
-  policy_arn = aws_iam_policy.logging_policy.arn
-}
-
 # Deployment bucket
 
-resource "aws_s3_bucket" "vocabulary-lambda-deploy" {
-  bucket = "vocabulary-lambda-deploy-${var.env}"
+resource "aws_s3_bucket" "vocabulary_lambda_deploy" {
+  bucket = var.vocabulary_deploy_bucket
   acl    = "private"
 }
 
 # Function
 
-resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
+resource "aws_lambda_function" "foreign_language_reader_vocabulary_lambda" {
   function_name = "wiktionary-vocabulary-lookup-${var.env}"
   description   = "Wiktionary vocabulary lookup"
 
@@ -63,7 +19,7 @@ resource "aws_lambda_function" "foreign-language-reader-vocabulary-lambda" {
   timeout     = 30
   memory_size = 512
 
-  role = aws_iam_role.lambda_exec.arn
+  role = var.vocabulary_role
 }
 
 # API Gateway
@@ -93,7 +49,7 @@ resource "aws_api_gateway_integration" "lambda" {
 
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = aws_lambda_function.foreign-language-reader-vocabulary-lambda.invoke_arn
+  uri                     = aws_lambda_function.foreign_language_reader_vocabulary_lambda.invoke_arn
 }
 
 resource "aws_api_gateway_deployment" "deployment" {
@@ -108,7 +64,7 @@ resource "aws_api_gateway_deployment" "deployment" {
 resource "aws_lambda_permission" "apigw" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.foreign-language-reader-vocabulary-lambda.function_name
+  function_name = aws_lambda_function.foreign_language_reader_vocabulary_lambda.function_name
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_api_gateway_rest_api.rest_api.execution_arn}/*/*"

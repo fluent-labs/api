@@ -2,8 +2,8 @@ variable "env" {
   description = "Name of the environment"
 }
 
-variable "instance_size" {
-  description = "Default size of instances created"
+variable "api_role" {
+  description = "IAM role for the api container"
 }
 
 variable "cpu" {
@@ -26,8 +26,8 @@ variable "public_subnet_ids" {
   description = "The public subnet ids to install the load balancer on"
 }
 
-variable "private_subnet_cidrs" {
-  description = "The public subnet cidr blocks to install the load balancer on"
+variable "database_endpoint" {
+  description = "Where to connect to the database"
 }
 
 variable "rds_username" {
@@ -40,8 +40,4 @@ variable "rds_password" {
 
 variable "secret_key_base" {
   description = "The key to use for encryption within the service"
-}
-
-variable "github_token" {
-  description = "The github token to use when building projects in this repo"
 }
