@@ -50,9 +50,9 @@ module "vocabulary-lambda" {
 }
 
 module "pipeline" {
-  source                   = "./pipeline"
-  codebuild_role           = module.roles.codebuild_role
-  vpc_id                   = module.network.vpc_id
-  private_subnet_ids       = module.network.private_subnet_ids
-  github_token             = var.github_token
+  source             = "./pipeline"
+  codebuild_role     = module.roles.codebuild_role
+  vpc_id             = module.network.vpc_id
+  private_subnet_ids = module.network.private_subnet_ids
+  github_token       = var.github_token
 }
