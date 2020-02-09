@@ -7,6 +7,10 @@ data "aws_subnet" "private" {
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
+data "aws_s3_bucket" "vocabulary_deploy_bucket" {
+  bucket = var.vocabulary_deploy_bucket
+}
+
 # API fargate container role
 
 data "aws_iam_policy_document" "task-assume-role-policy" {
@@ -25,7 +29,7 @@ resource "aws_iam_role" "api_task_exec" {
   assume_role_policy = data.aws_iam_policy_document.task-assume-role-policy.json
 }
 
-resource "aws_iam_role_policy_attachment" "allow_logging" {
+resource "aws_iam_role_policy_attachment" "allow_logging_lambda" {
   role       = aws_iam_role.api_task_exec.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
@@ -81,4 +85,48 @@ resource "aws_iam_policy" "codebuild_permissions" {
 resource "aws_iam_role_policy_attachment" "codebuild_permissions" {
   role       = aws_iam_role.codebuild_role.name
   policy_arn = aws_iam_policy.codebuild_permissions.arn
+}
+
+# Allow running
+
+data "aws_iam_policy_document" "lambda-assume-role-policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "vocabulary_lambda_exec" {
+  name               = "vocabulary-lambda-foreign-language-reader"
+  assume_role_policy = data.aws_iam_policy_document.lambda-assume-role-policy.json
+}
+
+# Vocabulary lambda
+
+data "aws_iam_policy_document" "allow_logging" {
+  statement {
+    actions   = ["logs:CreateLogStream", "logs:CreateLogGroup", "logs:PutLogEvents"]
+    effect    = "Allow"
+    resources = ["*"]
+  }
+  statement {
+    actions   = ["s3:PutObject"]
+    effect    = "Allow"
+    resources = ["${data.aws_s3_bucket.vocabulary_deploy_bucket.arn}/*"]
+  }
+}
+
+resource "aws_iam_policy" "logging_policy" {
+  description = "IAM policy for logging from a lambda"
+
+  policy = data.aws_iam_policy_document.allow_logging.json
+}
+
+resource "aws_iam_role_policy_attachment" "allow_logging" {
+  role       = aws_iam_role.vocabulary_lambda_exec.name
+  policy_arn = aws_iam_policy.logging_policy.arn
 }
