@@ -7,10 +7,6 @@ data "aws_subnet" "private" {
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
-data "aws_s3_bucket" "vocabulary_deploy_bucket" {
-  bucket = var.vocabulary_deploy_bucket
-}
-
 # API fargate container role
 
 data "aws_iam_policy_document" "task_assume_role_policy" {
@@ -116,7 +112,7 @@ data "aws_iam_policy_document" "allow_logging" {
   statement {
     actions   = ["s3:PutObject"]
     effect    = "Allow"
-    resources = ["${data.aws_s3_bucket.vocabulary_deploy_bucket.arn}/*"]
+    resources = ["*"]
   }
 }
 
