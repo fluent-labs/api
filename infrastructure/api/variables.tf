@@ -6,10 +6,6 @@ variable "api_role" {
   description = "IAM role for the api container"
 }
 
-variable "instance_size" {
-  description = "Default size of instances created"
-}
-
 variable "cpu" {
   description = "Default size of instances created"
 }
@@ -28,6 +24,10 @@ variable "private_subnet_ids" {
 
 variable "public_subnet_ids" {
   description = "The public subnet ids to install the load balancer on"
+}
+
+variable "database_endpoint" {
+  description = "Where to connect to the database"
 }
 
 variable "rds_username" {

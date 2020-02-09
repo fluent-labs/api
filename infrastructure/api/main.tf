@@ -8,15 +8,6 @@ data "aws_subnet" "public" {
   id    = var.public_subnet_ids[count.index]
 }
 
-module "database" {
-  source             = "./database"
-  vpc_id             = var.vpc_id
-  private_subnet_ids = var.private_subnet_ids
-  instance_size      = var.instance_size
-  rds_username       = var.rds_username
-  rds_password       = var.rds_password
-}
-
 # ALB Security group
 
 resource "aws_security_group" "api-loadbalancer" {
@@ -99,7 +90,7 @@ data "template_file" "api_task" {
   vars = {
     image           = aws_ecr_repository.foreign-language-reader-api.repository_url
     secret_key_base = var.secret_key_base
-    database_url    = "ecto://${var.rds_username}:${var.rds_password}@${module.database.database_endpoint}/foreign-language-reader"
+    database_url    = "ecto://${var.rds_username}:${var.rds_password}@${var.database_endpoint}/foreign-language-reader-${var.env}"
     log_group       = "foreign-language-reader-api-${var.env}"
     env             = var.env
   }
