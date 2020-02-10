@@ -30,6 +30,11 @@ resource "aws_iam_role_policy_attachment" "allow_logging_lambda" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
+resource "aws_iam_role_policy_attachment" "allow_logging_lambda" {
+  role       = aws_iam_role.api_task_exec.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+
 # Codebuild role
 
 data "aws_iam_policy_document" "codebuild_policy" {
