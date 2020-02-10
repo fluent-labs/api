@@ -83,6 +83,63 @@ resource "aws_iam_role_policy_attachment" "codebuild_permissions" {
   policy_arn = aws_iam_policy.codebuild_permissions.arn
 }
 
+# Codepipeline role
+
+data "aws_iam_policy_document" "codepipeline_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["codepipeline.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "codepipeline_role" {
+  name               = "codepipeline-foreign-language-reader"
+  assume_role_policy = data.aws_iam_policy_document.codepipeline_policy.json
+}
+
+data "aws_iam_policy_document" "codepipeline_permissions" {
+  statement {
+    actions   = ["iam:PassRole"]
+    effect    = "Allow"
+    resources = ["*"]
+  }
+  statement {
+    actions   = ["codebuild:BatchGetBuilds", "codebuild:StartBuild"]
+    effect    = "Allow"
+    resources = ["*"]
+  }
+  statement {
+    actions   = ["codedeploy:CreateDeployment", "codedeploy:GetApplication", "codedeploy:GetApplicationRevision", "codedeploy:GetDeployment", "codedeploy:GetDeploymentConfig", "codedeploy:RegisterApplicationRevision"]
+    effect    = "Allow"
+    resources = ["*"]
+  }
+  statement {
+    actions   = ["ec2:*", "elasticloadbalancing:*", "autoscaling:*", "cloudwatch:*", "s3:*", "sns:*", "cloudformation:*", "rds:*", "sqs:*", "ecs:*"]
+    effect    = "Allow"
+    resources = ["*"]
+  }
+  statement {
+    actions   = ["ecr:DescribeImages"]
+    effect    = "Allow"
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "codepipeline_permissions" {
+  description = "IAM policy for running foreign-language-reader api in codepipeline."
+
+  policy = data.aws_iam_policy_document.codepipeline_permissions.json
+}
+
+resource "aws_iam_role_policy_attachment" "codebuild_permissions" {
+  role       = aws_iam_role.codepipeline_role.name
+  policy_arn = aws_iam_policy.codepipeline_permissions.arn
+}
+
 # Allow running
 
 data "aws_iam_policy_document" "lambda_assume_role_policy" {
