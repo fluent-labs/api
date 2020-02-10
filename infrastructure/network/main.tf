@@ -33,7 +33,11 @@ resource "aws_subnet" "public" {
 
 resource "aws_network_acl" "main" {
   vpc_id     = aws_vpc.main.id
-  subnet_ids = [aws_subnet.public[0].id, aws_subnet.public[1].id]
+  subnet_ids = aws_subnet.public.*.id
+
+  tags = {
+    Name = "API-Public-Subnet"
+  }
 }
 
 resource "aws_network_acl_rule" "block_all_inbound_unless_allowed" {
