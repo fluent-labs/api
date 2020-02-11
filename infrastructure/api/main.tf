@@ -68,7 +68,7 @@ resource "aws_alb_listener" "front_end" {
 }
 
 resource "aws_ecr_repository" "foreign_language_reader_api" {
-  name                 = "foreign-language-reader"
+  name                 = "foreign-language-reader-api"
   image_tag_mutability = "IMMUTABLE"
 
   image_scanning_configuration {
