@@ -2,12 +2,6 @@ data "aws_caller_identity" "current" {}
 
 # Codebuild job
 
-resource "aws_codebuild_source_credential" "github" {
-  auth_type   = "PERSONAL_ACCESS_TOKEN"
-  server_type = "GITHUB"
-  token       = var.github_token
-}
-
 resource "aws_s3_bucket" "foreign_language_reader_api_build" {
   bucket = "foreign-language-reader-api-build"
   acl    = "private"
@@ -154,19 +148,3 @@ resource "aws_codepipeline" "foreign_language_reader_pipeline" {
     }
   }
 }
-
-# resource "aws_codebuild_webhook" "github_webhook" {
-#   project_name = aws_codebuild_project.api_build.name
-#
-#   filter_group {
-#     filter {
-#       type    = "EVENT"
-#       pattern = "PUSH"
-#     }
-#
-#     filter {
-#       type    = "HEAD_REF"
-#       pattern = "master"
-#     }
-#   }
-# }

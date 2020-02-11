@@ -70,6 +70,11 @@ data "aws_iam_policy_document" "build_in_vpc" {
     effect    = "Allow"
     resources = ["*"]
   }
+  statement {
+    actions   = ["s3:*"]
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::foreign-language-reader-api-build/*"]
+  }
 }
 
 resource "aws_iam_policy" "codebuild_permissions" {
