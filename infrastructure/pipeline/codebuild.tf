@@ -58,6 +58,7 @@ resource "aws_codebuild_project" "api_build" {
   }
 
   source {
+    buildspec       = "api/buildspec.yml"
     type            = "GITHUB"
     location        = "https://github.com/lucaskjaero/foreign-language-reader.git"
     git_clone_depth = 1
