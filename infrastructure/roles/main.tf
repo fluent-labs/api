@@ -135,7 +135,7 @@ resource "aws_iam_policy" "codepipeline_permissions" {
   policy = data.aws_iam_policy_document.codepipeline_permissions.json
 }
 
-resource "aws_iam_role_policy_attachment" "codebuild_permissions" {
+resource "aws_iam_role_policy_attachment" "codepipeline_permissions" {
   role       = aws_iam_role.codepipeline_role.name
   policy_arn = aws_iam_policy.codepipeline_permissions.arn
 }
