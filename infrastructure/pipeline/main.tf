@@ -37,7 +37,7 @@ resource "aws_codebuild_project" "api_build" {
   service_role  = var.codebuild_role
 
   artifacts {
-    type = "NO_ARTIFACTS"
+    type = "CODEPIPELINE"
   }
 
   cache {
@@ -72,10 +72,8 @@ resource "aws_codebuild_project" "api_build" {
   }
 
   source {
-    buildspec       = "api/buildspec.yml"
-    type            = "GITHUB"
-    location        = "https://github.com/lucaskjaero/foreign-language-reader.git"
-    git_clone_depth = 1
+    buildspec = "api/buildspec.yml"
+    type      = "CODEPIPELINE"
   }
 
   vpc_config {
@@ -87,6 +85,72 @@ resource "aws_codebuild_project" "api_build" {
 
   tags = {
     Environment = "Build"
+  }
+}
+
+resource "aws_codepipeline" "foreign_language_reader_pipeline" {
+  name     = "foreign-language-reader-pipeline"
+  role_arn = var.codepipeline_role
+
+  artifact_store {
+    location = aws_s3_bucket.foreign_language_reader_api_build.bucket
+    type     = "S3"
+  }
+
+  stage {
+    name = "Source"
+
+    action {
+      name             = "Source"
+      category         = "Source"
+      owner            = "ThirdParty"
+      provider         = "GitHub"
+      version          = "1"
+      output_artifacts = ["source"]
+
+      configuration = {
+        Owner  = "lucaskjaero"
+        Repo   = "foreign-language-reader"
+        Branch = "master"
+      }
+    }
+  }
+
+  stage {
+    name = "Build"
+
+    action {
+      name             = "Build"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      version          = "1"
+      input_artifacts  = ["source"]
+      output_artifacts = ["imagedefinitions"]
+
+      configuration = {
+        ProjectName = aws_codebuild_project.api_build.name
+      }
+    }
+  }
+
+  stage {
+    name = "Production"
+
+    action {
+      name            = "Deploy"
+      category        = "Deploy"
+      owner           = "AWS"
+      provider        = "ECS"
+      input_artifacts = ["imagedefinitions"]
+      version         = "1"
+
+      configuration = {
+        ClusterName = var.api_cluster_name
+        ServiceName = var.api_service_name
+        FileName    = "imagedefinitions.json"
+      }
+    }
   }
 }
 

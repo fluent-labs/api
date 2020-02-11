@@ -53,8 +53,11 @@ module "vocabulary-lambda" {
 module "pipeline" {
   source             = "./pipeline"
   codebuild_role     = module.roles.codebuild_role
+  codepipeline_role  = module.roles.codepipeline_role
   vpc_id             = module.network.vpc_id
   private_subnet_ids = module.network.private_subnet_ids
   github_token       = var.github_token
   api_ecr_name       = module.api.ecr_name
+  api_cluster_name   = module.api.cluster_name
+  api_service_name   = module.api.service_name
 }
