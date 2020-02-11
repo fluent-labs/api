@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 # Codebuild job
 
 resource "aws_codebuild_source_credential" "github" {
@@ -48,6 +50,17 @@ resource "aws_codebuild_project" "api_build" {
     image                       = "aws/codebuild/standard:1.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
+
+    environment_variable {
+      name  = "AWS_ACCOUNT_ID"
+      value = data.aws_caller_identity.current.account_id
+    }
+
+    environment_variable {
+      name  = "IMAGE_REPO_NAME"
+      value = var.api_ecr_name
+    }
+
   }
 
   logs_config {

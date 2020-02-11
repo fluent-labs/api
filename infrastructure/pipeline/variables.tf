@@ -14,6 +14,6 @@ variable "github_token" {
   description = "The github token to use when building projects in this repo"
 }
 
-variable "api_ecr_url" {
-  description = "The url to push api containers to"
+variable "api_ecr_name" {
+  description = "The name of the container registry to push api containers to"
 }

@@ -56,5 +56,5 @@ module "pipeline" {
   vpc_id             = module.network.vpc_id
   private_subnet_ids = module.network.private_subnet_ids
   github_token       = var.github_token
-  api_ecr_url        = module.api.ecr_url
+  api_ecr_name       = module.api.ecr_name
 }
