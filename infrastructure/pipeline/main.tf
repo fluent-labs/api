@@ -72,8 +72,8 @@ resource "aws_codebuild_project" "api_build" {
   }
 
   source {
-    buildspec = "api/buildspec.yml"
-    type      = "CODEPIPELINE"
+    buildspec       = "api/buildspec.yml"
+    type            = "CODEPIPELINE"
   }
 
   vpc_config {
@@ -109,9 +109,10 @@ resource "aws_codepipeline" "foreign_language_reader_pipeline" {
       output_artifacts = ["source"]
 
       configuration = {
-        Owner  = "lucaskjaero"
-        Repo   = "foreign-language-reader"
-        Branch = "master"
+        Owner      = "lucaskjaero"
+        Repo       = "foreign-language-reader"
+        Branch     = "master"
+        OAuthToken = var.github_token
       }
     }
   }
@@ -154,18 +155,18 @@ resource "aws_codepipeline" "foreign_language_reader_pipeline" {
   }
 }
 
-resource "aws_codebuild_webhook" "github_webhook" {
-  project_name = aws_codebuild_project.api_build.name
-
-  filter_group {
-    filter {
-      type    = "EVENT"
-      pattern = "PUSH"
-    }
-
-    filter {
-      type    = "HEAD_REF"
-      pattern = "master"
-    }
-  }
-}
+# resource "aws_codebuild_webhook" "github_webhook" {
+#   project_name = aws_codebuild_project.api_build.name
+#
+#   filter_group {
+#     filter {
+#       type    = "EVENT"
+#       pattern = "PUSH"
+#     }
+#
+#     filter {
+#       type    = "HEAD_REF"
+#       pattern = "master"
+#     }
+#   }
+# }
