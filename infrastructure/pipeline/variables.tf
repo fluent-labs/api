@@ -13,3 +13,7 @@ variable "private_subnet_ids" {
 variable "github_token" {
   description = "The github token to use when building projects in this repo"
 }
+
+variable "api_ecr_url" {
+  description = "The url to push api containers to"
+}
