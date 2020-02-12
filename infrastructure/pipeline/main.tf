@@ -66,8 +66,8 @@ resource "aws_codebuild_project" "api_build" {
   }
 
   source {
-    buildspec       = "api/buildspec.yml"
-    type            = "CODEPIPELINE"
+    buildspec = "api/buildspec.yml"
+    type      = "CODEPIPELINE"
   }
 
   vpc_config {
@@ -128,6 +128,8 @@ resource "aws_codepipeline" "foreign_language_reader_pipeline" {
       }
     }
   }
+
+  # TODO database migrations
 
   stage {
     name = "Production"
