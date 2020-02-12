@@ -129,6 +129,8 @@ resource "aws_codepipeline" "foreign_language_reader_pipeline" {
     }
   }
 
+  # TODO database migrations
+
   stage {
     name = "Production"
 

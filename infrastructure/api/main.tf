@@ -69,7 +69,7 @@ resource "aws_alb_listener" "front_end" {
 
 resource "aws_ecr_repository" "foreign_language_reader_api" {
   name                 = "foreign-language-reader-api"
-  image_tag_mutability = "IMMUTABLE"
+  image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
     scan_on_push = true
@@ -88,7 +88,7 @@ data "template_file" "api_task" {
   template = file("${path.module}/container_definition.json")
 
   vars = {
-    image           = aws_ecr_repository.foreign_language_reader_api.repository_url
+    image           = "${aws_ecr_repository.foreign_language_reader_api.repository_url}:latest"
     secret_key_base = var.secret_key_base
     database_url    = "ecto://${var.rds_username}:${var.rds_password}@${var.database_endpoint}/foreign-language-reader-${var.env}"
     log_group       = "foreign-language-reader-api-${var.env}"
