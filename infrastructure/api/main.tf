@@ -152,6 +152,9 @@ resource "aws_ecs_service" "api" {
   depends_on = [
     aws_alb_listener.front_end
   ]
+  lifecycle {
+    ignore_changes = [task_definition]
+  }
 }
 
 resource "aws_cloudwatch_log_group" "foreign_language_reader_api" {
