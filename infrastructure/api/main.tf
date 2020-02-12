@@ -153,3 +153,12 @@ resource "aws_ecs_service" "api" {
     aws_alb_listener.front_end
   ]
 }
+
+resource "aws_cloudwatch_log_group" "foreign_language_reader_api" {
+  name              = aws_ecs_service.api.name
+  retention_in_days = 90
+
+  tags = {
+    Name = aws_ecs_service.api.name
+  }
+}
