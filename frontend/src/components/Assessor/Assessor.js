@@ -3,21 +3,15 @@ import LanguageSelector from "./LanguageSelector";
 
 class Assessor extends Component {
   state = {
-    language: "",
-    text: "",
-    submitted: false
+    language: ""
   };
 
-  handleSubmit = ({ text, language }) => {
-    this.setState({
-      language: language,
-      submitted: true,
-      text: text
-    });
+  handleLanguageSelect = language => {
+    this.setState({ language: language });
   };
 
   render = () => {
-    return <LanguageSelector />;
+    return <LanguageSelector onLanguageSelected={this.handleLanguageSelect} />;
   };
 }
 
