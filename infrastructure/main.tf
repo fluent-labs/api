@@ -37,9 +37,19 @@ module "api" {
   secret_key_base    = var.secret_key_base
 }
 
-module "frontend" {
+module "frontend_prod" {
   source = "./frontend"
   env    = var.env
+}
+
+module "frontend_dev" {
+  source = "./frontend"
+  env    = "dev"
+}
+
+module "frontend_storybook" {
+  source = "./frontend"
+  env    = "storybook"
 }
 
 module "vocabulary-lambda" {
