@@ -36,5 +36,6 @@ part_of_speech_mapping = {
 
 
 def tag_chinese(text):
-    return {word: Word(token=word, tag=part_of_speech_mapping[tag], lemma=word)
-            for word, tag in parser.cut(text) if is_not_punctuation(word)}.values()
+    unique_words = {word: Word(token=word, tag=part_of_speech_mapping[tag], lemma=word)
+                    for word, tag in parser.cut(text) if is_not_punctuation(word)}
+    return list(unique_words.values())
