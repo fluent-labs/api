@@ -1,5 +1,5 @@
 import thulac
-from ..common import is_not_punctuation
+from ..common import is_not_punctuation, Word
 
 parser = thulac.thulac()
 
@@ -35,12 +35,6 @@ part_of_speech_mapping = {
     }
 
 
-def tag_text(text):
-    # Allows not sending duplicates which is pretty important
-    words = {word: part_of_speech_mapping[tag] for word, tag in parser.cut(text) if is_not_punctuation(word)}
-    for word in words.keys():
-        yield {"token": word, "tag": words[word], "lemma": word}
-
-
 def tag_chinese(text):
-    return list(tag_text(text))
+    return {word: Word(token=word, tag=part_of_speech_mapping[tag], lemma=word)
+            for word, tag in parser.cut(text) if is_not_punctuation(word)}.values()
