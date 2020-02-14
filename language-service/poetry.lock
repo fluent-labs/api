@@ -371,6 +371,14 @@ cuda92 = ["cupy-cuda92 (>=5.0.0b4)"]
 
 [[package]]
 category = "main"
+description = "An efficient Chinese text segmentation tool"
+name = "thulac"
+optional = false
+python-versions = "*"
+version = "0.2.1"
+
+[[package]]
+category = "main"
 description = "Fast, Extensible Progress Meter"
 name = "tqdm"
 optional = false
@@ -435,7 +443,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools"]
 
 [metadata]
-content-hash = "22a4113a233f48397fd184503a26f755b56feb8c34aa3af2f1fa449b56682075"
+content-hash = "6cc559b06a2722d1c8e71746f90793854a05ed1d8cc8e18e00d882c7002e1a60"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -691,6 +699,9 @@ thinc = [
     {file = "thinc-7.3.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:f19a36cdfdbef75109f505313c16a7b154b9bbf83dd177e9ddd43430dc523bb0"},
     {file = "thinc-7.3.1-cp38-cp38-win_amd64.whl", hash = "sha256:abe0d00cbb2cc831f4462e41f97aeb754b275a723a1335cdce7ac9224001d567"},
     {file = "thinc-7.3.1.tar.gz", hash = "sha256:ce81d6b2372057e10f9d7cb505942df67a803f270d69959d44d372e8e3792bb9"},
+]
+thulac = [
+    {file = "thulac-0.2.1.tar.gz", hash = "sha256:34748f8042d51eef65ec97b5f5625a43dc22c0a562af98e130b0665707b4f5ee"},
 ]
 tqdm = [
     {file = "tqdm-4.42.1-py2.py3-none-any.whl", hash = "sha256:fe231261cfcbc6f4a99165455f8f6b9ef4e1032a6e29bccf168b4bf42012f09c"},
