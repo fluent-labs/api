@@ -43,10 +43,11 @@ jobs:
     - name: Install dependencies
       run: poetry install
 
+    - name: Dependency security check
+      run: poetry run safety check
+
     - name: Test
-      run: |
-        source $HOME/.poetry/env
-        poetry run pytest
+      run: poetry run pytest
 
     - name: Lint
       run: |
