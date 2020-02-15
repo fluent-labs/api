@@ -45,7 +45,7 @@ resource "aws_alb" "main" {
 
 resource "aws_alb_target_group" "app" {
   name        = "foreign-language-reader-language-service-${var.env}"
-  port        = 4000
+  port        = 8000
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
   target_type = "ip"
@@ -106,8 +106,8 @@ resource "aws_security_group" "ecs_tasks" {
 
   ingress {
     protocol        = "tcp"
-    from_port       = "4000"
-    to_port         = "4000"
+    from_port       = "8000"
+    to_port         = "8000"
     security_groups = [aws_security_group.language_service_loadbalancer.id]
   }
 
@@ -138,7 +138,7 @@ resource "aws_ecs_service" "language_service" {
   load_balancer {
     target_group_arn = aws_alb_target_group.app.id
     container_name   = aws_ecs_task_definition.language_service.family
-    container_port   = 4000
+    container_port   = 8000
   }
 
   depends_on = [
