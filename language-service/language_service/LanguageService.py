@@ -59,7 +59,9 @@ class VocabHandler(Resource):
 
 api.add_resource(DocumentHandler, API_BASE + "/v1/tagging/<string:language>/document")
 api.add_resource(HealthHandler, "/")
-api.add_resource(VocabHandler, API_BASE + "/v1/vocabulary/<string:language>/<string:word>")
+api.add_resource(
+    VocabHandler, API_BASE + "/v1/vocabulary/<string:language>/<string:word>"
+)
 
 if __name__ == "__main__":
     app.run(debug=False)
