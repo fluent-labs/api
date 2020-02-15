@@ -24,16 +24,10 @@ jobs:
     - name: Install package manager
       run: |
         curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-        echo $HOME
-        ls $HOME
-        ls $HOME/.poetry
-        ls $HOME/.poetry/bin
-        ::add-path::$HOME/.poetry/bin
+        echo "::add-path::$HOME/.poetry/bin"
 
     - name: Install dependencies
-      run: |
-        poetry install
-        ::add-path::$HOME/.poetry/env
+      run: poetry install
 
     - name: Test
       run: |
