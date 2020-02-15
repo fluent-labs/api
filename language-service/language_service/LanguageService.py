@@ -4,6 +4,7 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 
 from nlp import tag
+from vocab import get_definition
 
 app = Flask(__name__)
 api = Api(app)
@@ -40,8 +41,25 @@ class HealthHandler(Resource):
         return "Language service is up", 200
 
 
-api.add_resource(DocumentHandler, API_BASE + "/tagging/v1/<string:language>/document")
+class VocabHandler(Resource):
+    def get(self, language=None, word=None):
+        if language is None or language == "":
+            return {"error": "Language is required"}, 400
+
+        if word is None or word == "":
+            return {"error": "Word is required"}, 400
+
+        try:
+            return get_definition(language, word), 200
+        except Exception as e:
+            print("Error getting definition in %s for: %s" % (language, word))
+            print(e)
+            return {"error": "An error occurred"}, 500
+
+
+api.add_resource(DocumentHandler, API_BASE + "/v1/tagging/<string:language>/document")
 api.add_resource(HealthHandler, "/")
+api.add_resource(VocabHandler, API_BASE + "/v1/vocabulary/<string:language>/<string:word>")
 
 if __name__ == "__main__":
     app.run(debug=True)
