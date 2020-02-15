@@ -21,21 +21,27 @@ jobs:
       with:
         python-version: 3.7
 
-    - name: Install dependencies
+    - name: Install package manager
       run: |
         curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-        source $HOME/.poetry/env
-        poetry install
+        ::add-path::$HOME/.poetry/bin
 
-    - name: Lint with flake8
+    - name: Install dependencies
+      run: |
+        poetry install
+        ::add-path::$HOME/.poetry/env
+
+    - name: Test
       run: |
         source $HOME/.poetry/env
+        poetry run pytest
+
+    - name: Lint
+      run: |
         # stop the build if there are Python syntax errors or undefined names
         poetry run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         poetry run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-    - name: Test with pytest
-      run: |
-        source $HOME/.poetry/env
-        poetry run pytest
+    - name: Validate code formatter
+      run: poetry run black . --check
