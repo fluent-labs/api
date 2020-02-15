@@ -10,8 +10,8 @@ def return_error(message):
     return {
         "statusCode": 400,
         "headers": {"Content-Type": "application/json"},
-        "body": json.dumps({"error": message})
-        }
+        "body": json.dumps({"error": message}),
+    }
 
 
 def handler(event, context):
@@ -36,12 +36,12 @@ def handler(event, context):
         return {
             "statusCode": 200,
             "headers": {"Content-Type": "application/json"},
-            "body": json.dumps(parser.fetch(word, language))
-            }
+            "body": json.dumps(parser.fetch(word, language)),
+        }
     except Exception as e:
         print(e)
         return {
             "statusCode": 500,
             "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"error": "Error getting data from Wikimedia"})
-            }
+            "body": json.dumps({"error": "Error getting data from Wikimedia"}),
+        }

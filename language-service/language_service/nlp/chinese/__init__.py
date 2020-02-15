@@ -31,11 +31,14 @@ part_of_speech_mapping = {
     "o": "拟声词",
     "g": "语素",
     "w": "标点",
-    "x": "其它"
-    }
+    "x": "其它",
+}
 
 
 def tag_chinese(text):
-    unique_words = {word: Word(token=word, tag=part_of_speech_mapping[tag], lemma=word)
-                    for word, tag in parser.cut(text) if is_not_punctuation(word)}
+    unique_words = {
+        word: Word(token=word, tag=part_of_speech_mapping[tag], lemma=word)
+        for word, tag in parser.cut(text)
+        if is_not_punctuation(word)
+    }
     return list(unique_words.values())
