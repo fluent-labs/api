@@ -16,6 +16,20 @@ jobs:
         shopt -s dotglob
         mv language-service/* .
 
+    - name: Build container
+      run: docker build .
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Move build files to root of build worker
+      run: |
+        shopt -s dotglob
+        mv language-service/* .
+
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
