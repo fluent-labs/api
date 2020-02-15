@@ -11,5 +11,4 @@ def tag(language, text):
     elif language == "SPANISH":
         return tag_spanish(text)
     else:
-        print("Unknown language requested: %s" % language)
-        # TODO throw an error
+        raise NotImplementedError("Unknown language requested: %s")

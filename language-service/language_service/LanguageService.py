@@ -3,12 +3,12 @@ import os
 from flask import Flask, request
 from flask_restful import Resource, Api
 
-from ..nlp import tag
+from nlp import tag
 
 app = Flask(__name__)
 api = Api(app)
 
-API_BASE = os.getenv('APPLICATION_ROOT', "/")
+API_BASE = os.getenv("APPLICATION_ROOT", "/")
 
 
 class DocumentHandler(Resource):
@@ -21,11 +21,14 @@ class DocumentHandler(Resource):
         if "text" not in request_json:
             return {"error": "Text is required"}, 400
 
-        text = request_json['text']
+        text = request_json["text"]
 
         try:
-            words = tag(language, text)
-            return {"words": words}, 200
+            words = [
+                {"token": word.token, "tag": word.tag, "lemma": word.lemma}
+                for word in tag(language, text)
+            ]
+            return words, 200
         except Exception as e:
             print("Error getting words in %s for text: %s" % (language, text))
             print(e)
@@ -37,8 +40,8 @@ class HealthHandler(Resource):
         return "Language service is up", 200
 
 
-api.add_resource(DocumentHandler, API_BASE + '/tagging/v1/<string:language>/document')
-api.add_resource(HealthHandler, '/')
+api.add_resource(DocumentHandler, API_BASE + "/tagging/v1/<string:language>/document")
+api.add_resource(HealthHandler, "/")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
