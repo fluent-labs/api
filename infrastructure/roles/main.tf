@@ -20,13 +20,13 @@ data "aws_iam_policy_document" "task_assume_role_policy" {
   }
 }
 
-resource "aws_iam_role" "api_task_exec" {
-  name               = "api-task-foreign-language-reader"
+resource "aws_iam_role" "fargate_task_exec" {
+  name               = "task-foreign-language-reader"
   assume_role_policy = data.aws_iam_policy_document.task_assume_role_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "allow_logging_lambda" {
-  role       = aws_iam_role.api_task_exec.name
+  role       = aws_iam_role.fargate_task_exec.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
@@ -148,48 +148,4 @@ resource "aws_iam_role_policy_attachment" "codepipeline_permissions" {
 resource "aws_iam_role_policy_attachment" "codebuild_connect_to_ECR" {
   role       = aws_iam_role.codebuild_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
-}
-
-# Allow running
-
-data "aws_iam_policy_document" "lambda_assume_role_policy" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-  }
-}
-
-resource "aws_iam_role" "vocabulary_lambda_exec" {
-  name               = "vocabulary-lambda-foreign-language-reader"
-  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
-}
-
-# Vocabulary lambda
-
-data "aws_iam_policy_document" "allow_logging" {
-  statement {
-    actions   = ["logs:CreateLogStream", "logs:CreateLogGroup", "logs:PutLogEvents"]
-    effect    = "Allow"
-    resources = ["*"]
-  }
-  statement {
-    actions   = ["s3:PutObject"]
-    effect    = "Allow"
-    resources = ["*"]
-  }
-}
-
-resource "aws_iam_policy" "logging_policy" {
-  description = "IAM policy for logging from a lambda"
-
-  policy = data.aws_iam_policy_document.allow_logging.json
-}
-
-resource "aws_iam_role_policy_attachment" "allow_logging" {
-  role       = aws_iam_role.vocabulary_lambda_exec.name
-  policy_arn = aws_iam_policy.logging_policy.arn
 }

@@ -1,7 +1,3 @@
-locals {
-  vocabulary_deploy_bucket = "vocabulary-lambda-deploy"
-}
-
 module "network" {
   source     = "./network"
   cidr_block = var.cidr_block
@@ -10,7 +6,6 @@ module "network" {
 module "roles" {
   source                   = "./roles"
   private_subnet_ids       = module.network.private_subnet_ids
-  vocabulary_deploy_bucket = local.vocabulary_deploy_bucket
 }
 
 module "database" {
@@ -22,10 +17,15 @@ module "database" {
   rds_password       = var.rds_password
 }
 
+resource "aws_ecs_cluster" "main" {
+  name = "foreign-language-reader-${var.env}"
+}
+
 module "api" {
   source             = "./api"
   env                = var.env
-  api_role           = module.roles.api_role
+  api_role           = module.roles.fargate_role
+  cluster_id         = aws_ecs_cluster.main.id
   cpu                = var.cpu
   memory             = var.memory
   vpc_id             = module.network.vpc_id
@@ -52,13 +52,6 @@ module "frontend_storybook" {
   env    = "storybook"
 }
 
-module "vocabulary-lambda" {
-  source                   = "./vocabulary"
-  env                      = var.env
-  vocabulary_deploy_bucket = local.vocabulary_deploy_bucket
-  vocabulary_role          = module.roles.vocabulary_role
-}
-
 # The CI/CD configuration for this application
 module "pipeline" {
   source             = "./pipeline"
@@ -68,6 +61,6 @@ module "pipeline" {
   private_subnet_ids = module.network.private_subnet_ids
   github_token       = var.github_token
   api_ecr_name       = module.api.ecr_name
-  api_cluster_name   = module.api.cluster_name
+  api_cluster_name   = aws_ecs_cluster.main.name
   api_service_name   = module.api.service_name
 }

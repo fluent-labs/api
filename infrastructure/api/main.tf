@@ -76,12 +76,6 @@ resource "aws_ecr_repository" "foreign_language_reader_api" {
   }
 }
 
-# The fargate cluster
-
-resource "aws_ecs_cluster" "main" {
-  name = "foreign-language-reader-${var.env}"
-}
-
 # The task
 
 data "template_file" "api_task" {
@@ -133,7 +127,7 @@ resource "aws_security_group" "ecs_tasks" {
 
 resource "aws_ecs_service" "api" {
   name            = "foreign-language-reader-api-${var.env}"
-  cluster         = aws_ecs_cluster.main.id
+  cluster         = var.cluster_id
   task_definition = aws_ecs_task_definition.api.arn
   desired_count   = 1 # TODO handle scaling
   launch_type     = "FARGATE"

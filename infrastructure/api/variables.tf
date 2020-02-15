@@ -6,6 +6,10 @@ variable "api_role" {
   description = "IAM role for the api container"
 }
 
+variable "cluster_id" {
+  description = "The cluster to create the fargate services on"
+}
+
 variable "cpu" {
   description = "Default size of instances created"
 }
