@@ -82,9 +82,9 @@ data "template_file" "language_service_task" {
   template = file("${path.module}/container_definition.json")
 
   vars = {
-    image           = "${aws_ecr_repository.foreign_language_reader_language_service.repository_url}:latest"
-    log_group       = "foreign-language-reader-language-service-${var.env}"
-    env             = var.env
+    image     = "${aws_ecr_repository.foreign_language_reader_language_service.repository_url}:latest"
+    log_group = "foreign-language-reader-language-service-${var.env}"
+    env       = var.env
   }
 }
 

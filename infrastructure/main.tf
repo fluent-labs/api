@@ -4,8 +4,8 @@ module "network" {
 }
 
 module "roles" {
-  source                   = "./roles"
-  private_subnet_ids       = module.network.private_subnet_ids
+  source             = "./roles"
+  private_subnet_ids = module.network.private_subnet_ids
 }
 
 module "database" {
