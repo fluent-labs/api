@@ -20,7 +20,7 @@ resource "aws_security_group" "language_service_loadbalancer" {
     protocol    = "tcp"
     from_port   = 80
     to_port     = 80
-    cidr_blocks = [data.aws_subnet.private.*.cidr_block]
+    cidr_blocks = data.aws_subnet.private.*.cidr_block
   }
 
   egress {
@@ -44,7 +44,7 @@ resource "aws_alb" "main" {
 }
 
 resource "aws_alb_target_group" "app" {
-  name        = "foreign-language-reader-language-service-${var.env}"
+  name        = "flr-language-service-${var.env}"
   port        = 8000
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
