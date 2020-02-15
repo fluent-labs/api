@@ -1,0 +1,64 @@
+name: Test language-service
+
+on:
+  pull_request:
+    paths: "language-service/*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Move build files to root of build worker
+      run: |
+        shopt -s dotglob
+        mv language-service/* .
+
+    - name: Build container
+      run: docker build .
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Move build files to root of build worker
+      run: |
+        shopt -s dotglob
+        mv language-service/* .
+
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+
+    - name: Install package manager
+      run: |
+        curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+        echo "::add-path::$HOME/.poetry/bin"
+
+    - name: Install dependencies
+      run: poetry install
+
+    - name: Dependency security check
+      run: poetry run safety check
+
+    - name: Check for syntax errors
+      run: poetry run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+    - name: Test
+      run: poetry run pytest
+
+    - name: Lint
+      run: |
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        poetry run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Code security check
+      run: poetry run bandit -r language_service/*
+
+    - name: Validate code formatter
+      run: poetry run black . --check
