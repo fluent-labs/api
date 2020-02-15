@@ -3,7 +3,7 @@ import os
 from flask import Flask, request
 from flask_restful import Resource, Api
 
-from .nlp import tag
+from ..nlp import tag
 
 app = Flask(__name__)
 api = Api(app)
