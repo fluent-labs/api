@@ -180,16 +180,30 @@ resource "aws_codepipeline" "foreign_language_reader_pipeline" {
     name = "Build"
 
     action {
-      name             = "Build"
+      name             = "Build API"
       category         = "Build"
       owner            = "AWS"
       provider         = "CodeBuild"
       version          = "1"
       input_artifacts  = ["source"]
-      output_artifacts = ["imagedefinitions"]
+      output_artifacts = ["imagedefinitions_api"]
 
       configuration = {
         ProjectName = aws_codebuild_project.api_build.name
+      }
+    }
+
+    action {
+      name             = "Build Language Service"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      version          = "1"
+      input_artifacts  = ["source"]
+      output_artifacts = ["imagedefinitions_language_service"]
+
+      configuration = {
+        ProjectName = aws_codebuild_project.language_service_build.name
       }
     }
   }
@@ -200,16 +214,31 @@ resource "aws_codepipeline" "foreign_language_reader_pipeline" {
     name = "Production"
 
     action {
-      name            = "Deploy"
+      name            = "Deploy API"
       category        = "Deploy"
       owner           = "AWS"
       provider        = "ECS"
-      input_artifacts = ["imagedefinitions"]
+      input_artifacts = ["imagedefinitions_api"]
       version         = "1"
 
       configuration = {
-        ClusterName = var.api_cluster_name
+        ClusterName = var.cluster_name
         ServiceName = var.api_service_name
+        FileName    = "imagedefinitions.json"
+      }
+    }
+
+    action {
+      name            = "Deploy Language Service"
+      category        = "Deploy"
+      owner           = "AWS"
+      provider        = "ECS"
+      input_artifacts = ["imagedefinitions_language_service"]
+      version         = "1"
+
+      configuration = {
+        ClusterName = var.cluster_name
+        ServiceName = var.language_service_service_name
         FileName    = "imagedefinitions.json"
       }
     }
