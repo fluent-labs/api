@@ -180,7 +180,7 @@ resource "aws_codepipeline" "foreign_language_reader_pipeline" {
     name = "Build"
 
     action {
-      name             = "Build API"
+      name             = "API"
       category         = "Build"
       owner            = "AWS"
       provider         = "CodeBuild"
@@ -194,7 +194,7 @@ resource "aws_codepipeline" "foreign_language_reader_pipeline" {
     }
 
     action {
-      name             = "Build Language Service"
+      name             = "Language-Service"
       category         = "Build"
       owner            = "AWS"
       provider         = "CodeBuild"
@@ -214,7 +214,7 @@ resource "aws_codepipeline" "foreign_language_reader_pipeline" {
     name = "Production"
 
     action {
-      name            = "Deploy API"
+      name            = "API"
       category        = "Deploy"
       owner           = "AWS"
       provider        = "ECS"
@@ -229,7 +229,7 @@ resource "aws_codepipeline" "foreign_language_reader_pipeline" {
     }
 
     action {
-      name            = "Deploy Language Service"
+      name            = "Language-Service"
       category        = "Deploy"
       owner           = "AWS"
       provider        = "ECS"
