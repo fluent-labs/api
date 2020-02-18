@@ -76,6 +76,29 @@ resource "aws_ecr_repository" "foreign_language_reader_language_service" {
   }
 }
 
+resource "aws_ecr_lifecycle_policy" "clean_up_container_registry" {
+  repository = aws_ecr_repository.foreign_language_reader_language_service.name
+
+  policy = <<EOF
+{
+  "rules": [
+    {
+      "action": {
+        "type": "expire"
+      },
+      "selection": {
+        "countType": "imageCountMoreThan",
+        "countNumber": 5,
+        "tagStatus": "any"
+      },
+      "description": "Only keep the last 5 images",
+      "rulePriority": 1
+    }
+  ]
+}
+EOF
+}
+
 # The task
 
 data "template_file" "language_service_task" {
