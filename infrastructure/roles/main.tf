@@ -25,7 +25,7 @@ resource "aws_iam_role" "fargate_task_exec" {
   assume_role_policy = data.aws_iam_policy_document.task_assume_role_policy.json
 }
 
-resource "aws_iam_role_policy_attachment" "allow_logging_lambda" {
+resource "aws_iam_role_policy_attachment" "allow_logging_fargate" {
   role       = aws_iam_role.fargate_task_exec.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }

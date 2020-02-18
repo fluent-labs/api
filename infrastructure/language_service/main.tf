@@ -38,7 +38,7 @@ resource "aws_security_group" "language_service_loadbalancer" {
 # Load balancer to service
 
 resource "aws_alb" "main" {
-  name            = "foreign-language-reader-${var.env}"
+  name            = "language-service-flr-${var.env}"
   subnets         = var.public_subnet_ids
   security_groups = [aws_security_group.language_service_loadbalancer.id]
 }
