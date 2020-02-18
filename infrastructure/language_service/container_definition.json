@@ -1,0 +1,24 @@
+
+[
+  {
+    "name": "foreign-language-reader-language-service-${env}",
+    "image": "${image}",
+    "portMappings": [
+      {
+        "containerPort": 8000,
+        "hostPort": 8000
+      }
+    ],
+    "memory": 300,
+    "networkMode": "awsvpc",
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "us-west-2",
+        "awslogs-stream-prefix": "foreign-language-reader-language-service-${env}"
+      }
+    },
+    "environment": []
+  }
+]

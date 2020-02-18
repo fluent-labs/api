@@ -1,1 +1,0 @@
-# Vocabulary data source lambda

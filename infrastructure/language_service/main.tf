@@ -10,9 +10,9 @@ data "aws_subnet" "public" {
 
 # ALB Security group
 
-resource "aws_security_group" "api_loadbalancer" {
-  name        = "foreign-language-reader-api-loadbalancer-${var.env}"
-  description = "Allows access to the api"
+resource "aws_security_group" "language_service_loadbalancer" {
+  name        = "foreign-language-reader-language-service-loadbalancer-${var.env}"
+  description = "Allows access to the language_service"
   vpc_id      = var.vpc_id
 
   # TODO serve TLS when I have a domain name
@@ -20,7 +20,7 @@ resource "aws_security_group" "api_loadbalancer" {
     protocol    = "tcp"
     from_port   = 80
     to_port     = 80
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = data.aws_subnet.private.*.cidr_block
   }
 
   egress {
@@ -31,7 +31,7 @@ resource "aws_security_group" "api_loadbalancer" {
   }
 
   tags = {
-    Name = "loadbalancer-api-foreign-language-reader"
+    Name = "loadbalancer-language-service-foreign-language-reader"
   }
 }
 
@@ -40,12 +40,12 @@ resource "aws_security_group" "api_loadbalancer" {
 resource "aws_alb" "main" {
   name            = "foreign-language-reader-${var.env}"
   subnets         = var.public_subnet_ids
-  security_groups = [aws_security_group.api_loadbalancer.id]
+  security_groups = [aws_security_group.language_service_loadbalancer.id]
 }
 
 resource "aws_alb_target_group" "app" {
-  name        = "foreign-language-reader-api-${var.env}"
-  port        = 4000
+  name        = "flr-language-service-${var.env}"
+  port        = 8000
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
   target_type = "ip"
@@ -67,8 +67,8 @@ resource "aws_alb_listener" "front_end" {
   }
 }
 
-resource "aws_ecr_repository" "foreign_language_reader_api" {
-  name                 = "foreign-language-reader-api"
+resource "aws_ecr_repository" "foreign_language_reader_language_service" {
+  name                 = "foreign-language-reader-language-service"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
@@ -78,21 +78,19 @@ resource "aws_ecr_repository" "foreign_language_reader_api" {
 
 # The task
 
-data "template_file" "api_task" {
+data "template_file" "language_service_task" {
   template = file("${path.module}/container_definition.json")
 
   vars = {
-    image           = "${aws_ecr_repository.foreign_language_reader_api.repository_url}:latest"
-    secret_key_base = var.secret_key_base
-    database_url    = "ecto://${var.rds_username}:${var.rds_password}@${var.database_endpoint}/foreign-language-reader-${var.env}"
-    log_group       = "foreign-language-reader-api-${var.env}"
-    env             = var.env
+    image     = "${aws_ecr_repository.foreign_language_reader_language_service.repository_url}:latest"
+    log_group = "foreign-language-reader-language-service-${var.env}"
+    env       = var.env
   }
 }
 
-resource "aws_ecs_task_definition" "api" {
-  family                   = "foreign-language-reader-api-${var.env}"
-  container_definitions    = data.template_file.api_task.rendered
+resource "aws_ecs_task_definition" "language_service" {
+  family                   = "foreign-language-reader-language-service-${var.env}"
+  container_definitions    = data.template_file.language_service_task.rendered
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = var.cpu
@@ -102,15 +100,15 @@ resource "aws_ecs_task_definition" "api" {
 }
 
 resource "aws_security_group" "ecs_tasks" {
-  name        = "foreign-language-reader-api-tasks-${var.env}"
+  name        = "foreign-language-reader-language-service-tasks-${var.env}"
   description = "Only permits access from the load balancer"
   vpc_id      = var.vpc_id
 
   ingress {
     protocol        = "tcp"
-    from_port       = "4000"
-    to_port         = "4000"
-    security_groups = [aws_security_group.api_loadbalancer.id]
+    from_port       = "8000"
+    to_port         = "8000"
+    security_groups = [aws_security_group.language_service_loadbalancer.id]
   }
 
   egress {
@@ -121,14 +119,14 @@ resource "aws_security_group" "ecs_tasks" {
   }
 
   tags = {
-    Name = "task-api-foreign-language-reader"
+    Name = "task-language-service-foreign-language-reader"
   }
 }
 
-resource "aws_ecs_service" "api" {
-  name            = "foreign-language-reader-api-${var.env}"
+resource "aws_ecs_service" "language_service" {
+  name            = "foreign-language-reader-language-service-${var.env}"
   cluster         = var.cluster_id
-  task_definition = aws_ecs_task_definition.api.arn
+  task_definition = aws_ecs_task_definition.language_service.arn
   desired_count   = 1 # TODO handle scaling
   launch_type     = "FARGATE"
 
@@ -139,8 +137,8 @@ resource "aws_ecs_service" "api" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.app.id
-    container_name   = aws_ecs_task_definition.api.family
-    container_port   = 4000
+    container_name   = aws_ecs_task_definition.language_service.family
+    container_port   = 8000
   }
 
   depends_on = [
@@ -151,11 +149,11 @@ resource "aws_ecs_service" "api" {
   }
 }
 
-resource "aws_cloudwatch_log_group" "foreign_language_reader_api" {
-  name              = aws_ecs_service.api.name
+resource "aws_cloudwatch_log_group" "foreign_language_reader_language_service" {
+  name              = aws_ecs_service.language_service.name
   retention_in_days = 90
 
   tags = {
-    Name = aws_ecs_service.api.name
+    Name = aws_ecs_service.language_service.name
   }
 }
