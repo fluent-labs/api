@@ -18,14 +18,22 @@ variable "github_token" {
   description = "The github token to use when building projects in this repo"
 }
 
+variable "cluster_name" {
+  description = "The name of the cluster to push containers to"
+}
+
 variable "api_ecr_name" {
   description = "The name of the container registry to push api containers to"
 }
 
-variable "api_cluster_name" {
-  description = "The name of the cluster to push api containers to"
-}
-
 variable "api_service_name" {
   description = "The name of the service to push api containers to"
+}
+
+variable "language_service_ecr_name" {
+  description = "The name of the container registry to push language-service containers to"
+}
+
+variable "language_service_service_name" {
+  description = "The name of the service to push language-service containers to"
 }
