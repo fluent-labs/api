@@ -13,6 +13,7 @@ flask = "^1.1.1"
 flask_restful = "^0.3.8"
 
 # Natural Language Processing
+cython = "^0.29.15"
 spacy = "^2.2.3"
 thulac = "^0.2.1"
 en-core-web-sm = {url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz"}
