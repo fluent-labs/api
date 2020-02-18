@@ -1,12 +1,5 @@
 data "aws_caller_identity" "current" {}
 
-# Codebuild job
-
-resource "aws_s3_bucket" "foreign_language_reader_api_build" {
-  bucket = "foreign-language-reader-api-build"
-  acl    = "private"
-}
-
 resource "aws_security_group" "codebuild" {
   name        = "foreign-language-reader-codebuild"
   description = "Codebuild worker security group"
@@ -22,6 +15,13 @@ resource "aws_security_group" "codebuild" {
   tags = {
     Name = "build-api-foreign-language-reader"
   }
+}
+
+# API build
+
+resource "aws_s3_bucket" "foreign_language_reader_api_build" {
+  bucket = "foreign-language-reader-api-build"
+  acl    = "private"
 }
 
 resource "aws_codebuild_project" "api_build" {
@@ -82,6 +82,71 @@ resource "aws_codebuild_project" "api_build" {
   }
 }
 
+# Language-service build
+
+resource "aws_s3_bucket" "foreign_language_reader_language_service_build" {
+  bucket = "foreign-language-reader-language-service-build"
+  acl    = "private"
+}
+
+resource "aws_codebuild_project" "language_service_build" {
+  name          = "foreign-language-reader-language-service"
+  description   = "The build job for the foreign language reader"
+  build_timeout = "5"
+  service_role  = var.codebuild_role
+
+  artifacts {
+    type = "CODEPIPELINE"
+  }
+
+  cache {
+    type     = "S3"
+    location = aws_s3_bucket.foreign_language_reader_language_service_build.bucket
+  }
+
+  environment {
+    compute_type                = "BUILD_GENERAL1_SMALL"
+    image                       = "aws/codebuild/standard:2.0"
+    type                        = "LINUX_CONTAINER"
+    image_pull_credentials_type = "CODEBUILD"
+    privileged_mode             = true
+
+    environment_variable {
+      name  = "AWS_ACCOUNT_ID"
+      value = data.aws_caller_identity.current.account_id
+    }
+
+    environment_variable {
+      name  = "IMAGE_REPO_NAME"
+      value = var.language_service_ecr_name
+    }
+
+  }
+
+  logs_config {
+    s3_logs {
+      status   = "ENABLED"
+      location = "${aws_s3_bucket.foreign_language_reader_language_service_build.id}/build-log"
+    }
+  }
+
+  source {
+    buildspec = "language_service/buildspec.yml"
+    type      = "CODEPIPELINE"
+  }
+
+  vpc_config {
+    vpc_id  = var.vpc_id
+    subnets = var.private_subnet_ids
+
+    security_group_ids = [aws_security_group.codebuild.id]
+  }
+
+  tags = {
+    Environment = "Build"
+  }
+}
+
 resource "aws_codepipeline" "foreign_language_reader_pipeline" {
   name     = "foreign-language-reader-pipeline"
   role_arn = var.codepipeline_role
@@ -115,16 +180,30 @@ resource "aws_codepipeline" "foreign_language_reader_pipeline" {
     name = "Build"
 
     action {
-      name             = "Build"
+      name             = "Build API"
       category         = "Build"
       owner            = "AWS"
       provider         = "CodeBuild"
       version          = "1"
       input_artifacts  = ["source"]
-      output_artifacts = ["imagedefinitions"]
+      output_artifacts = ["imagedefinitions_api"]
 
       configuration = {
         ProjectName = aws_codebuild_project.api_build.name
+      }
+    }
+
+    action {
+      name             = "Build Language Service"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      version          = "1"
+      input_artifacts  = ["source"]
+      output_artifacts = ["imagedefinitions_language_service"]
+
+      configuration = {
+        ProjectName = aws_codebuild_project.language_service_build.name
       }
     }
   }
@@ -135,16 +214,31 @@ resource "aws_codepipeline" "foreign_language_reader_pipeline" {
     name = "Production"
 
     action {
-      name            = "Deploy"
+      name            = "Deploy API"
       category        = "Deploy"
       owner           = "AWS"
       provider        = "ECS"
-      input_artifacts = ["imagedefinitions"]
+      input_artifacts = ["imagedefinitions_api"]
       version         = "1"
 
       configuration = {
-        ClusterName = var.api_cluster_name
+        ClusterName = var.cluster_name
         ServiceName = var.api_service_name
+        FileName    = "imagedefinitions.json"
+      }
+    }
+
+    action {
+      name            = "Deploy Language Service"
+      category        = "Deploy"
+      owner           = "AWS"
+      provider        = "ECS"
+      input_artifacts = ["imagedefinitions_language_service"]
+      version         = "1"
+
+      configuration = {
+        ClusterName = var.cluster_name
+        ServiceName = var.language_service_service_name
         FileName    = "imagedefinitions.json"
       }
     }
