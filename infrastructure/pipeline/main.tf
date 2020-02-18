@@ -131,7 +131,7 @@ resource "aws_codebuild_project" "language_service_build" {
   }
 
   source {
-    buildspec = "language_service/buildspec.yml"
+    buildspec = "language-service/buildspec.yml"
     type      = "CODEPIPELINE"
   }
 
