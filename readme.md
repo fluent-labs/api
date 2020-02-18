@@ -8,5 +8,5 @@ A react application that allows users to enter text and see which words they don
 A glue layer that puts together all the different data sources and keeps track of the user's vocabulary. Built in Elixir and served with the Phoenix framework.
 ### Vocabulary
 A lambda that scrapes Wiktionary for definitions of all vocabulary. Written in Python, and leans heavily on the WiktionaryParser open source project.
-### infrastructure
+### Infrastructure
 Terraform scripts that describe all of our AWS infrastructure.
