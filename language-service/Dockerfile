@@ -1,15 +1,3 @@
-#FROM python:3.8-alpine
-
-#WORKDIR /app
-
-# Install Dependencies
-#COPY poetry.lock pyproject.toml /app/
-#RUN apk --update add --virtual build-dependencies libffi-dev openssl-dev python-dev py-pip build-base \
-#  && pip install "poetry==1.0.3" \
-#  && poetry config virtualenvs.create false \
-#  && poetry install --no-dev --no-interaction \
-#  && apk del build-dependencies
-
 FROM python:3.8-alpine3.11 as base
 
 ENV PYTHONFAULTHANDLER=1 \
@@ -40,7 +28,12 @@ RUN poetry build && /venv/bin/pip install dist/*.whl
 
 FROM base as final
 
-#RUN apk add --no-cache libffi libpq
+# Make sure gunicorn is on the path
+ENV PATH="/venv/bin:${PATH}"
+
+# Runtime dependencies for compiled packages
+RUN apk add --no-cache libstdc++
+
 COPY --from=builder /venv /venv
 COPY language_service /app/
 
