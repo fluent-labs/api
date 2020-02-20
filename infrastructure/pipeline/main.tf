@@ -92,7 +92,7 @@ resource "aws_s3_bucket" "foreign_language_reader_language_service_build" {
 resource "aws_codebuild_project" "language_service_build" {
   name          = "foreign-language-reader-language-service"
   description   = "The build job for the foreign language reader"
-  build_timeout = "60"
+  build_timeout = "15"
   service_role  = var.codebuild_role
 
   artifacts {
