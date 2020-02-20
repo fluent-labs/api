@@ -20,6 +20,7 @@ es-core-news-sm = {url = "https://github.com/explosion/spacy-models/releases/dow
 # Vocabulary
 wiktionaryparser = "^0.0.97"
 jieba = "^0.42.1"
+paddlepaddle-tiny = "^1.6.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

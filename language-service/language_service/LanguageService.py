@@ -19,7 +19,7 @@ class DocumentHandler(Resource):
         if language is None or language == "":
             return {"error": "Language is required"}, 400
 
-        if "text" not in request_json:
+        if request_json is None or "text" not in request_json:
             return {"error": "Text is required"}, 400
 
         text = request_json["text"]
@@ -27,7 +27,7 @@ class DocumentHandler(Resource):
         try:
             words = [
                 {"token": word.token, "tag": word.tag, "lemma": word.lemma}
-                for word in tag(language, text)
+                for word in tag(language.upper(), text)
             ]
             return words, 200
         except Exception as e:
