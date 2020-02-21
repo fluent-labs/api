@@ -42,15 +42,19 @@ module "api" {
 }
 
 module "language_service" {
-  source             = "./language_service"
-  env                = var.env
-  iam_role           = module.roles.fargate_role
-  cluster_id         = aws_ecs_cluster.main.id
-  cpu                = var.cpu
-  memory             = var.memory
-  vpc_id             = module.network.vpc_id
-  private_subnet_ids = module.network.private_subnet_ids
-  public_subnet_ids  = module.network.public_subnet_ids
+  source                 = "./language_service"
+  env                    = var.env
+  iam_role               = module.roles.fargate_role
+  fargate_autoscale_role = module.roles.fargate_autoscale_role
+  cluster_name           = aws_ecs_cluster.main.id
+  cpu                    = var.cpu
+  memory                 = var.memory
+  default_capacity       = 1
+  min_capacity           = 1
+  max_capacity           = 4
+  vpc_id                 = module.network.vpc_id
+  private_subnet_ids     = module.network.private_subnet_ids
+  public_subnet_ids      = module.network.public_subnet_ids
 }
 
 module "frontend_prod" {

@@ -187,6 +187,8 @@ resource "aws_cloudwatch_log_group" "foreign_language_reader_api" {
   }
 }
 
+# Autoscaling configuration
+
 resource "aws_appautoscaling_target" "target" {
   service_namespace  = "ecs"
   resource_id        = "service/${var.cluster_name}/${aws_ecs_service.api.name}"
@@ -197,7 +199,7 @@ resource "aws_appautoscaling_target" "target" {
 }
 
 resource "aws_appautoscaling_policy" "up" {
-  name               = "${var.env}_scale_up"
+  name               = "${var.env}_api_scale_up"
   service_namespace  = "ecs"
   resource_id        = "service/${var.cluster_name}/${aws_ecs_service.api.name}"
   scalable_dimension = "ecs:service:DesiredCount"
@@ -218,7 +220,7 @@ resource "aws_appautoscaling_policy" "up" {
 }
 
 resource "aws_appautoscaling_policy" "down" {
-  name               = "${var.env}_scale_down"
+  name               = "${var.env}_api_scale_down"
   service_namespace  = "ecs"
   resource_id        = "service/${var.cluster_name}/${aws_ecs_service.api.name}"
   scalable_dimension = "ecs:service:DesiredCount"
@@ -238,7 +240,7 @@ resource "aws_appautoscaling_policy" "down" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "service_cpu_high" {
-  alarm_name          = "${var.env}_openjobs_api_cpu_utilization_high"
+  alarm_name          = "${var.env}_api_openjobs_api_cpu_utilization_high"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
   metric_name         = "CPUUtilization"
