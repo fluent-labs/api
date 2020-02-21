@@ -8,6 +8,10 @@ data "aws_subnet" "public" {
   id    = var.public_subnet_ids[count.index]
 }
 
+data "aws_ecs_cluster" "main" {
+  cluster_name = var.cluster_name
+}
+
 # ALB Security group
 
 resource "aws_security_group" "api_loadbalancer" {
@@ -150,9 +154,9 @@ resource "aws_security_group" "ecs_tasks" {
 
 resource "aws_ecs_service" "api" {
   name            = "foreign-language-reader-api-${var.env}"
-  cluster         = var.cluster_id
+  cluster         = data.aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.api.arn
-  desired_count   = 1 # TODO handle scaling
+  desired_count   = var.default_capacity
   launch_type     = "FARGATE"
 
   network_configuration {
@@ -170,7 +174,7 @@ resource "aws_ecs_service" "api" {
     aws_alb_listener.front_end
   ]
   lifecycle {
-    ignore_changes = [task_definition]
+    ignore_changes = [desired_count, task_definition]
   }
 }
 
@@ -181,4 +185,73 @@ resource "aws_cloudwatch_log_group" "foreign_language_reader_api" {
   tags = {
     Name = aws_ecs_service.api.name
   }
+}
+
+resource "aws_appautoscaling_target" "target" {
+  service_namespace  = "ecs"
+  resource_id        = "service/${var.cluster_name}/${aws_ecs_service.api.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  role_arn           = var.fargate_autoscale_role
+  min_capacity       = var.min_capacity
+  max_capacity       = var.max_capacity
+}
+
+resource "aws_appautoscaling_policy" "up" {
+  name               = "${var.env}_scale_up"
+  service_namespace  = "ecs"
+  resource_id        = "service/${var.cluster_name}/${aws_ecs_service.api.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+
+
+  step_scaling_policy_configuration {
+    adjustment_type         = "ChangeInCapacity"
+    cooldown                = 60
+    metric_aggregation_type = "Maximum"
+
+    step_adjustment {
+      metric_interval_lower_bound = 0
+      scaling_adjustment          = 1
+    }
+  }
+
+  depends_on = [aws_appautoscaling_target.target]
+}
+
+resource "aws_appautoscaling_policy" "down" {
+  name               = "${var.env}_scale_down"
+  service_namespace  = "ecs"
+  resource_id        = "service/${var.cluster_name}/${aws_ecs_service.api.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+
+  step_scaling_policy_configuration {
+    adjustment_type         = "ChangeInCapacity"
+    cooldown                = 60
+    metric_aggregation_type = "Maximum"
+
+    step_adjustment {
+      metric_interval_lower_bound = 0
+      scaling_adjustment          = -1
+    }
+  }
+
+  depends_on = [aws_appautoscaling_target.target]
+}
+
+resource "aws_cloudwatch_metric_alarm" "service_cpu_high" {
+  alarm_name          = "${var.env}_openjobs_api_cpu_utilization_high"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/ECS"
+  period              = "60"
+  statistic           = "Maximum"
+  threshold           = "85"
+
+  dimensions {
+    ClusterName = var.cluster_name
+    ServiceName = aws_ecs_service.api.name
+  }
+
+  alarm_actions = [aws_appautoscaling_policy.up.arn]
+  ok_actions    = [aws_appautoscaling_policy.down.arn]
 }

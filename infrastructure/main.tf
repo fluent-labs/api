@@ -22,19 +22,23 @@ resource "aws_ecs_cluster" "main" {
 }
 
 module "api" {
-  source             = "./api"
-  env                = var.env
-  iam_role           = module.roles.fargate_role
-  cluster_id         = aws_ecs_cluster.main.id
-  cpu                = var.cpu
-  memory             = var.memory
-  vpc_id             = module.network.vpc_id
-  private_subnet_ids = module.network.private_subnet_ids
-  public_subnet_ids  = module.network.public_subnet_ids
-  database_endpoint  = module.database.database_endpoint
-  rds_username       = var.rds_username
-  rds_password       = var.rds_password
-  secret_key_base    = var.secret_key_base
+  source                 = "./api"
+  env                    = var.env
+  iam_role               = module.roles.fargate_role
+  fargate_autoscale_role = module.roles.fargate_autoscale_role
+  cluster_name           = aws_ecs_cluster.main.name
+  cpu                    = var.cpu
+  memory                 = var.memory
+  default_capacity       = 1
+  min_capacity           = 1
+  max_capacity           = 4
+  vpc_id                 = module.network.vpc_id
+  private_subnet_ids     = module.network.private_subnet_ids
+  public_subnet_ids      = module.network.public_subnet_ids
+  database_endpoint      = module.database.database_endpoint
+  rds_username           = var.rds_username
+  rds_password           = var.rds_password
+  secret_key_base        = var.secret_key_base
 }
 
 module "language_service" {

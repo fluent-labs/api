@@ -6,7 +6,11 @@ variable "iam_role" {
   description = "IAM role for the api container"
 }
 
-variable "cluster_id" {
+variable "fargate_autoscale_role" {
+  description = "IAM role for the container autoscaling"
+}
+
+variable "cluster_name" {
   description = "The cluster to create the fargate services on"
 }
 
@@ -16,6 +20,18 @@ variable "cpu" {
 
 variable "memory" {
   description = "Default size of instances created"
+}
+
+variable "default_capacity" {
+  description = "Default number of instances created"
+}
+
+variable "min_capacity" {
+  description = "Minimum number of instances created"
+}
+
+variable "max_capacity" {
+  description = "Maximum number of instances created"
 }
 
 variable "vpc_id" {
