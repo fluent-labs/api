@@ -3,7 +3,7 @@ output "fargate_role" {
 }
 
 output "fargate_autoscale_role" {
-  value = aws_iam_role.ecs_autoscale_role.arn
+  value = aws_iam_role.fargate_autoscale_role.arn
 }
 
 output "codebuild_role" {
