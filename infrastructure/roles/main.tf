@@ -7,7 +7,7 @@ data "aws_subnet" "private" {
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
-# API fargate container role
+# Fargate container role
 
 data "aws_iam_policy_document" "task_assume_role_policy" {
   statement {
@@ -28,6 +28,29 @@ resource "aws_iam_role" "fargate_task_exec" {
 resource "aws_iam_role_policy_attachment" "allow_logging_fargate" {
   role       = aws_iam_role.fargate_task_exec.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+# Fargate autoscale role
+
+data "aws_iam_policy_document" "autoscale_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["application-autoscaling.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "fargate_autoscale_role" {
+  name               = "autoscale-foreign-language-reader"
+  assume_role_policy = data.aws_iam_policy_document.autoscale_assume_role_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "allow_autoscaling_fargate" {
+  role       = aws_iam_role.fargate_autoscale_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
 }
 
 # Codebuild role
