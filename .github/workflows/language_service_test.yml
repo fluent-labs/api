@@ -2,7 +2,9 @@ name: Test language-service
 
 on:
   pull_request:
-    paths: "language-service/*"
+    paths:
+      - "language-service/*"
+      - "language-service/**/*"
 
 jobs:
   build:

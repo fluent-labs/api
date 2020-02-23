@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - "infrastructure/terraform/*"
+      - "infrastructure/terraform/**/*"
       - "infrastucture.tf"
 jobs:
   terraform:
