@@ -11,8 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Move build files to root of build worker
-      run: mv infrastructure/kubernetes/* .
 
     - name: Install kubeval
       run: |
@@ -22,4 +20,4 @@ jobs:
 
     - name: Validate K8s configuration
       run: |
-        kubeval --ignore-missing-schemas *
+        kubeval --ignore-missing-schemas infrastructure/kubernetes/*
