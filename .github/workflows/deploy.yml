@@ -88,7 +88,8 @@ jobs:
 
       - name: Update secrets in K8s
         run: |
-          kubectl create secret generic AWS \
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
+            create secret generic AWS \
             --from-literal=AWS_ACCOUNT_NUMBER=$AWS_ACCOUNT_NUMBER \
             --from-literal=AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
             --from-literal=AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
@@ -99,4 +100,5 @@ jobs:
 
       - name: Run Kustomization
         run: |
-          kubectl apply -k ./infrastructure/kubernetes/kustomization.yaml
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
+            apply -k ./infrastructure/kubernetes/kustomization.yaml
