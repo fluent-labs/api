@@ -76,7 +76,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    #needs: [build-api, build-language-service]
+    needs: [build-api, build-language-service]
     steps:
       - uses: actions/checkout@v1
 
