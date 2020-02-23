@@ -1,4 +1,4 @@
-name: API PR Review
+name: Test K8s
 
 on:
   pull_request:

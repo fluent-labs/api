@@ -24,6 +24,7 @@ spec:
               RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/${KUBERNETES_RELEASE}/bin/linux/amd64/kubectl
               mv kubectl /usr/local/bin
               chmod +x /usr/local/bin/kubectl
+              echo "Kubectl installation complete"
               pip install awscli --upgrade --user
               ACCOUNT=${AWS_ACCOUNT_NUMBER}
               REGION=${AWS_DEFAULT_REGION}
