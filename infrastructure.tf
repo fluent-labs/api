@@ -9,36 +9,23 @@ terraform {
   }
 }
 
+variable "digitalocean_token" {}
+
 provider "aws" {
   profile = "default"
   region  = "us-west-2"
 }
 
-variable "rds_username" {
-  default = "test_username"
+provider "digitalocean" {
+  token = var.do_token
 }
 
-variable "rds_password" {
-  default = "test_username"
+// Hosts the container registries
+module "aws" {
+  source = "./infrastructure/terraform/aws"
 }
 
-variable "secret_key_base" {
-  default = "KN4rxjPOfxRk3uo7fD928e6nt12jzrvy5t90fp7Snlp63ckc0rRZTglirGt+WiB6"
-}
-
-variable "github_token" {
-  default = "KN4rxjPOfxRk3uo7fD928e6nt12jzrvy5t90fp7Snlp63ckc0rRZTglirGt+WiB6"
-}
-
-module "foreign_language_reader" {
-  source          = "./infrastructure"
-  env             = "prod"
-  instance_size   = "t2.micro"
-  cpu             = "256"
-  memory          = "512"
-  cidr_block      = "172.32.0.0/16"
-  rds_username    = var.rds_username
-  rds_password    = var.rds_password
-  secret_key_base = var.secret_key_base
-  github_token    = var.github_token
+# Hosts everything else
+module "digitalocean" {
+  source = "./infrastructure/terraform/digitalocean"
 }
