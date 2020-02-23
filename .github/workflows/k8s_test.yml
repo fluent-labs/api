@@ -21,4 +21,5 @@ jobs:
         sudo cp kubeval /usr/local/bin
 
     - name: Validate K8s configuration
-      run: kubeval kustomization.yaml
+      run: |
+        kubeval --ignore-missing-schemas *
