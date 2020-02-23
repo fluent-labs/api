@@ -2,7 +2,9 @@ name: Test K8s
 
 on:
   pull_request:
-    paths: "infrastructure/kubernetes/*"
+    paths:
+      - "infrastructure/kubernetes/**/*"
+      - "infrastructure/kubernetes/kustomization.yaml"
 
 jobs:
   build:
