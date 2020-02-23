@@ -24,7 +24,7 @@ module "api_registry" {
 
 module "language_service_registry" {
   source      = "./container_registry"
-  name        = "	foreign-language-reader-language-service"
+  name        = "foreign-language-reader-language-service"
   image_count = 5
   push_users  = [aws_iam_user.github.name]
   pull_users  = [aws_iam_user.kubernetes.name]

@@ -50,7 +50,7 @@ resource "aws_iam_policy" "pull_access" {
 
 resource "aws_iam_policy_attachment" "pull_attach" {
   name       = "${var.name}-pull-role-attach"
-  users      = [var.pull_users]
+  users      = var.pull_users
   policy_arn = aws_iam_policy.pull_access.arn
 }
 
@@ -71,6 +71,6 @@ resource "aws_iam_policy" "push_access" {
 
 resource "aws_iam_policy_attachment" "push_attach" {
   name       = "${var.name}-push-role-attach"
-  users      = [var.push_users]
+  users      = var.push_users
   policy_arn = aws_iam_policy.push_access.arn
 }
