@@ -15,6 +15,7 @@ spec:
         metadata:
           creationTimestamp: null
         spec:
+          serviceAccountName: ecr-cred-refresh
           containers:
           - command:
             - /bin/sh
@@ -67,6 +68,6 @@ spec:
           schedulerName: default-scheduler
           securityContext: {}
           terminationGracePeriodSeconds: 30
-  schedule: 0 */6 * * *
+  schedule: 0 * * * *
   successfulJobsHistoryLimit: 3
   suspend: false
