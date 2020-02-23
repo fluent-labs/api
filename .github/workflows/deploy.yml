@@ -99,9 +99,9 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.K8S_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.K8S_AWS_SECRET_ACCESS_KEY }}
 
+      - uses: actions/checkout@v1
+
       - name: Run Kustomization
         run: |
-          pwd
-          ls
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
             apply -k infrastructure/kubernetes/kustomization.yaml
