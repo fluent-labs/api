@@ -20,7 +20,7 @@ provider "aws" {
 }
 
 provider "digitalocean" {
-  token = var.do_token
+  token = var.digitalocean_token
 }
 
 // Hosts the container registries
