@@ -15,8 +15,8 @@ resource "digitalocean_kubernetes_cluster" "foreign_language_reader" {
 
 provider "kubernetes" {
   load_config_file = false
-  host  = digitalocean_kubernetes_cluster.foreign_language_reader.endpoint
-  token = digitalocean_kubernetes_cluster.foreign_language_reader.kube_config[0].token
+  host             = digitalocean_kubernetes_cluster.foreign_language_reader.endpoint
+  token            = digitalocean_kubernetes_cluster.foreign_language_reader.kube_config[0].token
   cluster_ca_certificate = base64decode(
     digitalocean_kubernetes_cluster.foreign_language_reader.kube_config[0].cluster_ca_certificate
   )

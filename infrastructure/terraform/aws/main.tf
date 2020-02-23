@@ -1,5 +1,5 @@
 resource "aws_iam_access_key" "github" {
-  user    = aws_iam_user.github.name
+  user = aws_iam_user.github.name
 }
 
 resource "aws_iam_user" "github" {
@@ -7,7 +7,7 @@ resource "aws_iam_user" "github" {
 }
 
 resource "aws_iam_access_key" "kubernetes" {
-  user    = aws_iam_user.kubernetes.name
+  user = aws_iam_user.kubernetes.name
 }
 
 resource "aws_iam_user" "kubernetes" {
