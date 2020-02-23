@@ -2,7 +2,7 @@ name: Deploy API
 
 on:
   pull_request:
-    paths: "api/**/*"
+    paths: "api/*"
     types: closed
     branches: master
 
