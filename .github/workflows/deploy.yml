@@ -104,4 +104,4 @@ jobs:
       - name: Run Kustomization
         run: |
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
-            apply -k infrastructure/kubernetes/kustomization.yaml
+            apply -k infrastructure/kubernetes/
