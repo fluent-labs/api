@@ -20,12 +20,6 @@ spec:
             - /bin/sh
             - -c
             - |-
-              KUBERNETES_RELEASE=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
-              RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/${KUBERNETES_RELEASE}/bin/linux/amd64/kubectl
-              mv kubectl /usr/local/bin
-              chmod +x /usr/local/bin/kubectl
-              echo "Kubectl installation complete"
-              pip install awscli --upgrade --user
               ACCOUNT=${AWS_ACCOUNT_NUMBER}
               REGION=${AWS_DEFAULT_REGION}
               SECRET_NAME=${REGION}-ecr-registry
@@ -59,7 +53,7 @@ spec:
                 secretKeyRef:
                   name: aws
                   key: AWS_SECRET_ACCESS_KEY
-            image: python:3.8.1-buster
+            image: odaniait/aws-kubectl:latest
             imagePullPolicy: IfNotPresent
             name: ecr-cred-helper
             resources: {}
