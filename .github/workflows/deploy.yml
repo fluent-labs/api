@@ -1,8 +1,7 @@
 name: Deploy to K8s
 
 on:
-  pull_request:
-    types: closed
+  push:
     branches: master
 
 jobs:
@@ -88,6 +87,8 @@ jobs:
 
       - name: Update secrets in K8s
         run: |
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
+            delete secret --ignore-not-found aws \
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
             create secret generic aws \
             --from-literal=AWS_ACCOUNT_NUMBER=$AWS_ACCOUNT_NUMBER \
