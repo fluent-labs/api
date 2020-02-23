@@ -10,6 +10,9 @@ terraform {
 }
 
 variable "digitalocean_token" {}
+variable "test_environment" {
+  default = false
+}
 
 provider "aws" {
   profile = "default"
@@ -27,5 +30,6 @@ module "aws" {
 
 # Hosts everything else
 module "digitalocean" {
-  source = "./infrastructure/terraform/digitalocean"
+  source           = "./infrastructure/terraform/digitalocean"
+  test_environment = var.test_environment
 }
