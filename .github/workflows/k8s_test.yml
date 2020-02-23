@@ -1,0 +1,22 @@
+name: API PR Review
+
+on:
+  pull_request:
+    paths: "infrastructure/kubernetes/*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Move build files to root of build worker
+      run: mv kubernetes/* .
+
+    - name: Install kubeval
+      run: |
+        wget https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz
+        tar xf kubeval-linux-amd64.tar.gz
+        sudo cp kubeval /usr/local/bin
+
+    - name: Validate K8s configuration
+      run: kubeval kustomization.yaml
