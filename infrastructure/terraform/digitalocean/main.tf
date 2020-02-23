@@ -3,7 +3,6 @@ resource "digitalocean_project" "foreign_language_reader" {
   description = "Read text in different languages."
   purpose     = "Web Application"
   environment = "Production"
-  resources   = [digitalocean_kubernetes_cluster.foreign_language_reader.id]
 }
 
 resource "digitalocean_kubernetes_cluster" "foreign_language_reader" {
