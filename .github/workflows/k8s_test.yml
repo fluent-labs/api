@@ -20,4 +20,4 @@ jobs:
 
     - name: Validate K8s configuration
       run: |
-        kubeval --ignore-missing-schemas -d infrastructure/kubernetes
+        kubeval --ignore-missing-schemas infrastructure/kubernetes/tasks/*
