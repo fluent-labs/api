@@ -32,7 +32,7 @@ resource "aws_iam_policy" "ecr_user" {
 resource "aws_iam_policy_attachment" "ecr_user_attach" {
   name       = "ecr_user"
   users      = [aws_iam_user.github.name, aws_iam_user.kubernetes.name]
-  policy_arn = aws_iam_policy.push_access.arn
+  policy_arn = aws_iam_policy.ecr_user.arn
 }
 
 module "api_registry" {
