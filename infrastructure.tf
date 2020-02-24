@@ -38,15 +38,7 @@ resource "digitalocean_kubernetes_cluster" "foreign_language_reader" {
   }
 }
 
-// Hosts the container registries
-module "aws" {
-  source       = "./infrastructure/terraform/aws"
+module "infrastructure" {
+  source       = "./infrastructure/terraform"
   cluster_name = digitalocean_kubernetes_cluster.foreign_language_reader.name
-}
-
-# Hosts everything else
-module "digitalocean" {
-  source           = "./infrastructure/terraform/digitalocean"
-  cluster_name     = digitalocean_kubernetes_cluster.foreign_language_reader.name
-  test_environment = var.test_environment
 }
