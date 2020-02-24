@@ -60,3 +60,14 @@ resource "digitalocean_database_db" "api_database" {
   cluster_id = digitalocean_database_cluster.foreign_language_reader.id
   name       = "foreign-language-reader"
 }
+
+resource "kubernetes_secret" "example" {
+  metadata {
+    name = "api-database-credentials"
+  }
+
+  data = {
+    username = digitalocean_database_user.api_user.name
+    password = digitalocean_database_user.api_user.password
+  }
+}
