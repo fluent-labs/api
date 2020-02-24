@@ -3,5 +3,5 @@ variable "test_environment" {
 }
 
 variable "cluster_name" {
-  description = "The name of the K8s cluster to deploy things on"
+  description = "The name of the K8s cluster to post secrets to"
 }

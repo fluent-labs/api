@@ -9,4 +9,7 @@ A glue layer that puts together all the different data sources and keeps track o
 ### Vocabulary
 A lambda that scrapes Wiktionary for definitions of all vocabulary. Written in Python, and leans heavily on the WiktionaryParser open source project.
 ### Infrastructure
-Terraform scripts that describe all of our AWS infrastructure.
+Terraform scripts that describe all of our infrastructure.
+- Hosted on Digital Ocean
+- Managed by Kubernetes
+- Container hosting by AWS
