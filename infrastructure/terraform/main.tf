@@ -16,11 +16,12 @@ provider "kubernetes" {
 
 // Hosts the container registries
 module "aws" {
-  source       = "./infrastructure/terraform/aws"
+  source       = "./aws"
 }
 
 # Hosts everything else
 module "digitalocean" {
-  source           = "./infrastructure/terraform/digitalocean"
+  source           = "./digitalocean"
+  cluster_name     = var.cluster_name
   test_environment = var.test_environment
 }
