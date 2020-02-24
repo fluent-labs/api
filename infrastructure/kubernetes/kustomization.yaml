@@ -2,6 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+- deployment/language-service.yml
+- services/language-service.yml
 - serviceaccount/ecr-cred-helper.yml
 - serviceaccount/ecr-cred-helper-binding.yml
 - tasks/ecr-cred-helper.yml
