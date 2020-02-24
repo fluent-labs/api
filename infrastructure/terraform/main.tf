@@ -16,7 +16,7 @@ provider "kubernetes" {
 
 // Hosts the container registries
 module "aws" {
-  source       = "./aws"
+  source = "./aws"
 }
 
 # Hosts everything else
