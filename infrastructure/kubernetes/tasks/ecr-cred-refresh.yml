@@ -15,7 +15,7 @@ spec:
         metadata:
           creationTimestamp: null
         spec:
-          serviceAccountName: ecr-cred-refresh
+          serviceAccountName: ecr-cred-helper
           containers:
           - command:
             - /bin/sh
@@ -70,4 +70,5 @@ spec:
           terminationGracePeriodSeconds: 30
   schedule: 0 * * * *
   successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
   suspend: false
