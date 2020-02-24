@@ -18,6 +18,8 @@ resource "aws_iam_user" "kubernetes" {
   name = "foreign-language-reader-kubernetes"
 }
 
+data "aws_caller_identity" "current" {}
+
 resource "kubernetes_secret" "kubernetes_user_secret" {
   metadata {
     name = "aws"

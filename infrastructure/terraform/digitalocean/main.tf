@@ -57,7 +57,7 @@ resource "digitalocean_database_user" "api_user" {
 }
 
 resource "digitalocean_database_db" "api_database" {
-  cluster_id = digitalocean_database_cluster.foreign_language_reader.id
+  cluster_id = digitalocean_database_cluster.api_mysql.id
   name       = "foreign-language-reader"
 }
 
