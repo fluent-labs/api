@@ -87,20 +87,6 @@ jobs:
         with:
           args: kubernetes cluster kubeconfig show foreign-language-reader > $GITHUB_WORKSPACE/.kubeconfig
 
-      - name: Update secrets in K8s
-        run: |
-          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
-            delete secret --ignore-not-found aws
-          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
-            create secret generic aws \
-            --from-literal=AWS_ACCOUNT_NUMBER=$AWS_ACCOUNT_NUMBER \
-            --from-literal=AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
-            --from-literal=AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-        env:
-          AWS_ACCOUNT_NUMBER: ${{ secrets.AWS_ACCOUNT_NUMBER }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.K8S_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.K8S_AWS_SECRET_ACCESS_KEY }}
-
       - name: Run Kustomization
         run: |
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
