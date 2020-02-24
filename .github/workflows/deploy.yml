@@ -5,8 +5,36 @@ on:
     branches: master
 
 jobs:
+  configure-infrastructure:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: 'Prepare Terraform'
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 0.12.20
+        tf_actions_subcommand: 'init'
+        tf_actions_comment: false
+        args: '-backend-config="token=${{ secrets.TF_API_TOKEN }}" -backend-config="organization=foreign-language-reader"'
+
+    - name: 'Plan infrastucture changes'
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 0.12.20
+        tf_actions_subcommand: 'plan'
+        tf_actions_comment: false
+
+    - name: 'Apply infrastucture changes'
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 0.12.20
+        tf_actions_subcommand: 'plan'
+        tf_actions_comment: false
+
   build-api:
     runs-on: ubuntu-latest
+    needs: [configure-infrastructure]
     steps:
     - uses: actions/checkout@v1
 
@@ -40,6 +68,7 @@ jobs:
 
   build-language-service:
     runs-on: ubuntu-latest
+    needs: [configure-infrastructure]
 
     steps:
     - uses: actions/checkout@v2
