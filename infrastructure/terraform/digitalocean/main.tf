@@ -9,6 +9,15 @@ data "digitalocean_kubernetes_cluster" "foreign_language_reader" {
   name = var.cluster_name
 }
 
+provider "kubernetes" {
+  load_config_file = false
+  host             = data.digitalocean_kubernetes_cluster.foreign_language_reader.endpoint
+  token            = data.digitalocean_kubernetes_cluster.foreign_language_reader.kube_config[0].token
+  cluster_ca_certificate = base64decode(
+    data.digitalocean_kubernetes_cluster.foreign_language_reader.kube_config[0].cluster_ca_certificate
+  )
+}
+
 # Configure database
 
 resource "digitalocean_database_cluster" "api_mysql" {
