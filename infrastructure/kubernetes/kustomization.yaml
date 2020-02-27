@@ -6,5 +6,8 @@ resources:
 - ecr-cred-helper/service-account.yml
 - ecr-cred-helper/task.yml
 
+- api/service.yml
+- api/deployment.yml
+
 - language-service/service.yml
 - language-service/deployment.yml
