@@ -155,4 +155,6 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: foreign-language-reader-language-service
           IMAGE_TAG: ${{ github.sha }}
-        run: kubectl set image deployment/language-service language-service=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --record
+        run: |
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
+            set image deployment/language-service language-service=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --record
