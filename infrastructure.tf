@@ -13,6 +13,7 @@ variable "digitalocean_token" {}
 variable "test_environment" {
   default = false
 }
+variable "api_secret_key_base" {}
 
 provider "aws" {
   profile = "default"
@@ -39,7 +40,8 @@ resource "digitalocean_kubernetes_cluster" "foreign_language_reader" {
 }
 
 module "infrastructure" {
-  source           = "./infrastructure/terraform"
-  cluster_name     = digitalocean_kubernetes_cluster.foreign_language_reader.name
-  test_environment = var.test_environment
+  source              = "./infrastructure/terraform"
+  cluster_name        = digitalocean_kubernetes_cluster.foreign_language_reader.name
+  api_secret_key_base = var.api_secret_key_base
+  test_environment    = var.test_environment
 }
