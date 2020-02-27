@@ -40,7 +40,7 @@ resource "digitalocean_database_db" "api_database" {
   name       = "foreign-language-reader"
 }
 
-resource "kubernetes_secret" "example" {
+resource "kubernetes_secret" "api_database_credentials" {
   metadata {
     name = "api-database-credentials"
   }

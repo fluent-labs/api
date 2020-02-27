@@ -25,3 +25,13 @@ module "digitalocean" {
   cluster_name     = var.cluster_name
   test_environment = var.test_environment
 }
+
+resource "kubernetes_secret" "api_secret_key_base" {
+  metadata {
+    name = "api-secret-key-base"
+  }
+
+  data = {
+    secret_key_base = var.api_secret_key_base
+  }
+}
