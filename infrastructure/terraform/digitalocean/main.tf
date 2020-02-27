@@ -49,7 +49,8 @@ resource "kubernetes_secret" "api_database_credentials" {
     username          = digitalocean_database_user.api_user.name
     password          = digitalocean_database_user.api_user.password
     host              = digitalocean_database_cluster.api_mysql.private_host
+    port              = digitalocean_database_user.api_user.port
     database          = digitalocean_database_db.api_database.name
-    connection_string = "ecto://${digitalocean_database_user.api_user.name}:${digitalocean_database_user.api_user.password}@${digitalocean_database_cluster.api_mysql.private_host}:3306/${digitalocean_database_db.api_database.name}"
+    connection_string = "ecto://${digitalocean_database_user.api_user.name}:${digitalocean_database_user.api_user.password}@${digitalocean_database_cluster.api_mysql.private_host}:${digitalocean_database_user.api_user.port}/${digitalocean_database_db.api_database.name}"
   }
 }
