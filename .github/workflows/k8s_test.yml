@@ -20,4 +20,4 @@ jobs:
 
     - name: Validate K8s configuration
       run: |
-        kubeval --ignore-missing-schemas infrastructure/kubernetes/tasks/*
+        kubeval --ignore-missing-schemas infrastructure/kubernetes/ecr-cred-helper/* infrastructure/kubernetes/language-service/*
