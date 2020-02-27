@@ -14,24 +14,30 @@ provider "kubernetes" {
   )
 }
 
+provider "helm" {
+  kubernetes {
+    host  = data.digitalocean_kubernetes_cluster.foreign_language_reader.endpoint
+    token = data.digitalocean_kubernetes_cluster.foreign_language_reader.kube_config[0].token
+    cluster_ca_certificate = base64decode(
+      data.digitalocean_kubernetes_cluster.foreign_language_reader.kube_config[0].cluster_ca_certificate
+    )
+  }
+}
+
 // Hosts the container registries
 module "aws" {
   source = "./aws"
 }
 
-# Hosts everything else
+// Hosts everything else
 module "digitalocean" {
   source           = "./digitalocean"
   cluster_name     = var.cluster_name
   test_environment = var.test_environment
 }
 
-resource "kubernetes_secret" "api_secret_key_base" {
-  metadata {
-    name = "api-secret-key-base"
-  }
-
-  data = {
-    secret_key_base = var.api_secret_key_base
-  }
+// Provides base configuration for the K8s cluster
+module "kubernetes" {
+  source              = "./kubernetes"
+  api_secret_key_base = var.api_secret_key_base
 }

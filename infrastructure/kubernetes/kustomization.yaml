@@ -11,3 +11,5 @@ resources:
 
 - language-service/service.yml
 - language-service/deployment.yml
+
+- ingress/ingress.yml
