@@ -11,5 +11,6 @@ resource "kubernetes_secret" "api_secret_key_base" {
 resource "helm_release" "nginx_ingress" {
   name              = "nginx-ingress"
   repository        = "https://helm.nginx.com/stable"
-  chart             = "nginx-stable/nginx-ingress"
+  chart             = "nginx-ingress"
+  version           = "0.4.2"
 }
