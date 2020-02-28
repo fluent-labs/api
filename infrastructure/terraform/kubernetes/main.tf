@@ -15,8 +15,8 @@ data "helm_repository" "nginx_stable" {
 
 resource "helm_release" "nginx_ingress" {
   name              = "nginx-ingress"
-  repository        = "https://helm.nginx.com/stable"
+  repository        = "data.helm_repository.nginx_stable.metadata[0].name"
   chart             = "nginx-stable/nginx-ingress"
-  version           = "1.62"
+  version           = "0.4.2"
   dependency_update = true
 }
