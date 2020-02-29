@@ -15,6 +15,12 @@ resource "helm_release" "nginx_ingress" {
   version    = "0.4.2"
 }
 
+resource "kubernetes_namespace" "cert_manager" {
+  metadata {
+    name = "cert-manager"
+  }
+}
+
 resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = "https://charts.jetstack.io"
