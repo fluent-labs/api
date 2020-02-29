@@ -22,17 +22,17 @@ resource "aws_iam_user" "kubernetes" {
 
 data "aws_caller_identity" "current" {}
 
-# resource "kubernetes_secret" "kubernetes_user_secret" {
-#   metadata {
-#     name = "aws"
-#   }
-#
-#   data = {
-#     AWS_ACCOUNT_NUMBER    = data.aws_caller_identity.current.account_id
-#     AWS_ACCESS_KEY_ID     = aws_iam_access_key.kubernetes.id
-#     AWS_SECRET_ACCESS_KEY = aws_iam_access_key.kubernetes.secret
-#   }
-# }
+resource "kubernetes_secret" "kubernetes_user_secret" {
+  metadata {
+    name = "aws"
+  }
+
+  data = {
+    AWS_ACCOUNT_NUMBER    = data.aws_caller_identity.current.account_id
+    AWS_ACCESS_KEY_ID     = aws_iam_access_key.kubernetes.id
+    AWS_SECRET_ACCESS_KEY = aws_iam_access_key.kubernetes.secret
+  }
+}
 
 # Generic policy attachment allowing auth against ECR
 
