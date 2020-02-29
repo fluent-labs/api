@@ -2,6 +2,8 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: foreign-language-reader-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
 spec:
   rules:
   - http:
