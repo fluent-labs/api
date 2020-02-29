@@ -60,6 +60,7 @@ resource "kubernetes_secret" "api_database_credentials" {
 
 # Configure networking
 
+# This is created by K8s and needs to be imported manually
 resource "digitalocean_loadbalancer" "foreign_language_reader" {
   name   = "foreign-language-reader"
   region = "sfo2"
@@ -94,5 +95,12 @@ resource "digitalocean_record" "www" {
   domain = digitalocean_domain.main.name
   type   = "A"
   name   = "www"
+  value  = digitalocean_loadbalancer.foreign_language_reader.ip
+}
+
+resource "digitalocean_record" "naked" {
+  domain = digitalocean_domain.main.name
+  type   = "A"
+  name   = "@"
   value  = digitalocean_loadbalancer.foreign_language_reader.ip
 }
