@@ -86,6 +86,7 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        echo "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" > api.txt
 
   deploy-api:
     name: Deploy API
@@ -158,6 +159,7 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        echo "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" > language_service.txt
 
   deploy-language-service:
     name: Deploy Language Service
