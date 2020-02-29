@@ -40,17 +40,17 @@ resource "digitalocean_database_db" "api_database" {
   name       = "foreign-language-reader"
 }
 
-# resource "kubernetes_secret" "api_database_credentials" {
-#   metadata {
-#     name = "api-database-credentials"
-#   }
-#
-#   data = {
-#     username          = digitalocean_database_user.api_user.name
-#     password          = digitalocean_database_user.api_user.password
-#     host              = digitalocean_database_cluster.api_mysql.private_host
-#     port              = digitalocean_database_cluster.api_mysql.port
-#     database          = digitalocean_database_db.api_database.name
-#     connection_string = "ecto://${digitalocean_database_user.api_user.name}:${digitalocean_database_user.api_user.password}@${digitalocean_database_cluster.api_mysql.private_host}:${digitalocean_database_cluster.api_mysql.port}/${digitalocean_database_db.api_database.name}"
-#   }
-# }
+resource "kubernetes_secret" "api_database_credentials" {
+  metadata {
+    name = "api-database-credentials"
+  }
+
+  data = {
+    username          = digitalocean_database_user.api_user.name
+    password          = digitalocean_database_user.api_user.password
+    host              = digitalocean_database_cluster.api_mysql.private_host
+    port              = digitalocean_database_cluster.api_mysql.port
+    database          = digitalocean_database_db.api_database.name
+    connection_string = "ecto://${digitalocean_database_user.api_user.name}:${digitalocean_database_user.api_user.password}@${digitalocean_database_cluster.api_mysql.private_host}:${digitalocean_database_cluster.api_mysql.port}/${digitalocean_database_db.api_database.name}"
+  }
+}
