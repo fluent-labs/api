@@ -56,5 +56,5 @@ resource "kubernetes_secret" "api_database_credentials" {
 }
 
 resource "digitalocean_domain" "main" {
-  name       = "foreignlanguagereader.com"
+  name = "foreignlanguagereader.com"
 }
