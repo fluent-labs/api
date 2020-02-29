@@ -58,7 +58,29 @@ resource "kubernetes_secret" "api_database_credentials" {
 # Configure networking
 
 resource "digitalocean_loadbalancer" "foreign_language_reader" {
-  name = "foreign-language-reader"
+  name   = "foreign-language-reader"
+  region = "sfo2"
+
+  forwarding_rule {
+    entry_port      = 80
+    entry_protocol  = "tcp"
+    target_port     = 30775
+    target_protocol = "tcp"
+  }
+
+  forwarding_rule {
+    entry_port      = 443
+    entry_protocol  = "tcp"
+    target_port     = 30233
+    target_protocol = "tcp"
+  }
+
+  healthcheck {
+    port                     = 30775
+    protocol                 = "tcp"
+    check_interval_seconds   = 3
+    response_timeout_seconds = 5
+  }
 }
 
 resource "digitalocean_domain" "main" {
