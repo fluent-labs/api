@@ -89,3 +89,10 @@ resource "digitalocean_loadbalancer" "foreign_language_reader" {
 resource "digitalocean_domain" "main" {
   name = "foreignlanguagereader.com"
 }
+
+resource "digitalocean_record" "www" {
+  domain = digitalocean_domain.main.name
+  type   = "A"
+  name   = "www"
+  value  = digitalocean_loadbalancer.foreign_language_reader.ip
+}
