@@ -38,6 +38,7 @@ module "kubernetes_cluster_infrastructure" {
   source           = "./kubernetes_cluster_infrastructure"
   cluster_name     = var.cluster_name
   test_environment = var.test_environment
+  domain_name      = digitalocean_domain.main.name
 }
 
 # Installed apps, some secrets, service users, etc.
