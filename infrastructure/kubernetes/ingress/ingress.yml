@@ -11,7 +11,7 @@ spec:
     - foreignlanguagereader.com
     secretName: flr-tls
   rules:
-  - foreignlanguagereader.com
+  - host: foreignlanguagereader.com
     http:
       paths:
       - path: /api/*
