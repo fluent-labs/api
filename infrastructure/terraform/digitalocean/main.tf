@@ -3,7 +3,10 @@ resource "digitalocean_project" "foreign_language_reader" {
   description = "Read text in different languages."
   purpose     = "Web Application"
   environment = "Production"
-  resources   = [digitalocean_database_cluster.api_mysql.urn]
+  resources = [
+    digitalocean_database_cluster.api_mysql.urn,
+    digitalocean_loadbalancer.foreign_language_reader.urn,
+  digitalocean_domain.main.urn]
 }
 
 data "digitalocean_kubernetes_cluster" "foreign_language_reader" {
@@ -55,6 +58,41 @@ resource "kubernetes_secret" "api_database_credentials" {
   }
 }
 
+# Configure networking
+
+resource "digitalocean_loadbalancer" "foreign_language_reader" {
+  name   = "foreign-language-reader"
+  region = "sfo2"
+
+  forwarding_rule {
+    entry_port      = 80
+    entry_protocol  = "tcp"
+    target_port     = 30775
+    target_protocol = "tcp"
+  }
+
+  forwarding_rule {
+    entry_port      = 443
+    entry_protocol  = "tcp"
+    target_port     = 30233
+    target_protocol = "tcp"
+  }
+
+  healthcheck {
+    port                     = 30775
+    protocol                 = "tcp"
+    check_interval_seconds   = 3
+    response_timeout_seconds = 5
+  }
+}
+
 resource "digitalocean_domain" "main" {
   name = "foreignlanguagereader.com"
+}
+
+resource "digitalocean_record" "www" {
+  domain = digitalocean_domain.main.name
+  type   = "A"
+  name   = "www"
+  value  = digitalocean_loadbalancer.foreign_language_reader.ip
 }
