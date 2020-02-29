@@ -3,7 +3,10 @@ resource "digitalocean_project" "foreign_language_reader" {
   description = "Read text in different languages."
   purpose     = "Web Application"
   environment = "Production"
-  resources   = [digitalocean_database_cluster.api_mysql.urn, digitalocean_loadbalancer.foreign_language_reader.urn]
+  resources = [
+    digitalocean_database_cluster.api_mysql.urn,
+    digitalocean_loadbalancer.foreign_language_reader.urn,
+  digitalocean_domain.main.urn]
 }
 
 data "digitalocean_kubernetes_cluster" "foreign_language_reader" {
