@@ -6,9 +6,9 @@ resource "digitalocean_project" "foreign_language_reader" {
   resources   = [digitalocean_database_cluster.api_mysql.urn]
 }
 
-data "digitalocean_kubernetes_cluster" "foreign_language_reader" {
-  name = var.cluster_name
-}
+# data "digitalocean_kubernetes_cluster" "foreign_language_reader" {
+#   name = var.cluster_name
+# }
 
 # Configure database
 
@@ -21,14 +21,14 @@ resource "digitalocean_database_cluster" "api_mysql" {
   node_count = 1
 }
 
-resource "digitalocean_database_firewall" "allow_kubernetes" {
-  cluster_id = digitalocean_database_cluster.api_mysql.id
-
-  rule {
-    type  = "k8s"
-    value = data.digitalocean_kubernetes_cluster.foreign_language_reader.id
-  }
-}
+# resource "digitalocean_database_firewall" "allow_kubernetes" {
+#   cluster_id = digitalocean_database_cluster.api_mysql.id
+#
+#   rule {
+#     type  = "k8s"
+#     value = data.digitalocean_kubernetes_cluster.foreign_language_reader.id
+#   }
+# }
 
 resource "digitalocean_database_user" "api_user" {
   cluster_id = digitalocean_database_cluster.api_mysql.id
@@ -40,17 +40,17 @@ resource "digitalocean_database_db" "api_database" {
   name       = "foreign-language-reader"
 }
 
-resource "kubernetes_secret" "api_database_credentials" {
-  metadata {
-    name = "api-database-credentials"
-  }
-
-  data = {
-    username          = digitalocean_database_user.api_user.name
-    password          = digitalocean_database_user.api_user.password
-    host              = digitalocean_database_cluster.api_mysql.private_host
-    port              = digitalocean_database_cluster.api_mysql.port
-    database          = digitalocean_database_db.api_database.name
-    connection_string = "ecto://${digitalocean_database_user.api_user.name}:${digitalocean_database_user.api_user.password}@${digitalocean_database_cluster.api_mysql.private_host}:${digitalocean_database_cluster.api_mysql.port}/${digitalocean_database_db.api_database.name}"
-  }
-}
+# resource "kubernetes_secret" "api_database_credentials" {
+#   metadata {
+#     name = "api-database-credentials"
+#   }
+#
+#   data = {
+#     username          = digitalocean_database_user.api_user.name
+#     password          = digitalocean_database_user.api_user.password
+#     host              = digitalocean_database_cluster.api_mysql.private_host
+#     port              = digitalocean_database_cluster.api_mysql.port
+#     database          = digitalocean_database_db.api_database.name
+#     connection_string = "ecto://${digitalocean_database_user.api_user.name}:${digitalocean_database_user.api_user.password}@${digitalocean_database_cluster.api_mysql.private_host}:${digitalocean_database_cluster.api_mysql.port}/${digitalocean_database_db.api_database.name}"
+#   }
+# }
