@@ -54,3 +54,7 @@ resource "kubernetes_secret" "api_database_credentials" {
     connection_string = "ecto://${digitalocean_database_user.api_user.name}:${digitalocean_database_user.api_user.password}@${digitalocean_database_cluster.api_mysql.private_host}:${digitalocean_database_cluster.api_mysql.port}/${digitalocean_database_db.api_database.name}"
   }
 }
+
+resource "digitalocean_domain" "main" {
+  name = "foreignlanguagereader.com"
+}

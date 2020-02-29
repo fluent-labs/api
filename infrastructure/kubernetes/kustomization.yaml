@@ -13,3 +13,5 @@ resources:
 - language-service/deployment.yml
 
 - ingress/ingress.yml
+- certificate/cert-manager.yml
+- certificate/letsencrypt.yml

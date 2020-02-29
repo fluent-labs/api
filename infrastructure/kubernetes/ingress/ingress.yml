@@ -3,10 +3,16 @@ kind: Ingress
 metadata:
   name: foreign-language-reader-ingress
   annotations:
-    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
 spec:
+  tls:
+  - hosts:
+    - foreignlanguagereader.com
+    secretName: flr-tls
   rules:
-  - http:
+  - host: foreignlanguagereader.com
+    http:
       paths:
       - path: /api/*
         backend:
