@@ -25,20 +25,23 @@ provider "helm" {
   }
 }
 
-// Hosts the container registries
-module "aws" {
-  source = "./aws"
+module "container_registries" {
+  source = "./container_registries"
 }
 
-// Hosts everything else
-module "digitalocean" {
-  source           = "./digitalocean"
+resource "digitalocean_domain" "main" {
+  name = "foreignlanguagereader.com"
+}
+
+# The supporting infrastructure, eg. database, load balancer
+module "kubernetes_cluster_infrastructure" {
+  source           = "./kubernetes_cluster_infrastructure"
   cluster_name     = var.cluster_name
   test_environment = var.test_environment
 }
 
-// Provides base configuration for the K8s cluster
-module "kubernetes" {
-  source              = "./kubernetes"
+# Installed apps, some secrets, service users, etc.
+module "kubernetes_config" {
+  source              = "./kubernetes_config"
   api_secret_key_base = var.api_secret_key_base
 }
