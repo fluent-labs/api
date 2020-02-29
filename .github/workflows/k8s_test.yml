@@ -25,4 +25,4 @@ jobs:
           infrastructure/kubernetes/api/* \
           infrastructure/kubernetes/language-service/* \
           infrastructure/kubernetes/ingress/* \
-          infrastructure/kubernetes/cert-manager/*
+          infrastructure/kubernetes/certificate/*
