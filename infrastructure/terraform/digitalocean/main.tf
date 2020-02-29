@@ -3,7 +3,7 @@ resource "digitalocean_project" "foreign_language_reader" {
   description = "Read text in different languages."
   purpose     = "Web Application"
   environment = "Production"
-  resources   = [digitalocean_database_cluster.api_mysql.urn]
+  resources   = [digitalocean_database_cluster.api_mysql.urn, digitalocean_loadbalancer.foreign_language_reader.urn]
 }
 
 data "digitalocean_kubernetes_cluster" "foreign_language_reader" {
@@ -53,6 +53,12 @@ resource "kubernetes_secret" "api_database_credentials" {
     database          = digitalocean_database_db.api_database.name
     connection_string = "ecto://${digitalocean_database_user.api_user.name}:${digitalocean_database_user.api_user.password}@${digitalocean_database_cluster.api_mysql.private_host}:${digitalocean_database_cluster.api_mysql.port}/${digitalocean_database_db.api_database.name}"
   }
+}
+
+# Configure networking
+
+resource "digitalocean_loadbalancer" "foreign_language_reader" {
+  name = "foreign-language-reader"
 }
 
 resource "digitalocean_domain" "main" {

@@ -5,3 +5,4 @@
 terraform.tfstate
 terraform.tfstate.backup
 api/secrets
+terraform.tfvars
