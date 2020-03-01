@@ -1,13 +1,3 @@
-# Push enabled user for github
-
-resource "aws_iam_access_key" "github" {
-  user = aws_iam_user.github.name
-}
-
-resource "aws_iam_user" "github" {
-  name = "foreign-language-reader-github"
-}
-
 # Read only pull user for K8s
 
 resource "aws_iam_access_key" "kubernetes" {
@@ -53,7 +43,7 @@ resource "aws_iam_policy" "ecr_user" {
 
 resource "aws_iam_policy_attachment" "ecr_user_attach" {
   name       = "ecr_user"
-  users      = [aws_iam_user.github.name, aws_iam_user.kubernetes.name]
+  users      = concat(var.push_users, [aws_iam_user.kubernetes.name])
   policy_arn = aws_iam_policy.ecr_user.arn
 }
 
@@ -63,7 +53,7 @@ module "api_registry" {
   source      = "./container_registry"
   name        = "foreign-language-reader-api"
   image_count = 5
-  push_users  = [aws_iam_user.github.name]
+  push_users  = var.push_users
   pull_users  = [aws_iam_user.kubernetes.name]
 }
 
@@ -71,6 +61,6 @@ module "language_service_registry" {
   source      = "./container_registry"
   name        = "foreign-language-reader-language-service"
   image_count = 5
-  push_users  = [aws_iam_user.github.name]
+  push_users  = var.push_users
   pull_users  = [aws_iam_user.kubernetes.name]
 }

@@ -1,3 +1,7 @@
+data "digitalocean_domain" "main" {
+  name = var.domain_name
+}
+
 resource "digitalocean_project" "foreign_language_reader" {
   name        = "foreign-language-reader"
   description = "Read text in different languages."
@@ -6,7 +10,7 @@ resource "digitalocean_project" "foreign_language_reader" {
   resources = [
     digitalocean_database_cluster.api_mysql.urn,
     digitalocean_loadbalancer.foreign_language_reader.urn,
-  digitalocean_domain.main.urn]
+  data.digitalocean_domain.main.urn]
 }
 
 data "digitalocean_kubernetes_cluster" "foreign_language_reader" {
@@ -87,20 +91,9 @@ resource "digitalocean_loadbalancer" "foreign_language_reader" {
   }
 }
 
-resource "digitalocean_domain" "main" {
-  name = "foreignlanguagereader.com"
-}
-
-resource "digitalocean_record" "www" {
-  domain = digitalocean_domain.main.name
+resource "digitalocean_record" "api" {
+  domain = var.domain_name
   type   = "A"
-  name   = "www"
-  value  = digitalocean_loadbalancer.foreign_language_reader.ip
-}
-
-resource "digitalocean_record" "naked" {
-  domain = digitalocean_domain.main.name
-  type   = "A"
-  name   = "@"
+  name   = "api"
   value  = digitalocean_loadbalancer.foreign_language_reader.ip
 }
