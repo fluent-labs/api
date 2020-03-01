@@ -18,6 +18,8 @@ resource "aws_s3_bucket" "main" {
   }
 }
 
+# TODO add push permissions to the deploy user
+
 resource "aws_s3_bucket_policy" "public_access" {
   bucket = aws_s3_bucket.main.id
 
