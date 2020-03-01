@@ -88,3 +88,29 @@ resource "digitalocean_record" "subdomain" {
   name   = var.subdomain != "" ? var.subdomain : "@"
   value  = aws_cloudfront_distribution.s3_distribution.domain_name
 }
+
+data "aws_iam_policy_document" "deploy" {
+  statement {
+    actions   = ["s3:DeleteObject", "s3:GetBucketLocation", "s3:GetObject", "s3:ListBucket", "s3:PutObject"]
+    effect    = "Allow"
+    resources = ["${aws_s3_bucket.main.arn}/*"]
+  }
+  statement {
+    actions   = ["cloudfront:CreateInvalidation"]
+    effect    = "Allow"
+    resources = [aws_cloudfront_distribution.s3_distribution.arn]
+  }
+}
+
+resource "aws_iam_policy" "deploy" {
+  name        = "${local.full_domain}-deploy-role"
+  description = "IAM policy for deploying to ${local.full_domain}"
+
+  policy = data.aws_iam_policy_document.deploy.json
+}
+
+resource "aws_iam_policy_attachment" "deploy" {
+  name       = "${local.full_domain}-deploy-role-attach"
+  users      = var.deploy_users
+  policy_arn = aws_iam_policy.deploy.arn
+}
