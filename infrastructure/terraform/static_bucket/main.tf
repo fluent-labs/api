@@ -44,12 +44,14 @@ POLICY
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name = aws_s3_bucket.main.website_endpoint
+    domain_name = aws_s3_bucket.main.bucket_regional_domain_name
     origin_id   = local.full_domain
   }
 
   enabled             = true
   default_root_object = "index.html"
+
+  aliases = [local.full_domain]
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
