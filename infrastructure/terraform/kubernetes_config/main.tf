@@ -10,9 +10,9 @@ resource "kubernetes_secret" "api_secret_key_base" {
 
 resource "helm_release" "nginx_ingress" {
   name       = "nginx-ingress"
-  repository = "https://helm.nginx.com/stable"
+  repository = "https://kubernetes-charts.storage.googleapis.com/"
   chart      = "nginx-ingress"
-  version    = "0.4.2"
+  version    = "1.33.0"
 }
 
 resource "kubernetes_namespace" "cert_manager" {
