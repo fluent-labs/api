@@ -44,7 +44,7 @@ POLICY
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name = aws_s3_bucket.main.bucket_regional_domain_name
+    domain_name = aws_s3_bucket.main.website_endpoint
     origin_id   = local.full_domain
   }
 

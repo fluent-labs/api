@@ -158,7 +158,7 @@ jobs:
         aws-region: us-west-2
 
     - name: Deploy to S3
-      run: aws s3 sync build/ s3://foreignlanguagereader.com
+      run: aws s3 sync build/ s3://www.foreignlanguagereader.com
 
   build-language-service:
     name: Build Language Service
