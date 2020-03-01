@@ -1,6 +1,9 @@
 defmodule Api.User do
   use Ecto.Schema
   import Ecto.Changeset
+  @moduledoc """
+  This keeps track of the users of the application
+  """
 
   schema "users" do
     field :email, :string

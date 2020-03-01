@@ -1,6 +1,9 @@
 defmodule Api.Language do
   use Ecto.Schema
   import Ecto.Changeset
+  @moduledoc """
+  Keeps track of languages. Pretty much an enumeration.
+  """
 
   schema "languages" do
     field :name, :string

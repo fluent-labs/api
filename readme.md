@@ -1,9 +1,10 @@
 # Foreign Language Reader
 A site for learning to read foreign languages.
+Note: This is a work in progress. Part of the reason I'm doing it is to build an entire application from the ground up.
 
 ## Parts
 ### Frontend
-A react application that allows users to enter text and see which words they don't know.
+A React application that allows users to enter text and see which words they don't know.
 
 ### API
 A glue layer that puts together all the different data sources and keeps track of the user's vocabulary. Built in Elixir and served with the Phoenix framework.
@@ -16,7 +17,7 @@ A service that provides text processing methods.
 - Vocabulary provided by WiktionaryParser
 
 ### Infrastructure
-Terraform scripts that describe all of our infrastructure.
+Terraform scripts and Kubernetes YAML files that describe all of our infrastructure.
 - Hosted on Digital Ocean
 - Managed by Kubernetes
-- Container hosting by AWS
+- Containers and static content hosted on AWS
