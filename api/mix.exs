@@ -54,6 +54,10 @@ defmodule Api.MixProject do
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
 
+      # Rest client libraries
+      {:tesla, "~> 1.3.0"},
+      {:hackney, "~> 1.15.2"},
+
       # Code quality
       {:credo, "~> 1.2", only: [:dev, :test], runtime: false}
     ]
