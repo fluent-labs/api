@@ -26,6 +26,8 @@ spec:
               secretKeyRef:
                 name: api-secret-key-base
                 key: secret_key_base
+          - name: LANGUAGE_SERVICE_URL
+            value: http://language-service.default.svc.cluster.local:8000
         ports:
         - containerPort: 4000
         readinessProbe:
