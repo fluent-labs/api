@@ -97,3 +97,10 @@ resource "digitalocean_record" "api" {
   name   = "api"
   value  = digitalocean_loadbalancer.foreign_language_reader.ip
 }
+
+resource "digitalocean_record" "language" {
+  domain = var.domain_name
+  type   = "A"
+  name   = "language"
+  value  = digitalocean_loadbalancer.foreign_language_reader.ip
+}

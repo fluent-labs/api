@@ -8,17 +8,19 @@ metadata:
 spec:
   tls:
   - hosts:
-    - foreignlanguagereader.com
+    - api.foreignlanguagereader.com
+    - language.foreignlanguagereader.com
     secretName: flr-tls
   rules:
-  - host: foreignlanguagereader.com
+  - host: api.foreignlanguagereader.com
     http:
       paths:
-      - path: /api/*
-        backend:
+      - backend:
           serviceName: api
           servicePort: 4000
-      - path: /language/*
-        backend:
+  - host: language.foreignlanguagereader.com
+    http:
+      paths:
+      - backend:
           serviceName: language-service
           servicePort: 8000
