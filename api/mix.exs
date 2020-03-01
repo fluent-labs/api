@@ -52,7 +52,7 @@ defmodule Api.MixProject do
 
       # GraphQL API
       {:absinthe, "~> 1.4"},
-      {:absinthe_plug, "~> 1.4"}
+      {:absinthe_plug, "~> 1.4"},
 
       # Code quality
       {:credo, "~> 1.2", only: [:dev, :test], runtime: false}
