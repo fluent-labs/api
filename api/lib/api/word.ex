@@ -1,6 +1,9 @@
 defmodule Api.Word do
   use Ecto.Schema
   import Ecto.Changeset
+  @moduledoc """
+  This encapsulates data about a given word
+  """
 
   schema "words" do
     field :lemma, :string
