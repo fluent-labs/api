@@ -36,8 +36,8 @@ resource "aws_iam_user" "github" {
 }
 
 module "container_registries" {
-  source      = "./container_registries"
-  push_users  = [aws_iam_user.github.name]
+  source     = "./container_registries"
+  push_users = [aws_iam_user.github.name]
 }
 
 resource "digitalocean_domain" "main" {
