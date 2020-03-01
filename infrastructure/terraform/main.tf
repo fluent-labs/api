@@ -25,8 +25,19 @@ provider "helm" {
   }
 }
 
+# Deploy user for github actions
+# Will be given ECR push and S3 sync access
+resource "aws_iam_access_key" "github" {
+  user = aws_iam_user.github.name
+}
+
+resource "aws_iam_user" "github" {
+  name = "foreign-language-reader-github"
+}
+
 module "container_registries" {
-  source = "./container_registries"
+  source      = "./container_registries"
+  push_users  = [aws_iam_user.github.name]
 }
 
 resource "digitalocean_domain" "main" {
@@ -45,4 +56,17 @@ module "kubernetes_cluster_infrastructure" {
 module "kubernetes_config" {
   source              = "./kubernetes_config"
   api_secret_key_base = var.api_secret_key_base
+}
+
+module "frontend" {
+  source       = "./static_bucket"
+  domain       = digitalocean_domain.main.name
+  deploy_users = [aws_iam_user.github.name]
+}
+
+module "storybook" {
+  source       = "./static_bucket"
+  domain       = digitalocean_domain.main.name
+  subdomain    = "storybook"
+  deploy_users = [aws_iam_user.github.name]
 }

@@ -91,16 +91,9 @@ resource "digitalocean_loadbalancer" "foreign_language_reader" {
   }
 }
 
-resource "digitalocean_record" "www" {
+resource "digitalocean_record" "api" {
   domain = var.domain_name
   type   = "A"
-  name   = "www"
-  value  = digitalocean_loadbalancer.foreign_language_reader.ip
-}
-
-resource "digitalocean_record" "naked" {
-  domain = var.domain_name
-  type   = "A"
-  name   = "@"
+  name   = "api"
   value  = digitalocean_loadbalancer.foreign_language_reader.ip
 }
