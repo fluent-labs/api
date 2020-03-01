@@ -1,6 +1,9 @@
 defmodule Api.Vocabulary do
   use Ecto.Schema
   import Ecto.Changeset
+  @moduledoc """
+  This associates Words with Users
+  """
 
   schema "vocabulary" do
     field :user, :id

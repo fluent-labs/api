@@ -1,5 +1,8 @@
 defmodule Api.Release do
   @app :api
+  @moduledoc """
+  This is used to perform database migrations as part of deployment
+  """
 
   def migrate do
     for repo <- repos() do
