@@ -1,5 +1,5 @@
 locals {
-  full_domain = "${var.subdomain}${var.subdomain != "" ? "." : ""}${var.domain}"
+  full_domain = "${var.subdomain}.${var.domain}"
 }
 
 data "digitalocean_domain" "main" {
@@ -84,7 +84,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 resource "digitalocean_record" "subdomain" {
   domain = data.digitalocean_domain.main.name
   type   = "CNAME"
-  name   = var.subdomain != "" ? var.subdomain : "@"
+  name   = var.subdomain
   value  = "${aws_cloudfront_distribution.s3_distribution.domain_name}."
 }
 

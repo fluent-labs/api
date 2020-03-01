@@ -7,6 +7,5 @@ variable "domain" {
 }
 
 variable "subdomain" {
-  description = "The subdomains the site will be hosted on."
-  default     = ""
+  description = "The subdomain the site will be hosted on."
 }

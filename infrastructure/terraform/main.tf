@@ -61,6 +61,7 @@ module "kubernetes_config" {
 module "frontend" {
   source       = "./static_bucket"
   domain       = digitalocean_domain.main.name
+  subdomain    = "www"
   deploy_users = [aws_iam_user.github.name]
 }
 
