@@ -8,7 +8,8 @@
 use Mix.Config
 
 config :api,
-  ecto_repos: [Api.Repo]
+  ecto_repos: [Api.Repo],
+  language_service_url: "http://localhost:8000"
 
 # Configures the endpoint
 config :api, ApiWeb.Endpoint,
