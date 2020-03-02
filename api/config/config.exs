@@ -9,6 +9,7 @@ use Mix.Config
 
 config :api,
   ecto_repos: [Api.Repo],
+  auth_token: "simpletoken",
   language_service_url: "http://localhost:8000"
 
 # Configures the endpoint
