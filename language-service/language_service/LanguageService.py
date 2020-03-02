@@ -10,10 +10,18 @@ app = Flask(__name__)
 api = Api(app)
 
 API_BASE = os.getenv("APPLICATION_ROOT", "/")
+AUTH_TOKEN = os.getenv("AUTH_TOKEN")
+
+
+def is_authorized(request):
+    return 'Authorization' in request.headers and request.headers['Authorization'] == AUTH_TOKEN
 
 
 class DocumentHandler(Resource):
     def post(self, language=None):
+        if not is_authorized:
+            return {"error": "No authorization provided"}, 401
+
         request_json = request.get_json()
 
         if language is None or language == "":
@@ -43,6 +51,9 @@ class HealthHandler(Resource):
 
 class VocabHandler(Resource):
     def get(self, language=None, word=None):
+        if not is_authorized:
+            return {"error": "No authorization provided"}, 401
+
         if language is None or language == "":
             return {"error": "Language is required"}, 400
 
