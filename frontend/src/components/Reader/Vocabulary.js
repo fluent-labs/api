@@ -14,14 +14,16 @@ const GET_WORDS_IN_TEXT = gql`
       text
       partOfSpeech
       lemma
-      definitions
-      ... on ChineseWord {
-        hsk
-        pinyin
-      }
     }
   }
 `;
+
+// Removed
+// definitions
+// ... on ChineseWord {
+//   hsk
+//   pinyin
+// }
 
 const Vocabulary = props => {
   const { language, text, submitted } = props;
