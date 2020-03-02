@@ -11,15 +11,15 @@ const GET_WORDS_IN_TEXT = gql`
   query getWordsInText($language: String!, $text: String!) {
     wordsInText(language: $language, text: $text) {
       language
-      text
-      partOfSpeech
+      token
+      tag
       lemma
+      definitions
     }
   }
 `;
 
 // Removed
-// definitions
 // ... on ChineseWord {
 //   hsk
 //   pinyin
@@ -46,7 +46,7 @@ const Vocabulary = props => {
   return (
     <Card.Group>
       {data.wordsInText.map(word => (
-        <Word key={word.text} {...word} />
+        <Word key={word.token} {...word} />
       ))}
     </Card.Group>
   );
