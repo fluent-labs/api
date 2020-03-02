@@ -1,4 +1,4 @@
-defmodule Api.LanguageServiceClient do
+defmodule Api.Clients.LanguageService do
   use Tesla
   @moduledoc """
   A client to connect to the language service
