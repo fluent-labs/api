@@ -1,10 +1,31 @@
+# Token used for connecting between services
+resource "random_password" "local_connection_token" {
+  length = 64
+  special = true
+}
+
+resource "kubernetes_secret" "local_connection_token" {
+  metadata {
+    name = "local-connection-token"
+  }
+
+  data = {
+    local_connection_token = random_password.local_connection_token.result
+  }
+}
+
+resource "random_password" "api_secret_key_base" {
+  length = 64
+  special = true
+}
+
 resource "kubernetes_secret" "api_secret_key_base" {
   metadata {
     name = "api-secret-key-base"
   }
 
   data = {
-    secret_key_base = var.api_secret_key_base
+    secret_key_base = random_password.api_secret_key_base.result
   }
 }
 

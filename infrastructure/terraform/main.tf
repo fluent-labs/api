@@ -54,8 +54,7 @@ module "kubernetes_cluster_infrastructure" {
 
 # Installed apps, some secrets, service users, etc.
 module "kubernetes_config" {
-  source              = "./kubernetes_config"
-  api_secret_key_base = var.api_secret_key_base
+  source = "./kubernetes_config"
 }
 
 module "frontend" {
