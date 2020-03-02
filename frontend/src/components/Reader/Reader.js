@@ -22,7 +22,11 @@ class Reader extends Component {
     return (
       <div>
         <LanguageInput onSubmit={this.handleSubmit} />
-        <Vocabulary text={this.state.text} submitted={this.state.submitted} />
+        <Vocabulary
+          language={this.state.language}
+          text={this.state.text}
+          submitted={this.state.submitted}
+        />
       </div>
     );
   };

@@ -8,8 +8,8 @@ import { Card, Dimmer, Loader } from "semantic-ui-react";
 import Word from "./Word";
 
 const GET_WORDS_IN_TEXT = gql`
-  query getWordsInText($text: String!) {
-    wordsInText(text: $text) {
+  query getWordsInText($language: String!, $text: String!) {
+    wordsInText(language: $language, text: $text) {
       language
       text
       partOfSpeech
@@ -24,10 +24,10 @@ const GET_WORDS_IN_TEXT = gql`
 `;
 
 const Vocabulary = props => {
-  const { text, submitted } = props;
+  const { language, text, submitted } = props;
 
   const { data, loading, error } = useQuery(GET_WORDS_IN_TEXT, {
-    variables: { text }
+    variables: { language, text }
   });
 
   if (!submitted) return <p>Submit text to see some vocabulary.</p>;
@@ -51,6 +51,7 @@ const Vocabulary = props => {
 };
 
 Vocabulary.propTypes = {
+  language: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
   submitted: PropTypes.bool.isRequired
 };
