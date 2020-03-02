@@ -8,7 +8,9 @@
 use Mix.Config
 
 config :api,
-  ecto_repos: [Api.Repo]
+  ecto_repos: [Api.Repo],
+  auth_token: "simpletoken",
+  language_service_url: "http://localhost:8000"
 
 # Configures the endpoint
 config :api, ApiWeb.Endpoint,
@@ -24,6 +26,9 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+# Use hackney for rest requests
+config :tesla, adapter: Tesla.Adapter.Hackney
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
