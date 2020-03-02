@@ -1,6 +1,6 @@
 # Token used for connecting between services
 resource "random_password" "local_connection_token" {
-  length = 64
+  length  = 64
   special = true
 }
 
@@ -15,7 +15,7 @@ resource "kubernetes_secret" "local_connection_token" {
 }
 
 resource "random_password" "api_secret_key_base" {
-  length = 64
+  length  = 64
   special = true
 }
 
