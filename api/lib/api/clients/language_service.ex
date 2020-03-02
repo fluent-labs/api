@@ -39,6 +39,9 @@ defmodule Api.Clients.LanguageService do
 
   def definition(language, word) do
     url = "/v1/definition/" <> serialize_language(language) <> "/" <> word
-    get(url)
+    case get(url) do
+      {:ok, %{body: body}} -> {:ok, body}
+      _ -> :error
+    end
   end
 end
