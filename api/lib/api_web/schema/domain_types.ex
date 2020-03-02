@@ -24,6 +24,8 @@ defmodule ApiWeb.Schema.DomainTypes do
     field :part_of_speech, :string
     field :lemma, :string
     field :definitions, %Absinthe.Type.List{of_type: non_null(:string)}
+
+    interface :word
   end
 
   object :chinese_word do
@@ -35,6 +37,8 @@ defmodule ApiWeb.Schema.DomainTypes do
     field :definitions, %Absinthe.Type.List{of_type: non_null(:string)}
     field :hsk, :integer
     field :pinyin, %Absinthe.Type.List{of_type: non_null(:string)}
+
+    interface :word
   end
 
   object :user do
