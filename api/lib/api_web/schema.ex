@@ -1,4 +1,7 @@
 defmodule ApiWeb.Schema do
+  @moduledoc """
+  Provides the main entrypoints for our graphql schema
+  """
   use Absinthe.Schema
   import_types ApiWeb.Schema.DomainTypes
 

@@ -1,4 +1,7 @@
 defmodule ApiWeb.Resolvers.Domain do
+  @moduledoc """
+  Resolves queries and types for our schema
+  """
   alias Api.Clients
 
   defp resolve_word(word, language) do

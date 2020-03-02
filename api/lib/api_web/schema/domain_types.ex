@@ -1,4 +1,7 @@
 defmodule ApiWeb.Schema.DomainTypes do
+  @moduledoc """
+  The schema for our GraphQL endpoint
+  """
   use Absinthe.Schema.Notation
 
   enum :language, values: [:chinese, :english, :spanish]
