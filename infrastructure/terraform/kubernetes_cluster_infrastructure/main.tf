@@ -65,6 +65,7 @@ resource "kubernetes_secret" "api_database_credentials" {
 # Configure networking
 
 # This is created by K8s and needs to be imported manually
+# Note that the ports are randomly assigned so you should update these to match what you import
 resource "digitalocean_loadbalancer" "foreign_language_reader" {
   name   = "foreign-language-reader"
   region = "sfo2"
