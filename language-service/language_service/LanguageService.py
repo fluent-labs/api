@@ -52,7 +52,7 @@ class HealthHandler(Resource):
         return "Language service is up", 200
 
 
-class VocabHandler(Resource):
+class DefinitionHandler(Resource):
     def get(self, language=None, word=None):
         if not is_authorized:
             return {"error": "No authorization provided"}, 401
@@ -74,7 +74,7 @@ class VocabHandler(Resource):
 api.add_resource(DocumentHandler, API_BASE + "/v1/tagging/<string:language>/document")
 api.add_resource(HealthHandler, "/health")
 api.add_resource(
-    VocabHandler, API_BASE + "/v1/vocabulary/<string:language>/<string:word>"
+    DefinitionHandler, API_BASE + "/v1/definition/<string:language>/<string:word>"
 )
 
 if __name__ == "__main__":
