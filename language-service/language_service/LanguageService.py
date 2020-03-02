@@ -14,7 +14,10 @@ AUTH_TOKEN = os.getenv("AUTH_TOKEN")
 
 
 def is_authorized(request):
-    return 'Authorization' in request.headers and request.headers['Authorization'] == AUTH_TOKEN
+    return (
+        "Authorization" in request.headers
+        and request.headers["Authorization"] == AUTH_TOKEN
+    )
 
 
 class DocumentHandler(Resource):
