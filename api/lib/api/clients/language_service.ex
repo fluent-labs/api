@@ -37,8 +37,8 @@ defmodule Api.Clients.LanguageService do
     end
   end
 
-  def get_vocab(language, word) do
-    url = "/v1/vocabulary/" <> serialize_language(language) <> "/" <> word
+  def definition(language, word) do
+    url = "/v1/definition/" <> serialize_language(language) <> "/" <> word
     get(url)
   end
 end
