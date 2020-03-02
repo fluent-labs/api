@@ -2,7 +2,7 @@ defmodule ApiWeb.Router do
   use ApiWeb, :router
 
   pipeline :api do
-    plug CORSPlug, origin: ["http://localhost:4000", "https://api.foreignlanguagereader.com"]
+    plug CORSPlug, origin: ["http://localhost:3000", "https://api.foreignlanguagereader.com"]
     plug :accepts, ["json"]
   end
 
