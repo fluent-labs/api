@@ -48,9 +48,9 @@ defmodule Api.Clients.LanguageService do
   # We will eventually resolve definitions in more than one base language
   defp resolve_definition_in_english(response_body) do
     response_body
-    |> Enum.filter( fn word -> Map.has_key?(word, "definitions") end)
-    |> Enum.flat_map( fn word -> Map.fetch!(word, "definitions") end)
-    |> Enum.filter( fn definition -> Map.has_key?(definition, "text") end)
-    |> Enum.flat_map( fn definition -> Map.fetch!(definition, "text") end)
+    |> Enum.filter(fn word -> Map.has_key?(word, "definitions") end)
+    |> Enum.flat_map(fn word -> Map.fetch!(word, "definitions") end)
+    |> Enum.filter(fn definition -> Map.has_key?(definition, "text") end)
+    |> Enum.flat_map(fn definition -> Map.fetch!(definition, "text") end)
   end
 end
