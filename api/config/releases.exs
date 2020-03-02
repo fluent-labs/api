@@ -1,5 +1,12 @@
 import Config
 
+auth_token =
+  System.get_env("AUTH_TOKEN") ||
+    raise """
+    environment variable AUTH_TOKEN is missing.
+    This is required to communicate between services
+    """
+
 database_url =
   System.get_env("DATABASE_URL") ||
     raise """
@@ -22,6 +29,7 @@ secret_key_base =
     """
 
 config :api,
+  auth_token: auth_token,
   language_service_url: language_service_url
 
 config :api, Api.Repo,
