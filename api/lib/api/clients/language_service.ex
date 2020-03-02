@@ -20,14 +20,25 @@ defmodule Api.Clients.LanguageService do
     Application.fetch_env!(@app, :auth_token)
   end
 
+  defp serialize_language(language) do
+    case language do
+      :chinese -> "CHINESE"
+      :english -> "ENGLISH"
+      :spanish -> "SPANISH"
+    end
+  end
+
   def tag(language, text) do
-    url = "/v1/tagging/" <> language <> "/document"
-    body = %{text: text}
-    post(url, body)
+    url = "/v1/tagging/" <> serialize_language(language) <> "/document"
+
+    case post(url, %{text: text}) do
+      {:ok, %{body: body}} -> {:ok, body}
+      _ -> :error
+    end
   end
 
   def get_vocab(language, word) do
-    url = "/v1/vocabulary/" <> language <> "/" <> word
+    url = "/v1/vocabulary/" <> serialize_language(language) <> "/" <> word
     get(url)
   end
 end
