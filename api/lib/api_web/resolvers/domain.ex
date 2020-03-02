@@ -9,7 +9,8 @@ defmodule ApiWeb.Resolvers.Domain do
       language: language,
       text: Map.get(word, "token"),
       part_of_speech: Map.get(word, "tag"),
-      lemma: Map.get(word, "lemma")
+      lemma: Map.get(word, "lemma"),
+      definitions: Map.get(word, "definitions")
     }
   end
 
