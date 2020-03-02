@@ -9,8 +9,8 @@ defmodule ApiWeb.Schema.DomainTypes do
   interface :word do
     field :id, non_null(:id)
     field :language, non_null(:language)
-    field :text, non_null(:string)
-    field :part_of_speech, :string
+    field :token, non_null(:string)
+    field :tag, :string
     field :lemma, :string
     field :definitions, %Absinthe.Type.List{of_type: non_null(:string)}
 
@@ -25,8 +25,8 @@ defmodule ApiWeb.Schema.DomainTypes do
   object :generic_word do
     field :id, non_null(:id)
     field :language, non_null(:language)
-    field :text, non_null(:string)
-    field :part_of_speech, :string
+    field :token, non_null(:string)
+    field :tag, :string
     field :lemma, :string
     field :definitions, %Absinthe.Type.List{of_type: non_null(:string)}
 
@@ -36,8 +36,8 @@ defmodule ApiWeb.Schema.DomainTypes do
   object :chinese_word do
     field :id, non_null(:id)
     field :language, non_null(:language)
-    field :text, non_null(:string)
-    field :part_of_speech, :string
+    field :token, non_null(:string)
+    field :tag, :string
     field :lemma, :string
     field :definitions, %Absinthe.Type.List{of_type: non_null(:string)}
     field :hsk, :integer
@@ -49,8 +49,8 @@ defmodule ApiWeb.Schema.DomainTypes do
   object :english_word do
     field :id, non_null(:id)
     field :language, non_null(:language)
-    field :text, non_null(:string)
-    field :part_of_speech, :string
+    field :token, non_null(:string)
+    field :tag, :string
     field :lemma, :string
     field :definitions, %Absinthe.Type.List{of_type: non_null(:string)}
 
@@ -60,8 +60,8 @@ defmodule ApiWeb.Schema.DomainTypes do
   object :spanish_word do
     field :id, non_null(:id)
     field :language, non_null(:language)
-    field :text, non_null(:string)
-    field :part_of_speech, :string
+    field :token, non_null(:string)
+    field :tag, :string
     field :lemma, :string
     field :definitions, %Absinthe.Type.List{of_type: non_null(:string)}
 

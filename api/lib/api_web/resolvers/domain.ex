@@ -7,8 +7,8 @@ defmodule ApiWeb.Resolvers.Domain do
   defp resolve_word(word, language) do
     %{
       language: language,
-      text: Map.get(word, "token"),
-      part_of_speech: Map.get(word, "tag"),
+      token: Map.get(word, "token"),
+      tag: Map.get(word, "tag"),
       lemma: Map.get(word, "lemma"),
       definitions: Map.get(word, "definitions")
     }
