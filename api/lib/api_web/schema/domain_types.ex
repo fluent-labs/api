@@ -75,8 +75,8 @@ defmodule ApiWeb.Schema.DomainTypes do
     field :examples, %Absinthe.Type.List{of_type: non_null(:string)}
 
     resolve_type fn
-      %{pinyin: _}, _ -> :chinese_word
-      _, _ -> :generic_word
+      %{pinyin: _}, _ -> :chinese_definition
+      _, _ -> :generic_definition
     end
   end
 
