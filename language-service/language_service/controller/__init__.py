@@ -38,6 +38,33 @@ class DefinitionController(Resource):
             return {"error": "An error occurred"}, 500
 
 
+class DefinitionMultipleController(Resource):
+    def post(self, language=None):
+        if not is_authorized:
+            return {"error": "No authorization provided"}, 401
+
+        request_json = request.get_json()
+
+        if language is None or language == "":
+            return {"error": "Language is required"}, 400
+
+        if language not in SUPPORTED_LANGUAGES:
+            return {"error": "Language %s is not supported" % language}, 400
+
+        if request_json is None or "words" not in request_json:
+            return {"error": "Words is required"}, 400
+
+        words = request_json["words"]
+
+        try:
+            definitions = [get_definition(language, word) for word in words]
+            return words, 200
+        except Exception as e:
+            print("Error getting definitions in %s for words: %s" % (language, text))
+            print(e)
+            return {"error": "An error occurred"}, 500
+
+
 class DocumentController(Resource):
     def post(self, language=None):
         if not is_authorized:
