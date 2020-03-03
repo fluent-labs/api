@@ -4,21 +4,16 @@ defmodule ApiWeb.Resolvers.Domain do
   """
   alias Api.Clients
 
-  defp resolve_word(word, language) do
-    %{
-      language: language,
-      token: Map.get(word, "token"),
-      tag: Map.get(word, "tag"),
-      lemma: Map.get(word, "lemma"),
-      definitions: Map.get(word, "definitions")
-    }
-  end
-
   def get_words_in_text(_parent, %{language: language, text: text}, _resolution) do
-    case Clients.LanguageService.tag(language, text) do
-      {:ok, response} -> {:ok, Enum.map(response, fn word -> resolve_word(word, language) end)}
-      _ -> {:error, "Error getting text"}
-    end
+    {:ok, words} = Clients.LanguageService.tag(language, text)
+    tokens = Enum.map(words, fn word -> Map.fetch!(word, :token) end)
+    {:ok, definitions} = Clients.LanguageService.definitions(language, tokens)
+
+    processed_words = words
+    |> Enum.map(fn word -> Map.put(word, :language, language) end)
+    |> Enum.map(fn word -> Map.put(word, :definitions, Map.get(definitions, Map.fetch!(word, :token))) end)
+
+    {:ok, processed_words}
   end
 
 end
