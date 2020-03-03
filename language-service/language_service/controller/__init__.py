@@ -6,6 +6,7 @@ from service.nlp import tag
 from service.vocab import get_definition
 
 AUTH_TOKEN = os.getenv("AUTH_TOKEN")
+SUPPORTED_LANGUAGES = ["CHINESE", "ENGLISH", "SPANISH"]
 
 
 def is_authorized(request):
@@ -22,6 +23,9 @@ class DefinitionController(Resource):
 
         if language is None or language == "":
             return {"error": "Language is required"}, 400
+
+        if language not in SUPPORTED_LANGUAGES:
+            return {"error": "Language %s is not supported" % language}, 400
 
         if word is None or word == "":
             return {"error": "Word is required"}, 400
@@ -43,6 +47,9 @@ class DocumentController(Resource):
 
         if language is None or language == "":
             return {"error": "Language is required"}, 400
+
+        if language not in SUPPORTED_LANGUAGES:
+            return {"error": "Language %s is not supported" % language}, 400
 
         if request_json is None or "text" not in request_json:
             return {"error": "Text is required"}, 400
