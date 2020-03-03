@@ -24,14 +24,15 @@ class DefinitionController(Resource):
         if language is None or language == "":
             return {"error": "Language is required"}, 400
 
-        if language.upper() not in SUPPORTED_LANGUAGES:
+        language = language.upper()
+        if language not in SUPPORTED_LANGUAGES:
             return {"error": "Language %s is not supported" % language}, 400
 
         if word is None or word == "":
             return {"error": "Word is required"}, 400
 
         try:
-            return get_definitions(language, word), 200
+            return [definition.to_json() for definition in get_definitions(language, word)], 200
         except Exception as e:
             print("Error getting definition in %s for: %s" % (language, word))
             print(e)
@@ -48,7 +49,8 @@ class DefinitionMultipleController(Resource):
         if language is None or language == "":
             return {"error": "Language is required"}, 400
 
-        if language.upper() not in SUPPORTED_LANGUAGES:
+        language = language.upper()
+        if language not in SUPPORTED_LANGUAGES:
             return {"error": "Language %s is not supported" % language}, 400
 
         if request_json is None or "words" not in request_json:
@@ -58,7 +60,7 @@ class DefinitionMultipleController(Resource):
 
         try:
             definitions = {
-                word: get_definitions(language, word)
+                word: [definition.to_json() for definition in get_definitions(language, word)]
                 for word in words
             }
             return definitions, 200
@@ -78,6 +80,7 @@ class DocumentController(Resource):
         if language is None or language == "":
             return {"error": "Language is required"}, 400
 
+        language = language.upper()
         if language.upper() not in SUPPORTED_LANGUAGES:
             return {"error": "Language %s is not supported" % language}, 400
 
@@ -87,7 +90,7 @@ class DocumentController(Resource):
         text = request_json["text"]
 
         try:
-            return tag(language.upper(), text), 200
+            return tag(language, text), 200
         except Exception as e:
             print("Error getting words in %s for text: %s" % (language, text))
             print(e)
