@@ -20,5 +20,5 @@ def parse_definition(definition):
     subdefinitions = definition["text"] if "text" in definition else None
     tag = definition["partOfSpeech"] if "partOfSpeech" in definition else None
     examples = definition["examples"] if "examples" in definition else None
-    
+
     return Definition(subdefinitions=subdefinitions, tag=tag, examples=examples)

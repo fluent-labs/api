@@ -16,7 +16,7 @@ class Definition:
             "subdefinitions": self.subdefinitions,
             "tag": self.tag,
             "examples": self.examples,
-            "optional_fields": self.optional_fields
+            "optional_fields": self.optional_fields,
         }
 
 

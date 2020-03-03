@@ -14,7 +14,11 @@ def get_definitions(language, word):
                 definition.set_subdefinitions(cedict_definition["definitions"])
 
                 # Use language-specific information
-                optional_properties = {"traditional": cedict_definition["traditional"], "simplified": cedict_definition["simplified"], "pinyin": cedict_definition["pinyin"]}
+                optional_properties = {
+                    "traditional": cedict_definition["traditional"],
+                    "simplified": cedict_definition["simplified"],
+                    "pinyin": cedict_definition["pinyin"],
+                }
                 definition.set_optional_fields(optional_properties)
 
         return wiktionary_definitions

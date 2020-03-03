@@ -34,7 +34,13 @@ class DefinitionController(Resource):
             return {"error": "Word is required"}, 400
 
         try:
-            return [definition.to_json() for definition in get_definitions(language, word)], 200
+            return (
+                [
+                    definition.to_json()
+                    for definition in get_definitions(language, word)
+                ],
+                200,
+            )
         except Exception as e:
             print("Error getting definition in %s for: %s" % (language, word))
             stacktrace = traceback.format_exc()
@@ -63,7 +69,10 @@ class DefinitionMultipleController(Resource):
 
         try:
             definitions = {
-                word: [definition.to_json() for definition in get_definitions(language, word)]
+                word: [
+                    definition.to_json()
+                    for definition in get_definitions(language, word)
+                ]
                 for word in words
             }
             return definitions, 200

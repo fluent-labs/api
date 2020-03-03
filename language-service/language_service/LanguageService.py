@@ -3,7 +3,12 @@ import os
 from flask import Flask
 from flask_restful import Api
 
-from controller import DefinitionController, DefinitionMultipleController, DocumentController, HealthController
+from controller import (
+    DefinitionController,
+    DefinitionMultipleController,
+    DocumentController,
+    HealthController,
+)
 
 app = Flask(__name__)
 api = Api(app)
