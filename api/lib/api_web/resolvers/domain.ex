@@ -9,11 +9,13 @@ defmodule ApiWeb.Resolvers.Domain do
     tokens = Enum.map(words, fn word -> Map.fetch!(word, :token) end)
     {:ok, definitions} = Clients.LanguageService.definitions(language, tokens)
 
-    processed_words = words
-    |> Enum.map(fn word -> Map.put(word, :language, language) end)
-    |> Enum.map(fn word -> Map.put(word, :definitions, Map.get(definitions, Map.fetch!(word, :token))) end)
+    processed_words =
+      words
+      |> Enum.map(fn word -> Map.put(word, :language, language) end)
+      |> Enum.map(fn word ->
+        Map.put(word, :definitions, Map.get(definitions, Map.fetch!(word, :token)))
+      end)
 
     {:ok, processed_words}
   end
-
 end

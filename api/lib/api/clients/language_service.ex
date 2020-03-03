@@ -1,12 +1,13 @@
 defmodule Api.Clients.LanguageService do
   use Tesla
+
   @moduledoc """
   A client to connect to the language service
   """
 
-  plug Tesla.Middleware.BaseUrl, language_service_base_url()
-  plug Tesla.Middleware.Headers, [{"Authorization", auth_token()}]
-  plug Tesla.Middleware.JSON
+  plug(Tesla.Middleware.BaseUrl, language_service_base_url())
+  plug(Tesla.Middleware.Headers, [{"Authorization", auth_token()}])
+  plug(Tesla.Middleware.JSON)
 
   @app :api
 
@@ -47,6 +48,7 @@ defmodule Api.Clients.LanguageService do
 
   def definition(language, word) do
     url = "/v1/definition/" <> serialize_language(language) <> "/" <> word
+
     case get(url) do
       {:ok, %{body: body}} -> {:ok, atomize(body)}
       _ -> :error
@@ -55,10 +57,13 @@ defmodule Api.Clients.LanguageService do
 
   def definitions(language, words) do
     url = "/v1/definitions/" <> serialize_language(language) <> "/"
-    response = case post(url, %{words: words}) do
-      {:ok, %{body: body}} -> body
-      _ -> :error
-    end
+
+    response =
+      case post(url, %{words: words}) do
+        {:ok, %{body: body}} -> body
+        _ -> :error
+      end
+
     mapped = Enum.map(response, fn {word, definition} -> {word, atomize(definition)} end)
 
     # Bit of an ugly hack because we can't just map over dictionary
