@@ -1,23 +1,25 @@
-from wiktionaryparser import WiktionaryParser
-from dto import Definition
-
-parser = WiktionaryParser()
+from .cedict import get_definitions as get_cedict_definitions
+from .wiktionary import get_definitions as get_wiktionary_definitions
 
 
 def get_definitions(language, word):
-    response = parser.fetch(word, language)
+    if language == "CHINESE":
+        wiktionary_definition = get_wiktionary_definitions(language, word)
 
-    definitions = []
-    for entry in response:
-        if "definitions" in entry:
-            for definition in entry["definitions"]:
-                definitions.append(parse_definition(definition))
+        # {"traditional": "%", "simplified": "%", "pinyin": "pa1", "definitions": ["percent (Tw)"], "id": 0}
+        cedict_definition = get_cedict_definitions(word)
+        if cedict_definition:
+            # The CEDICT definitions are more focused than wiktionary so we should prefer them.
+            wiktionary_definition.subdefinitions = cedict_definition["definitions"]
 
-    return definitions
+            # Use language-specific information
+            optional_properties = {"traditional": cedict_definition["traditional"], "simplified": cedict_definition["simplified"], "pinyin": cedict_definition["pinyin"]}
+            wiktionary_definition.optional_properties = optional_properties
 
-
-def parse_definition(definition):
-    subdefinitions = definition["text"] if "text" in definition else None
-    tag = definition["partOfSpeech"] if "partOfSpeech" in definition else None
-    examples = definition["examples"] if "examples" in definition else None
-    return Definition(subdefinitions=subdefinitions, tag=tag, examples=examples)
+        return wiktionary_definition
+    elif language == "ENGLISH":
+        return get_wiktionary_definitions(language, word)
+    elif language == "SPANISH":
+        return get_wiktionary_definitions(language, word)
+    else:
+        raise NotImplementedError("Unknown language requested: %s")
