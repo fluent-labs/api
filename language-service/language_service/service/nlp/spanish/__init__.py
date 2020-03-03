@@ -1,5 +1,6 @@
 import es_core_news_sm
-from ..common import is_not_punctuation, Word
+from ..common import is_not_punctuation
+from dto import Word
 
 parser = es_core_news_sm.load()
 

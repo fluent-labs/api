@@ -1,5 +1,6 @@
 import en_core_web_sm
-from ..common import is_not_punctuation, Word
+from ..common import is_not_punctuation
+from dto import Word
 
 parser = en_core_web_sm.load()
 
