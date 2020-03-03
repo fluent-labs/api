@@ -13,7 +13,9 @@ API_BASE = os.getenv("APPLICATION_ROOT", "/")
 api.add_resource(
     DefinitionController, API_BASE + "/v1/definition/<string:language>/<string:word>"
 )
-api.add_resource(DocumentController, API_BASE + "/v1/tagging/<string:language>/document")
+api.add_resource(
+    DocumentController, API_BASE + "/v1/tagging/<string:language>/document"
+)
 api.add_resource(HealthController, "/health")
 
 if __name__ == "__main__":
