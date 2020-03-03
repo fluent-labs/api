@@ -4,8 +4,6 @@ defmodule ApiWeb.Schema.DomainTypes do
   """
   use Absinthe.Schema.Notation
 
-  alias Api.Clients
-
   enum :language, values: [:chinese, :english, :spanish]
 
   interface :word do
@@ -14,7 +12,7 @@ defmodule ApiWeb.Schema.DomainTypes do
     field :token, non_null(:string)
     field :tag, :string
     field :lemma, :string
-    field :definitions, %Absinthe.Type.List{of_type: non_null(:string)}
+    field :definitions, %Absinthe.Type.List{of_type: non_null(:definition)}
 
     resolve_type fn
       %{language: :chinese}, _ -> :chinese_word
@@ -30,7 +28,7 @@ defmodule ApiWeb.Schema.DomainTypes do
     field :token, non_null(:string)
     field :tag, :string
     field :lemma, :string
-    field :definitions, %Absinthe.Type.List{of_type: non_null(:string)}
+    field :definitions, %Absinthe.Type.List{of_type: non_null(:definition)}
 
     interface :word
   end
@@ -42,15 +40,7 @@ defmodule ApiWeb.Schema.DomainTypes do
     field :tag, :string
     field :lemma, :string
 
-    field :definitions, %Absinthe.Type.List{of_type: non_null(:string)} do
-      resolve fn word, _, _ ->
-        case Clients.LanguageService.definition(:chinese, word.token) do
-          {:ok, response} ->
-            {:ok, response}
-          _ -> {:error, "Error getting text"}
-        end
-      end
-    end
+    field :definitions, %Absinthe.Type.List{of_type: non_null(:definition)}
 
     field :hsk, :integer
     field :pinyin, %Absinthe.Type.List{of_type: non_null(:string)}
@@ -64,15 +54,7 @@ defmodule ApiWeb.Schema.DomainTypes do
     field :token, non_null(:string)
     field :tag, :string
     field :lemma, :string
-    field :definitions, %Absinthe.Type.List{of_type: non_null(:string)} do
-      resolve fn word, _, _ ->
-        case Clients.LanguageService.definition(:english, word.token) do
-          {:ok, response} ->
-            {:ok, response}
-          _ -> {:error, "Error getting text"}
-        end
-      end
-    end
+    field :definitions, %Absinthe.Type.List{of_type: non_null(:definition)}
 
     interface :word
   end
@@ -83,17 +65,36 @@ defmodule ApiWeb.Schema.DomainTypes do
     field :token, non_null(:string)
     field :tag, :string
     field :lemma, :string
-    field :definitions, %Absinthe.Type.List{of_type: non_null(:string)} do
-      resolve fn word, _, _ ->
-        case Clients.LanguageService.definition(:spanish, word.token) do
-          {:ok, response} ->
-            {:ok, response}
-          _ -> {:error, "Error getting text"}
-        end
-      end
-    end
+    field :definitions, %Absinthe.Type.List{of_type: non_null(:definition)}
 
     interface :word
+  end
+
+  interface :definition do
+    field :subdefinitions, %Absinthe.Type.List{of_type: non_null(:string)}
+    field :examples, %Absinthe.Type.List{of_type: non_null(:string)}
+
+    resolve_type fn
+      %{pinyin: _}, _ -> :chinese_word
+      _, _ -> :generic_word
+    end
+  end
+
+  object :generic_definition do
+    field :subdefinitions, %Absinthe.Type.List{of_type: non_null(:string)}
+    field :examples, %Absinthe.Type.List{of_type: non_null(:string)}
+
+    interface :definition
+  end
+
+  object :chinese_definition do
+    field :subdefinitions, %Absinthe.Type.List{of_type: non_null(:string)}
+    field :examples, %Absinthe.Type.List{of_type: non_null(:string)}
+    field :traditional, :string
+    field :simplified, :string
+    field :pinyin, :string
+
+    interface :definition
   end
 
   object :user do
