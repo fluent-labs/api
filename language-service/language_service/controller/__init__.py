@@ -1,4 +1,6 @@
 import os
+import traceback
+
 from flask import request
 from flask_restful import Resource
 
@@ -35,7 +37,8 @@ class DefinitionController(Resource):
             return [definition.to_json() for definition in get_definitions(language, word)], 200
         except Exception as e:
             print("Error getting definition in %s for: %s" % (language, word))
-            print(e)
+            stacktrace = traceback.format_exc()
+            print(stacktrace)
             return {"error": "An error occurred"}, 500
 
 
@@ -66,7 +69,8 @@ class DefinitionMultipleController(Resource):
             return definitions, 200
         except Exception as e:
             print("Error getting definitions in %s for words: %s" % (language, text))
-            print(e)
+            stacktrace = traceback.format_exc()
+            print(stacktrace)
             return {"error": "An error occurred"}, 500
 
 
@@ -93,7 +97,8 @@ class DocumentController(Resource):
             return tag(language, text), 200
         except Exception as e:
             print("Error getting words in %s for text: %s" % (language, text))
-            print(e)
+            stacktrace = traceback.format_exc()
+            print(stacktrace)
             return {"error": "An error occurred"}, 500
 
 

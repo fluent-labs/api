@@ -4,19 +4,20 @@ from .wiktionary import get_definitions as get_wiktionary_definitions
 
 def get_definitions(language, word):
     if language == "CHINESE":
-        wiktionary_definition = get_wiktionary_definitions(language, word)
+        wiktionary_definitions = get_wiktionary_definitions(language, word)
 
-        # {"traditional": "%", "simplified": "%", "pinyin": "pa1", "definitions": ["percent (Tw)"], "id": 0}
         cedict_definition = get_cedict_definitions(word)
         if cedict_definition:
-            # The CEDICT definitions are more focused than wiktionary so we should prefer them.
-            wiktionary_definition.subdefinitions = cedict_definition["definitions"]
+            print("Attaching cedict definition")
+            for definition in wiktionary_definitions:
+                # The CEDICT definitions are more focused than wiktionary so we should prefer them.
+                definition.set_subdefinitions(cedict_definition["definitions"])
 
-            # Use language-specific information
-            optional_properties = {"traditional": cedict_definition["traditional"], "simplified": cedict_definition["simplified"], "pinyin": cedict_definition["pinyin"]}
-            wiktionary_definition.optional_properties = optional_properties
+                # Use language-specific information
+                optional_properties = {"traditional": cedict_definition["traditional"], "simplified": cedict_definition["simplified"], "pinyin": cedict_definition["pinyin"]}
+                definition.set_optional_fields(optional_properties)
 
-        return wiktionary_definition
+        return wiktionary_definitions
     elif language == "ENGLISH":
         return get_wiktionary_definitions(language, word)
     elif language == "SPANISH":

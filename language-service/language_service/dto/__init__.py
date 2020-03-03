@@ -1,10 +1,14 @@
-class Definition(dict):
+class Definition:
     def __init__(self, subdefinitions=[], tag="", examples=[], optional_fields=[]):
-        # Trick to enable JSON serialization
-        dict.__init__(self, subdefinitions=subdefinitions, tag=tag, examples=examples)
         self.subdefinitions = subdefinitions
         self.tag = tag
         self.examples = examples
+        self.optional_fields = optional_fields
+
+    def set_subdefinitions(self, subdefinitions):
+        self.subdefinitions = subdefinitions
+
+    def set_optional_fields(self, optional_fields):
         self.optional_fields = optional_fields
 
     def to_json(self):
