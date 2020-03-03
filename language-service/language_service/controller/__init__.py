@@ -61,8 +61,14 @@ class DefinitionMultipleController(Resource):
         words = request_json["words"]
 
         try:
-            definitions = [get_definition(language, word) for word in words]
-            return words, 200
+            definitions = {}
+            for word in words:
+                word_definitions = [
+                    {"subdefinitions": definition.subdefinitions, "tag": definition.tag, "examples": definition.examples}
+                    for definition in get_definition(language, word)
+                ]
+                definitions[word] = word_definitions
+            return definitions, 200
         except Exception as e:
             print("Error getting definitions in %s for words: %s" % (language, text))
             print(e)
