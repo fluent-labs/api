@@ -3,7 +3,7 @@ from flask import request
 from flask_restful import Resource
 
 from service.nlp import tag
-from service.vocab import get_definition
+from service.vocab import get_definitions
 
 AUTH_TOKEN = os.getenv("AUTH_TOKEN")
 SUPPORTED_LANGUAGES = ["CHINESE", "ENGLISH", "SPANISH"]
@@ -31,11 +31,7 @@ class DefinitionController(Resource):
             return {"error": "Word is required"}, 400
 
         try:
-            definitions = [
-                {"subdefinitions": definition.subdefinitions, "tag": definition.tag, "examples": definition.examples}
-                for definition in get_definition(language, word)
-            ]
-            return definitions, 200
+            return get_definitions(language, word), 200
         except Exception as e:
             print("Error getting definition in %s for: %s" % (language, word))
             print(e)
@@ -61,13 +57,10 @@ class DefinitionMultipleController(Resource):
         words = request_json["words"]
 
         try:
-            definitions = {}
-            for word in words:
-                word_definitions = [
-                    {"subdefinitions": definition.subdefinitions, "tag": definition.tag, "examples": definition.examples}
-                    for definition in get_definition(language, word)
-                ]
-                definitions[word] = word_definitions
+            definitions = {
+                word: get_definitions(language, word)
+                for word in words
+            }
             return definitions, 200
         except Exception as e:
             print("Error getting definitions in %s for words: %s" % (language, text))
@@ -94,11 +87,7 @@ class DocumentController(Resource):
         text = request_json["text"]
 
         try:
-            words = [
-                {"token": word.token, "tag": word.tag, "lemma": word.lemma}
-                for word in tag(language.upper(), text)
-            ]
-            return words, 200
+            return tag(language.upper(), text), 200
         except Exception as e:
             print("Error getting words in %s for text: %s" % (language, text))
             print(e)

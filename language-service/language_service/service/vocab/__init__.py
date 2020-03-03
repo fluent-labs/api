@@ -4,7 +4,7 @@ from dto import Definition
 parser = WiktionaryParser()
 
 
-def get_definition(language, word):
+def get_definitions(language, word):
     response = parser.fetch(word, language)
 
     definitions = []
