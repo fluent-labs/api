@@ -31,7 +31,11 @@ class DefinitionController(Resource):
             return {"error": "Word is required"}, 400
 
         try:
-            return get_definition(language, word), 200
+            definitions = [
+                {"subdefinitions": definition.subdefinitions, "tag": definition.tag, "examples": definition.examples}
+                for definition in get_definition(language, word)
+            ]
+            return definitions, 200
         except Exception as e:
             print("Error getting definition in %s for: %s" % (language, word))
             print(e)
