@@ -17,22 +17,27 @@ def get_definitions(language, word):
         cedict_definition = get_cedict_definitions(word)
         if cedict_definition:
             print("Attaching cedict definition")
+            definitions = []
             for definition in wiktionary_definitions:
                 # The CEDICT definitions are more focused than wiktionary so we should prefer them.
-                definition.set_subdefinitions(cedict_definition["definitions"])
+                improved_definition = ChineseDefinition(
+                    subdefinitions=cedict_definition["definitions"],
+                    tag=definition.tag,
+                    examples=definition.tag,
+                    pinyin=cedict_definition["pinyin"],
+                    simplified=cedict_definition["simplified"],
+                    traditional=cedict_definition["traditional"],
+                )
+                definitions.append(improved_definition)
+            return definitions
+        else:
+            return wiktionary_definitions
 
-                # Use language-specific information
-                optional_properties = {
-                    "traditional": cedict_definition["traditional"],
-                    "simplified": cedict_definition["simplified"],
-                    "pinyin": cedict_definition["pinyin"],
-                }
-                definition.set_optional_fields(optional_properties)
-
-        return wiktionary_definitions
     elif language == "ENGLISH":
         return get_wiktionary_definitions(language, word)
+
     elif language == "SPANISH":
         return get_wiktionary_definitions(language, word)
+
     else:
         raise NotImplementedError("Unknown language requested: %s")
