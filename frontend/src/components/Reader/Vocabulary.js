@@ -14,16 +14,18 @@ const GET_WORDS_IN_TEXT = gql`
       token
       tag
       lemma
-      definitions
+      definitions {
+        subdefinitions
+        ... on ChineseDefinition {
+          pinyin
+        }
+      }
+      ... on ChineseWord {
+        hsk
+      }
     }
   }
 `;
-
-// Removed
-// ... on ChineseWord {
-//   hsk
-//   pinyin
-// }
 
 const Vocabulary = props => {
   const { language, text, submitted } = props;
