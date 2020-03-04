@@ -3,7 +3,9 @@ defmodule ApiWeb.Schema do
   Provides the main entrypoints for our graphql schema
   """
   use Absinthe.Schema
+  import_types ApiWeb.Schema.DefinitionTypes
   import_types(ApiWeb.Schema.DomainTypes)
+  import_types ApiWeb.Schema.WordTypes
 
   alias ApiWeb.Resolvers
 
