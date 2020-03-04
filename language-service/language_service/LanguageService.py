@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from flask_restful import Api
 
-from controller import (
+from language_service.controller import (
     DefinitionController,
     DefinitionMultipleController,
     DocumentController,

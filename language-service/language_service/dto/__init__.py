@@ -2,6 +2,7 @@
 These objects are what will be used to respond to clients.
 """
 
+
 class Definition:
     def __init__(self, subdefinitions=[], tag="", examples=[], optional_fields=[]):
         self.subdefinitions = subdefinitions
@@ -25,7 +26,7 @@ class Definition:
 
 
 class Word(dict):
-    def __init__(self, token="", tag="", lemma=""): #nosec this is not a password
+    def __init__(self, token="", tag="", lemma=""):  # nosec this is not a password
         # Trick to enable JSON serialization
         dict.__init__(self, token=token, tag=tag, lemma=lemma)
         self.token = token

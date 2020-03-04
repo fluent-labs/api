@@ -1,6 +1,6 @@
-from .chinese import tag_chinese
-from .english import tag_english
-from .spanish import tag_spanish
+from language_service.service.nlp.chinese import tag_chinese
+from language_service.service.nlp.english import tag_english
+from language_service.service.nlp.spanish import tag_spanish
 
 
 def tag(language, text):

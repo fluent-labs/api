@@ -2,8 +2,8 @@
 Where you put definition business logic.
 We combine different data sources as available to deliver the best definitions.
 """
-from .cedict import get_definitions as get_cedict_definitions
-from .wiktionary import get_definitions as get_wiktionary_definitions
+from language_service.service.definition.cedict import get_definitions as get_cedict_definitions
+from language_service.service.definition.wiktionary import get_definitions as get_wiktionary_definitions
 
 
 def get_definitions(language, word):

@@ -8,8 +8,8 @@ import traceback
 from flask import request
 from flask_restful import Resource
 
-from service.nlp import tag
-from service.vocab import get_definitions
+from language_service.service.nlp import tag
+from language_service.service.definition import get_definitions
 
 AUTH_TOKEN = os.getenv("AUTH_TOKEN")
 SUPPORTED_LANGUAGES = ["CHINESE", "ENGLISH", "SPANISH"]

@@ -1,6 +1,6 @@
 import pytest
 from language_service.service.nlp import tag
-from language_service.service.nlp.common import Word
+from language_service.dto import Word
 
 
 def test_can_tag_chinese():
