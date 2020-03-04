@@ -57,7 +57,6 @@ defmodule Api.MixProject do
       # Rest client libraries
       {:tesla, "~> 1.3.0"},
       {:hackney, "~> 1.15.2"},
-
       {:cors_plug, "~> 1.5"},
 
       # Code quality

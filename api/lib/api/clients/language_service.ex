@@ -1,12 +1,16 @@
 defmodule Api.Clients.LanguageService do
   use Tesla
+
   @moduledoc """
   A client to connect to the language service
   """
 
-  plug Tesla.Middleware.BaseUrl, language_service_base_url()
-  plug Tesla.Middleware.Headers, [{"Authorization", auth_token()}]
-  plug Tesla.Middleware.JSON
+  adapter Tesla.Adapter.Hackney, recv_timeout: 30_000
+  plug(Tesla.Middleware.BaseUrl, language_service_base_url())
+  plug(Tesla.Middleware.Headers, [{"Authorization", auth_token()}])
+  plug(Tesla.Middleware.RequestLogger)
+  plug(Tesla.Middleware.JSON)
+  plug(Tesla.Middleware.ResponseLogger)
 
   @app :api
 
@@ -28,11 +32,18 @@ defmodule Api.Clients.LanguageService do
     end
   end
 
+  defp atomize(my_map) when is_list(my_map) do
+    Enum.map(my_map, &atomize/1)
+  end
+
+  defp atomize(my_map) do
+    for {key, val} <- my_map, into: %{}, do: {String.to_atom(key), val}
+  end
+
   def tag(language, text) do
     url = "/v1/tagging/" <> serialize_language(language) <> "/document"
-
     case post(url, %{text: text}) do
-      {:ok, %{body: body}} -> {:ok, body}
+      {:ok, %{body: body}} -> {:ok, Enum.map(body, &atomize/1)}
       _ -> :error
     end
   end
@@ -40,17 +51,19 @@ defmodule Api.Clients.LanguageService do
   def definition(language, word) do
     url = "/v1/definition/" <> serialize_language(language) <> "/" <> word
     case get(url) do
-      {:ok, %{body: body}} -> {:ok, resolve_definition_in_english(body)}
+      {:ok, %{body: body}} -> {:ok, atomize(body)}
       _ -> :error
     end
   end
 
-  # We will eventually resolve definitions in more than one base language
-  defp resolve_definition_in_english(response_body) do
-    response_body
-    |> Enum.filter(fn word -> Map.has_key?(word, "definitions") end)
-    |> Enum.flat_map(fn word -> Map.fetch!(word, "definitions") end)
-    |> Enum.filter(fn definition -> Map.has_key?(definition, "text") end)
-    |> Enum.flat_map(fn definition -> Map.fetch!(definition, "text") end)
+  def definitions(language, words) do
+    url = "/v1/definitions/" <> serialize_language(language) <> "/"
+    case post(url, %{words: words}) do
+      {:ok, %{body: body}} ->
+        mapped = Enum.map(body, fn {word, definition} -> {word, atomize(definition)} end)
+        # Bit of an ugly hack because we can't just map over dictionary
+        {:ok, Enum.into(mapped, %{})}
+      _ -> :error
+    end
   end
 end

@@ -1,0 +1,3 @@
+[bandit]
+targets: language-service
+exclude: language-service/tests
