@@ -98,7 +98,7 @@ class DocumentController(Resource):
             return {"error": "Language is required"}, 400
 
         language = language.upper()
-        if language.upper() not in SUPPORTED_LANGUAGES:
+        if language not in SUPPORTED_LANGUAGES:
             return {"error": "Language %s is not supported" % language}, 400
 
         if request_json is None or "text" not in request_json:
@@ -107,7 +107,7 @@ class DocumentController(Resource):
         text = request_json["text"]
 
         try:
-            return tag(language, text), 200
+            return [word.to_json() for word in tag(language, text)], 200
         except Exception:
             print("Error getting words in %s for text: %s" % (language, text))
             stacktrace = traceback.format_exc()
