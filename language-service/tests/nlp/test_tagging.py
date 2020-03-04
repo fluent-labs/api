@@ -1,11 +1,12 @@
 import pytest
+from testfixtures import compare
 from language_service.service.nlp import tag
 from language_service.dto import Word
 
 
 def test_can_tag_chinese():
     words = tag("CHINESE", "测试已通过，因为返回了这些单词。")
-    assert words == [
+    compare(words, [
         Word(token="测试", tag="名动词", lemma="测试"),
         Word(token="已", tag="副词", lemma="已"),
         Word(token="通过", tag="介词", lemma="通过"),
@@ -14,7 +15,7 @@ def test_can_tag_chinese():
         Word(token="了", tag="不知道词性", lemma="了"),
         Word(token="这些", tag="代词", lemma="这些"),
         Word(token="单词", tag="普通名词", lemma="单词"),
-    ]
+    ])
 
 
 def test_chinese_tagging_no_duplicates():
@@ -22,7 +23,7 @@ def test_chinese_tagging_no_duplicates():
         "CHINESE",
         "石室诗士施氏，嗜狮，誓食十狮。氏时时适市视狮。十时，适十狮适市。 是时，适施氏适市。氏视是十狮，恃矢势，使是十狮逝世。氏拾是十狮尸，适石室。石室湿，氏使侍拭石室。石室拭，氏始试食是十狮尸。食时，始识是十狮，实十石狮尸。试释是事。",
     )
-    assert words == [
+    compare(words, [
         Word(token="石室", tag="普通名词", lemma="石室"),
         Word(token="诗士", tag="普通名词", lemma="诗士"),
         Word(token="施氏", tag="人名", lemma="施氏"),
@@ -59,12 +60,12 @@ def test_chinese_tagging_no_duplicates():
         Word(token="尸", tag="普通名词", lemma="尸"),
         Word(token="试释", tag="普通动词", lemma="试释"),
         Word(token="事", tag="普通名词", lemma="事"),
-    ]
+    ])
 
 
 def test_can_tag_english():
     words = tag("ENGLISH", "The test has passed because these words were returned.")
-    assert words == [
+    compare(words, [
         Word(token="The", tag="DET", lemma="the"),
         Word(token="test", tag="NOUN", lemma="test"),
         Word(token="has", tag="AUX", lemma="have"),
@@ -74,14 +75,14 @@ def test_can_tag_english():
         Word(token="words", tag="NOUN", lemma="word"),
         Word(token="were", tag="AUX", lemma="be"),
         Word(token="returned", tag="VERB", lemma="return"),
-    ]
+    ])
 
 
 def test_english_tagging_no_duplicates():
     words = tag(
         "ENGLISH", "This is the song that never ends, it goes on and on my friends"
     )
-    assert words == [
+    compare(words, [
         Word(token="This", tag="DET", lemma="this"),
         Word(token="is", tag="AUX", lemma="be"),
         Word(token="the", tag="DET", lemma="the"),
@@ -95,14 +96,14 @@ def test_english_tagging_no_duplicates():
         Word(token="and", tag="CCONJ", lemma="and"),
         Word(token="my", tag="PRON", lemma="-PRON-"),
         Word(token="friends", tag="NOUN", lemma="friend"),
-    ]
+    ])
 
 
 def test_can_tag_spanish():
     words = tag(
         "SPANISH", "La prueba ha pasado porque estas palabras fueron devueltas."
     )
-    assert words == [
+    compare(words, [
         Word(token="La", tag="DET", lemma="La"),
         Word(token="prueba", tag="NOUN", lemma="probar"),
         Word(token="ha", tag="AUX", lemma="haber"),
@@ -112,17 +113,17 @@ def test_can_tag_spanish():
         Word(token="palabras", tag="NOUN", lemma="palabra"),
         Word(token="fueron", tag="AUX", lemma="ser"),
         Word(token="devueltas", tag="VERB", lemma="devolver"),
-    ]
+    ])
 
 
 def test_spanish_tagging_no_duplicates():
     words = tag("SPANISH", "Hola, mi llamo Lucas. Hola Lucas")
-    assert words == [
+    compare(words, [
         Word(token="Hola", tag="PROPN", lemma="Hola"),
         Word(token="mi", tag="DET", lemma="mi"),
         Word(token="llamo", tag="NOUN", lemma="llamar"),
         Word(token="Lucas", tag="PROPN", lemma="Lucas"),
-    ]
+    ])
 
 
 def test_raises_exception_on_unknown_language():
