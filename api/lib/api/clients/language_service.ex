@@ -43,7 +43,7 @@ defmodule Api.Clients.LanguageService do
   end
 
   defp log_request(url) do
-    IO.puts("Calling " <> url
+    IO.puts("Calling " <> url)
   end
 
   def tag(language, text) do
