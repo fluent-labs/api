@@ -1,5 +1,8 @@
 defmodule Tesla.Middleware.RequestLogger do
   @behaviour Tesla.Middleware
+  @moduledoc """
+  Logs the requests made by Tesla clients
+  """
 
   def call(env, next, _) do
     env
@@ -8,22 +11,11 @@ defmodule Tesla.Middleware.RequestLogger do
   end
 end
 
-defmodule Tesla.Middleware.ReturnErrorTupleOnError do
-  @moduledoc """
-  Return :ok/:error tuples for successful HTTP transations, i.e. when the request is completed
-  (no network errors etc) - but it can still be an application-level error (i.e. 404 or 500)
-  """
-  def call(env, next, _opts) do
-    try do
-      {:ok, Tesla.run(env, next)}
-    rescue
-      er in Tesla.Error -> {:error, er}
-    end
-  end
-end
-
 defmodule Tesla.Middleware.ResponseLogger do
   @behaviour Tesla.Middleware
+  @moduledoc """
+  Logs the responses recieved by Tesla clients
+  """
 
   def call(env, next, _) do
     env
