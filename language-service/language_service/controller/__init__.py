@@ -37,6 +37,8 @@ class DefinitionController(Resource):
         if word is None or word == "":
             return {"error": "Word is required"}, 400
 
+        print("%s - Getting definition for %s" % (language, word))
+
         try:
             return (
                 [
@@ -70,6 +72,8 @@ class DefinitionMultipleController(Resource):
             return {"error": "Words is required"}, 400
 
         words = request_json["words"]
+
+        print("%s - Getting definitions for %s" % (language, words))
 
         try:
             definitions = {
@@ -105,6 +109,8 @@ class DocumentController(Resource):
             return {"error": "Text is required"}, 400
 
         text = request_json["text"]
+
+        print("%s - Getting words for %s" % (language, text))
 
         try:
             return [word.to_json() for word in tag(language, text)], 200
