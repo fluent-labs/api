@@ -49,7 +49,6 @@ defmodule Api.Clients.LanguageService do
   def tag(language, text) do
     url = "/v1/tagging/" <> serialize_language(language) <> "/document"
     request_body =  %{text: text}
-
     log_request(url, request_body)
 
     case post(url, request_body) do
@@ -71,18 +70,14 @@ defmodule Api.Clients.LanguageService do
   def definitions(language, words) do
     url = "/v1/definitions/" <> serialize_language(language) <> "/"
     request_body = %{words: words}
-
     log_request(url, request_body)
 
-    response =
-      case post(url, request_body) do
-        {:ok, %{body: body}} -> body
-        _ -> :error
-      end
-
-    mapped = Enum.map(response, fn {word, definition} -> {word, atomize(definition)} end)
-
-    # Bit of an ugly hack because we can't just map over dictionary
-    {:ok, Enum.into(mapped, %{})}
+    case post(url, request_body) do
+      {:ok, %{body: body}} ->
+        mapped = Enum.map(body, fn {word, definition} -> {word, atomize(definition)} end)
+        # Bit of an ugly hack because we can't just map over dictionary
+        {:ok, Enum.into(mapped, %{})}
+      _ -> :error
+    end
   end
 end
