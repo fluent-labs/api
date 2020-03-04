@@ -37,10 +37,22 @@ defmodule Api.Clients.LanguageService do
     for {key, val} <- my_map, into: %{}, do: {String.to_atom(key), val}
   end
 
+  defp log_request(url, request_body) do
+    {:ok, request_log} = Jason.encode(request_body)
+    IO.puts("Calling " <> url <> " with body: " <> request_log)
+  end
+
+  defp log_request(url) do
+    IO.puts("Calling " <> url
+  end
+
   def tag(language, text) do
     url = "/v1/tagging/" <> serialize_language(language) <> "/document"
+    request_body =  %{text: text}
 
-    case post(url, %{text: text}) do
+    log_request(url, request_body)
+
+    case post(url, request_body) do
       {:ok, %{body: body}} -> {:ok, Enum.map(body, &atomize/1)}
       _ -> :error
     end
@@ -48,6 +60,7 @@ defmodule Api.Clients.LanguageService do
 
   def definition(language, word) do
     url = "/v1/definition/" <> serialize_language(language) <> "/" <> word
+    log_request(url)
 
     case get(url) do
       {:ok, %{body: body}} -> {:ok, atomize(body)}
@@ -57,9 +70,12 @@ defmodule Api.Clients.LanguageService do
 
   def definitions(language, words) do
     url = "/v1/definitions/" <> serialize_language(language) <> "/"
+    request_body = %{words: words}
+
+    log_request(url, request_body)
 
     response =
-      case post(url, %{words: words}) do
+      case post(url, request_body) do
         {:ok, %{body: body}} -> body
         _ -> :error
       end
