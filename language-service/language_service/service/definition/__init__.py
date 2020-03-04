@@ -17,14 +17,16 @@ def get_definitions(language, word):
 
         cedict_definition = get_cedict_definitions(word)
         if cedict_definition:
-            print("Attaching cedict definition")
+            print("Attaching cedict definition for %s" % word)
             definitions = []
             for definition in wiktionary_definitions:
                 # The CEDICT definitions are more focused than wiktionary so we should prefer them.
+                subdefinitions = cedict_definition["definitions"] if "definitions" in cedict_definition else definition.subdefinitions
+
                 improved_definition = ChineseDefinition(
-                    subdefinitions=cedict_definition["definitions"],
+                    subdefinitions=subdefinitions,
                     tag=definition.tag,
-                    examples=definition.tag,
+                    examples=definition.examples,
                     pinyin=cedict_definition["pinyin"],
                     simplified=cedict_definition["simplified"],
                     traditional=cedict_definition["traditional"],

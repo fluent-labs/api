@@ -31,7 +31,9 @@ class ChineseDefinition(Definition):
         traditional=None,
         hsk=None,
     ):
-        super().__init__(subdefinitions=None, tag="", examples=None)
+        self.subdefinitions = subdefinitions
+        self.tag = tag
+        self.examples = examples
         self.pinyin = pinyin
         self.simplified = simplified
         self.traditional = traditional
