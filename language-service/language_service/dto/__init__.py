@@ -1,5 +1,5 @@
 """
-These objects are what will be used to respond to clients
+These objects are what will be used to respond to clients.
 """
 
 class Definition:

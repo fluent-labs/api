@@ -1,5 +1,5 @@
 """
-This handles the REST logic for communicating with clients
+Handles the REST logic for communicating with clients.
 """
 
 import os
