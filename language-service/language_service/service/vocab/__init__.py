@@ -1,3 +1,7 @@
+"""
+This is where you put definition business logic.
+We combine different data sources as available to deliver the best definitions.
+"""
 from .cedict import get_definitions as get_cedict_definitions
 from .wiktionary import get_definitions as get_wiktionary_definitions
 

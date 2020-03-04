@@ -1,3 +1,7 @@
+"""
+CEDICT is an open source Chinese dictionary.
+This class provides definitions
+"""
 import json
 
 definitions = {}

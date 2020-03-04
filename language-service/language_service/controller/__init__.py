@@ -1,3 +1,7 @@
+"""
+This handles the REST logic for communicating with clients
+"""
+
 import os
 import traceback
 
@@ -41,7 +45,7 @@ class DefinitionController(Resource):
                 ],
                 200,
             )
-        except Exception as e:
+        except Exception:
             print("Error getting definition in %s for: %s" % (language, word))
             stacktrace = traceback.format_exc()
             print(stacktrace)
@@ -76,8 +80,8 @@ class DefinitionMultipleController(Resource):
                 for word in words
             }
             return definitions, 200
-        except Exception as e:
-            print("Error getting definitions in %s for words: %s" % (language, text))
+        except Exception:
+            print("Error getting definitions in %s for words: %s" % (language, words))
             stacktrace = traceback.format_exc()
             print(stacktrace)
             return {"error": "An error occurred"}, 500
@@ -104,7 +108,7 @@ class DocumentController(Resource):
 
         try:
             return tag(language, text), 200
-        except Exception as e:
+        except Exception:
             print("Error getting words in %s for text: %s" % (language, text))
             stacktrace = traceback.format_exc()
             print(stacktrace)
