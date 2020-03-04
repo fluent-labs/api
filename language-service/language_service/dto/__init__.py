@@ -4,31 +4,60 @@ These objects are what will be used to respond to clients.
 
 
 class Definition:
-    def __init__(self, subdefinitions=[], tag="", examples=[], optional_fields=[]):
+    def __init__(self, subdefinitions=None, tag="", examples=None):
         self.subdefinitions = subdefinitions
         self.tag = tag
         self.examples = examples
-        self.optional_fields = optional_fields
 
     def set_subdefinitions(self, subdefinitions):
         self.subdefinitions = subdefinitions
-
-    def set_optional_fields(self, optional_fields):
-        self.optional_fields = optional_fields
 
     def to_json(self):
         return {
             "subdefinitions": self.subdefinitions,
             "tag": self.tag,
             "examples": self.examples,
-            "optional_fields": self.optional_fields,
         }
 
 
-class Word(dict):
+class ChineseDefinition(Definition):
+    def __init__(
+        self,
+        subdefinitions=None,
+        tag="",
+        examples=None,
+        pinyin=None,
+        simplified=None,
+        traditional=None,
+        hsk=None,
+    ):
+        super().__init__(subdefinitions=None, tag="", examples=None)
+        self.pinyin = pinyin
+        self.simplified = simplified
+        self.traditional = traditional
+        self.hsk = hsk
+
+    def to_json(self):
+        return {
+            "subdefinitions": self.subdefinitions,
+            "tag": self.tag,
+            "examples": self.examples,
+            "pinyin": self.pinyin,
+            "simplified": self.simplified,
+            "traditional": self.traditional,
+            "hsk": self.hsk,
+        }
+
+
+class Word:
     def __init__(self, token="", tag="", lemma=""):  # nosec this is not a password
-        # Trick to enable JSON serialization
-        dict.__init__(self, token=token, tag=tag, lemma=lemma)
         self.token = token
         self.tag = tag
         self.lemma = lemma
+
+    def to_json(self):
+        return {
+            "token": self.token,
+            "tag": self.tag,
+            "lemma": self.lemma,
+        }
