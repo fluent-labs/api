@@ -21,7 +21,11 @@ def get_definitions(language, word):
             definitions = []
             for definition in wiktionary_definitions:
                 # The CEDICT definitions are more focused than wiktionary so we should prefer them.
-                subdefinitions = cedict_definition["definitions"] if "definitions" in cedict_definition else definition.subdefinitions
+                subdefinitions = (
+                    cedict_definition["definitions"]
+                    if "definitions" in cedict_definition
+                    else definition.subdefinitions
+                )
 
                 improved_definition = ChineseDefinition(
                     subdefinitions=subdefinitions,
