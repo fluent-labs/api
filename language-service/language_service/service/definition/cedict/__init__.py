@@ -5,21 +5,31 @@ This class provides definitions
 import json
 from language_service.dto import ChineseDefinition
 
-definitions = {}
-with open("content/cedict.json") as cedict:
-    for entry in json.load(cedict):
-        simplified = entry["simplified"]
-        definitions[simplified] = entry
 
+class CEDICT:
+    def __init__(self, dictionary_path="content/cedict.json"):
+        self.dictionary_path = dictionary_path
+        self.definitions = None
 
-def get_definitions(word):
-    if word in definitions:
-        definition = definitions[word]
-        return ChineseDefinition(
-            subdefinitions=definition["definitions"],
-            pinyin=definition["pinyin"],
-            simplified=definition["simplified"],
-            traditional=definition["traditional"],
-        )
-    else:
-        return None
+    def load_dictionary(self):
+        self.definitions = {}
+        with open(self.dictionary_path) as cedict:
+            for entry in json.load(cedict):
+                simplified = entry["simplified"]
+                self.definitions[simplified] = entry
+
+    def get_definitions(self, word):
+        # Lazy load definitions to make unit testing possible
+        if self.definitions is None:
+            self.load_dictionary()
+
+        if word in self.definitions:
+            definition = self.definitions[word]
+            return ChineseDefinition(
+                subdefinitions=definition["definitions"],
+                pinyin=definition["pinyin"],
+                simplified=definition["simplified"],
+                traditional=definition["traditional"],
+            )
+        else:
+            return None
