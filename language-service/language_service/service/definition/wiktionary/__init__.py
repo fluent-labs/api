@@ -11,9 +11,12 @@ class Wiktionary:
     def __init__(self):
         self.parser = WiktionaryParser()
 
+    def fetch(self, word, language):
+        return self.parser.fetch(word, language)
+
     def get_definitions(self, language, word):
         try:
-            response = self.parser.fetch(word, language)
+            response = self.fetch(word, language)
         except Exception as e:
             print("%s - Error fetching definition for %s" % (language, word))
             print(e)
