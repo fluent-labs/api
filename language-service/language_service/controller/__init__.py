@@ -80,6 +80,7 @@ class DefinitionMultipleController(Resource):
                 word: [
                     definition.to_json()
                     for definition in get_definitions(language, word)
+                    if definition is not None
                 ]
                 for word in words
             }
