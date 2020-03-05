@@ -17,23 +17,17 @@ class CEDICT:
                 self.definitions[simplified] = entry
 
     def get_definitions(self, word):
+        # Lazy load definitions to make unit testing possible
         if self.definitions is None:
             self.load_dictionary()
 
         if word in self.definitions:
-            return self.definitions[word]
+            definition = self.definitions[word]
+            return ChineseDefinition(
+                subdefinitions=definition["definitions"],
+                pinyin=definition["pinyin"],
+                simplified=definition["simplified"],
+                traditional=definition["traditional"],
+            )
         else:
             return None
-
-
-def get_definitions(word):
-    if word in definitions:
-        definition = definitions[word]
-        return ChineseDefinition(
-            subdefinitions=definition["definitions"],
-            pinyin=definition["pinyin"],
-            simplified=definition["simplified"],
-            traditional=definition["traditional"],
-        )
-    else:
-        return None
