@@ -8,10 +8,12 @@ from language_service.dto import ChineseDefinition
 
 class CEDICT:
     def __init__(self, dictionary_path="content/cedict.json"):
+        self.dictionary_path = dictionary_path
         self.definitions = None
 
     def load_dictionary(self):
-        with open(dictionary_path) as cedict:
+        self.definitions = {}
+        with open(self.dictionary_path) as cedict:
             for entry in json.load(cedict):
                 simplified = entry["simplified"]
                 self.definitions[simplified] = entry
