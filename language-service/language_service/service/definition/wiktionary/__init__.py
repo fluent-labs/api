@@ -4,7 +4,7 @@ At current moment, this only provides definitions in English for all languages.
 Wiktionary itself has definitions in many base languages, but the parser does not support it.
 """
 from wiktionaryparser import WiktionaryParser
-from dto import Definition
+from language_service.dto import Definition
 
 parser = WiktionaryParser()
 
