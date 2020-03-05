@@ -37,10 +37,17 @@ class Wiktionary:
                     examples = (
                         definition["examples"] if "examples" in definition else None
                     )
-                    definitions.append(
-                        Definition(
-                            subdefinitions=subdefinitions, tag=tag, examples=examples
+                    if (
+                        subdefinitions is not None
+                        or tag is not None
+                        or examples is not None
+                    ):
+                        definitions.append(
+                            Definition(
+                                subdefinitions=subdefinitions,
+                                tag=tag,
+                                examples=examples,
+                            )
                         )
-                    )
 
         return definitions
