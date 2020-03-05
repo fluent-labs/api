@@ -1,4 +1,3 @@
-import pytest
 from language_service.service.definition import get_definitions
 from language_service.dto import ChineseDefinition
 

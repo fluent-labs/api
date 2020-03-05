@@ -1,4 +1,3 @@
-import pytest
 from testfixtures import compare
 from unittest.mock import Mock
 from language_service.dto import Definition

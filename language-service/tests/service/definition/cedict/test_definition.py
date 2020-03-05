@@ -1,4 +1,3 @@
-import pytest
 from testfixtures import compare
 from language_service.dto import ChineseDefinition
 from language_service.service.definition.cedict import CEDICT
