@@ -10,7 +10,12 @@ parser = WiktionaryParser()
 
 
 def get_definitions(language, word):
-    response = parser.fetch(word, language)
+    try:
+        response = parser.fetch(word, language)
+    except Exception as e:
+        print("%s - Error fetching definition for %s" % (language, word))
+        print(e)
+        return None
 
     definitions = []
     for entry in response:
