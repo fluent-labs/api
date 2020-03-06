@@ -4,6 +4,7 @@ Handles the REST logic for communicating with clients.
 
 import os
 import traceback
+from multiprocessing.dummy import Pool
 
 from flask import request
 from flask_restful import Resource
@@ -20,6 +21,25 @@ def is_authorized(request):
         "Authorization" in request.headers
         and request.headers["Authorization"] == AUTH_TOKEN
     )
+
+
+def fetch_definitions(language, word):
+    """
+    Helper method to handle getting and deserializing a single definition
+    """
+    definitions = get_definitions(language, word)
+
+    if definitions is None:
+        return None, word
+    else:
+        return (
+            [
+                definition.to_json()
+                for definition in definitions
+                if definition is not None
+            ],
+            word,
+        )
 
 
 class DefinitionController(Resource):
@@ -40,13 +60,8 @@ class DefinitionController(Resource):
         print("%s - Getting definition for %s" % (language, word))
 
         try:
-            return (
-                [
-                    definition.to_json()
-                    for definition in get_definitions(language, word)
-                ],
-                200,
-            )
+            definitions, _word = fetch_definitions(language, word)
+            return definitions, 200
         except Exception:
             print("Error getting definition in %s for: %s" % (language, word))
             stacktrace = traceback.format_exc()
@@ -76,15 +91,22 @@ class DefinitionMultipleController(Resource):
         print("%s - Getting definitions for %s" % (language, words))
 
         try:
-            definitions = {
-                word: [
-                    definition.to_json()
-                    for definition in get_definitions(language, word)
-                    if definition is not None
-                ]
-                for word in words
-            }
-            return definitions, 200
+            with Pool(10) as pool:
+                returned_definitions = {}
+                for result in [
+                    pool.apply_async(fetch_definitions, args=(language, word))
+                    for word in words
+                ]:
+                    try:
+                        definitions, word = result.get(5)
+                        if definitions is not None:
+                            print("Got definitions in %s for %s" % (language, word))
+                            returned_definitions[word] = definitions
+                        else:
+                            print("No definition in %s found for %s" % (language, word))
+                    except TimeoutError:
+                        print("Definition lookup timed out")
+                return returned_definitions, 200
         except Exception:
             print("Error getting definitions in %s for words: %s" % (language, words))
             stacktrace = traceback.format_exc()
