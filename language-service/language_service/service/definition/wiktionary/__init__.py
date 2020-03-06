@@ -3,6 +3,7 @@ Scrapes Wiktionary for vocabulary definitions.
 At current moment, this only provides definitions in English for all languages.
 Wiktionary itself has definitions in many base languages, but the parser does not support it.
 """
+import traceback
 from wiktionaryparser import WiktionaryParser
 from language_service.dto import Definition
 
@@ -15,11 +16,13 @@ class Wiktionary:
         return self.parser.fetch(word, language)
 
     def get_definitions(self, language, word):
+        print("Wiktionary - getting definitions in %s for %s" % (language, word))
         try:
             response = self.fetch(word, language)
-        except Exception as e:
+        except Exception:
             print("%s - Error fetching definition for %s" % (language, word))
-            print(e)
+            stacktrace = traceback.format_exc()
+            print(stacktrace)
             return None
 
         definitions = []

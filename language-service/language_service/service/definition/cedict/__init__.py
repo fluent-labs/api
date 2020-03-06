@@ -21,7 +21,10 @@ class CEDICT:
     def get_definitions(self, word):
         # Lazy load definitions to make unit testing possible
         if self.definitions is None:
+            print("Loading CEDICT dictionary")
             self.load_dictionary()
+
+        print("CEDICT - Getting definitions in CHINESE for %s" % word)
 
         if word in self.definitions:
             definition = self.definitions[word]
