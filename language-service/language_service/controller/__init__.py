@@ -93,11 +93,13 @@ class DefinitionMultipleController(Resource):
         try:
             with Pool(10) as pool:
                 returned_definitions = {}
+                # First we trigger the lookups here
                 for result in [
                     pool.apply_async(fetch_definitions, args=(language, word))
                     for word in words
                 ]:
                     try:
+                        # And then either the result is ready, or we time out.
                         definitions, word = result.get(5)
                         if definitions is not None:
                             print("Got definitions in %s for %s" % (language, word))
