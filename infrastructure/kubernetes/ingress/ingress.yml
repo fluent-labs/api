@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: foreign-language-reader-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+spec:
+  tls:
+  - hosts:
+    - api.foreignlanguagereader.com
+    - language.foreignlanguagereader.com
+    secretName: flr-tls
+  rules:
+  - host: api.foreignlanguagereader.com
+    http:
+      paths:
+      - backend:
+          serviceName: api
+          servicePort: 4000
+  - host: language.foreignlanguagereader.com
+    http:
+      paths:
+      - backend:
+          serviceName: language-service
+          servicePort: 8000

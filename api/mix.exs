@@ -35,12 +35,32 @@ defmodule Api.MixProject do
     [
       {:phoenix, "~> 1.4.12"},
       {:phoenix_pubsub, "~> 1.1"},
+
+      # Database integration
       {:phoenix_ecto, "~> 4.0"},
       {:ecto_sql, "~> 3.1"},
       {:myxql, ">= 0.0.0"},
+
+      # Localization
       {:gettext, "~> 0.11"},
+
+      # JSON parsing
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+
+      # Web server
+      {:plug_cowboy, "~> 2.0"},
+
+      # GraphQL API
+      {:absinthe, "~> 1.4"},
+      {:absinthe_plug, "~> 1.4"},
+
+      # Rest client libraries
+      {:tesla, "~> 1.3.0"},
+      {:hackney, "~> 1.15.2"},
+      {:cors_plug, "~> 1.5"},
+
+      # Code quality
+      {:credo, "~> 1.2", only: [:dev, :test], runtime: false}
     ]
   end
 

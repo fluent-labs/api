@@ -4,20 +4,29 @@ import PropTypes from "prop-types";
 import { Button, Card, List } from "semantic-ui-react";
 
 const Word = props => {
-  const { language, text, partOfSpeech, lemma, definitions } = props;
+  const {
+    language,
+    token,
+    tag,
+    lemma,
+    definitions: { definitions }
+  } = props;
 
-  let header = text;
+  let header = token;
   let meta;
   if (language === "CHINESE") {
-    const { hsk, pinyin } = props;
+    const {
+      definitions: { pinyin },
+      hsk
+    } = props;
 
     if (pinyin && pinyin != null) {
       header += ` (${pinyin.join(", ")})`;
     }
 
     meta = "";
-    if (partOfSpeech && partOfSpeech != null) {
-      meta += partOfSpeech;
+    if (tag && tag != null) {
+      meta += tag;
     }
     if (hsk && hsk != null) {
       meta += ` - HSK: ${hsk}`;
@@ -26,7 +35,7 @@ const Word = props => {
     if (lemma && lemma != null) {
       header += ` (${lemma})`;
     }
-    meta = partOfSpeech;
+    meta = tag;
   }
 
   return (
@@ -38,7 +47,7 @@ const Word = props => {
           <List bulleted>
             {definitions &&
               definitions != null &&
-              definitions.map(definition => {
+              definitions[0].subdefinitions.map(definition => {
                 return <List.Header key={definition}>{definition}</List.Header>;
               })}
           </List>
@@ -55,8 +64,8 @@ const Word = props => {
 
 Word.propTypes = {
   language: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
-  partOfSpeech: PropTypes.string,
+  token: PropTypes.string.isRequired,
+  tag: PropTypes.string,
   lemma: PropTypes.string,
   definitions: PropTypes.array,
   hsk: PropTypes.number,

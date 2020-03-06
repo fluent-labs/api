@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ecr-cred-helper/service-account-binding.yml
+- ecr-cred-helper/service-account.yml
+- ecr-cred-helper/task.yml
+
+- api/service.yml
+- api/deployment.yml
+
+- language-service/service.yml
+- language-service/deployment.yml
+
+- ingress/ingress.yml
+- certificate/cert-manager.yml
+- certificate/letsencrypt-staging.yml
+- certificate/letsencrypt-prod.yml

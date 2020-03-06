@@ -9,36 +9,37 @@ terraform {
   }
 }
 
+variable "digitalocean_token" {}
+variable "test_environment" {
+  default = false
+}
+
 provider "aws" {
   profile = "default"
   region  = "us-west-2"
 }
 
-variable "rds_username" {
-  default = "test_username"
+provider "digitalocean" {
+  token = var.digitalocean_token
 }
 
-variable "rds_password" {
-  default = "test_username"
+resource "digitalocean_kubernetes_cluster" "foreign_language_reader" {
+  name    = "foreign-language-reader"
+  region  = "sfo2"
+  version = "1.16.6-do.0"
+  tags    = ["prod"]
+
+  node_pool {
+    name       = "worker-pool"
+    size       = "s-1vcpu-2gb"
+    auto_scale = true
+    min_nodes  = 1
+    max_nodes  = 2
+  }
 }
 
-variable "secret_key_base" {
-  default = "KN4rxjPOfxRk3uo7fD928e6nt12jzrvy5t90fp7Snlp63ckc0rRZTglirGt+WiB6"
-}
-
-variable "github_token" {
-  default = "KN4rxjPOfxRk3uo7fD928e6nt12jzrvy5t90fp7Snlp63ckc0rRZTglirGt+WiB6"
-}
-
-module "foreign_language_reader" {
-  source          = "./infrastructure"
-  env             = "prod"
-  instance_size   = "t2.micro"
-  cpu             = "256"
-  memory          = "512"
-  cidr_block      = "172.32.0.0/16"
-  rds_username    = var.rds_username
-  rds_password    = var.rds_password
-  secret_key_base = var.secret_key_base
-  github_token    = var.github_token
+module "infrastructure" {
+  source           = "./infrastructure/terraform"
+  cluster_name     = digitalocean_kubernetes_cluster.foreign_language_reader.name
+  test_environment = var.test_environment
 }
