@@ -1,8 +1,8 @@
 from collections import defaultdict
 import jieba
 import jieba.posseg as parser
-from language_service.service.nlp.common import is_not_punctuation
-from language_service.dto import Word
+from language_service.service.tag.common import is_not_punctuation
+from language_service.dto.word import Word
 
 jieba.enable_paddle()
 

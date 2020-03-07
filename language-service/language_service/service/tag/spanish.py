@@ -1,11 +1,11 @@
-import en_core_web_sm
-from language_service.service.nlp.common import is_not_punctuation
-from language_service.dto import Word
+import es_core_news_sm
+from language_service.service.tag.common import is_not_punctuation
+from language_service.dto.word import Word
 
-parser = en_core_web_sm.load()
+parser = es_core_news_sm.load()
 
 
-def tag_english(text):
+def tag_spanish(text):
     unique_words = {
         word.text: Word(token=word.text, tag=word.pos_, lemma=word.lemma_)
         for word in parser(text)
