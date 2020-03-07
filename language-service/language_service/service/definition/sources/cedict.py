@@ -3,7 +3,7 @@ CEDICT is an open source Chinese dictionary.
 This class provides definitions
 """
 import json
-from language_service.dto import ChineseDefinition
+from language_service.dto.definition import ChineseDefinition
 
 
 class CEDICT:
