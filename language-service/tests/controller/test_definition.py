@@ -161,7 +161,8 @@ def test_multiple_definition_controller(mocker):
     ]
 
     request = mocker.patch("language_service.controller.definition.request")
-    request.get_json.return_value = {"words": ["test", "experiment"]}
+    # Added a double to make sure we strip duplicate words from the request
+    request.get_json.return_value = {"words": ["test", "experiment", "test"]}
 
     result, status = controller.post(language="ENGLISH")
 
