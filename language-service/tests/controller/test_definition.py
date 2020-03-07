@@ -167,7 +167,7 @@ def test_multiple_definition_controller(mocker):
 
     assert status == 200
 
-    get_definitions_for_group.assert_called_once_with("ENGLISH", ["test", "experiment"])
+    get_definitions_for_group.assert_called_once_with("ENGLISH", {"test", "experiment"})
 
     assert "test" in result
     assert "experiment" in result

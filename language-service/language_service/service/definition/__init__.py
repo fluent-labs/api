@@ -2,7 +2,7 @@
 Where you put definition business logic.
 We combine different data sources as available to deliver the best definitions.
 """
-from multiprocessing.context import TimeoutError
+from multiprocessing.context import TimeoutError as MultiprocessingTimeoutError
 from multiprocessing.dummy import Pool
 
 from language_service.service.definition.language.chinese import get_chinese_definitions
@@ -52,7 +52,7 @@ def get_definitions_for_group(language, words):
                 else:
                     print("No definition in %s found for %s" % (language, word))
                     definitions.append((word, None))
-            except TimeoutError:
+            except MultiprocessingTimeoutError:
                 print("Definition lookup timed out")
                 definitions.append((word, None))
         return definitions
