@@ -1,6 +1,6 @@
 from testfixtures import compare
-from language_service.dto import ChineseDefinition
-from language_service.service.definition.cedict import CEDICT
+from language_service.dto.definition import ChineseDefinition
+from language_service.service.definition.sources.cedict import CEDICT
 
 
 def test_can_load_dictionary_file(mocker):

@@ -1,95 +1,106 @@
-from language_service.service.definition import get_definitions
-from language_service.dto import ChineseDefinition
+import pytest
+from testfixtures import compare
+
+from language_service.dto.definition import Definition
+from language_service.service.definition import (
+    get_definitions,
+    get_definitions_for_group,
+)
+
+this_definition = Definition(subdefinitions=["This"])
+is_definition = Definition(subdefinitions=["is"])
+a_definition = Definition(subdefinitions=["a"])
+test_definition = Definition(subdefinitions=["test"])
 
 
-def test_calls_multiple_data_sources_on_chinese_definitions(mocker):
-    cedict = mocker.patch("language_service.service.definition.cedict")
-    wiktionary = mocker.patch("language_service.service.definition.wiktionary")
-
-    get_definitions("CHINESE", "所有的")
-
-    cedict.get_definitions.assert_called_once_with("所有的")
-    wiktionary.get_definitions.assert_called_once_with("CHINESE", "所有的")
-
-
-def test_chinese_definitions_return_none_if_no_data_sources_resolve(mocker):
-    cedict = mocker.patch("language_service.service.definition.cedict")
-    cedict.get_definitions.return_value = None
-    wiktionary = mocker.patch("language_service.service.definition.wiktionary")
-    wiktionary.get_definitions.return_value = None
-
-    # None should be returned if no data source resolves correctly
-    assert get_definitions("CHINESE", "所有的") is None
+def get_definitions_successfully_mock(word):
+    if word == "This":
+        return this_definition
+    elif word == "is":
+        return is_definition
+    elif word == "a":
+        return a_definition
+    elif word == "test":
+        return test_definition
 
 
-def test_chinese_definitions_return_cedict_if_wiktionary_fails(mocker):
-    cedict = mocker.patch("language_service.service.definition.cedict")
-    cedict.get_definitions.return_value = "cedict"
-    wiktionary = mocker.patch("language_service.service.definition.wiktionary")
-    wiktionary.get_definitions.return_value = None
+def test_get_definitions_for_group_happy_path(mocker):
+    get_english_definitions = mocker.patch(
+        "language_service.service.definition.get_english_definitions"
+    )
+    get_english_definitions.side_effect = get_definitions_successfully_mock
 
-    assert get_definitions("CHINESE", "所有的") == ["cedict"]
+    result = get_definitions_for_group("ENGLISH", ["This", "is", "a", "test"])
 
-
-def test_chinese_definitions_return_wiktionary_if_cedict_fails(mocker):
-    cedict = mocker.patch("language_service.service.definition.cedict")
-    cedict.get_definitions.return_value = None
-    wiktionary = mocker.patch("language_service.service.definition.wiktionary")
-    wiktionary.get_definitions.return_value = ["wiktionary"]
-
-    assert get_definitions("CHINESE", "所有的") == ["wiktionary"]
-
-
-def test_chinese_definitions_correctly_merge_cedict_and_wiktionary(mocker):
-    cedict_definition = ChineseDefinition(
-        subdefinitions="cedict",
-        tag="cedict",
-        examples="cedict",
-        pinyin="cedict",
-        simplified="cedict",
-        traditional="cedict",
-        hsk="cedict",
+    compare(
+        result,
+        [
+            ("This", this_definition),
+            ("is", is_definition),
+            ("a", a_definition),
+            ("test", test_definition),
+        ],
     )
 
-    wiktionary_definition = ChineseDefinition(
-        subdefinitions="wiktionary",
-        tag="wiktionary",
-        examples="wiktionary",
-        pinyin="wiktionary",
-        simplified="wiktionary",
-        traditional="wiktionary",
-        hsk="wiktionary",
+
+def get_definitions_with_failures_mock(word):
+    if word == "This":
+        return this_definition
+    elif word == "is":
+        return None
+    elif word == "a":
+        return a_definition
+    elif word == "test":
+        return None
+
+
+def test_get_definitions_for_group_with_errors(mocker):
+    get_english_definitions = mocker.patch(
+        "language_service.service.definition.get_english_definitions"
+    )
+    get_english_definitions.side_effect = get_definitions_with_failures_mock
+
+    result = get_definitions_for_group("ENGLISH", ["This", "is", "a", "test"])
+
+    compare(
+        result,
+        [("This", this_definition), ("is", None), ("a", a_definition), ("test", None),],
     )
 
-    cedict = mocker.patch("language_service.service.definition.cedict")
-    cedict.get_definitions.return_value = cedict_definition
-    wiktionary = mocker.patch("language_service.service.definition.wiktionary")
-    wiktionary.get_definitions.return_value = [wiktionary_definition]
 
-    definition = get_definitions("CHINESE", "所有的")[0]
+def test_can_pass_through_chinese_definitions(mocker):
+    chinese = mocker.patch(
+        "language_service.service.definition.get_chinese_definitions"
+    )
+    chinese.return_value = "所有的"
 
-    assert definition.subdefinitions == "cedict"
-    assert definition.tag == "wiktionary"
-    assert definition.examples == "wiktionary"
-    assert definition.pinyin == "cedict"
-    assert definition.simplified == "cedict"
-    assert definition.traditional == "cedict"
-    assert definition.hsk is None
+    assert get_definitions("CHINESE", "所有的") == "所有的"
+
+    chinese.assert_called_once_with("所有的")
 
 
 def test_can_pass_through_english_definitions(mocker):
-    wiktionary = mocker.patch("language_service.service.definition.wiktionary")
-    wiktionary.get_definitions.return_value = "any"
+    english = mocker.patch(
+        "language_service.service.definition.get_english_definitions"
+    )
+    english.return_value = "any"
 
     assert get_definitions("ENGLISH", "any") == "any"
 
-    wiktionary.get_definitions.assert_called_once_with("ENGLISH", "any")
+    english.assert_called_once_with("any")
 
 
 def test_can_pass_through_spanish_definitions(mocker):
-    wiktionary = mocker.patch("language_service.service.definition.wiktionary")
-    wiktionary.get_definitions.return_value = "cualquier"
+    spanish = mocker.patch(
+        "language_service.service.definition.get_spanish_definitions"
+    )
+    spanish.return_value = "cualquier"
 
     assert get_definitions("SPANISH", "cualquier") == "cualquier"
 
-    wiktionary.get_definitions.assert_called_once_with("SPANISH", "cualquier")
+    spanish.assert_called_once_with("cualquier")
+
+
+def test_raises_exception_on_unknown_language(mocker):
+    with pytest.raises(NotImplementedError):
+        get_definitions("LAO", "ສິ່ງໃດກໍ່ຕາມ")

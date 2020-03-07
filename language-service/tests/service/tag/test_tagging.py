@@ -1,7 +1,7 @@
 import pytest
 from testfixtures import compare
-from language_service.service.nlp import tag
-from language_service.dto import Word
+from language_service.service.tag import tag
+from language_service.dto.word import Word
 
 
 def test_can_tag_chinese():

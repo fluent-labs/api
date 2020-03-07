@@ -5,15 +5,13 @@ Wiktionary itself has definitions in many base languages, but the parser does no
 """
 import traceback
 from wiktionaryparser import WiktionaryParser
-from language_service.dto import Definition
+from language_service.dto.definition import Definition
 
 
 class Wiktionary:
-    def __init__(self):
-        self.parser = WiktionaryParser()
-
     def fetch(self, word, language):
-        return self.parser.fetch(word, language)
+        parser = WiktionaryParser()
+        return parser.fetch(word, language)
 
     def get_definitions(self, language, word):
         print("Wiktionary - getting definitions in %s for %s" % (language, word))
@@ -40,6 +38,8 @@ class Wiktionary:
                     examples = (
                         definition["examples"] if "examples" in definition else None
                     )
+
+                    # Ignore malformed responses
                     if (
                         subdefinitions is not None
                         or tag is not None

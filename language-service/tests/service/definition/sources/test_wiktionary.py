@@ -1,7 +1,7 @@
 from testfixtures import compare
 from unittest.mock import Mock
-from language_service.dto import Definition
-from language_service.service.definition.wiktionary import Wiktionary
+from language_service.dto.definition import Definition
+from language_service.service.definition.sources.wiktionary import Wiktionary
 
 
 def test_can_fetch_definitions(mocker):
