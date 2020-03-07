@@ -10,6 +10,13 @@ class Definition:
     def set_subdefinitions(self, subdefinitions):
         self.subdefinitions = subdefinitions
 
+    def __repr__(self):
+        return "Definition(subdefinitions: %s, tag: %s, examples: %s)" % (
+            self.subdefinitions,
+            self.tag,
+            self.examples,
+        )
+
 
 class ChineseDefinition(Definition):
     def __init__(
@@ -29,6 +36,20 @@ class ChineseDefinition(Definition):
         self.simplified = simplified
         self.traditional = traditional
         self.hsk = hsk
+
+    def __repr__(self):
+        return (
+            "ChineseDefinition(subdefinitions: %s, tag: %s, examples: %s, pinyin: %s, simplified: %s, traditional: %s, hsk: %s)"
+            % (
+                self.subdefinitions,
+                self.tag,
+                self.examples,
+                self.pinyin,
+                self.simplified,
+                self.traditional,
+                self.hsk,
+            )
+        )
 
 
 class DefinitionSchema(Schema):

@@ -7,6 +7,13 @@ class Word:
         self.tag = tag
         self.lemma = lemma
 
+    def __repr__(self):
+        return "Word(token: %s, tag: %s, lemma: %s)" % (
+            self.token,
+            self.tag,
+            self.lemma,
+        )
+
 
 class WordSchema(Schema):
     token = fields.Str()
