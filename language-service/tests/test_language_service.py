@@ -44,7 +44,25 @@ def get_definitions_successfully_mock(language, word):
         return [test_definition]
 
 
-def test_definitions(mocker):
+def test_definitions_slingle(mocker):
+    get_english_definitions = mocker.patch(
+        "language_service.service.definition.language.english.Wiktionary"
+    )
+    wiktionary = get_english_definitions.return_value
+    wiktionary.get_definitions.side_effect = get_definitions_successfully_mock
+
+    client = app.test_client()
+    response = client.get(
+        "/api/v1/definition/ENGLISH/test", headers={"Authorization": "local"},
+    )
+
+    assert response.status == "200 OK"
+    assert response.get_json() == [
+        {"examples": None, "subdefinitions": ["test"], "tag": ""}
+    ]
+
+
+def test_definitions_multiple(mocker):
     get_english_definitions = mocker.patch(
         "language_service.service.definition.language.english.Wiktionary"
     )
