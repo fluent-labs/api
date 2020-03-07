@@ -41,12 +41,15 @@ class DefinitionController(Resource):
         if error:
             return {"error": error}, 400
 
-        print("Getting definitions in %s for %s" % (language, words))
+        # Don't request the same word twice
+        words_set = set(words)
+
+        print("Getting definitions in %s for %s" % (language, words_set))
 
         return (
             {
                 word: definition_schema.dump(definition)
-                for (word, definition) in get_definitions_for_group(language, words)
+                for (word, definition) in get_definitions_for_group(language, words_set)
             },
             200,
         )
