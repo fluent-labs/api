@@ -3,10 +3,12 @@ from language_service.service.definition.sources.cedict import CEDICT
 from language_service.service.definition.sources.wiktionary import Wiktionary
 
 cedict = CEDICT()
-wiktionary = Wiktionary()
 
 
 def get_chinese_definitions(word):
+    # WiktionaryParser is not thread safe
+    wiktionary = Wiktionary()
+
     wiktionary_definitions = wiktionary.get_definitions("CHINESE", word)
     cedict_definition = cedict.get_definitions(word)
 

@@ -9,11 +9,9 @@ from language_service.dto.definition import Definition
 
 
 class Wiktionary:
-    def __init__(self):
-        self.parser = WiktionaryParser()
-
     def fetch(self, word, language):
-        return self.parser.fetch(word, language)
+        parser = WiktionaryParser()
+        return parser.fetch(word, language)
 
     def get_definitions(self, language, word):
         print("Wiktionary - getting definitions in %s for %s" % (language, word))
