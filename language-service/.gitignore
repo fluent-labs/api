@@ -3,3 +3,10 @@ __pycache__
 language_service.egg-info
 .pytest_cache
 dist
+
+# my virtualenv for pycharm
+venv
+pyvenv.cfg
+bin
+
+.idea
