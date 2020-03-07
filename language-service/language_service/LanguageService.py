@@ -1,6 +1,5 @@
 import os
 import logging
-from logging.config import dictConfig
 
 from flask import Flask
 from flask_restful import Api
