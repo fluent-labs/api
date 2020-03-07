@@ -10,17 +10,20 @@ python = "^3.7"
 # Web server
 gunicorn = "^20.0.4"
 flask = "^1.1.1"
-flask_restful = "^0.3.8"
 
-# Natural Language Processing
+# REST
+flask_restful = "^0.3.8"
+marshmallow = "^3.5.1"
+
+# Tagging
 spacy = "^2.2.3"
 en-core-web-sm = {url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz"}
 es-core-news-sm = {url = "https://github.com/explosion/spacy-models/releases/download/es_core_news_sm-2.2.5/es_core_news_sm-2.2.5.tar.gz"}
+jieba = "^0.42.1"
+paddlepaddle-tiny = "^1.6.1"
 
 # Vocabulary
 wiktionaryparser = "^0.0.97"
-jieba = "^0.42.1"
-paddlepaddle-tiny = "^1.6.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
