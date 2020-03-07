@@ -1,3 +1,4 @@
+import logging
 from flask import request
 from flask_restful import Resource
 
@@ -10,6 +11,7 @@ from language_service.dto.word import WordSchema
 from language_service.service.tag import tag
 
 word_schema = WordSchema(many=True)
+logger = logging.getLogger("LanguageService")
 
 
 class DocumentController(Resource):
@@ -24,7 +26,7 @@ class DocumentController(Resource):
         if error:
             return {"error": error}, 400
 
-        print("Getting words in %s for %s" % (language, text))
+        logger.info("Getting words in %s for %s" % (language, text))
 
         words = tag(language, text)
         return word_schema.dump(words), 200

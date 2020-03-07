@@ -3,7 +3,10 @@ CEDICT is an open source Chinese dictionary.
 This class provides definitions
 """
 import json
+import logging
 from language_service.dto.definition import ChineseDefinition
+
+logger = logging.getLogger("LanguageService.definition.sources.cedict")
 
 
 class CEDICT:
@@ -21,10 +24,10 @@ class CEDICT:
     def get_definitions(self, word):
         # Lazy load definitions to make unit testing possible
         if self.definitions is None:
-            print("Loading CEDICT dictionary")
+            logger.info("Loading CEDICT dictionary")
             self.load_dictionary()
 
-        print("CEDICT - Getting definitions in CHINESE for %s" % word)
+        logger.info("Getting definitions in CHINESE for %s" % word)
 
         if word in self.definitions:
             definition = self.definitions[word]

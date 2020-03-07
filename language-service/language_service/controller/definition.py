@@ -1,3 +1,5 @@
+import logging
+
 from flask import request
 from flask_restful import Resource
 
@@ -14,6 +16,7 @@ from language_service.dto.definition import DefinitionSchema
 
 
 definition_schema = DefinitionSchema(many=True)
+logger = logging.getLogger("LanguageService")
 
 
 class DefinitionController(Resource):
@@ -27,7 +30,7 @@ class DefinitionController(Resource):
         if word is None or word == "":
             return {"error": "Word is required"}, 400
 
-        print("Getting definition in %s for %s" % (language, word))
+        logger.info("Getting definition in %s for %s" % (language, word))
 
         definitions = get_definitions(language, word)
         return definition_schema.dump(definitions), 200
@@ -44,7 +47,7 @@ class DefinitionController(Resource):
         # Don't request the same word twice
         words_set = set(words)
 
-        print("Getting definitions in %s for %s" % (language, words_set))
+        logger.info("Getting definitions in %s for %s" % (language, words_set))
 
         return (
             {

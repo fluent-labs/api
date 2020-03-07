@@ -2,12 +2,16 @@
 Where you put definition business logic.
 We combine different data sources as available to deliver the best definitions.
 """
+import logging
+
 from multiprocessing.context import TimeoutError as MultiprocessingTimeoutError
 from multiprocessing.dummy import Pool
 
 from language_service.service.definition.language.chinese import get_chinese_definitions
 from language_service.service.definition.language.english import get_english_definitions
 from language_service.service.definition.language.spanish import get_spanish_definitions
+
+logger = logging.getLogger("LanguageService.service.definition")
 
 
 def get_definitions(language, word):
@@ -47,12 +51,12 @@ def get_definitions_for_group(language, words):
                 # And then either the result is ready, or we time out.
                 word, word_definitions = result.get(5)
                 if word_definitions is not None:
-                    print("Got definitions in %s for %s" % (language, word))
+                    logger.info("Got definitions in %s for %s" % (language, word))
                     definitions.append((word, word_definitions))
                 else:
-                    print("No definition in %s found for %s" % (language, word))
+                    logger.error("No definition in %s found for %s" % (language, word))
                     definitions.append((word, None))
             except MultiprocessingTimeoutError:
-                print("Definition lookup timed out")
+                logger.error("Definition lookup timed out")
                 definitions.append((word, None))
         return definitions
