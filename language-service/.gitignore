@@ -10,3 +10,4 @@ pyvenv.cfg
 bin
 
 .idea
+.coverage
