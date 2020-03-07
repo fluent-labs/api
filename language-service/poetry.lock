@@ -279,6 +279,17 @@ docs = ["sphinx"]
 
 [[package]]
 category = "dev"
+description = "Unit testing for Flask"
+name = "flask-testing"
+optional = false
+python-versions = "*"
+version = "0.8.0"
+
+[package.dependencies]
+Flask = "*"
+
+[[package]]
+category = "dev"
 description = "Git Object Database"
 name = "gitdb2"
 optional = false
@@ -886,7 +897,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "ac5243146306eb042adba21bdba90706b1c6ff1a187a29fb101c57a31b867d28"
+content-hash = "c63ae1cfeeb8b281d98d5889663821618143c16296625400fb493bc7fa7e957b"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1029,6 +1040,9 @@ flask = [
 flask-restful = [
     {file = "Flask-RESTful-0.3.8.tar.gz", hash = "sha256:5ea9a5991abf2cb69b4aac19793faac6c032300505b325687d7c305ffaa76915"},
     {file = "Flask_RESTful-0.3.8-py2.py3-none-any.whl", hash = "sha256:d891118b951921f1cec80cabb4db98ea6058a35e6404788f9e70d5b243813ec2"},
+]
+flask-testing = [
+    {file = "Flask-Testing-0.8.0.tar.gz", hash = "sha256:d849bf53eb1ceb09dff6611888588cb60f20238058fb1ebcd917d69febc373e6"},
 ]
 gitdb2 = [
     {file = "gitdb2-3.0.2-py2.py3-none-any.whl", hash = "sha256:b2b3a67090c17dc61f8407ca485e79ae811225ab5ebcd98ac5ee01448e8987b5"},
