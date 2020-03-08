@@ -92,7 +92,7 @@ resource "digitalocean_database_db" "language_service_cache" {
   name       = "language-service"
 }
 
-resource "kubernetes_secret" "api_database_credentials" {
+resource "kubernetes_secret" "language_service_cache_credentials" {
   metadata {
     name = "language-service-cache-credentials"
   }
