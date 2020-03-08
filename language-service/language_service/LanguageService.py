@@ -12,18 +12,20 @@ from language_service.controller.health import HealthController
 app = Flask(__name__)
 api = Api(app)
 
+config = {
+    "DEBUG": False,
+    "CACHE_TYPE": "redis",
+    "CACHE_DEFAULT_TIMEOUT": DAY,
+    "CACHE_KEY_PREFIX": "definitions",
+    "CACHE_REDIS_HOST": os.getenv("CACHE_REDIS_HOST", "localhost"),
+    "CACHE_REDIS_PORT": os.getenv("PORT", 6379),
+}
+if os.getenv("LOCAL", None) is None:
+    config["CACHE_REDIS_PASSWORD"] = os.getenv("CACHE_REDIS_PASSWORD")
+    config["CACHE_REDIS_DB"] = os.getenv("CACHE_REDIS_DB")
+
 cache.init_app(
-    app,
-    config={
-        "DEBUG": False,
-        "CACHE_TYPE": "redis",
-        "CACHE_DEFAULT_TIMEOUT": DAY,
-        "CACHE_KEY_PREFIX": "definitions",
-        "CACHE_REDIS_HOST": os.getenv("CACHE_REDIS_HOST"),
-        "CACHE_REDIS_PORT": os.getenv("PORT"),
-        "CACHE_REDIS_PASSWORD": os.getenv("CACHE_REDIS_PASSWORD"),
-        "CACHE_REDIS_DB": os.getenv("CACHE_REDIS_DB"),
-    },
+    app, config=config,
 )
 
 # Configure routes
