@@ -18,7 +18,7 @@ def check_authentication(method):
 
     @wraps(method)
     def authentication_checker(*args, **kwargs):
-        logger.info("Something is happening before the function is called.")
+        logger.info("Checking request authentication.")
 
         if (
             "Authorization" in request.headers
