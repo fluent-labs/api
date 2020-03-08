@@ -3,10 +3,10 @@ Where you put definition business logic.
 We combine different data sources as available to deliver the best definitions.
 """
 import logging
-
 from multiprocessing.context import TimeoutError as MultiprocessingTimeoutError
 from multiprocessing.dummy import Pool
 
+from language_service.cache import cache, WEEK
 from language_service.service.definition.language.chinese import get_chinese_definitions
 from language_service.service.definition.language.english import get_english_definitions
 from language_service.service.definition.language.spanish import get_spanish_definitions
@@ -14,6 +14,7 @@ from language_service.service.definition.language.spanish import get_spanish_def
 logger = logging.getLogger("LanguageService.service.definition")
 
 
+@cache.memoize(WEEK)
 def get_definitions(language, word):
     if language == "CHINESE":
         return get_chinese_definitions(word)
