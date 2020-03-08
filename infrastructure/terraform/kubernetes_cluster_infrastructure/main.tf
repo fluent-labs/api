@@ -91,11 +91,11 @@ resource "kubernetes_secret" "language_service_cache_credentials" {
   }
 
   data = {
-    username = digitalocean_database_cluster.language_service_cache.user
-    password = digitalocean_database_cluster.language_service_cache.password
-    host     = digitalocean_database_cluster.language_service_cache.private_host
-    port     = digitalocean_database_cluster.language_service_cache.port
-    database = digitalocean_database_cluster.language_service_cache.database
+    username          = digitalocean_database_cluster.language_service_cache.user
+    password          = digitalocean_database_cluster.language_service_cache.password
+    host              = digitalocean_database_cluster.language_service_cache.private_host
+    port              = digitalocean_database_cluster.language_service_cache.port
+    connection_string = "rediss://${digitalocean_database_cluster.language_service_cache.user}:${digitalocean_database_cluster.language_service_cache.password}@${digitalocean_database_cluster.language_service_cache.private_host}:${digitalocean_database_cluster.language_service_cache.port}/0"
   }
 }
 
