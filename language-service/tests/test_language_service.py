@@ -13,7 +13,7 @@ def test_health(mocker):
 def test_tagging(mocker):
     client = app.test_client()
     response = client.post(
-        "/api/v1/tagging/ENGLISH/document",
+        "/v1/tagging/ENGLISH/document",
         json={"text": "This is a test"},
         headers={"Authorization": "local"},
     )
@@ -53,7 +53,7 @@ def test_definitions_slingle(mocker):
 
     client = app.test_client()
     response = client.get(
-        "/api/v1/definition/ENGLISH/test", headers={"Authorization": "local"},
+        "/v1/definition/ENGLISH/test", headers={"Authorization": "local"},
     )
 
     assert response.status == "200 OK"
@@ -71,7 +71,7 @@ def test_definitions_multiple(mocker):
 
     client = app.test_client()
     response = client.post(
-        "/api/v1/definitions/ENGLISH/",
+        "/v1/definitions/ENGLISH/",
         json={"words": ["This", "is", "a", "test"]},
         headers={"Authorization": "local"},
     )
