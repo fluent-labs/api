@@ -19,10 +19,10 @@ cache.init_app(
         "CACHE_TYPE": "redis",
         "CACHE_DEFAULT_TIMEOUT": DAY,
         "CACHE_KEY_PREFIX": "definitions",
-        "CACHE_REDIS_HOST": os.get_env("CACHE_REDIS_HOST"),
-        "CACHE_REDIS_PORT": os.get_env("PORT"),
-        "CACHE_REDIS_PASSWORD": os.get_env("CACHE_REDIS_PASSWORD"),
-        "CACHE_REDIS_DB": os.get_env("CACHE_REDIS_DB"),
+        "CACHE_REDIS_HOST": os.getenv("CACHE_REDIS_HOST"),
+        "CACHE_REDIS_PORT": os.getenv("PORT"),
+        "CACHE_REDIS_PASSWORD": os.getenv("CACHE_REDIS_PASSWORD"),
+        "CACHE_REDIS_DB": os.getenv("CACHE_REDIS_DB"),
     },
 )
 

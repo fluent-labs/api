@@ -25,6 +25,7 @@ paddlepaddle-tiny = "^1.6.1"
 
 # Vocabulary
 wiktionaryparser = "^0.0.97"
+redis = "^3.4.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
