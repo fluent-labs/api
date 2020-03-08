@@ -93,7 +93,8 @@ resource "kubernetes_secret" "language_service_cache_credentials" {
     password = digitalocean_database_cluster.language_service_cache.password
     host     = digitalocean_database_cluster.language_service_cache.private_host
     port     = digitalocean_database_cluster.language_service_cache.port
-  database = digitalocean_database_db.language_service_cache.name }
+    database = digitalocean_database_cluster.language_service_cache.database
+  }
 }
 
 # Configure networking
