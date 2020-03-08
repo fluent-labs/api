@@ -9,6 +9,10 @@ services:
       LANGUAGE_SERVICE_URL: "http://localhost:8000"
     ports:
     - 4000:4000
+  cache:
+    image: "redis:5-buster"
+    ports:
+    - 6379:6379
   database:
     image: "mysql:5.7"
     environment:
