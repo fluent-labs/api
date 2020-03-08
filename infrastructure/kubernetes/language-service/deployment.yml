@@ -21,6 +21,26 @@ spec:
               secretKeyRef:
                 name: local-connection-token
                 key: local_connection_token
+          - name: CACHE_REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: language-service-cache-credentials
+                key: password
+          - name: CACHE_REDIS_HOST
+            valueFrom:
+              secretKeyRef:
+                name: language-service-cache-credentials
+                key: host
+          - name: CACHE_REDIS_PORT
+            valueFrom:
+              secretKeyRef:
+                name: language-service-cache-credentials
+                key: port
+          - name: CACHE_REDIS_DB
+            valueFrom:
+              secretKeyRef:
+                name: language-service-cache-credentials
+                key: database
         ports:
         - containerPort: 8000
         readinessProbe:
