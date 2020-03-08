@@ -65,12 +65,13 @@ resource "kubernetes_secret" "api_database_credentials" {
 # Cache for language service
 
 resource "digitalocean_database_cluster" "language_service_cache" {
-  name       = "foreign-language-reader-cache"
-  engine     = "redis"
-  version    = "5"
-  size       = "db-s-1vcpu-1gb"
-  region     = "sfo2"
-  node_count = 1
+  name            = "foreign-language-reader-cache"
+  engine          = "redis"
+  eviction_policy = "allkeys_lru"
+  version         = "5"
+  size            = "db-s-1vcpu-1gb"
+  region          = "sfo2"
+  node_count      = 1
 }
 
 resource "digitalocean_database_firewall" "allow_kubernetes_to_redis" {
@@ -82,24 +83,14 @@ resource "digitalocean_database_firewall" "allow_kubernetes_to_redis" {
   }
 }
 
-resource "digitalocean_database_user" "language_service_user" {
-  cluster_id = digitalocean_database_cluster.language_service_cache.id
-  name       = "language_service"
-}
-
-resource "digitalocean_database_db" "language_service_cache" {
-  cluster_id = digitalocean_database_cluster.language_service_cache.id
-  name       = "language-service"
-}
-
 resource "kubernetes_secret" "language_service_cache_credentials" {
   metadata {
     name = "language-service-cache-credentials"
   }
 
   data = {
-    username = digitalocean_database_user.language_service_user.name
-    password = digitalocean_database_user.language_service_user.password
+    username = digitalocean_database_cluster.language_service_cache.user
+    password = digitalocean_database_cluster.language_service_cache.password
     host     = digitalocean_database_cluster.language_service_cache.private_host
     port     = digitalocean_database_cluster.language_service_cache.port
   database = digitalocean_database_db.language_service_cache.name }
