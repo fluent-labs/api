@@ -16,5 +16,4 @@ defmodule ApiWeb.Schema.DomainTypes do
     field :word, non_null(:word)
     field :added, :string
   end
-
 end

@@ -12,7 +12,7 @@
         {Credo.Check.Consistency.TabsOrSpaces},
         {Credo.Check.Readability.MaxLineLength, priority: :low, max_length: 100},
         # Make TODO fail the build
-        {Credo.Check.Design.TagTODO, exit_status: 2},
+        {Credo.Check.Design.TagTODO, exit_status: 2}
       ]
     }
   ]

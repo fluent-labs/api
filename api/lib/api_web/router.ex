@@ -9,11 +9,9 @@ defmodule ApiWeb.Router do
   scope "/api" do
     pipe_through :api
 
-    forward "/graphiql", Absinthe.Plug.GraphiQL,
-      schema: ApiWeb.Schema
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: ApiWeb.Schema
 
-    forward "/", Absinthe.Plug,
-      schema: ApiWeb.Schema
+    forward "/", Absinthe.Plug, schema: ApiWeb.Schema
   end
 
   scope "/", ApiWeb do
