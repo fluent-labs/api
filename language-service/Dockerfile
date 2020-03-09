@@ -31,4 +31,4 @@ COPY --from=builder /venv /venv
 COPY language_service /app/
 
 EXPOSE 8000
-CMD ["gunicorn", "LanguageService:app", "--workers=4", "--worker-class=gevent", "--timeout=30", "--log-level=debug", "-b", ":8000"]
+CMD ["gunicorn", "LanguageService:app", "--config=gunicorn.conf.py"]
