@@ -8,9 +8,11 @@ resources:
 
 - api/service.yml
 - api/deployment.yml
+- api/autoscale.yml
 
 - language-service/service.yml
 - language-service/deployment.yml
+- language-service/autoscale.yml
 
 - ingress/ingress.yml
 - certificate/cert-manager.yml
