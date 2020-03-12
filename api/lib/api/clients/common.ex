@@ -6,11 +6,14 @@ defmodule Tesla.Middleware.RequestLogger do
 
   def call(%Tesla.Env{url: url, body: body, method: method} = env, next, _) do
     case method do
-      :get -> IO.puts("Calling " <> url)
+      :get ->
+        IO.puts("Calling " <> url)
+
       :post ->
         {:ok, body_json} = Jason.encode(body)
         IO.puts("Calling " <> url <> " with body: " <> body_json)
     end
+
     Tesla.run(env, next)
   end
 end
@@ -27,7 +30,9 @@ defmodule Tesla.Middleware.ResponseLogger do
         %Tesla.Env{url: url} = successful_env
         IO.puts("Successful response from " <> url)
         {:ok, successful_env}
-      {:error, err} -> IO.puts(err)
+
+      {:error, err} ->
+        IO.puts(err)
     end
   end
 end

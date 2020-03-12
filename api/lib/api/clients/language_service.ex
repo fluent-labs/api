@@ -5,7 +5,7 @@ defmodule Api.Clients.LanguageService do
   A client to connect to the language service
   """
 
-  adapter Tesla.Adapter.Hackney, recv_timeout: 30_000
+  adapter(Tesla.Adapter.Hackney, recv_timeout: 30_000)
   plug(Tesla.Middleware.BaseUrl, language_service_base_url())
   plug(Tesla.Middleware.Headers, [{"Authorization", auth_token()}])
   plug(Tesla.Middleware.RequestLogger)
@@ -42,6 +42,7 @@ defmodule Api.Clients.LanguageService do
 
   def tag(language, text) do
     url = "/v1/tagging/" <> serialize_language(language) <> "/document"
+
     case post(url, %{text: text}) do
       {:ok, %{body: body}} -> {:ok, Enum.map(body, &atomize/1)}
       _ -> :error
@@ -50,6 +51,7 @@ defmodule Api.Clients.LanguageService do
 
   def definition(language, word) do
     url = "/v1/definition/" <> serialize_language(language) <> "/" <> word
+
     case get(url) do
       {:ok, %{body: body}} -> {:ok, atomize(body)}
       _ -> :error
@@ -58,12 +60,15 @@ defmodule Api.Clients.LanguageService do
 
   def definitions(language, words) do
     url = "/v1/definitions/" <> serialize_language(language) <> "/"
+
     case post(url, %{words: words}) do
       {:ok, %{body: body}} ->
         mapped = Enum.map(body, fn {word, definition} -> {word, atomize(definition)} end)
         # Bit of an ugly hack because we can't just map over dictionary
         {:ok, Enum.into(mapped, %{})}
-      _ -> :error
+
+      _ ->
+        :error
     end
   end
 end

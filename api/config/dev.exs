@@ -1,5 +1,9 @@
 use Mix.Config
 
+config :api,
+  auth_token: "local",
+  language_service_url: "http://localhost:8000"
+
 # Configure your database
 config :api, Api.Repo,
   username: "dev-user",
