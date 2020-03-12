@@ -17,12 +17,13 @@ defmodule ApiWeb.Resolvers.Domain do
     # Request definitions in batches of 10
     # Too many words in a request will still cause problems
     definitions =
-      Enum.map(words, fn word -> Map.fetch!(word, :token) end)
+      words
+      |> Enum.map(fn word -> Map.fetch!(word, :token) end)
       |> Enum.chunk_every(10)
       |> Enum.flat_map(fn tokens -> get_definitions(language, tokens) end)
       |> Map.new
 
-    # Join everything together.
+    # Join words with definitions.
     processed_words =
       words
       |> Enum.map(fn word -> Map.put(word, :language, language) end)
