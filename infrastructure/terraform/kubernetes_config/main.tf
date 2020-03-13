@@ -66,7 +66,7 @@ resource "helm_release" "elasticsearch" {
 
   set {
     name  = "client.replicas"
-    value = 1
+    value = 0
   }
 
   set {
