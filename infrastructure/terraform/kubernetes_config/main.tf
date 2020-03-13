@@ -63,14 +63,6 @@ resource "helm_release" "elasticsearch" {
   version    = "1.32.4"
   namespace  = "logging"
   timeout    = 1200
-}
-
-resource "helm_release" "kibana" {
-  name       = "kibana"
-  repository = "https://kubernetes-charts.storage.googleapis.com"
-  chart      = "kibana"
-  version    = "3.2.6"
-  namespace  = "logging"
 
   set {
     name  = "client.replicas"
@@ -86,4 +78,12 @@ resource "helm_release" "kibana" {
     name  = "data.replicas"
     value = 1
   }
+}
+
+resource "helm_release" "kibana" {
+  name       = "kibana"
+  repository = "https://kubernetes-charts.storage.googleapis.com"
+  chart      = "kibana"
+  version    = "3.2.6"
+  namespace  = "logging"
 }
