@@ -49,3 +49,25 @@ resource "helm_release" "cert_manager" {
   version    = "v0.13.1"
   namespace  = "cert-manager"
 }
+
+resource "kubernetes_namespace" "logging" {
+  metadata {
+    name = "logging"
+  }
+}
+
+resource "helm_release" "elasticsearch" {
+  name       = "elasticsearch"
+  repository = "https://kubernetes-charts.storage.googleapis.com"
+  chart      = "elasticsearch"
+  version    = "1.32.4"
+  namespace  = "logging"
+}
+
+resource "helm_release" "kibana" {
+  name       = "kibana"
+  repository = "https://kubernetes-charts.storage.googleapis.com"
+  chart      = "kibana"
+  version    = "3.2.6"
+  namespace  = "logging"
+}
