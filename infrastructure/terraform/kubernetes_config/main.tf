@@ -51,6 +51,7 @@ resource "helm_release" "cert_manager" {
 }
 
 # Used to store elasticsearch services
+# We will push pod logs there.
 resource "kubernetes_namespace" "logging" {
   metadata {
     name = "logging"
