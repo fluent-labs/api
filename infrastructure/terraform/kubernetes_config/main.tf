@@ -62,6 +62,7 @@ resource "helm_release" "elasticsearch" {
   chart      = "elasticsearch"
   version    = "1.32.4"
   namespace  = "logging"
+  timeout    = 1200
 }
 
 resource "helm_release" "kibana" {
