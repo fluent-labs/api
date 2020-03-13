@@ -104,7 +104,7 @@ resource "kubernetes_secret" "language_service_cache_credentials" {
 # This is created by K8s and needs to be imported manually
 # Note that the ports are randomly assigned so you should update these to match what you import
 resource "digitalocean_loadbalancer" "foreign_language_reader" {
-  name   = "foreign-language-reader"
+  name   = "adfa0fdc0872441b18eff7df2ab9a1c7"
   region = "sfo2"
 
   forwarding_rule {
