@@ -71,4 +71,19 @@ resource "helm_release" "kibana" {
   chart      = "kibana"
   version    = "3.2.6"
   namespace  = "logging"
+
+  set {
+    name  = "client.replicas"
+    value = 1
+  }
+
+  set {
+    name  = "master.replicas"
+    value = 1
+  }
+
+  set {
+    name  = "data.replicas"
+    value = 1
+  }
 }
