@@ -50,40 +50,9 @@ resource "helm_release" "cert_manager" {
   namespace  = "cert-manager"
 }
 
+# Used to store elasticsearch services
 resource "kubernetes_namespace" "logging" {
   metadata {
     name = "logging"
   }
-}
-
-resource "helm_release" "elasticsearch" {
-  name       = "elasticsearch"
-  repository = "https://kubernetes-charts.storage.googleapis.com"
-  chart      = "elasticsearch"
-  version    = "1.32.4"
-  namespace  = "logging"
-  timeout    = 1200
-
-  set {
-    name  = "client.replicas"
-    value = 0
-  }
-
-  set {
-    name  = "master.replicas"
-    value = 1
-  }
-
-  set {
-    name  = "data.replicas"
-    value = 1
-  }
-}
-
-resource "helm_release" "kibana" {
-  name       = "kibana"
-  repository = "https://kubernetes-charts.storage.googleapis.com"
-  chart      = "kibana"
-  version    = "3.2.6"
-  namespace  = "logging"
 }
