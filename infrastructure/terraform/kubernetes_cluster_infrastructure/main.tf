@@ -101,43 +101,43 @@ resource "kubernetes_secret" "language_service_cache_credentials" {
 # Configure networking
 
 # This is created by K8s and needs to be imported manually
-Note that the ports are randomly assigned so you should update these to match what you import
-resource "digitalocean_loadbalancer" "foreign_language_reader" {
-  name   = "adfa0fdc0872441b18eff7df2ab9a1c7"
-  region = "sfo2"
-
-  forwarding_rule {
-    entry_port      = 80
-    entry_protocol  = "tcp"
-    target_port     = 32524
-    target_protocol = "tcp"
-  }
-
-  forwarding_rule {
-    entry_port      = 443
-    entry_protocol  = "tcp"
-    target_port     = 32723
-    target_protocol = "tcp"
-  }
-
-  healthcheck {
-    port                     = 32524
-    protocol                 = "tcp"
-    check_interval_seconds   = 3
-    response_timeout_seconds = 5
-  }
-}
-
-resource "digitalocean_record" "api" {
-  domain = var.domain_name
-  type   = "A"
-  name   = "api"
-  value  = digitalocean_loadbalancer.foreign_language_reader.ip
-}
-
-resource "digitalocean_record" "language" {
-  domain = var.domain_name
-  type   = "A"
-  name   = "language"
-  value  = digitalocean_loadbalancer.foreign_language_reader.ip
-}
+# Note that the ports are randomly assigned so you should update these to match what you import
+# resource "digitalocean_loadbalancer" "foreign_language_reader" {
+#   name   = "adfa0fdc0872441b18eff7df2ab9a1c7"
+#   region = "sfo2"
+#
+#   forwarding_rule {
+#     entry_port      = 80
+#     entry_protocol  = "tcp"
+#     target_port     = 32524
+#     target_protocol = "tcp"
+#   }
+#
+#   forwarding_rule {
+#     entry_port      = 443
+#     entry_protocol  = "tcp"
+#     target_port     = 32723
+#     target_protocol = "tcp"
+#   }
+#
+#   healthcheck {
+#     port                     = 32524
+#     protocol                 = "tcp"
+#     check_interval_seconds   = 3
+#     response_timeout_seconds = 5
+#   }
+# }
+#
+# resource "digitalocean_record" "api" {
+#   domain = var.domain_name
+#   type   = "A"
+#   name   = "api"
+#   value  = digitalocean_loadbalancer.foreign_language_reader.ip
+# }
+#
+# resource "digitalocean_record" "language" {
+#   domain = var.domain_name
+#   type   = "A"
+#   name   = "language"
+#   value  = digitalocean_loadbalancer.foreign_language_reader.ip
+# }
