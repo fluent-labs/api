@@ -12,7 +12,9 @@ resource "digitalocean_project" "foreign_language_reader" {
     digitalocean_database_cluster.api_mysql.urn,
     data.digitalocean_domain.main.urn,
     digitalocean_database_cluster.language_service_cache.urn,
-    "do:kubernetes:a5be20d1-0248-460b-a1e1-355d6a5a8c64"
+    "do:kubernetes:a5be20d1-0248-460b-a1e1-355d6a5a8c64",
+    data.digitalocean_loadbalancer.foreign_language_reader.urn,
+    "do:volume:102f9ae3-65b9-11ea-a52c-0a58ac142199"
   ]
 }
 
@@ -106,7 +108,7 @@ resource "kubernetes_secret" "language_service_cache_credentials" {
 # Honestly should probably let K8s manage it and just use it informationally
 # Note that the ports are randomly assigned so you should update these to match what you import
 data "digitalocean_loadbalancer" "foreign_language_reader" {
-  name = "foreign-language-reader"
+  name = "a9df278143ceb40a0814972ad52c9651"
 }
 
 resource "digitalocean_record" "api" {

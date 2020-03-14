@@ -2,9 +2,27 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- ecr-cred-helper/service-account-binding.yml
-- ecr-cred-helper/service-account.yml
-- ecr-cred-helper/task.yml
+# Cluster-wide services
+
+# nginx proxy for traffic into the cluster
+- ingress/ingress.yml
+- certificate/cert-manager.yml
+- certificate/letsencrypt-staging.yml
+- certificate/letsencrypt-prod.yml
+
+# Elasticsearch - used for logs and language content storage
+- elasticsearch/elasticsearch-service.yml
+- elasticsearch/elasticsearch-statefulset.yml
+- elasticsearch/kibana-service.yml
+- elasticsearch/kibana-deployment.yml
+
+# Logging by fluentd
+- logging/logging-namespace.yml
+- logging/fluentd-serviceaccount.yml
+- logging/fluentd-clusterrole.yml
+- logging/fluentd-daemonset.yml
+
+# Microservices
 
 - api/service.yml
 - api/deployment.yml
@@ -14,7 +32,9 @@ resources:
 - language-service/deployment.yml
 - language-service/autoscale.yml
 
-- ingress/ingress.yml
-- certificate/cert-manager.yml
-- certificate/letsencrypt-staging.yml
-- certificate/letsencrypt-prod.yml
+# Scheduled jobs
+
+# Used to get permission to download containers from the Amazon container registry
+- ecr-cred-helper/service-account-binding.yml
+- ecr-cred-helper/service-account.yml
+- ecr-cred-helper/task.yml
