@@ -22,3 +22,7 @@ Terraform scripts and Kubernetes YAML files that describe all of our infrastruct
 -   Hosted on Digital Ocean
 -   Managed by Kubernetes
 -   Containers and static content hosted on AWS
+
+### Future plans
+-   Finish up API to keep track of Vocabulary
+-   Example sentences
