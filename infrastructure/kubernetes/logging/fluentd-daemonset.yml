@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: fluentd-elasticsearch
+  name: fluentd
   namespace: kube-logging
   labels:
-    k8s-app: fluentd-logging
+    app: fluentd
 spec:
   selector:
     matchLabels:
-      name: fluentd-elasticsearch
+      app: fluentd
   template:
     metadata:
       labels:
-        name: fluentd-elasticsearch
+        app: fluentd
     spec:
       serviceAccount: fluentd
       serviceAccountName: fluentd
