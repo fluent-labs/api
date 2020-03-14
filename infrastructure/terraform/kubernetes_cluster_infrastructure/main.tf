@@ -76,14 +76,14 @@ resource "digitalocean_database_cluster" "language_service_cache" {
   node_count      = 1
 }
 
-resource "digitalocean_database_firewall" "allow_kubernetes_to_redis" {
-  cluster_id = digitalocean_database_cluster.language_service_cache.id
-
-  rule {
-    type  = "k8s"
-    value = data.digitalocean_kubernetes_cluster.foreign_language_reader.id
-  }
-}
+# resource "digitalocean_database_firewall" "allow_kubernetes_to_redis" {
+#   cluster_id = digitalocean_database_cluster.language_service_cache.id
+#
+#   rule {
+#     type  = "k8s"
+#     value = data.digitalocean_kubernetes_cluster.foreign_language_reader.id
+#   }
+# }
 
 # resource "kubernetes_secret" "language_service_cache_credentials" {
 #   metadata {
