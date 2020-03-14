@@ -26,3 +26,4 @@ Terraform scripts and Kubernetes YAML files that describe all of our infrastruct
 ### Future plans
 -   Finish up API to keep track of Vocabulary
 -   Example sentences
+-   Get more dictionaries
