@@ -13,7 +13,8 @@ resource "digitalocean_project" "foreign_language_reader" {
     data.digitalocean_domain.main.urn,
     digitalocean_database_cluster.language_service_cache.urn,
     "do:kubernetes:a5be20d1-0248-460b-a1e1-355d6a5a8c64",
-    data.digitalocean_loadbalancer.foreign_language_reader.urn
+    data.digitalocean_loadbalancer.foreign_language_reader.urn,
+    "do:volume:102f9ae3-65b9-11ea-a52c-0a58ac142199"
   ]
 }
 
