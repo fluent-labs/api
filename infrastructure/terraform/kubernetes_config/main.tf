@@ -50,10 +50,29 @@ resource "helm_release" "cert_manager" {
   namespace  = "cert-manager"
 }
 
-# Used to store elasticsearch services
-# We will push pod logs there.
-resource "kubernetes_namespace" "logging" {
-  metadata {
-    name = "logging"
+# Production elasticsearch setup
+# Used to store language content and also logs.
+
+resource "helm_release" "elasticsearch" {
+  name       = "elasticsearch"
+  repository = "https://kubernetes-charts.storage.googleapis.com"
+  chart      = "elasticsearch"
+  version    = "1.32.4"
+  namespace  = "logging"
+  timeout    = 1200
+
+  set {
+    name  = "client.replicas"
+    value = 0
+  }
+
+  set {
+    name  = "master.replicas"
+    value = 3
+  }
+
+  set {
+    name  = "data.replicas"
+    value = 0
   }
 }
