@@ -17,6 +17,7 @@ resources:
 - elasticsearch/kibana-deployment.yml
 
 # Logging by fluentd
+- logging/logging-namespace.yml
 - logging/fluentd-serviceaccount.yml
 - logging/fluentd-clusterrole.yml
 

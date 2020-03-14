@@ -26,4 +26,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: fluentd
-  namespace: default
+  namespace: kube-logging
