@@ -20,6 +20,7 @@ resources:
 - logging/logging-namespace.yml
 - logging/fluentd-serviceaccount.yml
 - logging/fluentd-clusterrole.yml
+- logging/fluentd-daemonset.yml
 
 # Microservices
 
