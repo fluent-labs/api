@@ -13,6 +13,7 @@ A glue layer that puts together all the different data sources and keeps track o
 A service that provides text processing methods.
 -   Service served by flask
 -   Cached with Redis
+-   Language data stored with elasticsearch
 -   English and Spanish part of speech tagging provided by Spacy
 -   Chinese part of speech tagging provided by jieba
 -   Vocabulary provided by WiktionaryParser
