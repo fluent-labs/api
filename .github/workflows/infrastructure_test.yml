@@ -1,9 +1,9 @@
-name: 'Test infrastructure'
+name: 'Test infrastructure plan'
 on: pull_request
 
 jobs:
   terraform:
-    name: 'Validate terraform code'
+    name: 'Plan infrastructure changes'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
