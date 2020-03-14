@@ -9,7 +9,6 @@ resource "digitalocean_project" "foreign_language_reader" {
   environment = "Production"
   resources = [
     digitalocean_database_cluster.api_mysql.urn,
-    digitalocean_loadbalancer.foreign_language_reader.urn,
     data.digitalocean_domain.main.urn,
     digitalocean_database_cluster.language_service_cache.urn
   ]
@@ -30,14 +29,14 @@ resource "digitalocean_database_cluster" "api_mysql" {
   node_count = 1
 }
 
-resource "digitalocean_database_firewall" "allow_kubernetes" {
-  cluster_id = digitalocean_database_cluster.api_mysql.id
-
-  rule {
-    type  = "k8s"
-    value = data.digitalocean_kubernetes_cluster.foreign_language_reader.id
-  }
-}
+# resource "digitalocean_database_firewall" "allow_kubernetes" {
+#   cluster_id = digitalocean_database_cluster.api_mysql.id
+#
+#   rule {
+#     type  = "k8s"
+#     value = data.digitalocean_kubernetes_cluster.foreign_language_reader.id
+#   }
+# }
 
 resource "digitalocean_database_user" "api_user" {
   cluster_id = digitalocean_database_cluster.api_mysql.id
