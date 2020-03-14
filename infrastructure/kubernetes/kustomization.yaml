@@ -18,6 +18,7 @@ resources:
 
 # Logging by fluentd
 - logging/fluentd-serviceaccount.yml
+- logging/fluentd-clusterrole.yml
 
 # Microservices
 
