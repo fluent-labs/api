@@ -19,6 +19,8 @@ spec:
       tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
+      - key: node.kubernetes.io/unreachable
+        effect: NoSchedule
       containers:
       - name: fluentd
         image: fluent/fluentd-kubernetes-daemonset:v1.9-debian-elasticsearch7-1
