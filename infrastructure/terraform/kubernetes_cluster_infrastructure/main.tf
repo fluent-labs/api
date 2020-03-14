@@ -108,7 +108,7 @@ resource "kubernetes_secret" "language_service_cache_credentials" {
 # Honestly should probably let K8s manage it and just use it informationally
 # Note that the ports are randomly assigned so you should update these to match what you import
 data "digitalocean_loadbalancer" "foreign_language_reader" {
-  name = "foreign-language-reader"
+  name = "a9df278143ceb40a0814972ad52c9651"
 }
 
 resource "digitalocean_record" "api" {
