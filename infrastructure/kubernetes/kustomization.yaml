@@ -11,8 +11,6 @@ resources:
 - certificate/letsencrypt-prod.yml
 
 # Elasticsearch - used for logs and language content storage
-- elasticsearch/elasticsearch-service.yml
-- elasticsearch/elasticsearch-statefulset.yml
 - elasticsearch/kibana-service.yml
 - elasticsearch/kibana-deployment.yml
 
