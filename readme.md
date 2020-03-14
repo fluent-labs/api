@@ -12,7 +12,7 @@ A glue layer that puts together all the different data sources and keeps track o
 ### Language-Service
 A service that provides text processing methods.
 -   Service served by flask
--   Language data stored with elasticsearch
+-   Language data stored with Elasticsearch
 -   English and Spanish part of speech tagging provided by Spacy
 -   Chinese part of speech tagging provided by jieba
 -   Vocabulary provided by WiktionaryParser
