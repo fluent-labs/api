@@ -1,13 +1,9 @@
-name: 'Test infrastructure'
-on:
-  pull_request:
-    paths:
-      - "infrastructure/terraform/*"
-      - "infrastructure/terraform/**/*"
-      - "infrastucture.tf"
+name: 'Test infrastructure plan'
+on: pull_request
+
 jobs:
   terraform:
-    name: 'Validate terraform code'
+    name: 'Plan infrastructure changes'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
