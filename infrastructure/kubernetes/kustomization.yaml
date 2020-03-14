@@ -16,6 +16,9 @@ resources:
 - elasticsearch/kibana-service.yml
 - elasticsearch/kibana-deployment.yml
 
+# Logging by fluentd
+- logging/fluentd-serviceaccount.yml
+
 # Microservices
 
 - api/service.yml
