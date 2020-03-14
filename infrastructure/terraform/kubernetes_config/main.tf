@@ -58,7 +58,6 @@ resource "helm_release" "elasticsearch" {
   repository = "https://kubernetes-charts.storage.googleapis.com"
   chart      = "elasticsearch"
   version    = "1.32.4"
-  namespace  = "logging"
   timeout    = 1200
 
   set {
