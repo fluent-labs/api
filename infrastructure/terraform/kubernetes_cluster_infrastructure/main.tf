@@ -2,22 +2,6 @@ data "digitalocean_domain" "main" {
   name = var.domain_name
 }
 
-# TODO actually plug in the URN when terraform supports it.
-resource "digitalocean_project" "foreign_language_reader" {
-  name        = "foreign-language-reader"
-  description = "Read text in different languages."
-  purpose     = "Web Application"
-  environment = "Production"
-  resources = [
-    digitalocean_database_cluster.api_mysql.urn,
-    data.digitalocean_domain.main.urn,
-    digitalocean_database_cluster.language_service_cache.urn,
-    "do:kubernetes:a5be20d1-0248-460b-a1e1-355d6a5a8c64",
-    data.digitalocean_loadbalancer.foreign_language_reader.urn,
-    "do:volume:102f9ae3-65b9-11ea-a52c-0a58ac142199"
-  ]
-}
-
 data "digitalocean_kubernetes_cluster" "foreign_language_reader" {
   name = var.cluster_name
 }
