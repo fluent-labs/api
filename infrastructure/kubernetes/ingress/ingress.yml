@@ -4,14 +4,13 @@ metadata:
   name: foreign-language-reader-ingress
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/enable-cors: "true"
 spec:
   tls:
   - hosts:
     - api.foreignlanguagereader.com
     - language.foreignlanguagereader.com
-    secretName: flr-tls
+    secretName: nginx-certificate
   rules:
   - host: api.foreignlanguagereader.com
     http:

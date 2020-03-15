@@ -44,34 +44,8 @@ resource "digitalocean_kubernetes_cluster" "foreign_language_reader" {
 }
 
 module "infrastructure" {
-  source           = "./infrastructure/terraform"
-  cluster_name     = digitalocean_kubernetes_cluster.foreign_language_reader.name
-  test_environment = var.test_environment
-}
-
-# Section to create TLS certs
-# Put at this level so we don't have to pass the DO token around
-
-resource "tls_private_key" "tls_private_key" {
-  algorithm = "RSA"
-}
-
-resource "acme_registration" "reg" {
-  account_key_pem = tls_private_key.tls_private_key.private_key_pem
-  email_address   = "letsencrypt@lucaskjaerozhang.com"
-}
-
-resource "acme_certificate" "certificate" {
-  account_key_pem = acme_registration.reg.account_key_pem
-  common_name     = "*.foreignlanguagereader.com"
-
-  dns_challenge {
-    provider = "digitalocean"
-    config = {
-      DO_AUTH_TOKEN          = var.digitalocean_token
-      DO_HTTP_TIMEOUT        = 60
-      DO_POLLING_INTERVAL    = 30
-      DO_PROPAGATION_TIMEOUT = 600
-    }
-  }
+  source             = "./infrastructure/terraform"
+  cluster_name       = digitalocean_kubernetes_cluster.foreign_language_reader.name
+  test_environment   = var.test_environment
+  digitalocean_token = var.digitalocean_token
 }

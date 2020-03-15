@@ -29,25 +29,29 @@ resource "kubernetes_secret" "api_secret_key_base" {
   }
 }
 
+# Configure NGinx proxy for connecting to all services
+
+resource "kubernetes_secret" "nginx_certificate" {
+  metadata {
+    name = "nginx-certificate"
+  }
+
+  data = {
+    "tls.key" = var.private_key_pem
+    "tls.crt" = <<EOF
+${var.certificate_pem}
+${var.issuer_pem}
+EOF
+  }
+
+  type = "kubernetes.io/tls"
+}
+
 resource "helm_release" "nginx_ingress" {
   name       = "nginx-ingress"
   repository = "https://kubernetes-charts.storage.googleapis.com/"
   chart      = "nginx-ingress"
   version    = "1.33.0"
-}
-
-resource "kubernetes_namespace" "cert_manager" {
-  metadata {
-    name = "cert-manager"
-  }
-}
-
-resource "helm_release" "cert_manager" {
-  name       = "cert-manager"
-  repository = "https://charts.jetstack.io"
-  chart      = "cert-manager"
-  version    = "v0.13.1"
-  namespace  = "cert-manager"
 }
 
 # Production elasticsearch setup
