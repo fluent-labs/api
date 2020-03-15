@@ -23,6 +23,11 @@ provider "digitalocean" {
   token = var.digitalocean_token
 }
 
+provider "acme" {
+  server_url = "https://acme-v02.api.letsencrypt.org/directory"
+}
+
+# Held here so that Helm and K8s providers can be initialized to work on this cluster
 resource "digitalocean_kubernetes_cluster" "foreign_language_reader" {
   name    = "foreign-language-reader"
   region  = "sfo2"
@@ -39,7 +44,8 @@ resource "digitalocean_kubernetes_cluster" "foreign_language_reader" {
 }
 
 module "infrastructure" {
-  source           = "./infrastructure/terraform"
-  cluster_name     = digitalocean_kubernetes_cluster.foreign_language_reader.name
-  test_environment = var.test_environment
+  source             = "./infrastructure/terraform"
+  cluster_name       = digitalocean_kubernetes_cluster.foreign_language_reader.name
+  test_environment   = var.test_environment
+  digitalocean_token = var.digitalocean_token
 }
