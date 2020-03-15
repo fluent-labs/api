@@ -91,20 +91,20 @@ resource "kubernetes_secret" "language_service_cache_credentials" {
 # This is created by K8s and needs to be imported manually
 # Honestly should probably let K8s manage it and just use it informationally
 # Note that the ports are randomly assigned so you should update these to match what you import
-# data "digitalocean_loadbalancer" "foreign_language_reader" {
-#   name = "a9df278143ceb40a0814972ad52c9651"
-# }
-#
-# resource "digitalocean_record" "api" {
-#   domain = var.domain_name
-#   type   = "A"
-#   name   = "api"
-#   value  = data.digitalocean_loadbalancer.foreign_language_reader.ip
-# }
-#
-# resource "digitalocean_record" "language" {
-#   domain = var.domain_name
-#   type   = "A"
-#   name   = "language"
-#   value  = data.digitalocean_loadbalancer.foreign_language_reader.ip
-# }
+data "digitalocean_loadbalancer" "foreign_language_reader" {
+  name = "a9445521f9b0245ff8f9b18ecc8bbc65"
+}
+
+resource "digitalocean_record" "api" {
+  domain = var.domain_name
+  type   = "A"
+  name   = "api"
+  value  = data.digitalocean_loadbalancer.foreign_language_reader.ip
+}
+
+resource "digitalocean_record" "language" {
+  domain = var.domain_name
+  type   = "A"
+  name   = "language"
+  value  = data.digitalocean_loadbalancer.foreign_language_reader.ip
+}
