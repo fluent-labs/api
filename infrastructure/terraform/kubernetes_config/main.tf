@@ -75,23 +75,7 @@ resource "helm_release" "elasticsearch" {
   chart      = "elasticsearch"
   version    = "7.6.1"
 
-  values = [<<EOF
-esConfig:
-  elasticsearch.yml: |
-    xpack.security.enabled: true
-    xpack.security.transport.ssl.enabled: true
-    xpack.security.transport.ssl.verification_mode: certificate
-    xpack.security.transport.ssl.key: /usr/share/elasticsearch/config/certs/private_key_pem.crt
-    xpack.security.transport.ssl.certificate: /usr/share/elasticsearch/config/certs/certificate_pem.crt
-    xpack.security.transport.ssl.certificate_authorities: [ "/usr/share/elasticsearch/config/certs/issuer_pem.crt" ]
-EOF
-,
-<<EOF
-secretMounts:
-  - name: elastic-certificates
-    secretName: elasticsearch-certificates
-    path: /usr/share/elasticsearch/config/certs
-EOF
+  values = [file("${path.module}/elasticsearch.yml")]
 }
 
 resource "helm_release" "kibana" {
