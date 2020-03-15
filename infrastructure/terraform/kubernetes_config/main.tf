@@ -82,4 +82,9 @@ resource "helm_release" "kibana" {
   chart      = "kibana"
   version    = "3.2.6"
   timeout    = 1200
+
+  set {
+    name  = "image.tag"
+    value = "6.8.6"
+  }
 }
