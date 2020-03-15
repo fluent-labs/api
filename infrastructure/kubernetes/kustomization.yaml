@@ -6,9 +6,6 @@ resources:
 
 # nginx proxy for traffic into the cluster
 - ingress/ingress.yml
-- certificate/cert-manager.yml
-- certificate/letsencrypt-staging.yml
-- certificate/letsencrypt-prod.yml
 
 # Logging by fluentd
 - logging/logging-namespace.yml
