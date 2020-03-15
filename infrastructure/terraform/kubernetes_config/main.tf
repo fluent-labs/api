@@ -58,6 +58,11 @@ resource "helm_release" "elasticsearch" {
   repository = "https://helm.elastic.co"
   chart      = "elasticsearch"
   version    = "7.6.1"
+
+  set {
+    name  = "protocol"
+    value = "https"
+  }
 }
 
 resource "helm_release" "kibana" {
