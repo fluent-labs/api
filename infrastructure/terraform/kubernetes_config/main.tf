@@ -47,7 +47,6 @@ EOF
   type = "kubernetes.io/tls"
 }
 
-
 resource "helm_release" "nginx_ingress" {
   name       = "nginx-ingress"
   repository = "https://kubernetes-charts.storage.googleapis.com/"
