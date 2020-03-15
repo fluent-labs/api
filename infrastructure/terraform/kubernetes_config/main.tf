@@ -75,3 +75,11 @@ resource "helm_release" "elasticsearch" {
     value = 0
   }
 }
+
+resource "helm_release" "kibana" {
+  name       = "kibana"
+  repository = "https://kubernetes-charts.storage.googleapis.com"
+  chart      = "kibana"
+  version    = "3.2.6"
+  timeout    = 1200
+}

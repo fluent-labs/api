@@ -24,7 +24,6 @@ jobs:
           infrastructure/kubernetes/api/* \
           infrastructure/kubernetes/certificate/* \
           infrastructure/kubernetes/ecr-cred-helper/* \
-          infrastructure/kubernetes/elasticsearch/* \
           infrastructure/kubernetes/ingress/* \
           infrastructure/kubernetes/language-service/* \
           infrastructure/kubernetes/logging/*
