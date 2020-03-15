@@ -57,6 +57,22 @@ resource "helm_release" "nginx_ingress" {
 # Production elasticsearch setup
 # Used to store language content and also logs.
 
+resource "random_password" "elasticsearch_password" {
+  length  = 64
+  special = true
+}
+
+resource "kubernetes_secret" "elastic_credentials" {
+  metadata {
+    name = "elastic-credentials"
+  }
+
+  data = {
+    username = "lucas"
+    passowrd = random_password.elasticsearch_password.result
+  }
+}
+
 resource "kubernetes_secret" "elasticsearch_internal_certificate" {
   metadata {
     name = "elasticsearch-certificates"
