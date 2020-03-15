@@ -10,10 +10,6 @@ resources:
 - certificate/letsencrypt-staging.yml
 - certificate/letsencrypt-prod.yml
 
-# Elasticsearch - used for logs and language content storage
-- elasticsearch/kibana-service.yml
-- elasticsearch/kibana-deployment.yml
-
 # Logging by fluentd
 - logging/logging-namespace.yml
 - logging/fluentd-serviceaccount.yml
