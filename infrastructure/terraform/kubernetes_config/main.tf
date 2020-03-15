@@ -57,16 +57,39 @@ resource "helm_release" "nginx_ingress" {
 # Production elasticsearch setup
 # Used to store language content and also logs.
 
+resource "kubernetes_secret" "elasticsearch_internal_certificate" {
+  metadata {
+    name = "elasticsearch-certificates"
+  }
+
+  data = {
+    "private_key_pem.crt" = var.private_key_pem
+    "certificate_pem.crt" = var.certificate_pem
+    "issuer_pem.crt"      = var.issuer_pem
+  }
+}
+
 resource "helm_release" "elasticsearch" {
   name       = "elasticsearch"
   repository = "https://helm.elastic.co"
   chart      = "elasticsearch"
   version    = "7.6.1"
 
-  set {
-    name  = "protocol"
-    value = "https"
-  }
+  values = <<EOF
+esConfig:
+  elasticsearch.yml: |
+    xpack.security.enabled: true
+    xpack.security.transport.ssl.enabled: true
+    xpack.security.transport.ssl.verification_mode: certificate
+    xpack.security.transport.ssl.key: /usr/share/elasticsearch/config/certs/private_key_pem.crt
+    xpack.security.transport.ssl.certificate: /usr/share/elasticsearch/config/certs/certificate_pem.crt
+    xpack.security.transport.ssl.certificate_authorities: [ "/usr/share/elasticsearch/config/certs/issuer_pem.crt" ]
+
+secretMounts:
+  - name: elastic-certificates
+    secretName: elasticsearch-certificates
+    path: /usr/share/elasticsearch/config/certs
+EOF
 }
 
 resource "helm_release" "kibana" {
