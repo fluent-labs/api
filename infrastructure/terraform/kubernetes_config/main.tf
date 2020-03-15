@@ -75,7 +75,7 @@ resource "helm_release" "elasticsearch" {
   chart      = "elasticsearch"
   version    = "7.6.1"
 
-  values = <<EOF
+  values = [<<EOF
 esConfig:
   elasticsearch.yml: |
     xpack.security.enabled: true
@@ -84,7 +84,9 @@ esConfig:
     xpack.security.transport.ssl.key: /usr/share/elasticsearch/config/certs/private_key_pem.crt
     xpack.security.transport.ssl.certificate: /usr/share/elasticsearch/config/certs/certificate_pem.crt
     xpack.security.transport.ssl.certificate_authorities: [ "/usr/share/elasticsearch/config/certs/issuer_pem.crt" ]
-
+EOF
+,
+<<EOF
 secretMounts:
   - name: elastic-certificates
     secretName: elasticsearch-certificates
