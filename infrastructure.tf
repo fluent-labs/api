@@ -66,7 +66,9 @@ resource "acme_certificate" "certificate" {
   common_name     = "*.foreignlanguagereader.com"
 
   dns_challenge {
-    provider      = "digitalocean"
-    DO_AUTH_TOKEN = var.digitalocean_token
+    provider = "digitalocean"
+    config = {
+      DO_AUTH_TOKEN = var.digitalocean_token
+    }
   }
 }
