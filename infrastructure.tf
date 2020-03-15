@@ -23,6 +23,10 @@ provider "digitalocean" {
   token = var.digitalocean_token
 }
 
+provider "acme" {
+  server_url = "https://acme-staging-v02.api.letsencrypt.org/directory"
+}
+
 resource "digitalocean_kubernetes_cluster" "foreign_language_reader" {
   name    = "foreign-language-reader"
   region  = "sfo2"
