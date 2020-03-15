@@ -76,6 +76,10 @@ resource "helm_release" "elasticsearch" {
   version    = "7.6.1"
 
   values = [file("${path.module}/elasticsearch.yml")]
+
+  depends_on = [
+    kubernetes_secret.elasticsearch_internal_certificate,
+  ]
 }
 
 resource "helm_release" "kibana" {
