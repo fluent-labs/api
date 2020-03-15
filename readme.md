@@ -27,3 +27,4 @@ Terraform scripts and Kubernetes YAML files that describe all of our infrastruct
 -   Finish up API to keep track of Vocabulary
 -   Example sentences
 -   Get more dictionaries
+-   Automated language content updates
