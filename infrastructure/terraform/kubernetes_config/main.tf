@@ -55,36 +55,14 @@ resource "helm_release" "cert_manager" {
 
 resource "helm_release" "elasticsearch" {
   name       = "elasticsearch"
-  repository = "https://kubernetes-charts.storage.googleapis.com"
+  repository = "https://helm.elastic.co"
   chart      = "elasticsearch"
-  version    = "1.32.4"
-  timeout    = 1200
-
-  set {
-    name  = "client.replicas"
-    value = 0
-  }
-
-  set {
-    name  = "master.replicas"
-    value = 3
-  }
-
-  set {
-    name  = "data.replicas"
-    value = 0
-  }
+  version    = "7.6.1"
 }
 
 resource "helm_release" "kibana" {
   name       = "kibana"
-  repository = "https://kubernetes-charts.storage.googleapis.com"
+  repository = "https://helm.elastic.co"
   chart      = "kibana"
-  version    = "3.2.6"
-  timeout    = 1200
-
-  set {
-    name  = "image.tag"
-    value = "6.8.6"
-  }
+  version    = "7.6.1"
 }
