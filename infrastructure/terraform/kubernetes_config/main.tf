@@ -95,6 +95,7 @@ resource "helm_release" "elasticsearch" {
 
   depends_on = [
     kubernetes_secret.elasticsearch_internal_certificate,
+    kubernetes_secret.elastic_credentials
   ]
 }
 
