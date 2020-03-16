@@ -69,7 +69,7 @@ resource "kubernetes_secret" "elastic_credentials" {
 
   data = {
     username = "lucas"
-    passowrd = random_password.elasticsearch_password.result
+    password = random_password.elasticsearch_password.result
   }
 }
 
