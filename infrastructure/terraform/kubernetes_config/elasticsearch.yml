@@ -23,3 +23,6 @@ secretMounts:
   - name: elastic-certificates
     secretName: elasticsearch-certificates
     path: /usr/share/elasticsearch/config/certs
+
+keystore:
+  - secretName: elastic-credentials
