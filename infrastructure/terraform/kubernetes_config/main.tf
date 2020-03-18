@@ -58,8 +58,9 @@ resource "helm_release" "nginx_ingress" {
 # Used to store language content and also logs.
 
 resource "random_password" "elasticsearch_password" {
-  length  = 64
-  special = true
+  length      = 32
+  special     = false
+  min_numeric = 10
 }
 
 resource "kubernetes_secret" "elastic_credentials" {
