@@ -172,7 +172,7 @@ resource "kubernetes_namespace" "content" {
   }
 }
 
-resource "helm_release" "fluentd_elasticsearch" {
+resource "helm_release" "spark" {
   name       = "spark"
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "spark"
