@@ -121,6 +121,7 @@ resource "helm_release" "kibana" {
 }
 
 # Logging configuration
+# Every node has a log collection agent that posts logs to elasticsearch
 
 resource "kubernetes_namespace" "logging" {
   metadata {
@@ -154,5 +155,31 @@ resource "helm_release" "fluentd_elasticsearch" {
 
   depends_on = [
     kubernetes_namespace.logging
+  ]
+}
+
+# Content jobs runtime
+# Content requires long running jobs that could be split into parallel
+# This is a good use case for spark.
+
+resource "kubernetes_namespace" "content" {
+  metadata {
+    annotations = {
+      name = "content"
+    }
+
+    name = "content"
+  }
+}
+
+resource "helm_release" "fluentd_elasticsearch" {
+  name       = "spark"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "spark"
+  version    = "1.2.10"
+  namespace  = "content"
+
+  depends_on = [
+    kubernetes_namespace.content
   ]
 }
