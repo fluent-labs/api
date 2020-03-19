@@ -7,12 +7,6 @@ resources:
 # nginx proxy for traffic into the cluster
 - ingress/ingress.yml
 
-# Logging by fluentd
-- logging/logging-namespace.yml
-- logging/fluentd-serviceaccount.yml
-- logging/fluentd-clusterrole.yml
-- logging/fluentd-daemonset.yml
-
 # Microservices
 
 - api/service.yml
