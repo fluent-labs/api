@@ -24,3 +24,9 @@ spec:
       - backend:
           serviceName: language-service
           servicePort: 8000
+  - host: kibana.foreignlanguagereader.com
+    http:
+      paths:
+      - backend:
+          serviceName: kibana-kibana
+          servicePort: 5601

@@ -102,6 +102,13 @@ resource "digitalocean_record" "api" {
   value  = data.digitalocean_loadbalancer.foreign_language_reader.ip
 }
 
+resource "digitalocean_record" "kibana" {
+  domain = var.domain_name
+  type   = "A"
+  name   = "kibana"
+  value  = data.digitalocean_loadbalancer.foreign_language_reader.ip
+}
+
 resource "digitalocean_record" "language" {
   domain = var.domain_name
   type   = "A"
