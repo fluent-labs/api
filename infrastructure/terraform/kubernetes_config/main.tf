@@ -69,9 +69,16 @@ resource "kubernetes_secret" "elastic_credentials" {
   }
 
   data = {
-    username = "lucas"
-    password = random_password.elasticsearch_password.result
+    username      = "healthcheck"
+    password      = random_password.elasticsearch_password.result
+    encryptionkey = random_password.kibana_encryption_key.result
   }
+}
+
+resource "random_password" "kibana_encryption_key" {
+  length      = 32
+  special     = false
+  min_numeric = 10
 }
 
 resource "kubernetes_secret" "elasticsearch_internal_certificate" {
@@ -105,4 +112,10 @@ resource "helm_release" "kibana" {
   repository = "https://helm.elastic.co"
   chart      = "kibana"
   version    = "7.6.1"
+
+  values = [file("${path.module}/kibana.yml")]
+
+  depends_on = [
+    kubernetes_secret.elastic_credentials
+  ]
 }
