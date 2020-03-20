@@ -4,5 +4,7 @@
 .terraform
 terraform.tfstate
 terraform.tfstate.backup
-api/secrets
 terraform.tfvars
+state.json
+
+.idea
