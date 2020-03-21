@@ -1,8 +1,8 @@
 import logging
 
+from language_service.client.definition.cedict import CEDICT
+from language_service.client.definition.wiktionary import Wiktionary
 from language_service.dto.definition import ChineseDefinition
-from language_service.service.definition.sources.cedict import CEDICT
-from language_service.service.definition.sources.wiktionary import Wiktionary
 
 cedict = CEDICT()
 logger = logging.getLogger("LanguageService.definition.language.chinese")
@@ -13,7 +13,7 @@ def get_chinese_definitions(word):
     wiktionary = Wiktionary()
 
     wiktionary_definitions = wiktionary.get_definitions("CHINESE", word)
-    cedict_definition = cedict.get_definitions(word)
+    cedict_definition = cedict.get_definitions("CHINESE", word)
 
     if wiktionary_definitions is not None and cedict_definition is not None:
         logger.info("CHINESE - Found wiktionary and cedict definitions for %s" % word)
