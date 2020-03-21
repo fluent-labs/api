@@ -66,6 +66,13 @@ class ChineseDefinition(Definition):
         )
 
 
+def make_definition_object(definition):
+    if "pinyin" in definition:
+        return ChineseDefinition(**definition)
+    else:
+        return Definition(**definition)
+
+
 class DefinitionSchema(Schema):
     subdefinitions = fields.List(fields.Str())
     tag = fields.Str()
