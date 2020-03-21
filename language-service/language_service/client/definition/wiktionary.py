@@ -6,20 +6,21 @@ Wiktionary itself has definitions in many base languages, but the parser does no
 import logging
 import traceback
 from wiktionaryparser import WiktionaryParser
+from language_service.client.definition import DefinitionClient
 from language_service.dto.definition import Definition
 
 logger = logging.getLogger("LanguageService.definition.sources.wiktionary")
 
 
-class Wiktionary:
-    def fetch(self, word, language):
-        parser = WiktionaryParser()
-        return parser.fetch(word, language)
+class Wiktionary(DefinitionClient):
+    def __init__(self):
+        super().__init__("WIKTIONARY")
 
-    def get_definitions(self, language, word):
+    def fetch_definitions(self, language, word):
         logger.info("Wiktionary - getting definitions in %s for %s" % (language, word))
         try:
-            response = self.fetch(word, language)
+            parser = WiktionaryParser()
+            response = parser.fetch(word, language)
         except Exception:
             logger.error("%s - Error fetching definition for %s" % (language, word))
             stacktrace = traceback.format_exc()
