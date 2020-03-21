@@ -2,9 +2,7 @@ from language_service.service.definition import get_definitions
 
 
 def test_calls_wiktionary_with_correct_parameters(mocker):
-    wiktionary = mocker.patch(
-        "language_service.service.definition.language.english.Wiktionary"
-    )
+    wiktionary = mocker.patch("language_service.service.definition.english.Wiktionary")
 
     get_definitions("ENGLISH", "anything")
 
