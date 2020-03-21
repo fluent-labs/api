@@ -2,10 +2,10 @@
 name = "language-service"
 version = "0.1.0"
 description = ""
-authors = ["Lucas Kjaero-Zhang <lucas@lucaskjaerokjaero.com>"]
+authors = ["Lucas Kjaero-Zhang <lucas@lucaskjaerozhang.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 
 # Web server
 gunicorn = "^20.0.4"
