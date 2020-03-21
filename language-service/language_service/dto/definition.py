@@ -2,7 +2,14 @@ from marshmallow import Schema, fields
 
 
 class Definition:
-    def __init__(self, subdefinitions=None, tag="", examples=None):
+    def __init__(
+        self, subdefinitions=None, tag="", examples=None,
+    ):
+        """
+        subdefinitions: The different definitions for this meaning of the word
+        tag: The part of speech
+        examples: This word definition used in a sentence
+        """
         self.subdefinitions = subdefinitions
         self.tag = tag
         self.examples = examples
@@ -29,6 +36,13 @@ class ChineseDefinition(Definition):
         traditional=None,
         hsk=None,
     ):
+        """
+        All of the fields in a regular definition, but with some language specific bits
+        pinyin: How you would pronounce/type this word
+        simplified: The word in simplified characters
+        traditional: The word in traditional characters
+        hsk: The HSK difficulty rating (if it is on the lists)
+        """
         self.subdefinitions = subdefinitions
         self.tag = tag
         self.examples = examples
@@ -50,6 +64,13 @@ class ChineseDefinition(Definition):
                 self.hsk,
             )
         )
+
+
+def make_definition_object(definition):
+    if "pinyin" in definition:
+        return ChineseDefinition(**definition)
+    else:
+        return Definition(**definition)
 
 
 class DefinitionSchema(Schema):

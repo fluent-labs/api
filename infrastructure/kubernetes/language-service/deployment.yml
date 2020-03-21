@@ -26,6 +26,18 @@ spec:
               secretKeyRef:
                 name: language-service-cache-credentials
                 key: connection_string
+          - name: ELASTICSEARCH_URL
+            value: http://elasticsearch-master.default.svc.cluster.local:9200
+          - name: ELASTICSEARCH_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: language-service-elastic-credentials
+                key: username
+          - name: ELASTICSEARCH_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: language-service-elastic-credentials
+                key: password
         ports:
         - containerPort: 8000
         readinessProbe:

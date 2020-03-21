@@ -17,6 +17,7 @@ flask_restful = "^0.3.8"
 marshmallow = "^3.5.1"
 
 # Caching
+elasticsearch = "^7.6.0"
 Flask-Caching = "^1.8.0"
 redis = "^3.4.1"
 
@@ -27,7 +28,7 @@ es-core-news-sm = {url = "https://github.com/explosion/spacy-models/releases/dow
 jieba = "^0.42.1"
 paddlepaddle-tiny = "^1.6.1"
 
-# Vocabulary
+# Definitions
 wiktionaryparser = "^0.0.97"
 
 [tool.poetry.dev-dependencies]
