@@ -8,7 +8,7 @@ def test_calls_multiple_data_sources_on_chinese_definitions(mocker):
 
     get_definitions("CHINESE", "所有的")
 
-    cedict.get_definitions.assert_called_once_with("所有的")
+    cedict.get_definitions.assert_called_once_with("CHINESE", "所有的")
     wiktionary_instance = wiktionary.return_value
     wiktionary_instance.get_definitions.assert_called_once_with("CHINESE", "所有的")
 

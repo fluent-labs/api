@@ -16,11 +16,15 @@ class Wiktionary(DefinitionClient):
     def __init__(self):
         super().__init__("WIKTIONARY")
 
+    def fetch(self, language, word):
+        # A fairly ugly shim for testability
+        parser = WiktionaryParser()
+        return parser.fetch(word, language)
+
     def fetch_definitions(self, language, word):
         logger.info("Wiktionary - getting definitions in %s for %s" % (language, word))
         try:
-            parser = WiktionaryParser()
-            response = parser.fetch(word, language)
+            response = self.fetch(word, language)
         except Exception:
             logger.error("%s - Error fetching definition for %s" % (language, word))
             stacktrace = traceback.format_exc()

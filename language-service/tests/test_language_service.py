@@ -46,7 +46,7 @@ def get_definitions_successfully_mock(language, word):
 
 def test_definitions_slingle(mocker):
     get_english_definitions = mocker.patch(
-        "language_service.service.definition.language.english.Wiktionary"
+        "language_service.service.definition.english.Wiktionary"
     )
     wiktionary = get_english_definitions.return_value
     wiktionary.get_definitions.side_effect = get_definitions_successfully_mock
@@ -64,7 +64,7 @@ def test_definitions_slingle(mocker):
 
 def test_definitions_multiple(mocker):
     get_english_definitions = mocker.patch(
-        "language_service.service.definition.language.english.Wiktionary"
+        "language_service.service.definition.english.Wiktionary"
     )
     wiktionary = get_english_definitions.return_value
     wiktionary.get_definitions.side_effect = get_definitions_successfully_mock
