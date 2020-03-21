@@ -1,6 +1,6 @@
 from testfixtures import compare
 from language_service.dto.definition import ChineseDefinition
-from language_service.service.definition.sources.cedict import CEDICT
+from language_service.client.definition.cedict import CEDICT
 
 
 def test_can_load_dictionary_file(mocker):
@@ -20,4 +20,4 @@ def test_can_load_dictionary_file(mocker):
 
 def test_returns_none_if_not_found(mocker):
     cedict = CEDICT("./language_service/content/cedict.json")
-    assert cedict.get_definitions("无法找到") == None
+    assert cedict.get_definitions("无法找到") is None
