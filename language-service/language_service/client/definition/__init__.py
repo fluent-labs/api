@@ -42,12 +42,19 @@ class DefinitionClient(ABC):
     def get_definitions_from_elasticsearch(self, language, word):
         pass
 
-    def save_definitions_to_elasticsearch(self, language, definitions):
+    def save_definitions_to_elasticsearch(self, language, word, definitions):
+        logger.info(
+            "Saving to elasticsearch definitions in %s for %s using %s"
+            % (language, word, self.source)
+        )
         try:
             for definition in definition_schema.dump(definitions):
+                # Fields needed to find the definition again
                 definition["language"] = language
+                definition["source"] = self.source
+                definition["token"] = word
                 self.es.index(
-                    index="definitions", body=definition, doc_type=self.source
+                    index="definitions", body=definition, doc_type="definition"
                 )
         except Exception:
             logger.error("Error saving definition to elasticsearch: %s" % definition)
