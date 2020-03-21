@@ -9,7 +9,7 @@ def test_can_fetch_definitions(mocker):
     mocker.patch.object(wiktionary, "fetch")
 
     wiktionary.get_definitions("CHINESE", "定义")
-    wiktionary.fetch.assert_called_once_with("定义", "CHINESE")
+    wiktionary.fetch.assert_called_once_with("CHINESE", "定义")
 
 
 def test_can_parse_definitions(mocker):

@@ -9,12 +9,14 @@ def test_can_load_dictionary_file(mocker):
     definition = cedict.get_definitions("CHINESE", "定义")
     compare(
         definition,
-        ChineseDefinition(
-            pinyin="ding4 yi4",
-            simplified="定义",
-            traditional="定義",
-            subdefinitions=["definition", "to define"],
-        ),
+        [
+            ChineseDefinition(
+                pinyin="ding4 yi4",
+                simplified="定义",
+                traditional="定義",
+                subdefinitions=["definition", "to define"],
+            )
+        ],
     )
 
 
