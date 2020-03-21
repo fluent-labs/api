@@ -51,41 +51,6 @@ resource "kubernetes_secret" "api_database_credentials" {
   }
 }
 
-# Cache for language service
-
-resource "digitalocean_database_cluster" "language_service_cache" {
-  name            = "foreign-language-reader-cache"
-  engine          = "redis"
-  eviction_policy = "allkeys_lru"
-  version         = "5"
-  size            = "db-s-1vcpu-1gb"
-  region          = "sfo2"
-  node_count      = 1
-}
-
-resource "digitalocean_database_firewall" "allow_kubernetes_to_redis" {
-  cluster_id = digitalocean_database_cluster.language_service_cache.id
-
-  rule {
-    type  = "k8s"
-    value = data.digitalocean_kubernetes_cluster.foreign_language_reader.id
-  }
-}
-
-resource "kubernetes_secret" "language_service_cache_credentials" {
-  metadata {
-    name = "language-service-cache-credentials"
-  }
-
-  data = {
-    username          = digitalocean_database_cluster.language_service_cache.user
-    password          = digitalocean_database_cluster.language_service_cache.password
-    host              = digitalocean_database_cluster.language_service_cache.private_host
-    port              = digitalocean_database_cluster.language_service_cache.port
-    connection_string = "rediss://${digitalocean_database_cluster.language_service_cache.user}:${digitalocean_database_cluster.language_service_cache.password}@${digitalocean_database_cluster.language_service_cache.private_host}:${digitalocean_database_cluster.language_service_cache.port}/0"
-  }
-}
-
 # Configure networking
 
 # This is created by K8s and needs to be imported manually
