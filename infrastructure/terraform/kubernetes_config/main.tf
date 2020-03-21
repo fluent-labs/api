@@ -120,6 +120,24 @@ resource "helm_release" "kibana" {
   ]
 }
 
+# Application credentials for elasticsearch
+resource "random_password" "language_service_elasticsearch_password" {
+  length      = 32
+  special     = false
+  min_numeric = 10
+}
+
+resource "kubernetes_secret" "language_service_elastic_credentials" {
+  metadata {
+    name = "language-service-elastic-credentials"
+  }
+
+  data = {
+    username = "languageservice"
+    password = random_password.language_service_elasticsearch_password.result
+  }
+}
+
 # Logging configuration
 # Every node has a log collection agent that posts logs to elasticsearch
 
