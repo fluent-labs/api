@@ -8,10 +8,12 @@ import traceback
 from abc import ABC, abstractmethod
 from elasticsearch import Elasticsearch
 
-from language_service.dto.definition import DefinitionSchema
+from language_service.dto.definition import DefinitionSchema, make_definition_object
 
 
 ELASTICSEARCH_URL = os.getenv("ELASTICSEARCH_URL", "localhost:9200")
+ELASTICSEARCH_USERNAME = os.getenv("ELASTICSEARCH_USERNAME", "languageservice")
+ELASTICSEARCH_PASSWORD = os.getenv("ELASTICSEARCH_PASSWORD", "password")
 
 definition_schema = DefinitionSchema(many=True)
 logger = logging.getLogger("LanguageService.client")
@@ -20,7 +22,10 @@ logger = logging.getLogger("LanguageService.client")
 class DefinitionClient(ABC):
     def __init__(self, source):
         self.source = source
-        self.es = Elasticsearch([ELASTICSEARCH_URL])
+        self.es = Elasticsearch(
+            [ELASTICSEARCH_URL],
+            http_auth=(ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD),
+        )
 
     def get_definitions(self, language, word):
         definitions = self.fetch_definitions(word, language)
