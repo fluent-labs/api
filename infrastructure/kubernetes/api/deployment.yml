@@ -33,6 +33,11 @@ spec:
               secretKeyRef:
                 name: api-secret-key-base
                 key: secret_key_base
+        resources:
+          requests:
+            memory: "100Mi"
+          limits:
+            memory: "500Mi"
         ports:
         - containerPort: 4000
         readinessProbe:

@@ -12,8 +12,8 @@ from language_service.dto.definition import DefinitionSchema, make_definition_ob
 
 
 ELASTICSEARCH_URL = os.getenv("ELASTICSEARCH_URL", "localhost:9200")
-ELASTICSEARCH_USERNAME = os.getenv("ELASTICSEARCH_USERNAME", "languageservice")
-ELASTICSEARCH_PASSWORD = os.getenv("ELASTICSEARCH_PASSWORD", "password")
+ELASTICSEARCH_USERNAME = os.getenv("ELASTICSEARCH_USERNAME", None)
+ELASTICSEARCH_PASSWORD = os.getenv("ELASTICSEARCH_PASSWORD", None)
 
 definition_schema = DefinitionSchema(many=True)
 logger = logging.getLogger("LanguageService.client")
@@ -30,10 +30,14 @@ class DefinitionClient(ABC):
 
     def __init__(self, source):
         self.source = source
-        self.es = Elasticsearch(
-            [ELASTICSEARCH_URL],
-            http_auth=(ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD),
-        )
+
+        if ELASTICSEARCH_USERNAME is not None and ELASTICSEARCH_PASSWORD is not None:
+            self.es = Elasticsearch(
+                [ELASTICSEARCH_URL],
+                http_auth=(ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD),
+            )
+        else:
+            self.es = Elasticsearch([ELASTICSEARCH_URL])
 
     def get_definitions(self, language, word):
         logger.info(
