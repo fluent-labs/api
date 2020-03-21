@@ -20,6 +20,14 @@ logger = logging.getLogger("LanguageService.client")
 
 
 class DefinitionClient(ABC):
+    """
+    Base class to cache definitions in elasticsearch.
+
+    To use:
+    Override fetch_definitions(language, word) with your source implementation
+    And call super().__init__(name) with the name of your source
+    """
+
     def __init__(self, source):
         self.source = source
         self.es = Elasticsearch(
@@ -28,9 +36,31 @@ class DefinitionClient(ABC):
         )
 
     def get_definitions(self, language, word):
-        definitions = self.fetch_definitions(word, language)
-        self.save_definitions_to_elasticsearch(language, definitions)
-        return definitions
+        logger.info(
+            "Getting definitions in %s for %s using %s" % (language, word, self.source)
+        )
+        elasticsearch_definitions = self.get_definitions_from_elasticsearch(
+            language, word
+        )
+
+        if elasticsearch_definitions:
+            logger.info(
+                "Returning elasticsearch results for definitions in %s for %s using %s"
+                % (language, word, self.source)
+            )
+            return elasticsearch_definitions
+
+        else:
+            logger.info(
+                "No elasticsearch results for definitions in %s for %s using %s"
+                % (language, word, self.source)
+            )
+            definitions = self.fetch_definitions(language, word)
+
+            if definitions is not None:
+                self.save_definitions_to_elasticsearch(language, word, definitions)
+
+            return definitions
 
     @abstractmethod
     def fetch_definitions(self, language, word):
