@@ -1,7 +1,7 @@
 from testfixtures import compare
 from unittest.mock import Mock
 from language_service.dto.definition import Definition
-from language_service.service.definition.sources.wiktionary import Wiktionary
+from language_service.client.definition.wiktionary import Wiktionary
 
 
 def test_can_fetch_definitions(mocker):
@@ -9,7 +9,7 @@ def test_can_fetch_definitions(mocker):
     mocker.patch.object(wiktionary, "fetch")
 
     wiktionary.get_definitions("CHINESE", "定义")
-    wiktionary.fetch.assert_called_once_with("定义", "CHINESE")
+    wiktionary.fetch.assert_called_once_with("CHINESE", "定义")
 
 
 def test_can_parse_definitions(mocker):

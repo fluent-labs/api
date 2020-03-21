@@ -3,24 +3,20 @@ from language_service.dto.definition import ChineseDefinition
 
 
 def test_calls_multiple_data_sources_on_chinese_definitions(mocker):
-    cedict = mocker.patch("language_service.service.definition.language.chinese.cedict")
-    wiktionary = mocker.patch(
-        "language_service.service.definition.language.chinese.Wiktionary"
-    )
+    cedict = mocker.patch("language_service.service.definition.chinese.cedict")
+    wiktionary = mocker.patch("language_service.service.definition.chinese.Wiktionary")
 
     get_definitions("CHINESE", "所有的")
 
-    cedict.get_definitions.assert_called_once_with("所有的")
+    cedict.get_definitions.assert_called_once_with("CHINESE", "所有的")
     wiktionary_instance = wiktionary.return_value
     wiktionary_instance.get_definitions.assert_called_once_with("CHINESE", "所有的")
 
 
 def test_chinese_definitions_return_none_if_no_data_sources_resolve(mocker):
-    cedict = mocker.patch("language_service.service.definition.language.chinese.cedict")
+    cedict = mocker.patch("language_service.service.definition.chinese.cedict")
     cedict.get_definitions.return_value = None
-    wiktionary = mocker.patch(
-        "language_service.service.definition.language.chinese.Wiktionary"
-    )
+    wiktionary = mocker.patch("language_service.service.definition.chinese.Wiktionary")
     wiktionary_instance = wiktionary.return_value
     wiktionary_instance.get_definitions.return_value = None
 
@@ -29,11 +25,9 @@ def test_chinese_definitions_return_none_if_no_data_sources_resolve(mocker):
 
 
 def test_chinese_definitions_return_cedict_if_wiktionary_fails(mocker):
-    cedict = mocker.patch("language_service.service.definition.language.chinese.cedict")
-    cedict.get_definitions.return_value = "cedict"
-    wiktionary = mocker.patch(
-        "language_service.service.definition.language.chinese.Wiktionary"
-    )
+    cedict = mocker.patch("language_service.service.definition.chinese.cedict")
+    cedict.get_definitions.return_value = ["cedict"]
+    wiktionary = mocker.patch("language_service.service.definition.chinese.Wiktionary")
     wiktionary_instance = wiktionary.return_value
     wiktionary_instance.get_definitions.return_value = None
 
@@ -41,11 +35,9 @@ def test_chinese_definitions_return_cedict_if_wiktionary_fails(mocker):
 
 
 def test_chinese_definitions_return_wiktionary_if_cedict_fails(mocker):
-    cedict = mocker.patch("language_service.service.definition.language.chinese.cedict")
+    cedict = mocker.patch("language_service.service.definition.chinese.cedict")
     cedict.get_definitions.return_value = None
-    wiktionary = mocker.patch(
-        "language_service.service.definition.language.chinese.Wiktionary"
-    )
+    wiktionary = mocker.patch("language_service.service.definition.chinese.Wiktionary")
     wiktionary_instance = wiktionary.return_value
     wiktionary_instance.get_definitions.return_value = ["wiktionary"]
 
@@ -73,11 +65,9 @@ def test_chinese_definitions_correctly_merge_cedict_and_wiktionary(mocker):
         hsk="wiktionary",
     )
 
-    cedict = mocker.patch("language_service.service.definition.language.chinese.cedict")
-    cedict.get_definitions.return_value = cedict_definition
-    wiktionary = mocker.patch(
-        "language_service.service.definition.language.chinese.Wiktionary"
-    )
+    cedict = mocker.patch("language_service.service.definition.chinese.cedict")
+    cedict.get_definitions.return_value = [cedict_definition]
+    wiktionary = mocker.patch("language_service.service.definition.chinese.Wiktionary")
     wiktionary_instance = wiktionary.return_value
     wiktionary_instance.get_definitions.return_value = [wiktionary_definition]
 

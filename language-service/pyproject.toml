@@ -2,7 +2,7 @@
 name = "language-service"
 version = "0.1.0"
 description = ""
-authors = ["Lucas Kjaero-Zhang <lucas@lucaskjaerokjaero.com>"]
+authors = ["Lucas Kjaero-Zhang <lucas@lucaskjaerozhang.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
@@ -16,9 +16,8 @@ gevent = "^1.4.0"
 flask_restful = "^0.3.8"
 marshmallow = "^3.5.1"
 
-# Caching
-Flask-Caching = "^1.8.0"
-redis = "^3.4.1"
+# Persistence
+elasticsearch = "^7.6.0"
 
 # Tagging
 spacy = "^2.2.3"
@@ -27,7 +26,7 @@ es-core-news-sm = {url = "https://github.com/explosion/spacy-models/releases/dow
 jieba = "^0.42.1"
 paddlepaddle-tiny = "^1.6.1"
 
-# Vocabulary
+# Definitions
 wiktionaryparser = "^0.0.97"
 
 [tool.poetry.dev-dependencies]

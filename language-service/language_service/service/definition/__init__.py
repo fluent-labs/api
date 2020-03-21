@@ -6,16 +6,19 @@ import logging
 from multiprocessing.context import TimeoutError as MultiprocessingTimeoutError
 from multiprocessing.dummy import Pool
 
-from language_service.cache import cache, WEEK
-from language_service.service.definition.language.chinese import get_chinese_definitions
-from language_service.service.definition.language.english import get_english_definitions
-from language_service.service.definition.language.spanish import get_spanish_definitions
+from language_service.service.definition.chinese import get_chinese_definitions
+from language_service.service.definition.english import get_english_definitions
+from language_service.service.definition.spanish import get_spanish_definitions
 
 logger = logging.getLogger("LanguageService.service.definition")
 
 
-@cache.memoize(WEEK)
 def get_definitions(language, word):
+    """
+    Main entry point for getting definitions, letting us dispatch to the correct language.
+    Why? Each language has different definition sources, so they'll have their
+        own combination logic.
+    """
     if language == "CHINESE":
         return get_chinese_definitions(word)
 
