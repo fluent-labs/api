@@ -26,7 +26,7 @@ def test_chinese_definitions_return_none_if_no_data_sources_resolve(mocker):
 
 def test_chinese_definitions_return_cedict_if_wiktionary_fails(mocker):
     cedict = mocker.patch("language_service.service.definition.chinese.cedict")
-    cedict.get_definitions.return_value = "cedict"
+    cedict.get_definitions.return_value = ["cedict"]
     wiktionary = mocker.patch("language_service.service.definition.chinese.Wiktionary")
     wiktionary_instance = wiktionary.return_value
     wiktionary_instance.get_definitions.return_value = None
@@ -66,7 +66,7 @@ def test_chinese_definitions_correctly_merge_cedict_and_wiktionary(mocker):
     )
 
     cedict = mocker.patch("language_service.service.definition.chinese.cedict")
-    cedict.get_definitions.return_value = cedict_definition
+    cedict.get_definitions.return_value = [cedict_definition]
     wiktionary = mocker.patch("language_service.service.definition.chinese.Wiktionary")
     wiktionary_instance = wiktionary.return_value
     wiktionary_instance.get_definitions.return_value = [wiktionary_definition]
