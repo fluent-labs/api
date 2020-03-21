@@ -16,7 +16,7 @@ class Wiktionary(DefinitionClient):
     def __init__(self):
         super().__init__("WIKTIONARY")
 
-    def fetch(self, word, language):
+    def fetch(self, language, word):
         # A fairly ugly shim for testability
         parser = WiktionaryParser()
         return parser.fetch(word, language)
