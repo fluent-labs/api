@@ -21,11 +21,6 @@ spec:
               secretKeyRef:
                 name: local-connection-token
                 key: local_connection_token
-          - name: CACHE_REDIS_URL
-            valueFrom:
-              secretKeyRef:
-                name: language-service-cache-credentials
-                key: connection_string
           - name: ELASTICSEARCH_URL
             value: http://elasticsearch-master.default.svc.cluster.local:9200
           - name: ELASTICSEARCH_USERNAME
