@@ -67,7 +67,7 @@ class DefinitionClient(ABC):
         """
         Implement this to actually get the definition
         """
-        pass
+        raise NotImplementedError("Definition client class didn't implement this")
 
     def get_definitions_from_elasticsearch(self, language, word):
         logger.info(
