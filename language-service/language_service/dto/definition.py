@@ -3,22 +3,13 @@ from marshmallow import Schema, fields
 
 class Definition:
     def __init__(
-        self,
-        language="ENGLISH",
-        source=None,
-        subdefinitions=None,
-        tag="",
-        examples=None,
+        self, subdefinitions=None, tag="", examples=None,
     ):
         """
-        language: The language this word is defined in
-        source: Where the definition came from
         subdefinitions: The different definitions for this meaning of the word
         tag: The part of speech
         examples: This word definition used in a sentence
         """
-        self.language = language
-        self.source = source
         self.subdefinitions = subdefinitions
         self.tag = tag
         self.examples = examples
@@ -27,23 +18,16 @@ class Definition:
         self.subdefinitions = subdefinitions
 
     def __repr__(self):
-        return (
-            "Definition(language: %s, source: %s, subdefinitions: %s, tag: %s, examples: %s)"
-            % (
-                self.language,
-                self.source,
-                self.subdefinitions,
-                self.tag,
-                self.examples,
-            )
+        return "Definition(subdefinitions: %s, tag: %s, examples: %s)" % (
+            self.subdefinitions,
+            self.tag,
+            self.examples,
         )
 
 
 class ChineseDefinition(Definition):
     def __init__(
         self,
-        language="ENGLISH",
-        source=None,
         subdefinitions=None,
         tag="",
         examples=None,
@@ -59,8 +43,6 @@ class ChineseDefinition(Definition):
         traditional: The word in traditional characters
         hsk: The HSK difficulty rating (if it is on the lists)
         """
-        self.language = language
-        self.source = source
         self.subdefinitions = subdefinitions
         self.tag = tag
         self.examples = examples
@@ -71,10 +53,8 @@ class ChineseDefinition(Definition):
 
     def __repr__(self):
         return (
-            "ChineseDefinition(language: %s, source: %s, subdefinitions: %s, tag: %s, examples: %s, pinyin: %s, simplified: %s, traditional: %s, hsk: %s)"
+            "ChineseDefinition(subdefinitions: %s, tag: %s, examples: %s, pinyin: %s, simplified: %s, traditional: %s, hsk: %s)"
             % (
-                self.language,
-                self.source,
                 self.subdefinitions,
                 self.tag,
                 self.examples,
@@ -87,8 +67,6 @@ class ChineseDefinition(Definition):
 
 
 class DefinitionSchema(Schema):
-    language = fields.Str()
-    source = fields.Str()
     subdefinitions = fields.List(fields.Str())
     tag = fields.Str()
     examples = fields.List(fields.Str())
