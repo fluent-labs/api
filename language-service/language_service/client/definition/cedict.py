@@ -4,13 +4,15 @@ This class provides definitions
 """
 import json
 import logging
+from language_service.client.definition import DefinitionClient
 from language_service.dto.definition import ChineseDefinition
 
 logger = logging.getLogger("LanguageService.definition.sources.cedict")
 
 
-class CEDICT:
+class CEDICT(DefinitionClient):
     def __init__(self, dictionary_path="content/cedict.json"):
+        super().__init__("CEDICT")
         self.dictionary_path = dictionary_path
         self.definitions = None
 
@@ -21,7 +23,7 @@ class CEDICT:
                 simplified = entry["simplified"]
                 self.definitions[simplified] = entry
 
-    def get_definitions(self, word):
+    def fetch_definitions(self, language, word):
         # Lazy load definitions to make unit testing possible
         if self.definitions is None:
             logger.info("Loading CEDICT dictionary")
