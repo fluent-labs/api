@@ -33,6 +33,11 @@ spec:
               secretKeyRef:
                 name: language-service-elastic-credentials
                 key: password
+        resources:
+          requests:
+            memory: "800Mi"
+          limits:
+            memory: "1.2Gi"
         ports:
         - containerPort: 8000
         readinessProbe:
