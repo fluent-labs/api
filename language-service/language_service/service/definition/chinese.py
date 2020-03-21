@@ -13,7 +13,8 @@ def get_chinese_definitions(word):
     wiktionary = Wiktionary()
 
     wiktionary_definitions = wiktionary.get_definitions("CHINESE", word)
-    cedict_definition = cedict.get_definitions("CHINESE", word)
+    # There is only one
+    cedict_definition = cedict.get_definitions("CHINESE", word)[0]
 
     if wiktionary_definitions is not None and cedict_definition is not None:
         logger.info("CHINESE - Found wiktionary and cedict definitions for %s" % word)
