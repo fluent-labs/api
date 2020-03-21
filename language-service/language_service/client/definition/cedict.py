@@ -33,11 +33,13 @@ class CEDICT(DefinitionClient):
 
         if word in self.definitions:
             definition = self.definitions[word]
-            return ChineseDefinition(
-                subdefinitions=definition["definitions"],
-                pinyin=definition["pinyin"],
-                simplified=definition["simplified"],
-                traditional=definition["traditional"],
-            )
+            return [
+                ChineseDefinition(
+                    subdefinitions=definition["definitions"],
+                    pinyin=definition["pinyin"],
+                    simplified=definition["simplified"],
+                    traditional=definition["traditional"],
+                )
+            ]
         else:
             return None
