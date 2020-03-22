@@ -130,9 +130,10 @@ class DefinitionClient(ABC):
                 definition["language"] = language
                 definition["source"] = self.source
                 definition["token"] = word
-                self.es.index(
+                result = self.es.index(
                     index="definitions", body=definition, doc_type="definition"
                 )
+                logger.info("Response from elasticsearch: %s" % result)
         except Exception:
             logger.error("Error saving definition to elasticsearch: %s" % definition)
             stacktrace = traceback.format_exc()
