@@ -52,4 +52,4 @@ jobs:
     - name: Manually run job
       run: |
         kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
-          create job --from=cronjob/refresh-definitions refresh-definitions-manual-${{ github.sha }}
+          create job --namespace=content --from=cronjob/refresh-definitions refresh-definitions-manual-${{ github.sha }}
