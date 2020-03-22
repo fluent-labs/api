@@ -88,7 +88,7 @@ resource "kubernetes_namespace" "ecr_cred_refresher" {
 }
 
 resource "helm_release" "ecr_cred_refresher_default" {
-  for_each = var.ecr_namespaces
+  for_each = var.kubernetes_namespaces
 
   name       = "ecr-cred-refresher-default"
   repository = "https://architectminds.github.io/helm-charts/"
