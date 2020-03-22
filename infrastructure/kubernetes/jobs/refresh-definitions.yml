@@ -1,0 +1,34 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: refresh-definitions
+  namespace: content
+spec:
+  schedule: "* * * */3 *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: refresh-definitions
+            image: 037187302622.dkr.ecr.us-west-2.amazonaws.com/foreign-language-reader-content-jobs:refreshdefinitions
+            imagePullPolicy: Always
+            env:
+              - name: AUTH_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: local-connection-token
+                    key: local_connection_token
+              - name: ELASTICSEARCH_URL
+                value: http://elasticsearch-master.default.svc.cluster.local:9200
+              - name: ELASTICSEARCH_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: refresh-definitions-elastic-credentials
+                    key: username
+              - name: ELASTICSEARCH_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: refresh-definitions-elastic-credentials
+                    key: password

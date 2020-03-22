@@ -19,6 +19,9 @@ resources:
 
 # Scheduled jobs
 
+# Refresh content in elasticsearch
+- jobs/refresh-definitions.yml
+
 # Used to get permission to download containers from the Amazon container registry
 - ecr-cred-helper/service-account-binding.yml
 - ecr-cred-helper/service-account.yml

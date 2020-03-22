@@ -57,6 +57,14 @@ module "api_registry" {
   pull_users  = [aws_iam_user.kubernetes.name]
 }
 
+module "content_jobs" {
+  source      = "./container_registry"
+  name        = "foreign-language-reader-content-jobs"
+  image_count = 10
+  push_users  = var.push_users
+  pull_users  = [aws_iam_user.kubernetes.name]
+}
+
 module "language_service_registry" {
   source      = "./container_registry"
   name        = "foreign-language-reader-language-service"
