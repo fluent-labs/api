@@ -201,3 +201,20 @@ resource "helm_release" "spark" {
     kubernetes_namespace.content
   ]
 }
+
+resource "random_password" "refresh_definitions_elasticsearch_password" {
+  length      = 32
+  special     = false
+  min_numeric = 10
+}
+
+resource "kubernetes_secret" "refresh_definitions_elastic_credentials" {
+  metadata {
+    name = "refresh-definitions-elastic-credentials"
+  }
+
+  data = {
+    username = "refreshdefinitions"
+    password = random_password.refresh_definitions_elasticsearch_password.result
+  }
+}
