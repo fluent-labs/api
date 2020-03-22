@@ -41,3 +41,15 @@ jobs:
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+    - name: Authenticate to K8s
+      uses: digitalocean/action-doctl@master
+      env:
+        DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      with:
+        args: kubernetes cluster kubeconfig show foreign-language-reader > $GITHUB_WORKSPACE/.kubeconfig
+
+    - name: Manually run job
+      run: |
+        kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
+          create job --from=cronjob/refresh-definitions refresh-definitions-manual-${{ github.sha }}
