@@ -3,6 +3,8 @@ import os
 import requests
 import time
 
+from elasticsearch import Elasticsearch
+
 headers = {"Authorization": os.getenv("AUTH_TOKEN")}
 ELASTICSEARCH_URL = os.getenv("ELASTICSEARCH_URL")
 ELASTICSEARCH_USERNAME = os.getenv("ELASTICSEARCH_USERNAME")
@@ -17,6 +19,11 @@ class DefinitionRefresher:
         self.scraped_sources = scraped_sources
         self.failed = []
 
+        self.es = Elasticsearch(
+            [ELASTICSEARCH_URL],
+            http_auth=(ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD),
+        )
+
     def refresh_definitions(self, words):
         for word in words:
             self.remove_old_definitions(word)
@@ -24,7 +31,25 @@ class DefinitionRefresher:
             time.sleep(1)
 
     def remove_old_definitions(self, word):
-        pass
+        for source in self.scraped_sources:
+            log.info(
+                "Deleting definitions from %s in %s for %s"
+                % (source, self.language, word)
+            )
+            self.es.delete_by_query(
+                index="definitions",
+                body={
+                    "query": {
+                        "bool": {
+                            "must": [
+                                {"match": {"language": self.language}},
+                                {"match": {"source": source}},
+                                {"match": {"token": word}},
+                            ]
+                        }
+                    }
+                },
+            )
 
     def get_new_definitions(self, word):
         url = "https://language.foreignlanguagereader.com/v1/definition/%s/%s" % (
