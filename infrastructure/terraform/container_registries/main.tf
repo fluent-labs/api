@@ -114,7 +114,7 @@ resource "helm_release" "ecr_cred_refresher_default" {
   }
   set {
     name  = "targetNamespace"
-    value = value
+    value = each.value
   }
 
   depends_on = [
