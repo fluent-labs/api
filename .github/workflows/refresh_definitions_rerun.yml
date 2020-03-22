@@ -1,4 +1,4 @@
-name: Test definition refresh
+name: Manually refresh definitions
 
 on:
   pull_request:
