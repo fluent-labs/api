@@ -90,7 +90,7 @@ resource "kubernetes_namespace" "ecr_cred_refresher" {
 resource "helm_release" "ecr_cred_refresher_default" {
   for_each = toset(var.kubernetes_namespaces)
 
-  name       = "ecr-cred-refresher-default"
+  name       = "ecr-cred-refresher-${each.value}"
   repository = "https://architectminds.github.io/helm-charts/"
   chart      = "aws-ecr-credential"
   version    = "1.4.2"
