@@ -128,7 +128,10 @@ class DefinitionClient(ABC):
             % (language, word, self.source)
         )
         try:
-            for definition in definition_schema.dump(definitions):
+            dumped_definitions = definition_schema.dump(definitions)
+            logger.debug("Saving definitions %s" % dumped_definitions)
+            for definition in dumped_definitions:
+                logger.debug("Saving definition: %s " % definition)
                 # Fields needed to find the definition again
                 definition["language"] = language
                 definition["source"] = self.source
