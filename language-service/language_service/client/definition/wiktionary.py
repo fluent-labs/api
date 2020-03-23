@@ -25,7 +25,7 @@ class Wiktionary(DefinitionClient):
         logger.info("Wiktionary - getting definitions in %s for %s" % (language, word))
         try:
             response = self.fetch(language, word)
-            logger.debug("Got response from wiktionary")
+            logger.debug("Got response from wiktionary: %s" % response)
         except Exception:
             logger.error("%s - Error fetching definition for %s" % (language, word))
             stacktrace = traceback.format_exc()
