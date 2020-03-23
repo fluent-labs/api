@@ -129,7 +129,10 @@ class DefinitionClient(ABC):
         )
         try:
             dumped_definitions = definition_schema.dump(definitions)
-            logger.debug("Saving definitions %s" % dumped_definitions)
+            logger.debug(
+                "Saving %s definitions %s"
+                % (len(dumped_definitions), dumped_definitions)
+            )
             for definition in dumped_definitions:
                 logger.debug("Saving definition: %s " % definition)
                 # Fields needed to find the definition again
