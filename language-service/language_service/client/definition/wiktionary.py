@@ -60,6 +60,8 @@ class Wiktionary(DefinitionClient):
                                 examples=examples,
                             )
                         )
+            else:
+                logger.info("Malformed response returned: %s" % entry)
 
         logger.debug("Returning definitions %s" % definitions)
         return definitions
