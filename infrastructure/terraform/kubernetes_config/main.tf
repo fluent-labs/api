@@ -14,6 +14,17 @@ resource "kubernetes_secret" "local_connection_token" {
   }
 }
 
+resource "kubernetes_secret" "local_connection_token" {
+  metadata {
+    name      = "local-connection-token"
+    namespace = "content"
+  }
+
+  data = {
+    local_connection_token = random_password.local_connection_token.result
+  }
+}
+
 resource "random_password" "api_secret_key_base" {
   length  = 64
   special = true
@@ -210,7 +221,8 @@ resource "random_password" "refresh_definitions_elasticsearch_password" {
 
 resource "kubernetes_secret" "refresh_definitions_elastic_credentials" {
   metadata {
-    name = "refresh-definitions-elastic-credentials"
+    name      = "refresh-definitions-elastic-credentials"
+    namespace = "content"
   }
 
   data = {
