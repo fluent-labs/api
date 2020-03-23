@@ -61,4 +61,5 @@ class Wiktionary(DefinitionClient):
                             )
                         )
 
+        logger.debug("Returning definitions %s" % definitions)
         return definitions
