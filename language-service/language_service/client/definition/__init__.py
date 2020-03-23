@@ -62,7 +62,10 @@ class DefinitionClient(ABC):
             definitions = self.fetch_definitions(language, word)
 
             if definitions is not None:
+                logger.info("Saving definitions")
                 self.save_definitions_to_elasticsearch(language, word, definitions)
+            else:
+                logger.info("Not saving definitions")
 
             return definitions
 
