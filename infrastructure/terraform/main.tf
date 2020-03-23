@@ -75,6 +75,11 @@ module "storybook" {
   deploy_users = [aws_iam_user.github.name]
 }
 
+module "definitions" {
+  source = "./content_bucket"
+  name   = "definitions"
+}
+
 # Section to create TLS certs
 
 resource "tls_private_key" "tls_private_key" {
