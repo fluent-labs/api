@@ -14,7 +14,7 @@ resource "kubernetes_secret" "local_connection_token" {
   }
 }
 
-resource "kubernetes_secret" "local_connection_token" {
+resource "kubernetes_secret" "local_connection_token_content" {
   metadata {
     name      = "local-connection-token"
     namespace = "content"
