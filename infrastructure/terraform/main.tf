@@ -25,41 +25,14 @@ provider "helm" {
   }
 }
 
-# Deploy user for github actions
-# Will be given ECR push and S3 sync access
-resource "aws_iam_access_key" "github" {
-  user = aws_iam_user.github.name
-}
-
-resource "aws_iam_user" "github" {
-  name = "foreign-language-reader-github"
-}
-
+# Service container registries
 module "container_registries" {
   source                = "./container_registries"
   push_users            = [aws_iam_user.github.name]
   kubernetes_namespaces = ["default", "content"]
 }
 
-resource "digitalocean_domain" "main" {
-  name = "foreignlanguagereader.com"
-}
-
-# The supporting cloud infrastructure, eg. database, load balancer
-module "kubernetes_cluster_infrastructure" {
-  source           = "./kubernetes_cluster_infrastructure"
-  cluster_name     = var.cluster_name
-  test_environment = var.test_environment
-  domain_name      = digitalocean_domain.main.name
-}
-
-# Configuration within K8s: installed apps, some secrets, service users, etc.
-module "kubernetes_config" {
-  source          = "./kubernetes_config"
-  private_key_pem = acme_certificate.certificate.private_key_pem
-  certificate_pem = acme_certificate.certificate.certificate_pem
-  issuer_pem      = acme_certificate.certificate.issuer_pem
-}
+# Static content served to users
 
 module "frontend" {
   source       = "./static_bucket"
@@ -75,9 +48,38 @@ module "storybook" {
   deploy_users = [aws_iam_user.github.name]
 }
 
-module "definitions" {
-  source = "./content_bucket"
-  name   = "definitions"
+# Services
+
+module "api" {
+  source       = "./api"
+  cluster_name = var.cluster_name
+  min_replicas = 2
+  max_replicas = 10
+}
+
+module "language_service" {
+  source       = "./language_service"
+  min_replicas = 2
+  max_replicas = 10
+}
+
+# Full ELK stack for storing language content
+# Also uses fluentd to post cluster logs to ELK to make this work
+module "elasticsearch" {
+  source          = "./elasticsearch"
+  private_key_pem = acme_certificate.certificate.private_key_pem
+  certificate_pem = acme_certificate.certificate.certificate_pem
+  issuer_pem      = acme_certificate.certificate.issuer_pem
+}
+
+# Content infrastructure
+# Spark jobs that scrape wiktionary for definitions
+# And potentially example sentences in the future
+
+module "content" {
+  source = "./content"
+}
+
 # Ingress
 # Handles traffic going in to the cluster
 # Proxies everything through a load balancer and nginx
@@ -142,9 +144,24 @@ resource "kubernetes_ingress" "example_ingress" {
     }
   }
 }
+
+# Shared resources for the cluster go down here.
+
+resource "digitalocean_domain" "main" {
+  name = "foreignlanguagereader.com"
 }
 
-# Section to create TLS certs
+# Deploy user for github actions
+# Will be given ECR push and S3 sync access
+resource "aws_iam_access_key" "github" {
+  user = aws_iam_user.github.name
+}
+
+resource "aws_iam_user" "github" {
+  name = "foreign-language-reader-github"
+}
+
+# TLS
 
 resource "tls_private_key" "tls_private_key" {
   algorithm = "RSA"
