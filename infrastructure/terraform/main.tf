@@ -74,6 +74,7 @@ module "elasticsearch" {
 
 # Content infrastructure
 # Spark jobs that scrape wiktionary for definitions
+# Should also have job triggers
 # And potentially example sentences in the future
 
 module "content" {
