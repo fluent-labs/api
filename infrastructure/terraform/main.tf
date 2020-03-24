@@ -78,6 +78,70 @@ module "storybook" {
 module "definitions" {
   source = "./content_bucket"
   name   = "definitions"
+# Ingress
+# Handles traffic going in to the cluster
+# Proxies everything through a load balancer and nginx
+
+module "nginx_ingress" {
+  source          = "./nginx_ingress"
+  domain          = digitalocean_domain.main.name
+  subdomains      = ["api", "kibana", "language"]
+  private_key_pem = acme_certificate.certificate.private_key_pem
+  certificate_pem = acme_certificate.certificate.certificate_pem
+  issuer_pem      = acme_certificate.certificate.issuer_pem
+}
+
+resource "kubernetes_ingress" "example_ingress" {
+  metadata {
+    name = "foreign-language-reader-ingress"
+    annotations = {
+      "kubernetes.io/ingress.class"             = "nginx"
+      "nginx.ingress.kubernetes.io/enable-cors" = "true"
+    }
+  }
+
+  spec {
+    tls {
+      secret_name = "nginx-certificate"
+    }
+
+    rule {
+      host = "api.foreignlanguagereader.com"
+      http {
+        path {
+          backend {
+            service_name = "api"
+            service_port = 4000
+          }
+        }
+      }
+    }
+
+    rule {
+      host = "language.foreignlanguagereader.com"
+      http {
+        path {
+          backend {
+            service_name = "language-service"
+            service_port = 8000
+          }
+        }
+      }
+    }
+
+    rule {
+      host = "kibana.foreignlanguagereader.com"
+      http {
+        path {
+          backend {
+            service_name = "kibana-kibana"
+            service_port = 5601
+          }
+        }
+      }
+    }
+  }
+}
 }
 
 # Section to create TLS certs
