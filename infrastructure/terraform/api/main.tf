@@ -1,9 +1,35 @@
-data "digitalocean_domain" "main" {
-  name = var.domain_name
-}
-
 data "digitalocean_kubernetes_cluster" "foreign_language_reader" {
   name = var.cluster_name
+}
+
+resource "kubernetes_service" "api" {
+  metadata {
+    name = "api"
+  }
+  spec {
+    selector = {
+      app = "api"
+    }
+    port {
+      port = 4000
+    }
+    type = "ClusterIP"
+  }
+}
+
+resource "kubernetes_horizontal_pod_autoscaler" "api_autoscale" {
+  metadata {
+    name = "api"
+  }
+  spec {
+    min_replicas = var.min_replicas
+    max_replicas = var.max_replicas
+    scale_target_ref {
+      kind = "Deployment"
+      name = "api"
+    }
+    target_cpu_utilization_percentage = 75
+  }
 }
 
 # Configure database
@@ -51,32 +77,19 @@ resource "kubernetes_secret" "api_database_credentials" {
   }
 }
 
-# Configure networking
+# Secret key base powers encryption at rest for the database
 
-# This is created by K8s and needs to be imported manually
-# Honestly should probably let K8s manage it and just use it informationally
-# Note that the ports are randomly assigned so you should update these to match what you import
-data "digitalocean_loadbalancer" "foreign_language_reader" {
-  name = "a9445521f9b0245ff8f9b18ecc8bbc65"
+resource "random_password" "api_secret_key_base" {
+  length  = 64
+  special = true
 }
 
-resource "digitalocean_record" "api" {
-  domain = var.domain_name
-  type   = "A"
-  name   = "api"
-  value  = data.digitalocean_loadbalancer.foreign_language_reader.ip
-}
+resource "kubernetes_secret" "api_secret_key_base" {
+  metadata {
+    name = "api-secret-key-base"
+  }
 
-resource "digitalocean_record" "kibana" {
-  domain = var.domain_name
-  type   = "A"
-  name   = "kibana"
-  value  = data.digitalocean_loadbalancer.foreign_language_reader.ip
-}
-
-resource "digitalocean_record" "language" {
-  domain = var.domain_name
-  type   = "A"
-  name   = "language"
-  value  = data.digitalocean_loadbalancer.foreign_language_reader.ip
+  data = {
+    secret_key_base = random_password.api_secret_key_base.result
+  }
 }
