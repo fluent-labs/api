@@ -161,6 +161,25 @@ resource "aws_iam_user" "github" {
   name = "foreign-language-reader-github"
 }
 
+# Token used for connecting between services
+resource "random_password" "local_connection_token" {
+  length  = 64
+  special = true
+}
+
+resource "kubernetes_secret" "local_connection_token" {
+  for_each = set(["default", "content"])
+
+  metadata {
+    name      = "local-connection-token"
+    namespace = each.value
+  }
+
+  data = {
+    local_connection_token = random_password.local_connection_token.result
+  }
+}
+
 # TLS
 
 resource "tls_private_key" "tls_private_key" {
