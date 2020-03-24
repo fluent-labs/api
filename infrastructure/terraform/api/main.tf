@@ -17,7 +17,7 @@ resource "kubernetes_service" "api" {
   }
 }
 
-resource "kubernetes_horizontal_pod_autoscaler" "example" {
+resource "kubernetes_horizontal_pod_autoscaler" "api_autoscale" {
   metadata {
     name = "api"
   }

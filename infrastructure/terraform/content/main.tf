@@ -24,7 +24,7 @@ resource "helm_release" "spark" {
   ]
 }
 
-module "definitions" {
-  source = "./content_bucket"
-  name   = "definitions"
+resource "aws_s3_bucket" "definitions" {
+  bucket = "foreign-language-reader-definitions"
+  acl    = "private"
 }

@@ -94,7 +94,7 @@ module "nginx_ingress" {
   issuer_pem      = acme_certificate.certificate.issuer_pem
 }
 
-resource "kubernetes_ingress" "example_ingress" {
+resource "kubernetes_ingress" "foreign_language_reader_ingress" {
   metadata {
     name = "foreign-language-reader-ingress"
     annotations = {
