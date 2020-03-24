@@ -22,6 +22,4 @@ jobs:
       run: |
         kubeval --ignore-missing-schemas \
           infrastructure/kubernetes/api/* \
-          infrastructure/kubernetes/ingress/* \
-          infrastructure/kubernetes/jobs/* \
           infrastructure/kubernetes/language-service/*
