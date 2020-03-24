@@ -169,7 +169,7 @@ resource "random_password" "local_connection_token" {
 }
 
 resource "kubernetes_secret" "local_connection_token" {
-  for_each = set(["default", "content"])
+  for_each = toset(["default", "content"])
 
   metadata {
     name      = "local-connection-token"
