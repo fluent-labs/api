@@ -23,3 +23,8 @@ resource "helm_release" "spark" {
     kubernetes_namespace.content
   ]
 }
+
+module "definitions" {
+  source = "./content_bucket"
+  name   = "definitions"
+}
