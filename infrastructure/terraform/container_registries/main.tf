@@ -105,8 +105,4 @@ resource "helm_release" "ecr_cred_refresher_default" {
     name  = "targetNamespace"
     value = each.value
   }
-
-  depends_on = [
-    kubernetes_namespace.ecr_cred_refresher
-  ]
 }

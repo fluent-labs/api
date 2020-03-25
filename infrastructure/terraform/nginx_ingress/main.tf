@@ -36,5 +36,5 @@ resource "digitalocean_record" "kubernetes_subdomain_dns" {
   domain   = var.domain
   type     = "A"
   name     = each.value
-  value    = data.kubernetes_service.nginx.instances.0.attributes.load_balancer_ingress.0.ip
+  value    = data.kubernetes_service.nginx.attributes.load_balancer_ingress.0.ip
 }
