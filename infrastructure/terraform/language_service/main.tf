@@ -1,4 +1,4 @@
-resource "kubernetes_service" "api" {
+resource "kubernetes_service" "language_service" {
   metadata {
     name = "language-service"
   }
