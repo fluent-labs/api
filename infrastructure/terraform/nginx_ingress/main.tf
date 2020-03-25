@@ -37,4 +37,10 @@ resource "digitalocean_record" "kubernetes_subdomain_dns" {
   type     = "A"
   name     = each.value
   value    = data.kubernetes_service.nginx.load_balancer_ingress.0.ip
+
+  # lifecycle {
+  #   ignore_changes = [
+  #     value,
+  #   ]
+  # }
 }
