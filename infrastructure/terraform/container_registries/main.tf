@@ -77,16 +77,6 @@ module "language_service_registry" {
 # Used to be able to pull images from ECR
 # Sadly is namespaced so will need two configurations.
 
-resource "kubernetes_namespace" "ecr_cred_refresher" {
-  metadata {
-    annotations = {
-      name = "ecrcredrefresh"
-    }
-
-    name = "ecrcredrefresh"
-  }
-}
-
 resource "helm_release" "ecr_cred_refresher_default" {
   for_each = toset(var.kubernetes_namespaces)
 
@@ -94,7 +84,6 @@ resource "helm_release" "ecr_cred_refresher_default" {
   repository = "https://architectminds.github.io/helm-charts/"
   chart      = "aws-ecr-credential"
   version    = "1.4.2"
-  namespace  = "ecrcredrefresh"
 
   set_sensitive {
     name  = "aws.account"
