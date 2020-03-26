@@ -239,6 +239,7 @@ spacy = ">=2.2.0"
 reference = ""
 type = "url"
 url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz"
+
 [[package]]
 category = "dev"
 description = "Discover and load entry points from installed packages."
@@ -262,6 +263,7 @@ spacy = ">=2.2.2"
 reference = ""
 type = "url"
 url = "https://github.com/explosion/spacy-models/releases/download/es_core_news_sm-2.2.5/es_core_news_sm-2.2.5.tar.gz"
+
 [[package]]
 category = "dev"
 description = "A platform independent file lock."
@@ -712,6 +714,14 @@ dev = ["pre-commit", "tox"]
 
 [[package]]
 category = "main"
+description = "A python library adding a json log formatter"
+name = "python-json-logger"
+optional = false
+python-versions = ">=2.7"
+version = "0.1.11"
+
+[[package]]
+category = "main"
 description = "World timezone definitions, modern and historical"
 name = "pytz"
 optional = false
@@ -1012,7 +1022,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "b11496fb9ee5d9ec3a4ea7a94ec86dadd23b53778972ed3f6564a3e33c3766e8"
+content-hash = "98006307092038e44b16e52374246e550ba85bfd8729f6b4b1ebf9fa07e550a4"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1479,6 +1489,9 @@ pytest = [
 pytest-mock = [
     {file = "pytest-mock-2.0.0.tar.gz", hash = "sha256:b35eb281e93aafed138db25c8772b95d3756108b601947f89af503f8c629413f"},
     {file = "pytest_mock-2.0.0-py2.py3-none-any.whl", hash = "sha256:cb67402d87d5f53c579263d37971a164743dc33c159dfb4fb4a86f37c5552307"},
+]
+python-json-logger = [
+    {file = "python-json-logger-0.1.11.tar.gz", hash = "sha256:b7a31162f2a01965a5efb94453ce69230ed208468b0bbc7fdfc56e6d8df2e281"},
 ]
 pytz = [
     {file = "pytz-2019.3-py2.py3-none-any.whl", hash = "sha256:1c557d7d0e871de1f5ccd5833f60fb2550652da6be2693c1e02300743d21500d"},
