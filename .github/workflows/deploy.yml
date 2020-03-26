@@ -97,7 +97,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
-            apply -f infrastucture/kubernetes/api/deployment.yml
+            apply -f infrastructure/kubernetes/api/deployment.yml
 
       - name: Wait for deployment to finish
         run: |
@@ -216,9 +216,8 @@ jobs:
           ECR_REPOSITORY: foreign-language-reader-language-service
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          ls
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
-            apply -f infrastucture/kubernetes/language-service/deployment.yml
+            apply -f infrastructure/kubernetes/language-service/deployment.yml
 
       - name: Wait for deployment to finish
         run: |
