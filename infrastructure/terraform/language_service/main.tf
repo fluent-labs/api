@@ -109,7 +109,7 @@ resource "kubernetes_deployment" "language_service" {
           liveness_probe {
             http_get {
               path = "/health"
-              port = 4000
+              port = 8000
             }
 
             initial_delay_seconds = 30
@@ -121,7 +121,7 @@ resource "kubernetes_deployment" "language_service" {
           readiness_probe {
             http_get {
               path = "/health"
-              port = 4000
+              port = 8000
             }
 
             initial_delay_seconds = 30
