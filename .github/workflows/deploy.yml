@@ -97,7 +97,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
-            apply -f infrastructure/kubernetes/api/deployment.yml
+            set image deployment/api api=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --record
 
       - name: Wait for deployment to finish
         run: |
@@ -217,7 +217,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
-            apply -f infrastructure/kubernetes/language-service/deployment.yml
+            set image deployment/language-service language-service=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --record
 
       - name: Wait for deployment to finish
         run: |
