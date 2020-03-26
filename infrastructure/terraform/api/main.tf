@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 data "digitalocean_kubernetes_cluster" "foreign_language_reader" {
   name = var.cluster_name
 }
@@ -29,6 +31,119 @@ resource "kubernetes_horizontal_pod_autoscaler" "api_autoscale" {
       name = "api"
     }
     target_cpu_utilization_percentage = 75
+  }
+}
+
+resource "kubernetes_deployment" "api" {
+  metadata {
+    name = "api"
+  }
+
+  spec {
+    selector {
+      match_labels = {
+        app = "api"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "api"
+        }
+      }
+
+      spec {
+        image_pull_secrets {
+          name = "aws-registry"
+        }
+
+        container {
+          image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-west-2.amazonaws.com/foreign-language-reader-api:latest"
+          name  = "api"
+
+          env {
+            name = "AUTH_TOKEN"
+            value_from {
+              secret_key_ref {
+                name = "local-connection-token"
+                key  = "local_connection_token"
+              }
+            }
+          }
+
+          env {
+            name = "DATABASE_URL"
+            value_from {
+              secret_key_ref {
+                name = "api-database-credentials"
+                key  = "connection_string"
+              }
+            }
+          }
+
+          env {
+            name  = "LANGUAGE_SERVICE_URL"
+            value = "http://language-service.default.svc.cluster.local:8000"
+          }
+
+          env {
+            name = "SECRET_KEY_BASE"
+            value_from {
+              secret_key_ref {
+                name = "api-secret-key-base"
+                key  = "secret_key_base"
+              }
+            }
+          }
+
+          port {
+            container_port = 4000
+          }
+
+          resources {
+            limits {
+              memory = "500Mi"
+            }
+            requests {
+              memory = "100Mi"
+            }
+          }
+
+          liveness_probe {
+            http_get {
+              path = "/health"
+              port = 4000
+            }
+
+            initial_delay_seconds = 60
+            period_seconds        = 10
+            timeout_seconds       = 5
+            failure_threshold     = 5
+          }
+
+          readiness_probe {
+            http_get {
+              path = "/health"
+              port = 4000
+            }
+
+            initial_delay_seconds = 60
+            period_seconds        = 10
+            timeout_seconds       = 5
+            failure_threshold     = 5
+          }
+        }
+      }
+    }
+  }
+
+  # This resource is to make sure the deployment exists
+  # Not blow away what's current for something that doesn't exist.
+  lifecycle {
+    ignore_changes = [
+      spec.0.template.0.spec.0.container.0.image,
+    ]
   }
 }
 
