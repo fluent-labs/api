@@ -59,7 +59,7 @@ resource "kubernetes_deployment" "api" {
         }
 
         container {
-          image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-west-2.amazonaws.com/foreign-language-reader-api:api:c73332bc3e4232819ffaea6cc52c5034b74b1a21"
+          image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-west-2.amazonaws.com/foreign-language-reader-api:c73332bc3e4232819ffaea6cc52c5034b74b1a21"
           name  = "api"
 
           env {
