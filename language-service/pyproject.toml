@@ -29,6 +29,9 @@ paddlepaddle-tiny = "^1.6.1"
 # Definitions
 wiktionaryparser = "^0.0.97"
 
+# Logging
+python-json-logger = "^0.1.11"
+
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 

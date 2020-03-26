@@ -1,5 +1,3 @@
-import logging
-
 from flask import Flask
 from flask_restful import Api
 
@@ -19,13 +17,6 @@ api.add_resource(
 )
 api.add_resource(DocumentController, "/v1/tagging/<string:language>/document")
 api.add_resource(HealthController, "/health")
-
-# Configure logging
-# Necessary because gunicorn has its own logger
-# And we want to log from the controller process not a worker
-gunicorn_logger = logging.getLogger("gunicorn.error")
-app.logger.handlers = gunicorn_logger.handlers
-app.logger.setLevel(gunicorn_logger.level)
 
 if __name__ == "__main__":
     app.run(debug=False)
