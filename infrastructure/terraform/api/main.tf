@@ -1,5 +1,9 @@
 data "aws_caller_identity" "current" {}
 
+locals {
+  api_image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-west-2.amazonaws.com/foreign-language-reader-api:latest"
+}
+
 data "digitalocean_kubernetes_cluster" "foreign_language_reader" {
   name = var.cluster_name
 }
@@ -58,8 +62,39 @@ resource "kubernetes_deployment" "api" {
           name = "aws-registry"
         }
 
+        init_container {
+          image   = local.api_image
+          name    = "api"
+          command = ["bin/api", "eval", "'Api.Release.migrate'"]
+
+          env {
+            name = "DATABASE_URL"
+            value_from {
+              secret_key_ref {
+                name = "api-database-credentials"
+                key  = "connection_string"
+              }
+            }
+          }
+
+          # Needed to keep from crashing the job
+          env {
+            name  = "AUTH_TOKEN"
+            value = "none"
+          }
+          env {
+            name  = "LANGUAGE_SERVICE_URL"
+            value = "none"
+          }
+          env {
+            name  = "SECRET_KEY_BASE"
+            value = "none"
+          }
+
+        }
+
         container {
-          image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-west-2.amazonaws.com/foreign-language-reader-api:c73332bc3e4232819ffaea6cc52c5034b74b1a21"
+          image = local.api_image
           name  = "api"
 
           env {
@@ -145,6 +180,15 @@ resource "kubernetes_deployment" "api" {
       spec.0.template.0.spec.0.container.0.image,
     ]
   }
+
+  # The deployment will not come up without the database connection
+  depends_on = [
+    digitalocean_database_cluster.api_mysql,
+    digitalocean_database_firewall.allow_kubernetes,
+    digitalocean_database_user.api_user,
+    digitalocean_database_db.api_database,
+    kubernetes_secret.api_database_credentials
+  ]
 }
 
 # Configure database
