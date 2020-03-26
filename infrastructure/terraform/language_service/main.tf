@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 resource "kubernetes_service" "language_service" {
   metadata {
     name = "language-service"
