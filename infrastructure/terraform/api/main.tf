@@ -180,6 +180,15 @@ resource "kubernetes_deployment" "api" {
       spec.0.template.0.spec.0.container.0.image,
     ]
   }
+
+  # The deployment will not come up without the database connection
+  depends_on = [
+    digitalocean_database_cluster.api_mysql,
+    digitalocean_database_firewall.allow_kubernetes,
+    digitalocean_database_user.api_user,
+    digitalocean_database_db.api_database,
+    kubernetes_secret.api_database_credentials
+  ]
 }
 
 # Configure database
