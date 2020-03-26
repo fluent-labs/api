@@ -4,6 +4,9 @@ defmodule ApiWeb.Router do
   pipeline :api do
     plug CORSPlug, origin: ["http://localhost:3000", "https://api.foreignlanguagereader.com"]
     plug :accepts, ["json"]
+
+    # Logs requests and responses
+    plug LoggerJSON.Plug
   end
 
   scope "/api" do
