@@ -216,6 +216,7 @@ jobs:
           ECR_REPOSITORY: foreign-language-reader-language-service
           IMAGE_TAG: ${{ github.sha }}
         run: |
+          ls
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
             apply -f infrastucture/kubernetes/language-service/deployment.yml
 
