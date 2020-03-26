@@ -13,6 +13,7 @@ config :api, Api.Repo,
   port: 33061,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
+  loggers: [{LoggerJSON.Ecto, :log, [:info]}]
 
 # For development, we disable any cache and enable
 # debugging and code reloading.

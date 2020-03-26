@@ -36,6 +36,7 @@ config :api, Api.Repo,
   # ssl: true,
   url: database_url,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
+  loggers: [{LoggerJSON.Ecto, :log, [:info]}]
 
 config :api, ApiWeb.Endpoint,
   http: [
