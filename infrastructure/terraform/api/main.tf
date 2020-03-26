@@ -64,7 +64,7 @@ resource "kubernetes_deployment" "api" {
 
         init_container {
           image   = local.api_image
-          name    = "api"
+          name    = "migrate-database"
           command = ["bin/api", "eval", "'Api.Release.migrate'"]
 
           env {
