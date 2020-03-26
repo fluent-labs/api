@@ -12,7 +12,7 @@ config :api, Api.Repo,
   hostname: "127.0.0.1",
   port: 33061,
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  pool_size: 10,
   loggers: [{LoggerJSON.Ecto, :log, [:info]}]
 
 # For development, we disable any cache and enable

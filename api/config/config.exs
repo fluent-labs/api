@@ -21,7 +21,7 @@ config :api, ApiWeb.Endpoint,
 
 # Configures Elixir's Logger
 config :logger,
-  backends: [LoggerJSON]
+  backends: [LoggerJSON],
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
