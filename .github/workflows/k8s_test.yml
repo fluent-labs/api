@@ -21,5 +21,4 @@ jobs:
     - name: Validate K8s configuration
       run: |
         kubeval --ignore-missing-schemas \
-          infrastructure/kubernetes/api/* \
-          infrastructure/kubernetes/language-service/*
+          infrastructure/kubernetes/api/*
