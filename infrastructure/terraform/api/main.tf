@@ -62,6 +62,37 @@ resource "kubernetes_deployment" "api" {
           name = "aws-registry"
         }
 
+        init_container {
+          image   = local.api_image
+          name    = "api"
+          command = ["bin/api", "eval", "'Api.Release.migrate'"]
+
+          env {
+            name = "DATABASE_URL"
+            value_from {
+              secret_key_ref {
+                name = "api-database-credentials"
+                key  = "connection_string"
+              }
+            }
+          }
+
+          # Needed to keep from crashing the job
+          env {
+            name  = "AUTH_TOKEN"
+            value = "none"
+          }
+          env {
+            name  = "LANGUAGE_SERVICE_URL"
+            value = "none"
+          }
+          env {
+            name  = "SECRET_KEY_BASE"
+            value = "none"
+          }
+
+        }
+
         container {
           image = local.api_image
           name  = "api"
