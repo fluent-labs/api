@@ -26,6 +26,7 @@ config :logger,
   metadata: [:request_id]
 
 config :logger_json, :backend,
+  formatter: Api.Logger,
   metadata: :all
 
 # Use Jason for JSON parsing in Phoenix
