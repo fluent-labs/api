@@ -12,7 +12,7 @@ resource "helm_release" "prometheus" {
   name       = "prometheus"
   repository = "https://kubernetes-charts.storage.googleapis.com"
   chart      = "prometheus-operator"
-  version    = "0.37.0"
+  version    = "8.12.3"
   namespace  = "monitoring"
 
   depends_on = [
