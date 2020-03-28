@@ -14,9 +14,9 @@ resource "kubernetes_namespace" "content" {
 
 resource "helm_release" "spark" {
   name       = "spark"
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "spark"
-  version    = "1.2.10"
+  repository = "http://storage.googleapis.com/kubernetes-charts-incubator"
+  chart      = "sparkoperator"
+  version    = "0.6.9"
   namespace  = "content"
 
   depends_on = [
