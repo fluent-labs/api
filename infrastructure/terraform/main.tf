@@ -81,6 +81,11 @@ module "content" {
   source = "./content"
 }
 
+# Pretty much prometheus configuration
+module "monitoring" {
+  source = "./monitoring"
+}
+
 # Ingress
 # Handles traffic going in to the cluster
 # Proxies everything through a load balancer and nginx
