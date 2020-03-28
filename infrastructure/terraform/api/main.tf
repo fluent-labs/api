@@ -77,17 +77,24 @@ resource "kubernetes_deployment" "api" {
             }
           }
 
+          env {
+            name = "SECRET_KEY_BASE"
+            value_from {
+              secret_key_ref {
+                name = "api-secret-key-base"
+                key  = "secret_key_base"
+              }
+            }
+          }
+
           # Needed to keep from crashing the job
           env {
             name  = "AUTH_TOKEN"
             value = "none"
           }
+
           env {
             name  = "LANGUAGE_SERVICE_URL"
-            value = "none"
-          }
-          env {
-            name  = "SECRET_KEY_BASE"
             value = "none"
           }
 
