@@ -38,9 +38,10 @@ class DefinitionClient(ABC):
                 http_auth=(ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD),
             )
         else:
-            logger.info(
+            logger.warn(
                 "Configuring elasticsearch client with no auth because none was provided"
             )
+            # This is for running locally only.
             self.es = Elasticsearch([ELASTICSEARCH_URL])
 
     def get_definitions(self, language, word):
