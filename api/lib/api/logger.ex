@@ -7,7 +7,7 @@ defmodule Api.Logger do
   def format_event(level, message, timestamp, metadata, _metadata_keys) do
     %{
       time: format_timestamp(timestamp),
-      severity: level,
+      levelname: level,
       message: IO.iodata_to_binary(message),
       file: Keyword.get(metadata, :file),
       function: Keyword.get(metadata, :function),
