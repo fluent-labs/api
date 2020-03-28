@@ -32,11 +32,16 @@ class DefinitionClient(ABC):
         self.source = source
 
         if ELASTICSEARCH_USERNAME is not None and ELASTICSEARCH_PASSWORD is not None:
+            logger.info("Configuring elasticsearch client with auth")
             self.es = Elasticsearch(
                 [ELASTICSEARCH_URL],
                 http_auth=(ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD),
             )
         else:
+            logger.warn(
+                "Configuring elasticsearch client with no auth because none was provided"
+            )
+            # This is for running locally only.
             self.es = Elasticsearch([ELASTICSEARCH_URL])
 
     def get_definitions(self, language, word):
@@ -65,7 +70,7 @@ class DefinitionClient(ABC):
                 logger.info("Saving definitions")
                 self.save_definitions_to_elasticsearch(language, word, definitions)
             else:
-                logger.info("Not saving definitions")
+                logger.info("Not saving definitions because there are none")
 
             return definitions
 
@@ -142,7 +147,7 @@ class DefinitionClient(ABC):
                 result = self.es.index(
                     index="definitions", body=definition, doc_type="definition"
                 )
-                logger.info("Response from elasticsearch: %s" % result)
+                logger.debug("Response from elasticsearch: %s" % result)
         except Exception:
             logger.error("Error saving definition to elasticsearch: %s" % definition)
             stacktrace = traceback.format_exc()
