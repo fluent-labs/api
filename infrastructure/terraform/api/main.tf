@@ -31,8 +31,9 @@ resource "kubernetes_horizontal_pod_autoscaler" "api_autoscale" {
     min_replicas = var.min_replicas
     max_replicas = var.max_replicas
     scale_target_ref {
-      kind = "Deployment"
-      name = "api"
+      api_version = "extensions/v1beta1"
+      kind        = "Deployment"
+      name        = "api"
     }
     target_cpu_utilization_percentage = 75
   }
