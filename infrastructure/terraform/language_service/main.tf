@@ -140,6 +140,7 @@ resource "kubernetes_deployment" "language_service" {
   lifecycle {
     ignore_changes = [
       spec.0.template.0.spec.0.container.0.image,
+      spec.0.replicas
     ]
   }
 }
