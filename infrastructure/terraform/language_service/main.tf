@@ -23,8 +23,8 @@ resource "kubernetes_horizontal_pod_autoscaler" "language_service_autoscale" {
     min_replicas = var.min_replicas
     max_replicas = var.max_replicas
     scale_target_ref {
-      api_version = "extensions/v1beta1"
-      kind        = "deployment"
+      api_version = "apps/v1"
+      kind        = "Deployment"
       name        = "language-service"
     }
     target_cpu_utilization_percentage = 75
