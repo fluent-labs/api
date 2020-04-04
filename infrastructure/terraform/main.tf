@@ -32,6 +32,27 @@ module "container_registries" {
   kubernetes_namespaces = ["default", "content"]
 }
 
+# Environments
+resource "kubernetes_namespace" "qa" {
+  metadata {
+    annotations = {
+      name = "qa"
+    }
+
+    name = "qa"
+  }
+}
+
+resource "kubernetes_namespace" "prod" {
+  metadata {
+    annotations = {
+      name = "prod"
+    }
+
+    name = "prod"
+  }
+}
+
 # Static content served to users
 
 module "frontend" {
