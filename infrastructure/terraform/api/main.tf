@@ -134,7 +134,7 @@ resource "kubernetes_deployment" "api" {
 
           env {
             name  = "LANGUAGE_SERVICE_URL"
-            value = "http://language-service.${env}.svc.cluster.local:8000"
+            value = "http://language-service.${var.env}.svc.cluster.local:8000"
           }
 
           env {

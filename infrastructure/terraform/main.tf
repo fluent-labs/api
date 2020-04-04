@@ -107,6 +107,7 @@ module "api" {
 
 module "language_service" {
   source       = "./language_service"
+  env          = "prod"
   min_replicas = 2
   max_replicas = 10
 }
