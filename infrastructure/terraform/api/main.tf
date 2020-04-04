@@ -14,7 +14,8 @@ data "digitalocean_database_cluster" "api_mysql" {
 
 resource "kubernetes_service" "api" {
   metadata {
-    name = "api"
+    name      = "api"
+    namespace = var.env
   }
   spec {
     selector = {
@@ -29,7 +30,8 @@ resource "kubernetes_service" "api" {
 
 resource "kubernetes_horizontal_pod_autoscaler" "api_autoscale" {
   metadata {
-    name = "api"
+    name      = "api"
+    namespace = var.env
   }
   spec {
     min_replicas = var.min_replicas
@@ -45,7 +47,8 @@ resource "kubernetes_horizontal_pod_autoscaler" "api_autoscale" {
 
 resource "kubernetes_deployment" "api" {
   metadata {
-    name = "api"
+    name      = "api"
+    namespace = var.env
   }
 
   spec {
@@ -131,7 +134,7 @@ resource "kubernetes_deployment" "api" {
 
           env {
             name  = "LANGUAGE_SERVICE_URL"
-            value = "http://language-service.default.svc.cluster.local:8000"
+            value = "http://language-service.${env}.svc.cluster.local:8000"
           }
 
           env {
@@ -216,7 +219,8 @@ resource "digitalocean_database_db" "api_database" {
 
 resource "kubernetes_secret" "api_database_credentials" {
   metadata {
-    name = "api-database-credentials"
+    name      = "api-database-credentials"
+    namespace = var.env
   }
 
   data = {
@@ -238,7 +242,8 @@ resource "random_password" "api_secret_key_base" {
 
 resource "kubernetes_secret" "api_secret_key_base" {
   metadata {
-    name = "api-secret-key-base"
+    name      = "api-secret-key-base"
+    namespace = var.env
   }
 
   data = {
