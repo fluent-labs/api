@@ -5,25 +5,25 @@ data "digitalocean_kubernetes_cluster" "foreign_language_reader" {
   name = var.cluster_name
 }
 
-provider "kubernetes" {
-  load_config_file = false
-  host             = data.digitalocean_kubernetes_cluster.foreign_language_reader.endpoint
-  token            = data.digitalocean_kubernetes_cluster.foreign_language_reader.kube_config[0].token
-  cluster_ca_certificate = base64decode(
-    data.digitalocean_kubernetes_cluster.foreign_language_reader.kube_config[0].cluster_ca_certificate
-  )
-}
-
-provider "helm" {
-  kubernetes {
-    load_config_file = false
-    host             = data.digitalocean_kubernetes_cluster.foreign_language_reader.endpoint
-    token            = data.digitalocean_kubernetes_cluster.foreign_language_reader.kube_config[0].token
-    cluster_ca_certificate = base64decode(
-      data.digitalocean_kubernetes_cluster.foreign_language_reader.kube_config[0].cluster_ca_certificate
-    )
-  }
-}
+# provider "kubernetes" {
+#   load_config_file = false
+#   host             = data.digitalocean_kubernetes_cluster.foreign_language_reader.endpoint
+#   token            = data.digitalocean_kubernetes_cluster.foreign_language_reader.kube_config[0].token
+#   cluster_ca_certificate = base64decode(
+#     data.digitalocean_kubernetes_cluster.foreign_language_reader.kube_config[0].cluster_ca_certificate
+#   )
+# }
+#
+# provider "helm" {
+#   kubernetes {
+#     load_config_file = false
+#     host             = data.digitalocean_kubernetes_cluster.foreign_language_reader.endpoint
+#     token            = data.digitalocean_kubernetes_cluster.foreign_language_reader.kube_config[0].token
+#     cluster_ca_certificate = base64decode(
+#       data.digitalocean_kubernetes_cluster.foreign_language_reader.kube_config[0].cluster_ca_certificate
+#     )
+#   }
+# }
 
 # Service container registries
 module "container_registries" {
@@ -50,106 +50,106 @@ module "storybook" {
 
 # Services
 
-module "api" {
-  source       = "./api"
-  cluster_name = var.cluster_name
-  min_replicas = 2
-  max_replicas = 10
-}
-
-module "language_service" {
-  source       = "./language_service"
-  min_replicas = 2
-  max_replicas = 10
-}
+# module "api" {
+#   source       = "./api"
+#   cluster_name = var.cluster_name
+#   min_replicas = 2
+#   max_replicas = 10
+# }
+#
+# module "language_service" {
+#   source       = "./language_service"
+#   min_replicas = 2
+#   max_replicas = 10
+# }
 
 # Full ELK stack for storing language content
 # Also uses fluentd to post cluster logs to ELK to make this work
-module "elasticsearch" {
-  source          = "./elasticsearch"
-  private_key_pem = acme_certificate.certificate.private_key_pem
-  certificate_pem = acme_certificate.certificate.certificate_pem
-  issuer_pem      = acme_certificate.certificate.issuer_pem
-}
+# module "elasticsearch" {
+#   source          = "./elasticsearch"
+#   private_key_pem = acme_certificate.certificate.private_key_pem
+#   certificate_pem = acme_certificate.certificate.certificate_pem
+#   issuer_pem      = acme_certificate.certificate.issuer_pem
+# }
 
 # Content infrastructure
 # Spark jobs that scrape wiktionary for definitions
 # Should also have job triggers
 # And potentially example sentences in the future
 
-module "content" {
-  source = "./content"
-}
-
-# Pretty much prometheus configuration
-module "monitoring" {
-  source = "./monitoring"
-}
+# module "content" {
+#   source = "./content"
+# }
+#
+# # Pretty much prometheus configuration
+# module "monitoring" {
+#   source = "./monitoring"
+# }
 
 # Ingress
 # Handles traffic going in to the cluster
 # Proxies everything through a load balancer and nginx
 
-module "nginx_ingress" {
-  source          = "./nginx_ingress"
-  domain          = digitalocean_domain.main.name
-  subdomains      = ["api", "kibana", "language"]
-  private_key_pem = acme_certificate.certificate.private_key_pem
-  certificate_pem = acme_certificate.certificate.certificate_pem
-  issuer_pem      = acme_certificate.certificate.issuer_pem
-}
-
-resource "kubernetes_ingress" "foreign_language_reader_ingress" {
-  metadata {
-    name = "foreign-language-reader-ingress"
-    annotations = {
-      "kubernetes.io/ingress.class"             = "nginx"
-      "nginx.ingress.kubernetes.io/enable-cors" = "true"
-    }
-  }
-
-  spec {
-    tls {
-      secret_name = "nginx-certificate"
-    }
-
-    rule {
-      host = "api.foreignlanguagereader.com"
-      http {
-        path {
-          backend {
-            service_name = "api"
-            service_port = 4000
-          }
-        }
-      }
-    }
-
-    rule {
-      host = "language.foreignlanguagereader.com"
-      http {
-        path {
-          backend {
-            service_name = "language-service"
-            service_port = 8000
-          }
-        }
-      }
-    }
-
-    rule {
-      host = "kibana.foreignlanguagereader.com"
-      http {
-        path {
-          backend {
-            service_name = "kibana-kibana"
-            service_port = 5601
-          }
-        }
-      }
-    }
-  }
-}
+# module "nginx_ingress" {
+#   source          = "./nginx_ingress"
+#   domain          = digitalocean_domain.main.name
+#   subdomains      = ["api", "kibana", "language"]
+#   private_key_pem = acme_certificate.certificate.private_key_pem
+#   certificate_pem = acme_certificate.certificate.certificate_pem
+#   issuer_pem      = acme_certificate.certificate.issuer_pem
+# }
+#
+# resource "kubernetes_ingress" "foreign_language_reader_ingress" {
+#   metadata {
+#     name = "foreign-language-reader-ingress"
+#     annotations = {
+#       "kubernetes.io/ingress.class"             = "nginx"
+#       "nginx.ingress.kubernetes.io/enable-cors" = "true"
+#     }
+#   }
+#
+#   spec {
+#     tls {
+#       secret_name = "nginx-certificate"
+#     }
+#
+#     rule {
+#       host = "api.foreignlanguagereader.com"
+#       http {
+#         path {
+#           backend {
+#             service_name = "api"
+#             service_port = 4000
+#           }
+#         }
+#       }
+#     }
+#
+#     rule {
+#       host = "language.foreignlanguagereader.com"
+#       http {
+#         path {
+#           backend {
+#             service_name = "language-service"
+#             service_port = 8000
+#           }
+#         }
+#       }
+#     }
+#
+#     rule {
+#       host = "kibana.foreignlanguagereader.com"
+#       http {
+#         path {
+#           backend {
+#             service_name = "kibana-kibana"
+#             service_port = 5601
+#           }
+#         }
+#       }
+#     }
+#   }
+# }
 
 # Shared resources for the cluster go down here.
 
@@ -173,18 +173,18 @@ resource "random_password" "local_connection_token" {
   special = true
 }
 
-resource "kubernetes_secret" "local_connection_token" {
-  for_each = toset(["default", "content"])
-
-  metadata {
-    name      = "local-connection-token"
-    namespace = each.value
-  }
-
-  data = {
-    local_connection_token = random_password.local_connection_token.result
-  }
-}
+# resource "kubernetes_secret" "local_connection_token" {
+#   for_each = toset(["default", "content"])
+#
+#   metadata {
+#     name      = "local-connection-token"
+#     namespace = each.value
+#   }
+#
+#   data = {
+#     local_connection_token = random_password.local_connection_token.result
+#   }
+# }
 
 # TLS
 
