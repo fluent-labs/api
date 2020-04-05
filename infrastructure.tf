@@ -38,7 +38,7 @@ resource "digitalocean_kubernetes_cluster" "foreign_language_reader" {
     name       = "worker-pool"
     size       = "s-2vcpu-4gb"
     auto_scale = true
-    min_nodes  = 1
+    min_nodes  = 3
     max_nodes  = 6
   }
 }
