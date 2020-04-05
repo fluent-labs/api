@@ -10,9 +10,6 @@ terraform {
 }
 
 variable "digitalocean_token" {}
-variable "test_environment" {
-  default = false
-}
 
 provider "aws" {
   profile = "default"
