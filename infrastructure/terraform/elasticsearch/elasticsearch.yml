@@ -14,8 +14,14 @@ esConfig:
   roles.yml: |
     healthcheck:
       cluster: [ 'monitor' ]
+      indices:
+        - names: [ 'admin/get' ]
+          privileges: [ 'get' ]
     logging:
       cluster: [ 'monitor' ]
+      indices:
+        - names: [ 'logstash-*' ]
+          privileges: [ 'all' ]
 
 extraEnvs:
   - name: ELASTIC_PASSWORD
