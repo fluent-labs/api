@@ -71,7 +71,7 @@ resource "kubernetes_deployment" "language_service" {
 
           env {
             name  = "ELASTICSEARCH_URL"
-            value = "http://elasticsearch-master.default.svc.cluster.local:9200"
+            value = "http://language-content-es-http.default.svc.cluster.local:9200"
           }
 
           env {
