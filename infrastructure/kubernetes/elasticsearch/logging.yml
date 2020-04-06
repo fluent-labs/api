@@ -22,4 +22,4 @@ spec:
         resources:
           requests:
             storage: 30Gi
-        storageClassName: standard
+        storageClassName: do-block-storage
