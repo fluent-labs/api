@@ -1,11 +1,11 @@
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
-  name: language-content-elasticsearch
+  name: language-content-es
 spec:
   version: 7.6.2
   nodeSets:
-  - name: language-content-elasticsearch
+  - name: language-content-es
     count: 1
     config:
       node.master: true
