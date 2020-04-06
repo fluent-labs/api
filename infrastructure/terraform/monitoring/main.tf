@@ -1,4 +1,4 @@
- Required for horizontal pod autoscaling to work
+# Required for horizontal pod autoscaling to work
 resource "helm_release" "metrics_server" {
   name       = "metrics-server"
   repository = "https://kubernetes-charts.storage.googleapis.com"
