@@ -1,12 +1,12 @@
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
-  name: logs-elasticsearch
+  name: logs
   namespace: logging
 spec:
   version: 7.6.2
   nodeSets:
-  - name: logs-elasticsearch
+  - name: logs
     count: 1
     config:
       node.master: true
