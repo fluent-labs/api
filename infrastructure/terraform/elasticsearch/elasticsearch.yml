@@ -1,11 +1,21 @@
 esConfig:
   elasticsearch.yml: |
-    xpack.security.enabled: true
-    xpack.security.transport.ssl.enabled: true
-    xpack.security.transport.ssl.verification_mode: certificate
-    xpack.security.transport.ssl.key: /usr/share/elasticsearch/config/certs/private_key_pem.crt
-    xpack.security.transport.ssl.certificate: /usr/share/elasticsearch/config/certs/certificate_pem.crt
-    xpack.security.transport.ssl.certificate_authorities: [ "/usr/share/elasticsearch/config/certs/issuer_pem.crt" ]
+    xpack:
+      security:
+        enabled: true
+        transport:
+          ssl:
+            enabled: true
+            verification_mode: certificate
+            key: /usr/share/elasticsearch/config/certs/private_key_pem.crt
+            certificate: /usr/share/elasticsearch/config/certs/certificate_pem.crt
+            certificate_authorities: [ "/usr/share/elasticsearch/config/certs/issuer_pem.crt" ]
+
+  roles.yml: |
+    healthcheck:
+      cluster: [ 'monitor' ]
+    logging:
+      cluster: [ 'monitor' ]
 
 extraEnvs:
   - name: ELASTIC_PASSWORD
