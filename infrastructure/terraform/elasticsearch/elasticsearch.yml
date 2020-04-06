@@ -15,7 +15,7 @@ esConfig:
     healthcheck:
       cluster: [ 'monitor' ]
       indices:
-        - names: [ 'admin/get' ]
+        - names: [ 'admin' ]
           privileges: [ 'get' ]
     logging:
       cluster: [ 'monitor' ]
