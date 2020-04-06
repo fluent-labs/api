@@ -1,5 +1,0 @@
-elasticsearch:
-  auth:
-    enabled: true
-    user: fluentd
-  host: elasticsearch-master.default.svc.cluster.local
