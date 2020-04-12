@@ -14,7 +14,7 @@ jobs:
     - name: 'Prepare Terraform'
       uses: hashicorp/terraform-github-actions@master
       with:
-        tf_actions_version: 0.12.20
+        tf_actions_version: 0.12.24
         tf_actions_subcommand: 'init'
         tf_actions_comment: false
         args: '-backend-config="token=${{ secrets.TF_API_TOKEN }}" -backend-config="organization=foreign-language-reader"'
@@ -22,28 +22,9 @@ jobs:
     - name: 'Apply infrastucture changes'
       uses: hashicorp/terraform-github-actions@master
       with:
-        tf_actions_version: 0.12.20
+        tf_actions_version: 0.12.24
         tf_actions_subcommand: 'apply'
         tf_actions_comment: false
-
-  configure-kubernetes:
-    name: Update K8s configuration
-    runs-on: ubuntu-latest
-    needs: [configure-infrastructure]
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: Save DigitalOcean kubeconfig
-        uses: digitalocean/action-doctl@master
-        env:
-          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-        with:
-          args: kubernetes cluster kubeconfig show foreign-language-reader > $GITHUB_WORKSPACE/.kubeconfig
-
-      - name: Run Kustomization
-        run: |
-          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
-            apply -k infrastructure/kubernetes/
 
   build-api:
     runs-on: ubuntu-latest
@@ -73,10 +54,9 @@ jobs:
         ECR_REPOSITORY: foreign-language-reader-api
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
         echo "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" > api.txt
@@ -120,6 +100,11 @@ jobs:
         run: |
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
             set image deployment/api api=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --record
+
+      - name: Wait for deployment to finish
+        run: |
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
+            rollout status deployment/api
 
   deploy-frontend:
     runs-on: ubuntu-latest
@@ -191,10 +176,9 @@ jobs:
         ECR_REPOSITORY: foreign-language-reader-language-service
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
         echo "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" > language_service.txt
@@ -238,6 +222,11 @@ jobs:
         run: |
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
             set image deployment/language-service language-service=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --record
+
+      - name: Wait for deployment to finish
+        run: |
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
+            rollout status deployment/language-service
 
   deploy-storybook:
     runs-on: ubuntu-latest

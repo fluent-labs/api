@@ -11,13 +11,20 @@ A glue layer that puts together all the different data sources and keeps track o
 
 ### Language-Service
 A service that provides text processing methods.
-- Service served by flask
-- English and Spanish part of speech tagging provided by Spacy
-- Chinese part of speech tagging provided by jieba
-- Vocabulary provided by WiktionaryParser
+-   Service served by flask
+-   Language data stored with Elasticsearch
+-   English and Spanish part of speech tagging provided by Spacy
+-   Chinese part of speech tagging provided by jieba
+-   Vocabulary provided by WiktionaryParser
 
 ### Infrastructure
 Terraform scripts and Kubernetes YAML files that describe all of our infrastructure.
-- Hosted on Digital Ocean
-- Managed by Kubernetes
-- Containers and static content hosted on AWS
+-   Hosted on Digital Ocean
+-   Managed by Kubernetes
+-   Containers and static content hosted on AWS
+
+### Future plans
+-   Finish up API to keep track of Vocabulary
+-   Example sentences
+-   Get more dictionaries
+-   Automated language content updates

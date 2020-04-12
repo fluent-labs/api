@@ -4,16 +4,17 @@ defmodule ApiWeb.Router do
   pipeline :api do
     plug CORSPlug, origin: ["http://localhost:3000", "https://api.foreignlanguagereader.com"]
     plug :accepts, ["json"]
+
+    # Logs requests and responses
+    plug LoggerJSON.Plug
   end
 
   scope "/api" do
     pipe_through :api
 
-    forward "/graphiql", Absinthe.Plug.GraphiQL,
-      schema: ApiWeb.Schema
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: ApiWeb.Schema
 
-    forward "/", Absinthe.Plug,
-      schema: ApiWeb.Schema
+    forward "/", Absinthe.Plug, schema: ApiWeb.Schema
   end
 
   scope "/", ApiWeb do

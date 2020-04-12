@@ -4,7 +4,7 @@ defmodule ApiWeb.Schema.WordTypes do
   """
   use Absinthe.Schema.Notation
 
-  enum :language, values: [:chinese, :english, :spanish]
+  enum(:language, values: [:chinese, :english, :spanish])
 
   interface :word do
     field :id, non_null(:id)
@@ -14,12 +14,12 @@ defmodule ApiWeb.Schema.WordTypes do
     field :lemma, :string
     field :definitions, %Absinthe.Type.List{of_type: non_null(:definition)}
 
-    resolve_type fn
+    resolve_type(fn
       %{language: :chinese}, _ -> :chinese_word
       %{language: :english}, _ -> :english_word
       %{language: :spanish}, _ -> :spanish_word
       _, _ -> :generic_word
-    end
+    end)
   end
 
   object :generic_word do
@@ -30,7 +30,7 @@ defmodule ApiWeb.Schema.WordTypes do
     field :lemma, :string
     field :definitions, %Absinthe.Type.List{of_type: non_null(:definition)}
 
-    interface :word
+    interface(:word)
   end
 
   object :chinese_word do
@@ -45,7 +45,7 @@ defmodule ApiWeb.Schema.WordTypes do
     field :hsk, :integer
     field :pinyin, %Absinthe.Type.List{of_type: non_null(:string)}
 
-    interface :word
+    interface(:word)
   end
 
   object :english_word do
@@ -56,7 +56,7 @@ defmodule ApiWeb.Schema.WordTypes do
     field :lemma, :string
     field :definitions, %Absinthe.Type.List{of_type: non_null(:definition)}
 
-    interface :word
+    interface(:word)
   end
 
   object :spanish_word do
@@ -67,7 +67,6 @@ defmodule ApiWeb.Schema.WordTypes do
     field :lemma, :string
     field :definitions, %Absinthe.Type.List{of_type: non_null(:definition)}
 
-    interface :word
+    interface(:word)
   end
-
 end

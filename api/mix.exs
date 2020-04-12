@@ -20,7 +20,7 @@ defmodule Api.MixProject do
   def application do
     [
       mod: {Api.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :jason, :logger_json]
     ]
   end
 
@@ -58,6 +58,9 @@ defmodule Api.MixProject do
       {:tesla, "~> 1.3.0"},
       {:hackney, "~> 1.15.2"},
       {:cors_plug, "~> 1.5"},
+
+      # Logging
+      {:logger_json, "~> 3.3"},
 
       # Code quality
       {:credo, "~> 1.2", only: [:dev, :test], runtime: false}

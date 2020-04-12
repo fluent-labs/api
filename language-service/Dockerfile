@@ -1,4 +1,4 @@
-FROM python:3.7.6-slim-buster as base
+FROM python:3.7.7-slim-buster as base
 
 ENV PYTHONFAULTHANDLER=1 \
     PYTHONHASHSEED=random \
@@ -31,4 +31,4 @@ COPY --from=builder /venv /venv
 COPY language_service /app/
 
 EXPOSE 8000
-CMD ["gunicorn", "LanguageService:app", "-b", ":8000"]
+CMD ["gunicorn", "LanguageService:app", "--config=gunicorn.conf.py"]

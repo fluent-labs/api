@@ -9,6 +9,10 @@ services:
       LANGUAGE_SERVICE_URL: "http://localhost:8000"
     ports:
     - 4000:4000
+  cache:
+    image: "redis:5-buster"
+    ports:
+    - 6379:6379
   database:
     image: "mysql:5.7"
     environment:
@@ -18,9 +22,23 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: "true"
     ports:
     - 33061:3306
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.1
+    environment:
+    - "discovery.type=single-node"
+    ports:
+    - 9200:9200
+    - 9300:9300
   language-service:
     build: ./language-service
     environment:
       AUTH_TOKEN: "simpletoken"
     ports:
     - 8000:8000
+  refresh:
+    build: ./content/definitions/refresh-definitions
+    environment:
+      AUTH_TOKEN: NkGqLA46oMxKNr*!+wG*@{zHE[b[?LB?UB3cC=ZLevGG!4ms(WA7X+wA\u003eXn!YhoW
+      ELASTICSEARCH_URL: localhost
+      ELASTICSEARCH_USERNAME: changeme
+      ELASTICSEARCH_PASSWORD: changeme

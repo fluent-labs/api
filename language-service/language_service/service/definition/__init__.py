@@ -2,63 +2,66 @@
 Where you put definition business logic.
 We combine different data sources as available to deliver the best definitions.
 """
-from language_service.dto import ChineseDefinition
-from language_service.service.definition.cedict import CEDICT
-from language_service.service.definition.wiktionary import Wiktionary
+import logging
+from multiprocessing.context import TimeoutError as MultiprocessingTimeoutError
+from multiprocessing.dummy import Pool
 
-cedict = CEDICT()
-wiktionary = Wiktionary()
+from language_service.service.definition.chinese import get_chinese_definitions
+from language_service.service.definition.english import get_english_definitions
+from language_service.service.definition.spanish import get_spanish_definitions
+
+logger = logging.getLogger("LanguageService.service.definition")
 
 
 def get_definitions(language, word):
+    """
+    Main entry point for getting definitions, letting us dispatch to the correct language.
+    Why? Each language has different definition sources, so they'll have their
+        own combination logic.
+    """
     if language == "CHINESE":
         return get_chinese_definitions(word)
 
     elif language == "ENGLISH":
-        return wiktionary.get_definitions(language, word)
+        return get_english_definitions(word)
 
     elif language == "SPANISH":
-        return wiktionary.get_definitions(language, word)
+        return get_spanish_definitions(word)
 
     else:
         raise NotImplementedError("Unknown language requested: %s")
 
 
-def get_chinese_definitions(word):
-    wiktionary_definitions = wiktionary.get_definitions("CHINESE", word)
-    cedict_definition = cedict.get_definitions(word)
+def get_definitions_for_group(language, words):
+    """
+    Get definitions in parallel for multiple words
+    """
+    with Pool(10) as pool:
+        # First we trigger the lookups in parallel here
+        requests = [
+            (word, pool.apply_async(get_definitions, args=(language, word)))
+            for word in words
+        ]
 
-    if wiktionary_definitions is not None and cedict_definition is not None:
-        print("CHINESE - Found wiktionary and cedict definitions for %s" % word)
+        # Then we get the results
         definitions = []
-        print(cedict_definition)
-        for definition in wiktionary_definitions:
-            # The CEDICT definitions are more focused than wiktionary so we should prefer them.
-            subdefinitions = (
-                cedict_definition.subdefinitions
-                if cedict_definition.subdefinitions is not None
-                else definition.subdefinitions
-            )
+        for word, result in requests:
+            try:
+                # And then either the result is ready, or we time out.
+                word_definitions = result.get(5)
 
-            improved_definition = ChineseDefinition(
-                subdefinitions=subdefinitions,
-                tag=definition.tag,
-                examples=definition.examples,
-                pinyin=cedict_definition.pinyin,
-                simplified=cedict_definition.simplified,
-                traditional=cedict_definition.traditional,
-            )
-            definitions.append(improved_definition)
+                if word_definitions is not None:
+                    logger.info("Got definitions in %s for %s" % (language, word))
+                    definitions.append((word, word_definitions))
+
+                else:
+                    logger.error("No definition in %s found for %s" % (language, word))
+                    definitions.append((word, None))
+
+            except MultiprocessingTimeoutError:
+                logger.error(
+                    "Definition lookup in %s timed out for %s" % (language, word)
+                )
+                definitions.append((word, None))
+
         return definitions
-
-    elif wiktionary_definitions is not None and cedict_definition is None:
-        print("CHINESE - Only found wiktionary definition for %s" % word)
-        return wiktionary_definitions
-
-    elif wiktionary_definitions is None and cedict_definition is not None:
-        print("CHINESE - Only found cedict definition for %s" % word)
-        return [cedict_definition]
-
-    else:
-        print("CHINESE - No definition found for %s" % word)
-        return None
