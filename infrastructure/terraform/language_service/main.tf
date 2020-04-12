@@ -59,7 +59,7 @@ resource "kubernetes_deployment" "language_service" {
         }
 
         container {
-          image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-west-2.amazonaws.com/foreign-language-reader-language-service:c73332bc3e4232819ffaea6cc52c5034b74b1a21"
+          image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-west-2.amazonaws.com/foreign-language-reader-language-service:latest"
           name  = "language-service"
 
           env {
@@ -74,7 +74,7 @@ resource "kubernetes_deployment" "language_service" {
 
           env {
             name  = "ELASTICSEARCH_URL"
-            value = "http://elasticsearch-master.default.svc.cluster.local:9200"
+            value = "http://language-content-es-http.default.svc.cluster.local:9200"
           }
 
           env {

@@ -112,15 +112,6 @@ module "language_service" {
   max_replicas = 10
 }
 
-# Full ELK stack for storing language content
-# Also uses fluentd to post cluster logs to ELK to make this work
-module "elasticsearch" {
-  source          = "./elasticsearch"
-  private_key_pem = acme_certificate.certificate.private_key_pem
-  certificate_pem = acme_certificate.certificate.certificate_pem
-  issuer_pem      = acme_certificate.certificate.issuer_pem
-}
-
 # Content infrastructure
 # Spark jobs that scrape wiktionary for definitions
 # Should also have job triggers
@@ -130,7 +121,7 @@ module "content" {
   source = "./content"
 }
 
-# Pretty much prometheus configuration
+# Contains logging and monitoring configuration
 module "monitoring" {
   source = "./monitoring"
 }
