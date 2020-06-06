@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.api
 
 import com.foreignlanguagereader.api
-import play.api.libs.json.{Format, JsResult, JsString, JsSuccess, JsValue}
+import play.api.libs.json._
 
 object Language extends Enumeration {
   type Language = Value
@@ -24,11 +24,6 @@ object ReadinessStatus extends Enumeration {
       def writes(status: ReadinessStatus.ReadinessStatus) =
         JsString(status.toString)
     }
-}
-
-object DefinitionSource extends Enumeration {
-  type DefinitionSource = Value
-  val WIKTIONARY, CEDICT, MULTIPLE = Value
 }
 
 object HSKLevel extends Enumeration {
