@@ -22,12 +22,16 @@ class DefinitionController @Inject()(
     implicit request: Request[AnyContent] =>
       definitionService
         .getDefinition(wordLanguage, definitionLanguage, word) match {
-        case Nil         => NotFound(s"Definition for $word in $language not found")
-        case definitions => Ok(serializeDefinitionDTO(definitions))
+        case None              => NotFound(s"Definition for $word in $language not found")
+        case Some(definitions) => Ok(serializeDefinitionDTO(definitions))
       }
   }
 
-  def serializeDefinitionDTO(dto: List[DefinitionDTO]): JsValue = {
+  // This exists so that the controller can properly serialize DTOs.
+  // Each DTO has a serializer, but the abstract parent class doesn't.
+  // Without this, the compiler can't guarantee the serializer method exists.
+  // Ugly but better than making many controllers and routes.
+  def serializeDefinitionDTO(dto: Seq[DefinitionDTO]): JsValue = {
     dto match {
       case g: List[GenericDefinitionDTO] => Json.toJson(g)
       case c: List[ChineseDefinitionDTO] => Json.toJson(c)
