@@ -1,21 +1,17 @@
 package com.foreignlanguagereader.api.service
 
+import com.foreignlanguagereader.api.Language
 import com.foreignlanguagereader.api.Language.Language
 import com.foreignlanguagereader.api.client.{
   ElasticsearchClient,
   LanguageServiceClient
 }
-import com.foreignlanguagereader.api.domain.definition.{
+import com.foreignlanguagereader.api.domain.definition.combined.{
   ChineseDefinition,
   Definition
 }
-import com.foreignlanguagereader.api.domain.definition.chinese.CEDICTDefinition
-import com.foreignlanguagereader.api.dto.v1.definition.{
-  ChineseDefinitionDTO,
-  DefinitionDTO,
-  GenericDefinitionDTO
-}
-import com.foreignlanguagereader.api.{DefinitionSource, Language}
+import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource
+import com.foreignlanguagereader.api.dto.v1.definition.DefinitionDTO
 import javax.inject.{Inject, Singleton}
 
 @Singleton
@@ -23,30 +19,58 @@ class DefinitionService @Inject()(
   val elasticsearch: ElasticsearchClient,
   val languageServiceClient: LanguageServiceClient
 ) {
+
+  /**
+    * Gets definitions for a list of tokens
+    * Definition language currently only supports English but in the future this won't be so.
+    * @param wordLanguage Which language the token is in
+    * @param definitionLanguage What language the definitions should be in.
+    * @param word The token to search for.
+    * @return
+    */
   def getDefinition(wordLanguage: Language,
                     definitionLanguage: Language,
-                    word: String): List[DefinitionDTO] = wordLanguage match {
-    case Language.CHINESE => getChineseDefinition(definitionLanguage, word)
-    case Language.ENGLISH => getEnglishDefinition(definitionLanguage, word)
-    case Language.SPANISH => getSpanishDefinition(definitionLanguage, word)
-  }
+                    word: String): Option[Seq[DefinitionDTO]] =
+    findOrFetchDefinition(definitionLanguage, wordLanguage, word) match {
+      case None => None
+      case Some(d) if wordLanguage == Language.CHINESE =>
+        Some(transformChineseDefinitions(d))
+      case Some(d) => Some(d)
+    }
 
+  // Convenience method for getting definitions in parallel.
+  // Same interface as above
   def getDefinitions(wordLanguage: Language,
                      definitionLanguage: Language,
-                     words: List[String]): List[DefinitionDTO] =
-    words.flatMap(word => getDefinition(wordLanguage, definitionLanguage, word))
+                     words: List[String]): Option[Seq[DefinitionDTO]] = {
+    val definitions = words.flatMap(
+      word =>
+        getDefinition(wordLanguage, definitionLanguage, word) match {
+          case Some(d) => d
+          case None    => None
+      }
+    )
 
-  def getChineseDefinition(definitionLanguage: Language,
-                           word: String): List[ChineseDefinitionDTO] = {
-    val rawDefinitions =
-      findOrFetchDefinition(definitionLanguage, Language.CHINESE, word)
+    if (definitions.nonEmpty) Some(definitions) else None
+  }
 
+  /**
+    * Language specific handling for Chinese.
+    * We have two dictionaries here, so we should combine them to produce the best possible results
+    * In particular, CEDICT has a minimum level of quality, but doesn't have as many definitions.
+    * We prefer CEDICT when available
+    * @param definitions The definitions returned from elasticsearch
+    * @return
+    */
+  def transformChineseDefinitions(
+    definitions: Seq[Definition]
+  ): Seq[ChineseDefinition] = {
     // There is only one CEDICT definition so we should use that.
-    val CEDICTDefinition: Option[CEDICTDefinition] = rawDefinitions
+    val CEDICTDefinition: Option[ChineseDefinition] = definitions
       .find(_.source.equals(DefinitionSource.CEDICT))
-      .asInstanceOf[Option[CEDICTDefinition]]
+      .asInstanceOf[Option[ChineseDefinition]]
 
-    rawDefinitions
+    definitions
       .filterNot(_.source.equals(DefinitionSource.CEDICT))
       .iterator
       .map(definition => {
@@ -74,30 +98,20 @@ class DefinitionService @Inject()(
       .toList
   }
 
-  // Passthrough for now, but these will contain logic that combines data sources based on what dictionaries we have for the language
-  def getEnglishDefinition(definitionLanguage: Language,
-                           word: String): List[DefinitionDTO] =
-    findOrFetchDefinition(definitionLanguage, Language.ENGLISH, word)
-
-  // Passthrough for now, but these will contain logic that combines data sources based on what dictionaries we have for the language
-  def getSpanishDefinition(definitionLanguage: Language,
-                           word: String): List[DefinitionDTO] =
-    findOrFetchDefinition(definitionLanguage, Language.SPANISH, word)
-
   // Long term roadmap is to have all language content in elasticsearch.
   // Right now it is not all there, so we should be prepared to scrape wiktionary for anything missing
   // And that functionality is in language service.
   // It's not worth rewriting it for an intermediate step, so we have this hack for now
   def findOrFetchDefinition(wordLanguage: Language,
                             definitionLanguage: Language,
-                            word: String): List[Definition] =
-    elasticsearch.getDefinition(definitionLanguage, wordLanguage, word) match {
-      case Nil =>
+                            word: String): Option[Seq[Definition]] =
+    elasticsearch.getDefinition(wordLanguage, definitionLanguage, word) match {
+      case None =>
         languageServiceClient.getDefinition(
           wordLanguage,
           definitionLanguage,
           word
         )
-      case definitions => definitions
+      case definitions: Some[Seq[Definition]] => definitions
     }
 }
