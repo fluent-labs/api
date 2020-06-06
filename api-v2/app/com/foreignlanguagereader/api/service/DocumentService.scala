@@ -10,6 +10,7 @@ import javax.inject
 class DocumentService @Inject()(
   val languageServiceClient: LanguageServiceClient
 ) {
-  def getWordsForDocument(language: Language, document: String): List[Word] =
+  def getWordsForDocument(language: Language,
+                          document: String): Option[Seq[Word]] =
     languageServiceClient.getWordsForDocument(language, document)
 }
