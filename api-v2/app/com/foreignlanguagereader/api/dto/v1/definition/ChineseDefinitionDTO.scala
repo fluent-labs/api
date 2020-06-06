@@ -4,9 +4,9 @@ import com.foreignlanguagereader.api.HSKLevel.HSKLevel
 import com.foreignlanguagereader.api.domain.definition.ChineseDefinition
 import play.api.libs.json.{Format, Json}
 
-case class ChineseDefinitionDTO(override val subdefinitions: List[String],
-                                override val tag: String,
-                                override val examples: List[String],
+case class ChineseDefinitionDTO(subdefinitions: List[String],
+                                tag: String,
+                                examples: List[String],
                                 pinyin: String = "",
                                 simplified: String = "",
                                 traditional: String = "",
@@ -14,23 +14,6 @@ case class ChineseDefinitionDTO(override val subdefinitions: List[String],
     extends DefinitionDTO(subdefinitions, tag, examples)
 
 object ChineseDefinitionDTO {
-  def apply(subdefinitions: List[String],
-            tag: String,
-            examples: List[String],
-            pinyin: String,
-            simplified: String,
-            traditional: String,
-            hsk: HSKLevel): ChineseDefinitionDTO =
-    new ChineseDefinitionDTO(
-      subdefinitions,
-      tag,
-      examples,
-      pinyin,
-      simplified,
-      traditional,
-      hsk
-    )
-
   implicit def chineseDefinitionToDefinitionDTO(
     definition: ChineseDefinition
   ): ChineseDefinitionDTO =

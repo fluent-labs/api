@@ -12,7 +12,8 @@ import com.foreignlanguagereader.api.domain.definition.{
 import com.foreignlanguagereader.api.domain.definition.chinese.CEDICTDefinition
 import com.foreignlanguagereader.api.dto.v1.definition.{
   ChineseDefinitionDTO,
-  DefinitionDTO
+  DefinitionDTO,
+  GenericDefinitionDTO
 }
 import com.foreignlanguagereader.api.{DefinitionSource, Language}
 import javax.inject.{Inject, Singleton}
