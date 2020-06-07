@@ -1,9 +1,5 @@
 package com.foreignlanguagereader.api.v1
 
-import com.foreignlanguagereader.api.client.{
-  ElasticsearchClient,
-  LanguageServiceClient
-}
 import com.foreignlanguagereader.api.controller.v1.HealthController
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerTest

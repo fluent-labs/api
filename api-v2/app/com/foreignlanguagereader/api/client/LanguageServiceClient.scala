@@ -5,7 +5,6 @@ import java.util.concurrent.TimeUnit
 import com.foreignlanguagereader.api.Language.Language
 import com.foreignlanguagereader.api.ReadinessStatus
 import com.foreignlanguagereader.api.ReadinessStatus.ReadinessStatus
-import com.foreignlanguagereader.api.domain.definition.combined.Definition
 import com.foreignlanguagereader.api.domain.definition.entry.{
   CEDICTDefinitionEntry,
   DefinitionEntry,
