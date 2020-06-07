@@ -3,6 +3,7 @@ package com.foreignlanguagereader.api.domain.definition.combined
 import com.foreignlanguagereader.api.HSKLevel.HSKLevel
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.api.dto.v1.definition.ChineseDefinitionDTO
 import com.foreignlanguagereader.api.{HSKLevel, Language}
 
 case class ChineseDefinition(override val subdefinitions: List[String],
@@ -25,3 +26,22 @@ case class ChineseDefinition(override val subdefinitions: List[String],
       source,
       token
     )
+
+object ChineseDefinition {
+  implicit def chineseDefinitionToDefinitionDTO(
+    definition: ChineseDefinition
+  ): ChineseDefinitionDTO =
+    ChineseDefinitionDTO(
+      definition.subdefinitions,
+      definition.tag,
+      definition.examples,
+      definition.pinyin,
+      definition.simplified,
+      definition.traditional,
+      definition.hsk
+    )
+  implicit def chineseDefinitionListToChineseDefinitionDTOList(
+    definitions: Seq[ChineseDefinition]
+  ): Seq[ChineseDefinitionDTO] =
+    definitions.map(x => chineseDefinitionToDefinitionDTO(x))
+}

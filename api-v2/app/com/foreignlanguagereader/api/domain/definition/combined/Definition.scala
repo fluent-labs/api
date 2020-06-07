@@ -2,6 +2,7 @@ package com.foreignlanguagereader.api.domain.definition.combined
 
 import com.foreignlanguagereader.api.Language.Language
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.api.dto.v1.definition.GenericDefinitionDTO
 
 class Definition(val subdefinitions: List[String],
                  val tag: String,
@@ -19,8 +20,20 @@ object Definition {
             source: DefinitionSource,
             token: String): Definition =
     new Definition(subdefinitions, tag, examples, language, source, token)
-
   def unapply(d: Definition): Option[
     (List[String], String, List[String], Language, DefinitionSource, String)
   ] = Some(d.subdefinitions, d.tag, d.examples, d.language, d.source, d.token)
+
+  implicit def definitionToDefinitionDTO(
+    definition: Definition
+  ): GenericDefinitionDTO =
+    GenericDefinitionDTO(
+      definition.subdefinitions,
+      definition.tag,
+      definition.examples
+    )
+  implicit def definitionListToDefinitionDTOList(
+    definitions: Seq[Definition]
+  ): Seq[GenericDefinitionDTO] =
+    definitions.map(x => definitionToDefinitionDTO(x))
 }
