@@ -50,7 +50,7 @@ class LanguageServiceClient @Inject()(val ws: WSClient,
 
   def getDefinition(wordLanguage: Language,
                     _definitionLanguage: Language,
-                    word: String): Option[Seq[Definition]] = {
+                    word: String): Option[Seq[DefinitionEntry]] = {
     val request =
       ws.url(s"$languageServiceBaseUrl/v1/definition/$language/$word").get()
     Await

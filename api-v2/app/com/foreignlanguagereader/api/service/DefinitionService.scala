@@ -10,8 +10,11 @@ import com.foreignlanguagereader.api.domain.definition.combined.{
   ChineseDefinition,
   Definition
 }
-import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource
-import com.foreignlanguagereader.api.dto.v1.definition.DefinitionDTO
+import com.foreignlanguagereader.api.domain.definition.entry.{
+  CEDICTDefinitionEntry,
+  DefinitionEntry,
+  DefinitionSource
+}
 import javax.inject.{Inject, Singleton}
 
 @Singleton
@@ -30,7 +33,7 @@ class DefinitionService @Inject()(
     */
   def getDefinition(wordLanguage: Language,
                     definitionLanguage: Language,
-                    word: String): Option[Seq[DefinitionDTO]] =
+                    word: String): Option[Seq[Definition]] =
     findOrFetchDefinition(definitionLanguage, wordLanguage, word) match {
       case None => None
       case Some(d) if wordLanguage == Language.CHINESE =>
@@ -42,7 +45,7 @@ class DefinitionService @Inject()(
   // Same interface as above
   def getDefinitions(wordLanguage: Language,
                      definitionLanguage: Language,
-                     words: List[String]): Option[Seq[DefinitionDTO]] = {
+                     words: List[String]): Option[Seq[Definition]] = {
     val definitions = words.flatMap(
       word =>
         getDefinition(wordLanguage, definitionLanguage, word) match {
@@ -63,12 +66,13 @@ class DefinitionService @Inject()(
     * @return
     */
   def transformChineseDefinitions(
-    definitions: Seq[Definition]
+    definitions: Seq[DefinitionEntry]
   ): Seq[ChineseDefinition] = {
+
     // There is only one CEDICT definition so we should use that.
-    val CEDICTDefinition: Option[ChineseDefinition] = definitions
+    val CEDICTDefinition: Option[CEDICTDefinitionEntry] = definitions
       .find(_.source.equals(DefinitionSource.CEDICT))
-      .asInstanceOf[Option[ChineseDefinition]]
+      .asInstanceOf[Option[CEDICTDefinitionEntry]]
 
     definitions
       .filterNot(_.source.equals(DefinitionSource.CEDICT))
@@ -104,7 +108,7 @@ class DefinitionService @Inject()(
   // It's not worth rewriting it for an intermediate step, so we have this hack for now
   def findOrFetchDefinition(wordLanguage: Language,
                             definitionLanguage: Language,
-                            word: String): Option[Seq[Definition]] =
+                            word: String): Option[Seq[DefinitionEntry]] =
     elasticsearch.getDefinition(wordLanguage, definitionLanguage, word) match {
       case None =>
         languageServiceClient.getDefinition(
@@ -112,6 +116,6 @@ class DefinitionService @Inject()(
           definitionLanguage,
           word
         )
-      case definitions: Some[Seq[Definition]] => definitions
+      case definitions: Some[Seq[DefinitionEntry]] => definitions
     }
 }
