@@ -5,7 +5,9 @@ import play.api.mvc.PathBindable
 
 object Language extends Enumeration {
   type Language = Value
-  val CHINESE, ENGLISH, SPANISH = Value
+  val CHINESE: Value = Value("CHINESE")
+  val ENGLISH: Value = Value("ENGLISH")
+  val SPANISH: Value = Value("SPANISH")
 
   def isLanguage(s: String): Boolean = values.exists(_.toString == s)
 
