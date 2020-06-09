@@ -32,7 +32,7 @@ class HealthController @Inject()(val controllerComponents: ControllerComponents,
   /*
    * This is simpler than the readiness check. It should just confirm that the server can respond to requests.
    */
-  def health(): Action[AnyContent] = Action {
+  def health: Action[AnyContent] = Action {
     implicit request: Request[AnyContent] =>
       Ok(Json.obj("status" -> "up"))
   }
@@ -43,7 +43,7 @@ class HealthController @Inject()(val controllerComponents: ControllerComponents,
    * - Check connection to Elasticsearch
    * But for now a static response is fine
    */
-  def readiness(): Action[AnyContent] = Action.async {
+  def readiness: Action[AnyContent] = Action.async {
     implicit request: Request[AnyContent] =>
       fc.collectFuturesIntoSingleResult(
           Map(
