@@ -17,6 +17,7 @@ import com.foreignlanguagereader.api.domain.definition.entry.{
   DefinitionSource
 }
 import javax.inject.{Inject, Singleton}
+import play.api.Logger
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -27,6 +28,7 @@ class DefinitionService @Inject()(
   implicit val ec: ExecutionContext,
   val fc: FutureCollector
 ) {
+  val logger: Logger = Logger(this.getClass)
 
   /**
     * Gets definitions for a list of tokens
@@ -129,10 +131,27 @@ class DefinitionService @Inject()(
     definitionLanguage: Language,
     word: String
   ): Future[Option[Seq[DefinitionEntry]]] =
-    elasticsearch.getDefinition(wordLanguage, definitionLanguage, word) match {
+    fetchDefinitionsFromElasticsearch(wordLanguage, definitionLanguage, word) match {
       case None =>
         languageServiceClient
           .getDefinition(wordLanguage, definitionLanguage, word)
       case Some(definitions) => Future.successful(Some(definitions))
     }
+
+  def fetchDefinitionsFromElasticsearch(
+    wordLanguage: Language,
+    definitionLanguage: Language,
+    word: String
+  ): Option[Seq[DefinitionEntry]] = {
+    try {
+      elasticsearch.getDefinition(wordLanguage, definitionLanguage, word)
+    } catch {
+      case e: Exception =>
+        logger.warn(
+          s"Failed to get definitions in $language for word $word from elasticsearch: ${e.getMessage}",
+          e
+        )
+        None
+    }
+  }
 }
