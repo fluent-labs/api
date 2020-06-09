@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.service
 
-import com.foreignlanguagereader.api.Language
+import com.foreignlanguagereader.api.{FutureCollector, Language}
 import com.foreignlanguagereader.api.Language.Language
 import com.foreignlanguagereader.api.client.{
   ElasticsearchClient,
@@ -17,10 +17,14 @@ import com.foreignlanguagereader.api.domain.definition.entry.{
 }
 import javax.inject.{Inject, Singleton}
 
+import scala.concurrent.{ExecutionContext, Future}
+
 @Singleton
 class DefinitionService @Inject()(
   val elasticsearch: ElasticsearchClient,
-  val languageServiceClient: LanguageServiceClient
+  val languageServiceClient: LanguageServiceClient,
+  implicit val ec: ExecutionContext,
+  val fc: FutureCollector
 ) {
 
   /**
@@ -33,8 +37,8 @@ class DefinitionService @Inject()(
     */
   def getDefinition(wordLanguage: Language,
                     definitionLanguage: Language,
-                    word: String): Option[Seq[Definition]] =
-    findOrFetchDefinition(definitionLanguage, wordLanguage, word) match {
+                    word: String): Future[Option[Seq[Definition]]] =
+    findOrFetchDefinition(definitionLanguage, wordLanguage, word) map {
       case None => None
       case Some(d) if wordLanguage == Language.CHINESE =>
         Some(transformChineseDefinitions(d))
@@ -43,18 +47,31 @@ class DefinitionService @Inject()(
 
   // Convenience method for getting definitions in parallel.
   // Same interface as above
-  def getDefinitions(wordLanguage: Language,
-                     definitionLanguage: Language,
-                     words: List[String]): Option[Seq[Definition]] = {
-    val definitions = words.flatMap(
-      word =>
-        getDefinition(wordLanguage, definitionLanguage, word) match {
-          case Some(d) => d
-          case None    => None
-      }
-    )
-
-    if (definitions.nonEmpty) Some(definitions) else None
+  def getDefinitions(
+    wordLanguage: Language,
+    definitionLanguage: Language,
+    words: List[String]
+  ): Future[Map[String, Option[Seq[Definition]]]] = {
+    // Start by requesting everything asynchronously.
+    Future
+      .sequence(
+        words.map(word => getDefinition(wordLanguage, definitionLanguage, word))
+      )
+      // Remove empties
+      .map(_.flatten)
+      // Match words to definitions based on tokens
+      .map(_.map(definitions => {
+        val word: Definition = definitions(0)
+        word.token -> Some(definitions)
+      }).toMap)
+      // Include anything that wasn't found as an empty list to not confuse callers
+      .map(definitions => {
+        val foundWords = definitions.keySet
+        val missingWords = words.toSet.diff(foundWords)
+        definitions ++ missingWords
+          .map(word => word -> None)
+          .toMap
+      })
   }
 
   /**
@@ -106,16 +123,15 @@ class DefinitionService @Inject()(
   // Right now it is not all there, so we should be prepared to scrape wiktionary for anything missing
   // And that functionality is in language service.
   // It's not worth rewriting it for an intermediate step, so we have this hack for now
-  def findOrFetchDefinition(wordLanguage: Language,
-                            definitionLanguage: Language,
-                            word: String): Option[Seq[DefinitionEntry]] =
+  def findOrFetchDefinition(
+    wordLanguage: Language,
+    definitionLanguage: Language,
+    word: String
+  ): Future[Option[Seq[DefinitionEntry]]] =
     elasticsearch.getDefinition(wordLanguage, definitionLanguage, word) match {
       case None =>
-        languageServiceClient.getDefinition(
-          wordLanguage,
-          definitionLanguage,
-          word
-        )
-      case definitions: Some[Seq[DefinitionEntry]] => definitions
+        languageServiceClient
+          .getDefinition(wordLanguage, definitionLanguage, word)
+      case Some(definitions) => Future.successful(Some(definitions))
     }
 }
