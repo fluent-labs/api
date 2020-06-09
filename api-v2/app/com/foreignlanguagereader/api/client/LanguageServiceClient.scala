@@ -59,7 +59,7 @@ class LanguageServiceClient @Inject()(config: Configuration,
   def getDefinition(wordLanguage: Language,
                     _definitionLanguage: Language,
                     word: String): Future[Option[Seq[DefinitionEntry]]] = {
-    ws.url(s"$languageServiceBaseUrl/v1/definition/$language/$word")
+    ws.url(s"$languageServiceBaseUrl/v1/definition/${language.toString}/$word")
       .withRequestTimeout(languageServiceTimeout)
       .withHttpHeaders(("Authorization", languageServiceAuthToken))
       .get()
@@ -69,7 +69,7 @@ class LanguageServiceClient @Inject()(config: Configuration,
             case JsSuccess(result, _) => Some(result)
             case JsError(errors) =>
               logger.error(
-                s"Failed to parse definition in $language for word $word from language service: $errors"
+                s"Failed to parse definition in ${language.toString} for word $word from language service: $errors"
               )
               None
         }
@@ -77,7 +77,7 @@ class LanguageServiceClient @Inject()(config: Configuration,
       .recover {
         case e: Exception =>
           logger.error(
-            s"Failed to get definitions in $language for word $word from language service: ${e.getMessage}",
+            s"Failed to get definitions in ${language.toString} for word $word from language service: ${e.getMessage}",
             e
           )
           throw e
@@ -96,10 +96,10 @@ class LanguageServiceClient @Inject()(config: Configuration,
             case JsSuccess(result, _) => result
             case JsError(errors) =>
               logger.error(
-                s"Failed to parse words in $language for document $document from language service: $errors"
+                s"Failed to parse words in ${language.toString} for document $document from language service: $errors"
               )
               throw new IllegalArgumentException(
-                s"Failed to parse words in $language for document $document from language service: $errors"
+                s"Failed to parse words in ${language.toString} for document $document from language service: $errors"
               )
         }
       )
