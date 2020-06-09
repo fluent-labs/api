@@ -6,18 +6,13 @@ import com.foreignlanguagereader.api.client.{
   ElasticsearchClient,
   LanguageServiceClient
 }
-import com.foreignlanguagereader.api.dto.v1
-import com.foreignlanguagereader.api.dto.v1.{
-  Readiness,
-  ReadinessService,
-  ReadinessStatus
-}
+import com.foreignlanguagereader.api.dto.v1.{Readiness, ReadinessStatus}
 import javax.inject._
 import play.api.libs.json.Json
 import play.api.mvc._
 
-import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration.Duration
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class HealthController @Inject()(val controllerComponents: ControllerComponents,

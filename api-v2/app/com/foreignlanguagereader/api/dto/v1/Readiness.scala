@@ -1,5 +1,4 @@
 package com.foreignlanguagereader.api.dto.v1
-import com.foreignlanguagereader.api.dto.v1.ReadinessService.ReadinessService
 import com.foreignlanguagereader.api.dto.v1.ReadinessStatus.ReadinessStatus
 import play.api.libs.json._
 
@@ -23,14 +22,6 @@ case class Readiness(database: ReadinessStatus,
 object Readiness {
   // Allows readiness to be serialized to JSON
   implicit val format: Format[Readiness] = Json.format
-
-  def fromMAP(statuses: Map[ReadinessService, ReadinessStatus]): Readiness =
-    Readiness(
-      statuses.getOrElse(ReadinessService.DATABASE, ReadinessStatus.DOWN),
-      statuses.getOrElse(ReadinessService.ELASTICSEARCH, ReadinessStatus.DOWN),
-      statuses
-        .getOrElse(ReadinessService.LANGUAGE_SERVICE, ReadinessStatus.DOWN)
-    )
 }
 
 object ReadinessStatus extends Enumeration {
@@ -44,11 +35,4 @@ object ReadinessStatus extends Enumeration {
       def writes(status: ReadinessStatus.ReadinessStatus) =
         JsString(status.toString)
     }
-}
-
-object ReadinessService extends Enumeration {
-  type ReadinessService = Value
-  val DATABASE: Value = Value("database")
-  val ELASTICSEARCH: Value = Value("elasticsearch")
-  val LANGUAGE_SERVICE: Value = Value("languageservice")
 }
