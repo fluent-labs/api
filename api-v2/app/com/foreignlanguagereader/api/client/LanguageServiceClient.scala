@@ -29,6 +29,10 @@ class LanguageServiceClient @Inject()(config: Configuration,
   val languageServiceTimeout =
     Duration(config.get[Int]("language-service.timeout"), TimeUnit.SECONDS)
 
+  // This token only works for localhost
+  // Will need to replace this with config properties when I learn how secrets work in play
+  val languageServiceAuthToken = "simpletoken"
+
   // Used for the health check. Just makes sure we can connect to language service
   def checkConnection(timeout: Duration): Future[ReadinessStatus] = {
     ws.url(s"$languageServiceBaseUrl/health")
@@ -57,6 +61,7 @@ class LanguageServiceClient @Inject()(config: Configuration,
                     word: String): Future[Option[Seq[DefinitionEntry]]] = {
     ws.url(s"$languageServiceBaseUrl/v1/definition/$language/$word")
       .withRequestTimeout(languageServiceTimeout)
+      .withHttpHeaders(("Authorization", languageServiceAuthToken))
       .get()
       .map(
         response =>
@@ -83,6 +88,7 @@ class LanguageServiceClient @Inject()(config: Configuration,
                           document: String): Future[Seq[Word]] = {
     ws.url(s"$languageServiceBaseUrl/v1/tagging/$documentLanguage/document")
       .withRequestTimeout(languageServiceTimeout)
+      .withHttpHeaders(("Authorization", languageServiceAuthToken))
       .post(document)
       .map(
         response =>
