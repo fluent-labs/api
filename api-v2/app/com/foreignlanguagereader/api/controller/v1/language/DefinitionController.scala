@@ -8,23 +8,37 @@ import com.foreignlanguagereader.api.dto.v1.definition.{
 }
 import com.foreignlanguagereader.api.service.DefinitionService
 import javax.inject._
+import play.api.Logger
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc._
+
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class DefinitionController @Inject()(
   val controllerComponents: ControllerComponents,
-  val definitionService: DefinitionService
+  val definitionService: DefinitionService,
+  implicit val ec: ExecutionContext
 ) extends BaseController {
+  val logger: Logger = Logger(this.getClass)
+
   def definition(wordLanguage: Language,
                  definitionLanguage: Language,
-                 word: String): Action[AnyContent] = Action {
+                 word: String): Action[AnyContent] = Action.async {
     implicit request: Request[AnyContent] =>
       definitionService
-        .getDefinition(wordLanguage, definitionLanguage, word) match {
-        case None              => NotFound(s"Definition for $word in $language not found")
-        case Some(definitions) => Ok(serializeDefinitionDTO(definitions))
-      }
+        .getDefinition(wordLanguage, definitionLanguage, word)
+        .map {
+          case None =>
+            NotFound(s"Definition for $word in $language not found")
+          case Some(definitions) => Ok(serializeDefinitionDTO(definitions))
+        }
+        .recover(error => {
+          val message =
+            s"Failed to get definitions for $word in $language: ${error.getMessage}"
+          logger.error(message, error)
+          InternalServerError(message)
+        })
   }
 
   // This exists so that the controller can properly serialize DTOs.
