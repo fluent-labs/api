@@ -15,12 +15,13 @@ import com.sksamuel.elastic4s.{
   RequestSuccess
 }
 import javax.inject.Inject
-import play.api.Logger
+import play.api.{Configuration, Logger}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext}
 
-class ElasticsearchClient @Inject()(val system: ActorSystem) {
+class ElasticsearchClient @Inject()(config: Configuration,
+                                    val system: ActorSystem) {
   val logger: Logger = Logger(this.getClass)
 
   // What's with all the awaits? elastic4s does not implement connection timeouts.
@@ -30,8 +31,9 @@ class ElasticsearchClient @Inject()(val system: ActorSystem) {
   implicit val myExecutionContext: ExecutionContext =
     system.dispatchers.lookup("elasticsearch-context")
 
-  val elasticSearchUrl: String = "elasticSearchURL"
-  val elasticSearchTimeout = Duration(5, TimeUnit.SECONDS)
+  val elasticSearchUrl: String = config.get[String]("elasticsearch.url")
+  val elasticSearchTimeout =
+    Duration(config.get[Int]("elasticsearch.timeout"), TimeUnit.SECONDS)
   val client = ElasticClient(JavaClient(ElasticProperties(elasticSearchUrl)))
 
   val definitionsIndex = "definitions"

@@ -8,7 +8,7 @@ import com.foreignlanguagereader.api.domain.definition.entry.DefinitionEntry
 import com.foreignlanguagereader.api.dto.v1.ReadinessStatus.ReadinessStatus
 import com.foreignlanguagereader.api.dto.v1.{ReadinessStatus, Word}
 import javax.inject.Inject
-import play.api.Logger
+import play.api.{Configuration, Logger}
 import play.api.http.Status.OK
 import play.api.libs.json.{JsError, JsSuccess}
 import play.api.libs.ws.WSClient
@@ -16,15 +16,18 @@ import play.api.libs.ws.WSClient
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ExecutionContext, Future}
 
-class LanguageServiceClient @Inject()(val ws: WSClient,
+class LanguageServiceClient @Inject()(config: Configuration,
+                                      val ws: WSClient,
                                       val system: ActorSystem) {
-  val languageServiceBaseUrl = "languageServiceBaseUrl"
-  val languageServiceTimeout = Duration(5, TimeUnit.SECONDS)
-
   val logger: Logger = Logger(this.getClass)
 
   implicit val myExecutionContext: ExecutionContext =
     system.dispatchers.lookup("language-service-context")
+
+  val languageServiceBaseUrl: String =
+    config.get[String]("language-service.url")
+  val languageServiceTimeout =
+    Duration(config.get[Int]("language-service.timeout"), TimeUnit.SECONDS)
 
   // Used for the health check. Just makes sure we can connect to language service
   def checkConnection(timeout: Duration): Future[ReadinessStatus] = {
