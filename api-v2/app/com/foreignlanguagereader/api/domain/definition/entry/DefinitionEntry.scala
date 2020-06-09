@@ -136,6 +136,7 @@ object DefinitionEntry {
     Reads.seq(reads)
 
   // Mapping DefinitionEntry => Definition
+  // Delegates to their own implicit converters
   implicit def convertToDefinition(d: DefinitionEntry): Definition =
     d match {
       case c: CEDICTDefinitionEntry     => c

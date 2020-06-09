@@ -10,7 +10,7 @@ case class ChineseDefinitionDTO(subdefinitions: List[String],
                                 simplified: String = "",
                                 traditional: String = "",
                                 hsk: HSKLevel)
-    extends DefinitionDTO(subdefinitions, tag, examples)
+    extends DefinitionDTO
 
 object ChineseDefinitionDTO {
   implicit val format: Format[ChineseDefinitionDTO] = Json.format

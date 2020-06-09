@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.api.controller.v1.language
 
 import com.foreignlanguagereader.api.domain.Language.Language
+import com.foreignlanguagereader.api.domain.definition.combined.Definition
 import com.foreignlanguagereader.api.dto.v1.definition.{
   ChineseDefinitionDTO,
   DefinitionDTO,
@@ -31,7 +32,12 @@ class DefinitionController @Inject()(
         .map {
           case None =>
             NotFound(s"Definition for $word in $language not found")
-          case Some(definitions) => Ok(serializeDefinitionDTO(definitions))
+          case Some(definitions) =>
+            Ok(
+              Json.toJson(
+                Definition.definitionListToDefinitionDTOList(definitions)
+              )
+            )
         }
         .recover(error => {
           val message =
@@ -39,16 +45,5 @@ class DefinitionController @Inject()(
           logger.error(message, error)
           InternalServerError(message)
         })
-  }
-
-  // This exists so that the controller can properly serialize DTOs.
-  // Each DTO has a serializer, but the abstract parent class doesn't.
-  // Without this, the compiler can't guarantee the serializer method exists.
-  // Ugly but better than making many controllers and routes.
-  def serializeDefinitionDTO(dto: Seq[DefinitionDTO]): JsValue = {
-    dto match {
-      case g: List[GenericDefinitionDTO] => Json.toJson(g)
-      case c: List[ChineseDefinitionDTO] => Json.toJson(c)
-    }
   }
 }
