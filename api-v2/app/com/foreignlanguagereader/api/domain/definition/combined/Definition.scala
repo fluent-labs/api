@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.domain.definition.combined
 
-import com.foreignlanguagereader.api.Language.Language
+import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.dto.v1.definition.GenericDefinitionDTO
 

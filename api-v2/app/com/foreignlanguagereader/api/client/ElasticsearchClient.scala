@@ -3,7 +3,7 @@ package com.foreignlanguagereader.api.client
 import java.util.concurrent.{TimeUnit, TimeoutException}
 
 import akka.actor.ActorSystem
-import com.foreignlanguagereader.api.Language.Language
+import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionEntry
 import com.foreignlanguagereader.api.dto.v1.ReadinessStatus
 import com.foreignlanguagereader.api.dto.v1.ReadinessStatus.ReadinessStatus

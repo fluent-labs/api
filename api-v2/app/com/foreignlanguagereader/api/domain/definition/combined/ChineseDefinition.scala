@@ -1,10 +1,10 @@
 package com.foreignlanguagereader.api.domain.definition.combined
 
 import com.foreignlanguagereader.api
+import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.dto.v1.definition.ChineseDefinitionDTO
-import com.foreignlanguagereader.api.Language
 import com.foreignlanguagereader.api.domain.definition.combined.HSKLevel.HSKLevel
 import play.api.libs.json.{Format, JsResult, JsString, JsSuccess, JsValue}
 

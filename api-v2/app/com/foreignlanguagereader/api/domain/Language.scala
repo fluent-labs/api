@@ -1,6 +1,5 @@
-package com.foreignlanguagereader.api
+package com.foreignlanguagereader.api.domain
 
-import com.foreignlanguagereader.api
 import play.api.libs.json._
 
 object Language extends Enumeration {

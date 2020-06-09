@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.controller.v1.language
 
-import com.foreignlanguagereader.api.Language.Language
+import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.dto.v1.definition.{
   ChineseDefinitionDTO,
   DefinitionDTO,

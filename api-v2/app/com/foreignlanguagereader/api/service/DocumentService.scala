@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.service
 
-import com.foreignlanguagereader.api.Language.Language
+import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.client.LanguageServiceClient
 import com.foreignlanguagereader.api.dto.v1.Word
 import com.google.inject.Inject

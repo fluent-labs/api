@@ -1,11 +1,12 @@
 package com.foreignlanguagereader.api.service
 
-import com.foreignlanguagereader.api.{FutureCollector, Language}
-import com.foreignlanguagereader.api.Language.Language
+import com.foreignlanguagereader.api.FutureCollector
+import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.client.{
   ElasticsearchClient,
   LanguageServiceClient
 }
+import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.definition.combined.{
   ChineseDefinition,
   Definition

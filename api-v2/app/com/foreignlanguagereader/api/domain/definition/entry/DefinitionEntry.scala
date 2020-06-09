@@ -1,13 +1,13 @@
 package com.foreignlanguagereader.api.domain.definition.entry
 
-import com.foreignlanguagereader.api.Language.Language
+import com.foreignlanguagereader.api.domain.Language
+import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.combined.{
   ChineseDefinition,
   Definition,
   HSKLevel
 }
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.api.Language
 import com.sksamuel.elastic4s.{Hit, HitReader}
 import play.api.libs.json._
 
