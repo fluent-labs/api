@@ -13,19 +13,6 @@ object Language extends Enumeration {
   }
 }
 
-object ReadinessStatus extends Enumeration {
-  type ReadinessStatus = Value
-  val UP, DOWN, DEGRADED = Value
-
-  implicit val readinessStatusFormat: Format[ReadinessStatus] =
-    new Format[ReadinessStatus] {
-      def reads(json: JsValue) =
-        JsSuccess(ReadinessStatus.withName(json.as[String]))
-      def writes(status: ReadinessStatus.ReadinessStatus) =
-        JsString(status.toString)
-    }
-}
-
 object HSKLevel extends Enumeration {
   type HSKLevel = Value
 
