@@ -1,20 +1,33 @@
 package com.foreignlanguagereader.api.controller.v1
 
-import com.foreignlanguagereader.api.ReadinessStatus
+import java.util.concurrent.TimeUnit
+
+import com.foreignlanguagereader.api.FutureCollector
 import com.foreignlanguagereader.api.client.{
   ElasticsearchClient,
   LanguageServiceClient
 }
-import com.foreignlanguagereader.api.dto.v1.Readiness
+import com.foreignlanguagereader.api.dto.v1.{
+  Readiness,
+  ReadinessService,
+  ReadinessStatus
+}
 import javax.inject._
 import play.api.libs.json.Json
 import play.api.mvc._
 
+import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.duration.Duration
+
 @Singleton
 class HealthController @Inject()(val controllerComponents: ControllerComponents,
                                  elasticsearchClient: ElasticsearchClient,
-                                 languageServiceClient: LanguageServiceClient)
+                                 languageServiceClient: LanguageServiceClient,
+                                 implicit val ec: ExecutionContext,
+                                 val fc: FutureCollector)
     extends BaseController {
+
+  val timeout = Duration(1, TimeUnit.SECONDS)
 
   /*
    * This is simpler than the readiness check. It should just confirm that the server can respond to requests.
@@ -30,27 +43,26 @@ class HealthController @Inject()(val controllerComponents: ControllerComponents,
    * - Check connection to Elasticsearch
    * But for now a static response is fine
    */
-  def readiness(): Action[AnyContent] = Action {
+  def readiness(): Action[AnyContent] = Action.async {
     implicit request: Request[AnyContent] =>
-      val database = ReadinessStatus.UP
-      val content = elasticsearchClient.checkConnection
-      val languageService = languageServiceClient.checkConnection
-      val statuses = List(database, content, languageService)
-
-      val overallStatus =
-        if (statuses.forall(_.eq(ReadinessStatus.UP))) ReadinessStatus.UP
-        else if (statuses.forall(_.eq(ReadinessStatus.DOWN)))
-          ReadinessStatus.DOWN
-        else ReadinessStatus.DEGRADED
-
-      val response = Json.toJson(
-        Readiness(overallStatus, database, content, languageService)
-      )
-
-      overallStatus match {
-        case ReadinessStatus.UP       => Ok(response)
-        case ReadinessStatus.DOWN     => ServiceUnavailable(response)
-        case ReadinessStatus.DEGRADED => ImATeapot(response)
-      }
+      fc.collectFuturesIntoSingleResult(
+          Map(
+            ReadinessService.ELASTICSEARCH -> Future {
+              elasticsearchClient.checkConnection(timeout)
+            },
+            ReadinessService.LANGUAGE_SERVICE -> languageServiceClient
+              .checkConnection(timeout)
+          )
+        )
+        .map(results => Readiness.fromMAP(results))
+        .map(status => {
+          val response = Json.toJson(status)
+          status.overall match {
+            case ReadinessStatus.UP => Ok(response)
+            case ReadinessStatus.DOWN =>
+              ServiceUnavailable(response)
+            case ReadinessStatus.DEGRADED => ImATeapot(response)
+          }
+        })
   }
 }
