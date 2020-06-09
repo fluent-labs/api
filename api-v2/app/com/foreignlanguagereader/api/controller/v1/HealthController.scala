@@ -7,6 +7,7 @@ import com.foreignlanguagereader.api.client.{
   ElasticsearchClient,
   LanguageServiceClient
 }
+import com.foreignlanguagereader.api.dto.v1
 import com.foreignlanguagereader.api.dto.v1.{
   Readiness,
   ReadinessService,
@@ -45,24 +46,31 @@ class HealthController @Inject()(val controllerComponents: ControllerComponents,
    */
   def readiness: Action[AnyContent] = Action.async {
     implicit request: Request[AnyContent] =>
-      fc.collectFuturesIntoSingleResult(
-          Map(
-            ReadinessService.ELASTICSEARCH -> Future {
-              elasticsearchClient.checkConnection(timeout)
-            },
-            ReadinessService.LANGUAGE_SERVICE -> languageServiceClient
-              .checkConnection(timeout)
-          )
-        )
-        .map(results => Readiness.fromMAP(results))
-        .map(status => {
+      // Trigger all the requests in parallel
+      val database = ReadinessStatus.UP
+      val elasticsearchFuture = Future {
+        elasticsearchClient.checkConnection(timeout)
+      }
+      val languageServiceFuture = languageServiceClient
+        .checkConnection(timeout)
+
+      // Block until all the results are back or timed out
+      val status = for {
+        elasticsearch <- elasticsearchFuture
+        languageService <- languageServiceFuture
+      } yield Readiness(database, elasticsearch, languageService)
+
+      status.map { status =>
+        {
           val response = Json.toJson(status)
+
           status.overall match {
             case ReadinessStatus.UP => Ok(response)
             case ReadinessStatus.DOWN =>
               ServiceUnavailable(response)
             case ReadinessStatus.DEGRADED => ImATeapot(response)
           }
-        })
+        }
+      }
   }
 }
