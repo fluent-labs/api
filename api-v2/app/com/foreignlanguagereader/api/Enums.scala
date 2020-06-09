@@ -12,21 +12,3 @@ object Language extends Enumeration {
     def writes(language: Language.Language) = JsString(language.toString)
   }
 }
-
-object HSKLevel extends Enumeration {
-  type HSKLevel = Value
-
-  val ONE: api.HSKLevel.Value = Value("1")
-  val TWO: api.HSKLevel.Value = Value("2")
-  val THREE: api.HSKLevel.Value = Value("3")
-  val FOUR: api.HSKLevel.Value = Value("4")
-  val FIVE: api.HSKLevel.Value = Value("5")
-  val SIX: api.HSKLevel.Value = Value("6")
-  val NONE: api.HSKLevel.Value = Value("")
-
-  implicit val hskLevelFormat: Format[HSKLevel] = new Format[HSKLevel] {
-    def reads(json: JsValue): JsResult[api.HSKLevel.Value] =
-      JsSuccess(HSKLevel.withName(json.as[String]))
-    def writes(level: HSKLevel.HSKLevel) = JsString(level.toString)
-  }
-}

@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.dto.v1.definition
 
-import com.foreignlanguagereader.api.HSKLevel.HSKLevel
+import com.foreignlanguagereader.api.domain.definition.combined.HSKLevel.HSKLevel
 import play.api.libs.json.{Format, Json}
 
 case class ChineseDefinitionDTO(subdefinitions: List[String],
