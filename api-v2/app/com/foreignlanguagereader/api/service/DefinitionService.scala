@@ -1,6 +1,5 @@
 package com.foreignlanguagereader.api.service
 
-import com.foreignlanguagereader.api.FutureCollector
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.client.{
   ElasticsearchClient,
@@ -25,8 +24,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class DefinitionService @Inject()(
   val elasticsearch: ElasticsearchClient,
   val languageServiceClient: LanguageServiceClient,
-  implicit val ec: ExecutionContext,
-  val fc: FutureCollector
+  implicit val ec: ExecutionContext
 ) {
   val logger: Logger = Logger(this.getClass)
 

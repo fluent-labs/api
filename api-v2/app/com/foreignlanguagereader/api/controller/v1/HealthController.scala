@@ -2,7 +2,6 @@ package com.foreignlanguagereader.api.controller.v1
 
 import java.util.concurrent.TimeUnit
 
-import com.foreignlanguagereader.api.FutureCollector
 import com.foreignlanguagereader.api.client.{
   ElasticsearchClient,
   LanguageServiceClient
@@ -24,8 +23,7 @@ import scala.concurrent.duration.Duration
 class HealthController @Inject()(val controllerComponents: ControllerComponents,
                                  elasticsearchClient: ElasticsearchClient,
                                  languageServiceClient: LanguageServiceClient,
-                                 implicit val ec: ExecutionContext,
-                                 val fc: FutureCollector)
+                                 implicit val ec: ExecutionContext)
     extends BaseController {
 
   val timeout = Duration(1, TimeUnit.SECONDS)
