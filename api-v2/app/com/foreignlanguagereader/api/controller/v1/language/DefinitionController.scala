@@ -2,15 +2,10 @@ package com.foreignlanguagereader.api.controller.v1.language
 
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.combined.Definition
-import com.foreignlanguagereader.api.dto.v1.definition.{
-  ChineseDefinitionDTO,
-  DefinitionDTO,
-  GenericDefinitionDTO
-}
 import com.foreignlanguagereader.api.service.DefinitionService
 import javax.inject._
 import play.api.Logger
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import play.api.mvc._
 
 import scala.concurrent.ExecutionContext

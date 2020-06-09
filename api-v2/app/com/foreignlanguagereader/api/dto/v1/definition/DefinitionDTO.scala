@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.dto.v1.definition
 
-import play.api.libs.json.{Format, Json, Reads, Writes}
+import play.api.libs.json.{Format, Json}
 
 trait DefinitionDTO {
   val subdefinitions: List[String]

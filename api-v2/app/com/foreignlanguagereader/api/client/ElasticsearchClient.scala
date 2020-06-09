@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.client
 
-import java.util.concurrent.{TimeUnit, TimeoutException}
+import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.domain.Language.Language
@@ -17,8 +17,8 @@ import com.sksamuel.elastic4s.{
 import javax.inject.Inject
 import play.api.Logger
 
-import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, ExecutionContext}
 
 class ElasticsearchClient @Inject()(val system: ActorSystem) {
   val logger: Logger = Logger(this.getClass)

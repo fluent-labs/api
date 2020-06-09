@@ -1,12 +1,11 @@
 package com.foreignlanguagereader.api.domain.definition.combined
 
-import com.foreignlanguagereader.api
 import com.foreignlanguagereader.api.domain.Language
+import com.foreignlanguagereader.api.domain.definition.combined.HSKLevel.HSKLevel
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.dto.v1.definition.ChineseDefinitionDTO
-import com.foreignlanguagereader.api.domain.definition.combined.HSKLevel.HSKLevel
-import play.api.libs.json.{Format, JsResult, JsString, JsSuccess, JsValue}
+import play.api.libs.json._
 
 case class ChineseDefinition(override val subdefinitions: List[String],
                              override val tag: String,
