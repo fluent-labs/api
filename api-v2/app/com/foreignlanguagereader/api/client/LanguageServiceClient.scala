@@ -61,13 +61,12 @@ class LanguageServiceClient @Inject()(config: Configuration,
                     word: String): Future[Option[Seq[DefinitionEntry]]] = {
     val url =
       s"$languageServiceBaseUrl/v1/definition/$wordLanguage/$word"
-    logger.error(s"Calling url $url")
+    logger.info(s"Calling url $url")
     ws.url(url)
       .withRequestTimeout(languageServiceTimeout)
       .withHttpHeaders(("Authorization", languageServiceAuthToken))
       .get()
       .map(response => {
-        System.out.println(response.json)
         response.json.validate[Seq[DefinitionEntry]] match {
           case JsSuccess(result, _) => Some(result)
           case JsError(errors) =>
