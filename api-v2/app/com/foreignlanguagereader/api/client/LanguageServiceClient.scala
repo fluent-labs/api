@@ -59,25 +59,31 @@ class LanguageServiceClient @Inject()(config: Configuration,
   def getDefinition(wordLanguage: Language,
                     _definitionLanguage: Language,
                     word: String): Future[Option[Seq[DefinitionEntry]]] = {
-    ws.url(s"$languageServiceBaseUrl/v1/definition/${language.toString}/$word")
+    val url =
+      s"$languageServiceBaseUrl/v1/definition/$wordLanguage/$word"
+    logger.error(s"Calling url $url")
+    ws.url(url)
       .withRequestTimeout(languageServiceTimeout)
       .withHttpHeaders(("Authorization", languageServiceAuthToken))
       .get()
-      .map(
-        response =>
-          response.json.validate[Seq[DefinitionEntry]] match {
-            case JsSuccess(result, _) => Some(result)
-            case JsError(errors) =>
-              logger.error(
-                s"Failed to parse definition in ${language.toString} for word $word from language service: $errors"
-              )
-              None
+      .map(response => {
+        System.out.println(response.json)
+        response.json.validate[Seq[DefinitionEntry]] match {
+          case JsSuccess(result, _) => Some(result)
+          case JsError(errors) =>
+            logger.error(
+              s"Failed to parse definition in $wordLanguage for word $word from language service: $errors"
+            )
+            throw new IllegalStateException(
+              s"Failed to get definitions in $wordLanguage for word $word"
+            )
         }
-      )
+
+      })
       .recover {
         case e: Exception =>
           logger.error(
-            s"Failed to get definitions in ${language.toString} for word $word from language service: ${e.getMessage}",
+            s"Failed to get definitions in $wordLanguage for word $word from language service: ${e.getMessage}",
             e
           )
           throw e
@@ -96,10 +102,10 @@ class LanguageServiceClient @Inject()(config: Configuration,
             case JsSuccess(result, _) => result
             case JsError(errors) =>
               logger.error(
-                s"Failed to parse words in ${language.toString} for document $document from language service: $errors"
+                s"Failed to parse words in $documentLanguage for document $document from language service: $errors"
               )
               throw new IllegalArgumentException(
-                s"Failed to parse words in ${language.toString} for document $document from language service: $errors"
+                s"Failed to parse words in $documentLanguage for document $document from language service: $errors"
               )
         }
       )
