@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.api.domain.definition.combined
 
 import com.foreignlanguagereader.api.domain.Language
+import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.combined.HSKLevel.HSKLevel
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
@@ -19,32 +20,18 @@ case class ChineseDefinition(override val subdefinitions: List[String],
                              override val source: DefinitionSource =
                                DefinitionSource.MULTIPLE,
                              override val token: String = "")
-    extends Definition(
+    extends Definition {
+  val language: Language = Language.CHINESE
+  lazy val toDTO: ChineseDefinitionDTO =
+    ChineseDefinitionDTO(
       subdefinitions,
       tag,
       examples,
-      Language.CHINESE,
-      source,
-      token
+      pinyin,
+      simplified,
+      traditional,
+      hsk
     )
-
-object ChineseDefinition {
-  implicit def chineseDefinitionToDefinitionDTO(
-    definition: ChineseDefinition
-  ): ChineseDefinitionDTO =
-    ChineseDefinitionDTO(
-      definition.subdefinitions,
-      definition.tag,
-      definition.examples,
-      definition.pinyin,
-      definition.simplified,
-      definition.traditional,
-      definition.hsk
-    )
-  implicit def chineseDefinitionListToChineseDefinitionDTOList(
-    definitions: Seq[ChineseDefinition]
-  ): Seq[ChineseDefinitionDTO] =
-    definitions.map(x => chineseDefinitionToDefinitionDTO(x))
 }
 
 object HSKLevel extends Enumeration {
