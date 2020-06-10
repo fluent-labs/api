@@ -18,7 +18,7 @@ class DocumentController @Inject()(
 ) extends BaseController {
   val logger: Logger = Logger(this.getClass)
 
-  def definition(wordLanguage: Language): Action[AnyContent] =
+  def definition(wordLanguage: Language): Action[JsValue] =
     Action.async(parse.json) { request =>
       request.body.validate[DocumentRequest] match {
         case JsSuccess(documentRequest: DocumentRequest, _) =>
