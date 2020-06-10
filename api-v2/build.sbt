@@ -8,8 +8,19 @@ lazy val root = (project in file("."))
 
 scalaVersion := "2.13.2"
 
+// Give deprecation and feature warnings on compile
+scalacOptions ++= Seq("-deprecation", "-feature")
+
+// Dependency injection
 libraryDependencies += guice
+
+// Testing
+val scalatestVersion = "3.0.8"
+libraryDependencies += "org.scalactic" %% "scalactic" % scalatestVersion
+libraryDependencies += "org.scalatest" %% "scalatest" % scalatestVersion % "test"
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
+
+// REST calls
 libraryDependencies += ws
 
 val elastic4sVersion = "7.6.1"
