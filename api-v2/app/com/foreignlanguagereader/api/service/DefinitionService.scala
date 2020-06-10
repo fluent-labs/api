@@ -114,11 +114,9 @@ class DefinitionService @Inject()(
     (cedict, wiktionary) match {
       case (cedict, wiktionary) if cedict.isEmpty && wiktionary.isEmpty => None
       case (cedict, wiktionary) if wiktionary.isEmpty =>
-        Some(cedict.map(e => CEDICTDefinitionEntry.convertToDefinition(e)))
+        Some(cedict.map(_.toDefinition))
       case (cedict, wiktionary) if cedict.isEmpty =>
-        Some(
-          wiktionary.map(e => WiktionaryDefinitionEntry.convertToDefinition(e))
-        )
+        Some(wiktionary.map(_.toDefinition))
       // If CEDICT doesn't have subdefinitions, then we should return wiktionary data
       // We still want pronunciation and simplified/traditional mapping, so we will add cedict data
       case (cedict, wiktionary) if cedict(0).subdefinitions.isEmpty =>

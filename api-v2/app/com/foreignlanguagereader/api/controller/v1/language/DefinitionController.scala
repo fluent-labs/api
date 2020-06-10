@@ -45,10 +45,13 @@ class DefinitionController @Inject()(
           )
       }
       .recover(error => {
-        val message =
-          s"Failed to get definitions for $word in $wordLanguage: ${error.getMessage}"
-        logger.error(message, error)
-        InternalServerError(message)
+        logger.error(
+          s"Failed to get definitions for $word in $wordLanguage: ${error.getMessage}",
+          error
+        )
+        InternalServerError(
+          s"Failed to get definitions for $word in $wordLanguage"
+        )
       })
   }
 }
