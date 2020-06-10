@@ -37,7 +37,7 @@ class DefinitionController @Inject()(
       .getDefinition(wordLanguage, definitionLanguage, word)
       .map {
         case None =>
-          NotFound(s"Definition for $word in $language not found")
+          NotFound(s"Definition for $word in $wordLanguage not found")
         case Some(definitions) =>
           Ok(
             Json
@@ -46,7 +46,7 @@ class DefinitionController @Inject()(
       }
       .recover(error => {
         val message =
-          s"Failed to get definitions for $word in $language: ${error.getMessage}"
+          s"Failed to get definitions for $word in $wordLanguage: ${error.getMessage}"
         logger.error(message, error)
         InternalServerError(message)
       })
