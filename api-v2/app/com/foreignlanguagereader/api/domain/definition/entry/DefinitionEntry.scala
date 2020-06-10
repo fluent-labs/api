@@ -15,7 +15,9 @@ import scala.util.{Success, Try}
 
 object DefinitionSource extends Enumeration {
   type DefinitionSource = Value
-  val WIKTIONARY, CEDICT, MULTIPLE = Value
+  val WIKTIONARY: Value = Value("WIKTIONARY")
+  val CEDICT: Value = Value("CEDICT")
+  val MULTIPLE: Value = Value("MULTIPLE")
 
   // Makes sure we can serialize and deserialize this to JSON
   implicit val sourceFormat: Format[DefinitionSource] =
@@ -51,10 +53,10 @@ object CEDICTDefinitionEntry {
     Json.reads[CEDICTDefinitionEntry]
   implicit val readsSeq: Reads[Seq[CEDICTDefinitionEntry]] =
     Reads.seq(reads)
+  implicit val writes: Writes[CEDICTDefinitionEntry] =
+    Json.writes[CEDICTDefinitionEntry]
 
-  implicit def convertToDefinition(
-    c: CEDICTDefinitionEntry
-  ): ChineseDefinition =
+  def convertToDefinition(c: CEDICTDefinitionEntry): ChineseDefinition =
     ChineseDefinition(
       c.subdefinitions,
       tag = "",
@@ -88,10 +90,10 @@ case class WiktionaryDefinitionEntry(override val subdefinitions: List[String],
                                      tag: String,
                                      examples: List[String],
                                      override val language: Language,
-                                     override val token: String)
-    extends DefinitionEntry {
-  val source: DefinitionSource = DefinitionSource.CEDICT
-}
+                                     override val token: String,
+                                     override val source: DefinitionSource =
+                                       DefinitionSource.WIKTIONARY)
+    extends DefinitionEntry
 
 object WiktionaryDefinitionEntry {
   // Allows serializing and deserializing in json
@@ -99,16 +101,24 @@ object WiktionaryDefinitionEntry {
     Json.reads[WiktionaryDefinitionEntry]
   implicit val readsSeq: Reads[Seq[WiktionaryDefinitionEntry]] =
     Reads.seq(reads)
+  implicit val writes: OWrites[WiktionaryDefinitionEntry] =
+    Json.writes[WiktionaryDefinitionEntry]
 
-  implicit def convertToDefinition(w: WiktionaryDefinitionEntry): Definition =
-    Definition(
-      w.subdefinitions,
-      w.tag,
-      w.examples,
-      w.language,
-      DefinitionSource.WIKTIONARY,
-      w.token
-    )
+  // Explicit mapper converts to the correct type of definition
+  def convertToDefinition(w: WiktionaryDefinitionEntry): Definition =
+    w.language match {
+      case Language.CHINESE =>
+        ChineseDefinition(w.subdefinitions, w.tag, w.examples)
+      case _ =>
+        Definition(
+          w.subdefinitions,
+          w.tag,
+          w.examples,
+          w.language,
+          DefinitionSource.WIKTIONARY,
+          w.token
+        )
+    }
 
   // Used for elasticsearch
   implicit object WiktionaryHitReader
@@ -129,22 +139,41 @@ object WiktionaryDefinitionEntry {
 }
 
 object DefinitionEntry {
-  // Deserializing from JSON
-  implicit val reads: Reads[DefinitionEntry] =
-    Json.reads[DefinitionEntry]
+  // Smart json handling that dispatches to the correct class
+  implicit val formatDefinitionEntry: Format[DefinitionEntry] =
+    new Format[DefinitionEntry] {
+      override def reads(json: JsValue): JsResult[DefinitionEntry] = {
+        json \ "source" match {
+          case JsDefined(JsString(source))
+              if source.equals(DefinitionSource.CEDICT.toString) =>
+            CEDICTDefinitionEntry.reads.reads(json)
+          case JsDefined(JsString(source))
+              if source.equals(DefinitionSource.WIKTIONARY.toString) =>
+            WiktionaryDefinitionEntry.reads.reads(json)
+          case _ =>
+            JsError("Unknown definition source")
+        }
+      }
+      override def writes(o: DefinitionEntry): JsValue = o match {
+        case c: CEDICTDefinitionEntry => CEDICTDefinitionEntry.writes.writes(c)
+        case w: WiktionaryDefinitionEntry =>
+          WiktionaryDefinitionEntry.writes.writes(w)
+      }
+    }
   implicit val readsSeq: Reads[Seq[DefinitionEntry]] =
-    Reads.seq(reads)
+    Reads.seq(formatDefinitionEntry)
 
   // Mapping DefinitionEntry => Definition
   // Delegates to their own implicit converters
-  implicit def convertToDefinition(d: DefinitionEntry): Definition =
+  def convertToDefinition(d: DefinitionEntry): Definition =
     d match {
-      case c: CEDICTDefinitionEntry     => c
-      case w: WiktionaryDefinitionEntry => w
+      case c: CEDICTDefinitionEntry =>
+        CEDICTDefinitionEntry.convertToDefinition(c)
+      case w: WiktionaryDefinitionEntry =>
+        WiktionaryDefinitionEntry.convertToDefinition(w)
     }
-  implicit def convertToSeqOfDefinitions(
-    d: Seq[DefinitionEntry]
-  ): Seq[Definition] = d.map(e => convertToDefinition(e))
+  def convertToSeqOfDefinitions(d: Seq[DefinitionEntry]): Seq[Definition] =
+    d.map(e => convertToDefinition(e))
 
   // For elasticsearch - this does dynamic dispatch based on the type
   implicit object DefinitionEntryHitReader extends HitReader[DefinitionEntry] {
@@ -155,6 +184,7 @@ object DefinitionEntry {
           CEDICTDefinitionEntry.CEDICTHitReader.read(hit)
         case DefinitionSource.WIKTIONARY =>
           WiktionaryDefinitionEntry.WiktionaryHitReader.read(hit)
+        case _ => throw new IllegalStateException("This should be impossible.")
       }
     }
   }
