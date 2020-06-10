@@ -13,7 +13,7 @@ import com.foreignlanguagereader.api.domain.definition.combined.{
 import com.foreignlanguagereader.api.domain.definition.entry.{
   CEDICTDefinitionEntry,
   DefinitionEntry,
-  DefinitionSource
+  WiktionaryDefinitionEntry
 }
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
@@ -39,11 +39,15 @@ class DefinitionService @Inject()(
   def getDefinition(wordLanguage: Language,
                     definitionLanguage: Language,
                     word: String): Future[Option[Seq[Definition]]] =
-    findOrFetchDefinition(definitionLanguage, wordLanguage, word) map {
+    findOrFetchDefinition(wordLanguage, definitionLanguage, word) map {
       case None => None
+      // Special case: Combine wiktionary and cedict sources for richer output
       case Some(d) if wordLanguage == Language.CHINESE =>
-        Some(transformChineseDefinitions(d))
-      case Some(d) => Some(d)
+        logger.info(s"Parsing Chinese definitions for $word")
+        enrichChineseDefinitionsWithCEDICTData(word, d)
+      case Some(d) =>
+        logger.info(s"Parsing generic definitions for $word in $wordLanguage")
+        Some(DefinitionEntry.convertToSeqOfDefinitions(d))
     }
 
   // Convenience method for getting definitions in parallel.
@@ -79,45 +83,84 @@ class DefinitionService @Inject()(
     * Language specific handling for Chinese.
     * We have two dictionaries here, so we should combine them to produce the best possible results
     * In particular, CEDICT has a minimum level of quality, but doesn't have as many definitions.
-    * We prefer CEDICT when available
-    * @param definitions The definitions returned from elasticsearch
+    *
+    * This method should only be called if a CEDICT entry is in this list, and will throw an exception otherwise.
+    * If you don't have a CEDICT, then you don't need to augment data anyway, and you should use the mappers.
+    *
+    * @param definitions The definitions to parse
     * @return
     */
-  def transformChineseDefinitions(
+  def enrichChineseDefinitionsWithCEDICTData(
+    word: String,
     definitions: Seq[DefinitionEntry]
-  ): Seq[ChineseDefinition] = {
+  ): Option[Seq[Definition]] = {
+    // partition the definitions into their respective sources so we can work on them easily
+    val (
+      cedict: List[CEDICTDefinitionEntry],
+      wiktionary: List[WiktionaryDefinitionEntry]
+    ) = definitions.foldLeft(
+      (List[CEDICTDefinitionEntry](), List[WiktionaryDefinitionEntry]())
+    )(
+      (acc, entry) =>
+        entry match {
+          case c: CEDICTDefinitionEntry     => (c :: acc._1, acc._2)
+          case w: WiktionaryDefinitionEntry => (acc._1, w :: acc._2)
+      }
+    )
+    logger.info(
+      s"Enhancing results for $word using cedict with ${cedict.size} cedict results and ${wiktionary.size} wiktionary results"
+    )
 
-    // There is only one CEDICT definition so we should use that.
-    val CEDICTDefinition: Option[CEDICTDefinitionEntry] = definitions
-      .find(_.source.equals(DefinitionSource.CEDICT))
-      .asInstanceOf[Option[CEDICTDefinitionEntry]]
-
-    definitions
-      .filterNot(_.source.equals(DefinitionSource.CEDICT))
-      .iterator
-      .map(definition => {
-        // Cedict has more focused subdefinitions so we should prefer those.
-        // Augment the rest of the definitions with CEDICT language specific data
-        CEDICTDefinition match {
-          case Some(cedict) =>
-            ChineseDefinition(
-              if (cedict.subdefinitions.nonEmpty) cedict.subdefinitions
-              else definition.subdefinitions,
-              definition.tag,
-              definition.examples,
-              cedict.pinyin,
-              cedict.simplified,
-              cedict.traditional
+    (cedict, wiktionary) match {
+      case (cedict, wiktionary) if cedict.isEmpty && wiktionary.isEmpty => None
+      case (cedict, wiktionary) if wiktionary.isEmpty =>
+        Some(cedict.map(e => CEDICTDefinitionEntry.convertToDefinition(e)))
+      case (cedict, wiktionary) if cedict.isEmpty =>
+        Some(
+          wiktionary.map(e => WiktionaryDefinitionEntry.convertToDefinition(e))
+        )
+      // If CEDICT doesn't have subdefinitions, then we should return wiktionary data
+      // We still want pronunciation and simplified/traditional mapping, so we will add cedict data
+      case (cedict, wiktionary) if cedict(0).subdefinitions.isEmpty =>
+        logger.info(s"Using wiktionary definitions for $word")
+        val c = cedict(0)
+        Some(
+          wiktionary.map(
+            w =>
+              ChineseDefinition(
+                w.subdefinitions,
+                w.tag,
+                w.examples,
+                c.pinyin,
+                c.simplified,
+                c.traditional
             )
-          case None =>
+          )
+        )
+      // If are definitions from CEDICT, they are better.
+      // In that case, we only want part of speech tag and examples from wiktionary.
+      // But everything else will be the single CEDICT definition
+      case (cedict, wiktionary) =>
+        logger.info(s"Using cedict definitions for $word")
+        val examples = wiktionary.foldLeft(List[String]())(
+          (acc, entry: WiktionaryDefinitionEntry) => {
+            acc ++ entry.examples
+          }
+        )
+        val c = cedict(0)
+        Some(
+          Seq(
             ChineseDefinition(
-              definition.subdefinitions,
-              definition.tag,
-              definition.examples
+              c.subdefinitions,
+              wiktionary(0).tag,
+              examples,
+              c.pinyin,
+              c.simplified,
+              c.traditional
             )
-        }
-      })
-      .toList
+          )
+        )
+    }
   }
 
   // Long term roadmap is to have all language content in elasticsearch.
@@ -131,9 +174,16 @@ class DefinitionService @Inject()(
   ): Future[Option[Seq[DefinitionEntry]]] =
     fetchDefinitionsFromElasticsearch(wordLanguage, definitionLanguage, word) match {
       case None =>
+        logger.info(
+          s"Using language service definitions for $word in $wordLanguage"
+        )
         languageServiceClient
           .getDefinition(wordLanguage, definitionLanguage, word)
-      case Some(definitions) => Future.successful(Some(definitions))
+      case Some(definitions) =>
+        logger.info(
+          s"Using elasticsearch definitions for $word in $wordLanguage"
+        )
+        Future.successful(Some(definitions))
     }
 
   def fetchDefinitionsFromElasticsearch(
