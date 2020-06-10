@@ -1,5 +1,6 @@
-package com.foreignlanguagereader.api.dto.v1
-import com.foreignlanguagereader.api.dto.v1.ReadinessStatus.ReadinessStatus
+package com.foreignlanguagereader.api.dto.v1.health
+
+import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.libs.json._
 
 /**

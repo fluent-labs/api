@@ -6,7 +6,7 @@ import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionEntry
 import com.foreignlanguagereader.api.dto.v1.ReadinessStatus.ReadinessStatus
-import com.foreignlanguagereader.api.dto.v1.{ReadinessStatus, Word}
+import com.foreignlanguagereader.api.dto.v1.ReadinessStatus
 import javax.inject.Inject
 import play.api.{Configuration, Logger}
 import play.api.http.Status.OK

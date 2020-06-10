@@ -1,6 +1,5 @@
-package com.foreignlanguagereader.api.dto.v1
+package com.foreignlanguagereader.api.dto.v1.document
 
-import com.foreignlanguagereader.api.domain.definition.entry.WiktionaryDefinitionEntry
 import play.api.libs.json.{Format, Json, Reads}
 
 case class Word(token: String, tag: String, lemma: String)

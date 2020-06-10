@@ -6,7 +6,8 @@ import com.foreignlanguagereader.api.client.{
   ElasticsearchClient,
   LanguageServiceClient
 }
-import com.foreignlanguagereader.api.dto.v1.{Readiness, ReadinessStatus}
+import com.foreignlanguagereader.api.dto.v1.ReadinessStatus
+import com.foreignlanguagereader.api.dto.v1.health.Readiness
 import javax.inject._
 import play.api.libs.json.Json
 import play.api.mvc._
