@@ -8,17 +8,19 @@ import com.foreignlanguagereader.api.domain.definition.entry.DefinitionEntry
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus.ReadinessStatus
 import com.sksamuel.elastic4s.http.JavaClient
+import com.sksamuel.elastic4s.requests.searches.SearchResponse
 import com.sksamuel.elastic4s.{
   ElasticClient,
   ElasticProperties,
   RequestFailure,
-  RequestSuccess
+  RequestSuccess,
+  Response
 }
 import javax.inject.Inject
 import play.api.{Configuration, Logger}
 
 import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, ExecutionContext}
+import scala.concurrent.{Await, ExecutionContext, Future}
 
 class ElasticsearchClient @Inject()(config: Configuration,
                                     val system: ActorSystem) {
@@ -67,27 +69,38 @@ class ElasticsearchClient @Inject()(config: Configuration,
   def getDefinition(wordLanguage: Language,
                     definitionLanguage: Language,
                     word: String): Option[Seq[DefinitionEntry]] = {
-    Await.result(
-      client.execute({
-        search(definitionsIndex).query(
-          boolQuery()
-            .must(
-              matchQuery("language", wordLanguage.toString),
-              matchQuery("token", word)
-            )
+    try {
+      val request: Future[Response[SearchResponse]] = client
+        .execute({
+          search(definitionsIndex).query(
+            boolQuery()
+              .must(
+                matchQuery("language", wordLanguage.toString),
+                matchQuery("token", word)
+              )
+          )
+        })
+
+      Await.result(request, elasticSearchTimeout) match {
+        case RequestSuccess(_, _, _, result) =>
+          val results = result.hits.hits.map(_.to[DefinitionEntry])
+          if (results.nonEmpty) Some(results.toIndexedSeq) else None
+        case RequestFailure(_, _, _, error) =>
+          logger.error(
+            s"Error fetching definitions from elasticsearch: ${error.reason}",
+            error.asException
+          )
+          None
+      }
+    } catch {
+      case e: Exception =>
+        logger.warn(
+          s"Failed to get definitions in $language for word $word from elasticsearch: ${e.getMessage}",
+          e
         )
-      }),
-      elasticSearchTimeout
-    ) match {
-      case RequestSuccess(_, _, _, result) =>
-        val results = result.hits.hits.map(_.to[DefinitionEntry])
-        if (results.nonEmpty) Some(results.toIndexedSeq) else None
-      case RequestFailure(_, _, _, error) =>
-        logger.error(
-          s"Error fetching definitions from elasticsearch: ${error.reason}",
-          error.asException
-        )
-        throw error.asException
+        None
     }
   }
+
+  def saveDefinitions(definition: Seq[DefinitionEntry]): Unit = ???
 }
