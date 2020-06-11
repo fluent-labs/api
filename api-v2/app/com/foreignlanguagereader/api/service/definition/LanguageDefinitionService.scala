@@ -144,15 +144,24 @@ trait LanguageDefinitionService {
     definitionLanguage: Language,
     word: String
   ): Future[Option[Seq[DefinitionEntry]]] = {
+    // Fire off all the results
     Future
       .sequence(
         sources.map(source => fetchDefinition(source, definitionLanguage, word))
       )
+      // Wait until completion
       .map(
         sources =>
-          sources.flatten.reduce(_ ++ _) match {
-            case d if d.isEmpty => None
-            case d              => Some(d)
+          // Remove all empty results
+          sources.flatten match {
+            // No results found
+            case s if s.isEmpty => None
+            // Combine all the results together
+            case s =>
+              s.reduce(_ ++ _) match {
+                case d if d.isEmpty => None
+                case d              => Some(d)
+              }
         }
       )
   }
