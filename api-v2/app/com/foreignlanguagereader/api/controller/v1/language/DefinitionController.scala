@@ -3,7 +3,7 @@ package com.foreignlanguagereader.api.controller.v1.language
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.combined.Definition
-import com.foreignlanguagereader.api.service.DefinitionService
+import com.foreignlanguagereader.api.service.definition.DefinitionService
 import javax.inject._
 import play.api.Logger
 import play.api.libs.json.Json
