@@ -47,7 +47,7 @@ trait LanguageDefinitionService {
   // These are strongly recommended to implement, but have sane defaults
 
   // Functions that can fetch definitions from web sources should be registered here.
-  def definitionFetchers: Map[DefinitionSource, (Language, String) => Future[
+  val definitionFetchers: Map[DefinitionSource, (Language, String) => Future[
     Option[Seq[DefinitionEntry]]
   ]] = Map(DefinitionSource.WIKTIONARY -> languageServiceFetcher)
 
@@ -92,6 +92,7 @@ trait LanguageDefinitionService {
             Some(d ++ refetched)
           case None => Some(d)
         }
+      // Is this just a special case of Some(d) where there are missing sources?
       case None =>
         logger.info(
           s"Refreshing definitions for $word in $wordLanguage using all sources"
