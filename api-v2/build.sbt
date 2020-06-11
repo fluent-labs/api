@@ -28,6 +28,7 @@ libraryDependencies ++= Seq(
   "com.sksamuel.elastic4s" %% "elastic4s-client-esjava" % elastic4sVersion,
   "com.sksamuel.elastic4s" %% "elastic4s-testkit" % elastic4sVersion % "test"
 )
+libraryDependencies += "com.sksamuel.elastic4s" % "elastic4s-json-play_2.13" % elastic4sVersion
 
 // Adds additional packages into conf/routes
 // play.sbt.routes.RoutesKeys.routesImport += "com.foreignlanguagereader.binders._"

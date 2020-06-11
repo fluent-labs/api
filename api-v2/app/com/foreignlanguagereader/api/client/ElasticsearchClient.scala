@@ -21,6 +21,7 @@ import play.api.{Configuration, Logger}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
+import com.sksamuel.elastic4s.playjson._
 
 class ElasticsearchClient @Inject()(config: Configuration,
                                     val system: ActorSystem) {
@@ -102,5 +103,27 @@ class ElasticsearchClient @Inject()(config: Configuration,
     }
   }
 
-  def saveDefinitions(definition: Seq[DefinitionEntry]): Unit = ???
+  def saveDefinitions(definition: Seq[DefinitionEntry]): Unit = {
+    definition
+      .grouped(5)
+      .foreach(
+        definitions =>
+          try {
+            client.execute {
+              bulk(
+                definitions
+                  .map(
+                    definition => indexInto(definitionsIndex).doc(definition)
+                  )
+              )
+            }
+          } catch {
+            case e: Exception =>
+              logger.warn(
+                s"Failed to persist definitions to elasticsearch: $definitions",
+                e
+              )
+        }
+      )
+  }
 }
