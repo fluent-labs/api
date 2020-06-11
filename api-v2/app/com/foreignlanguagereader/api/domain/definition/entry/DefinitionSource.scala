@@ -7,8 +7,10 @@ import play.api.libs.json.{Format, JsString, JsSuccess, JsValue}
  */
 object DefinitionSource extends Enumeration {
   type DefinitionSource = Value
-  val WIKTIONARY: Value = Value("WIKTIONARY")
+
   val CEDICT: Value = Value("CEDICT")
+  val MIRRIAM_WEBSTER: Value = Value("MIRRIAMWEBSTER")
+  val WIKTIONARY: Value = Value("WIKTIONARY")
   val MULTIPLE: Value = Value("MULTIPLE")
 
   // Makes sure we can serialize and deserialize this to JSON
