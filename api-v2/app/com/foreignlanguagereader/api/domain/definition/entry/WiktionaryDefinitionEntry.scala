@@ -8,7 +8,7 @@ import com.foreignlanguagereader.api.domain.definition.combined.{
 }
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
 import com.sksamuel.elastic4s.{Hit, HitReader}
-import play.api.libs.json.{Format, Json, OWrites, Reads}
+import play.api.libs.json.{Format, Json, Reads}
 
 import scala.util.{Success, Try}
 
@@ -34,6 +34,7 @@ case class WiktionaryDefinitionEntry(override val subdefinitions: List[String],
         subdefinitions,
         tag,
         examples,
+        "",
         language,
         DefinitionSource.WIKTIONARY,
         token
