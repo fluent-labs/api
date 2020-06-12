@@ -205,7 +205,7 @@
   },
   {
     "pinyin": "yun",
-    "ipa": "[yn]\n\t\t\t",
+    "ipa": "[yn]",
     "zhuyin": "ㄩㄣ",
     "wade_giles": "yün"
   },
@@ -325,7 +325,7 @@
   },
   {
     "pinyin": "pan",
-    "ipa": "[pʰan]\n\t\t\t",
+    "ipa": "[pʰan]",
     "zhuyin": "ㄆㄢ",
     "wade_giles": "p'an"
   },
@@ -637,7 +637,7 @@
   },
   {
     "pinyin": "dong",
-    "ipa": "[tʊŋ]\n\t\t\t",
+    "ipa": "[tʊŋ]",
     "zhuyin": "ㄉㄨㄥ",
     "wade_giles": "tung"
   },
@@ -691,7 +691,7 @@
   },
   {
     "pinyin": "duo",
-    "ipa": "[tu̯ɔ]\n\t\t\t",
+    "ipa": "[tu̯ɔ]",
     "zhuyin": "ㄉㄨㄛ",
     "wade_giles": "to"
   },
@@ -1939,7 +1939,7 @@
   },
   {
     "pinyin": "jun",
-    "ipa": "[tɕyn]\n\t\t\t",
+    "ipa": "[tɕyn]",
     "zhuyin": "ㄐㄩㄣ",
     "wade_giles": "chün"
   },
@@ -2023,7 +2023,7 @@
   },
   {
     "pinyin": "qun",
-    "ipa": "[tɕʰyn]\n\t\t\t",
+    "ipa": "[tɕʰyn]",
     "zhuyin": "ㄑㄩㄣ",
     "wade_giles": "ch'ün"
   },
@@ -2107,7 +2107,7 @@
   },
   {
     "pinyin": "xun",
-    "ipa": "[ɕyn]\n\t\t\t",
+    "ipa": "[ɕyn]",
     "zhuyin": "ㄒㄩㄣ",
     "wade_giles": "hsün"
   },
