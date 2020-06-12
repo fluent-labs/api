@@ -2,6 +2,7 @@ package com.foreignlanguagereader.api.domain.definition.combined
 
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
+import com.foreignlanguagereader.api.domain.definition.combined
 import com.foreignlanguagereader.api.domain.definition.combined.HSKLevel.HSKLevel
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
@@ -17,7 +18,6 @@ case class ChineseDefinition(override val subdefinitions: List[String],
                              pinyin: String = "",
                              simplified: String = "",
                              traditional: String = "",
-                             hsk: HSKLevel = HSKLevel.NONE,
                              // These fields are needed for elasticsearch lookup
                              // But do not need to be presented to the user.
                              override val source: DefinitionSource =
@@ -38,6 +38,9 @@ case class ChineseDefinition(override val subdefinitions: List[String],
     .reduce(_ + _)
   val (ipa: String, zhuyin: String, wadeGiles: String) =
     (pronunciation.ipa, pronunciation.zhuyin, pronunciation.wade_giles)
+
+  val hsk: HSKLevel = ChineseDefinition.getHSK(simplified)
+
   lazy val toDTO: ChineseDefinitionDTO =
     ChineseDefinitionDTO(
       subdefinitions,
@@ -88,6 +91,35 @@ object ChineseDefinition {
         p.get(pinyin.replaceAll("[12345]+", "")) // remove tone marks
       case None => None
     }
+
+  lazy val hsk: Option[HSKHolder] = {
+    Using(
+      this.getClass
+        .getResourceAsStream("/resources/definition/chinese/hsk.json")
+    ) { file =>
+      Json.parse(file).validate[HSKHolder]
+    } match {
+      case Success(result) =>
+        result match {
+          case JsSuccess(hskWords, _) =>
+            logger.info("Successfully loaded hsk levels")
+            Some(hskWords)
+          case JsError(errors) =>
+            logger.info(s"Failed to parse HSK levels: $errors")
+            None
+        }
+      case Failure(exception) =>
+        logger.info(
+          s"Failed to load hsk levels: ${exception.getMessage}",
+          exception
+        )
+        None
+    }
+  }
+  def getHSK(simplified: String): HSKLevel = hsk match {
+    case Some(h) => h.getLevel(simplified)
+    case None    => HSKLevel.NONE
+  }
 }
 
 case class ChinesePronunciation(pinyin: String,
@@ -107,6 +139,26 @@ object ChinesePronunciation {
     Json.reads[ChinesePronunciation]
   implicit val readsSeq: Reads[Seq[ChinesePronunciation]] =
     Reads.seq(reads)
+}
+
+case class HSKHolder(HSK1: Set[String],
+                     HSK2: Set[String],
+                     HSK3: Set[String],
+                     HSK4: Set[String],
+                     HSK5: Set[String],
+                     HSK6: Set[String]) {
+  def getLevel(simplified: String): combined.HSKLevel.Value = simplified match {
+    case s if HSK1.contains(s) => HSKLevel.ONE
+    case s if HSK2.contains(s) => HSKLevel.TWO
+    case s if HSK3.contains(s) => HSKLevel.THREE
+    case s if HSK4.contains(s) => HSKLevel.FOUR
+    case s if HSK5.contains(s) => HSKLevel.FIVE
+    case s if HSK6.contains(s) => HSKLevel.SIX
+    case _                     => HSKLevel.NONE
+  }
+}
+object HSKHolder {
+  implicit val reads: Reads[HSKHolder] = Json.reads[HSKHolder]
 }
 
 object HSKLevel extends Enumeration {

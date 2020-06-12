@@ -29,7 +29,6 @@ case class CEDICTDefinitionEntry(override val subdefinitions: List[String],
     pinyin,
     simplified,
     traditional,
-    HSKLevel.NONE,
     DefinitionSource.CEDICT,
     token
   )
