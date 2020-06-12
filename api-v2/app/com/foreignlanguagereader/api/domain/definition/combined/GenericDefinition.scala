@@ -7,14 +7,15 @@ import com.foreignlanguagereader.api.dto.v1.definition.{
   GenericDefinitionDTO
 }
 
-case class GenericDefinition(val subdefinitions: List[String],
-                             val tag: String,
-                             val examples: List[String],
+case class GenericDefinition(subdefinitions: List[String],
+                             tag: String,
+                             examples: List[String],
+                             ipa: String,
                              // These fields are needed for elasticsearch lookup
                              // But do not need to be presented to the user.
-                             val language: Language,
-                             val source: DefinitionSource,
-                             val token: String)
+                             language: Language,
+                             source: DefinitionSource,
+                             token: String)
     extends Definition {
   override lazy val toDTO: DefinitionDTO =
     GenericDefinitionDTO(subdefinitions, tag, examples)
