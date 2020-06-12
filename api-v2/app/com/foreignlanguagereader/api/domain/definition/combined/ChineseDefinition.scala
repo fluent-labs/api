@@ -28,43 +28,40 @@ case class ChineseDefinition(override val subdefinitions: List[String],
   val logger: Logger = Logger(this.getClass)
   val language: Language = Language.CHINESE
 
-  val (ipa: String, zhuyin: String, wadeGiles: String, tones: Seq[Tone]) = {
-    val tones: Seq[Option[Tone]] = pinyin match {
-      case "" => List()
-      case _ =>
-        pinyin
-          .split(" ")
-          .map(p => MandarinTone.fromNumber(p.takeRight(1)))
-    }
+  val (ipa: String, zhuyin: String, wadeGiles: String, tones: Seq[Tone]) =
+    if (pinyin != "") {
+      val tones: Seq[Option[Tone]] = pinyin
+        .split(" ")
+        .map(p => MandarinTone.fromNumber(p.takeRight(1)))
 
-    val pronunciation = pinyin
-      .split(" ")
-      .map(
-        pinyin =>
-          ChineseDefinition.getPronunciation(pinyin) match {
-            case Some(p) => p
-            case None =>
-              logger.warn(s"Invalid pinyin provided for word $token: $pinyin")
-              ChinesePronunciation("", "", "", "")
-        }
-      )
-      .reduce(_ + _)
+      val pronunciation = pinyin
+        .split(" ")
+        .map(
+          pinyin =>
+            ChineseDefinition.getPronunciation(pinyin) match {
+              case Some(p) => p
+              case None =>
+                logger.warn(s"Invalid pinyin provided for word $token: $pinyin")
+                ChinesePronunciation("", "", "", "")
+          }
+        )
+        .reduce(_ + _)
 
-    // This is a pain but we need to re-apply tone marks to the end of wade
-    val wadeGiles = pronunciation.wade_giles
-      .split(" ")
-      .zip(tones)
-      .map(x => {
-        val (wade, tone) = x
-        tone match {
-          case Some(tone) => wade + tone.toString
-          case None       => wade
-        }
-      })
-      .reduce(_ + " " + _)
+      // This is a pain but we need to re-apply tone marks to the end of wade
+      val wadeGiles = pronunciation.wade_giles
+        .split(" ")
+        .zip(tones)
+        .map(x => {
+          val (wade, tone) = x
+          tone match {
+            case Some(tone) => wade + tone.toString
+            case None       => wade
+          }
+        })
+        .reduce(_ + " " + _)
 
-    (pronunciation.ipa, pronunciation.zhuyin, wadeGiles, tones.flatten)
-  }
+      (pronunciation.ipa, pronunciation.zhuyin, wadeGiles, tones.flatten)
+    } else ("", "", "", List())
 
   val hsk: HSKLevel = ChineseDefinition.getHSK(simplified)
 
