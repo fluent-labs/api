@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.api.domain.definition.combined
 
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource
+import com.foreignlanguagereader.api.dto.v1.definition.ChineseDefinitionDTO
 
 class ChineseDefinitionTest extends org.scalatest.FunSpec {
   describe("A single character Chinese definition") {
@@ -14,7 +15,6 @@ class ChineseDefinitionTest extends org.scalatest.FunSpec {
       DefinitionSource.MULTIPLE,
       token = "好"
     )
-
     describe("when getting pronunciation") {
       it("can determine pronunciation from pinyin") {
         assert(example.ipa == "[xɑʊ̯]")
@@ -27,6 +27,27 @@ class ChineseDefinitionTest extends org.scalatest.FunSpec {
         assert(badPinyin.zhuyin == "")
         assert(badPinyin.wadeGiles == "")
       }
+      it("does not break if no pinyin are provided") {
+        val noPinyin = example.copy(pinyin = "")
+      }
+    }
+    it("can get HSK level") {
+      assert(example.hsk == HSKLevel.ONE)
+    }
+    it("can convert itself to a DTO") {
+      val compareAgainst = ChineseDefinitionDTO(
+        example.subdefinitions,
+        example.tag,
+        example.examples,
+        example.pinyin,
+        example.simplified,
+        example.traditional,
+        example.ipa,
+        example.zhuyin,
+        example.wadeGiles,
+        example.hsk
+      )
+      assert(example.toDTO == compareAgainst)
     }
   }
 
@@ -54,6 +75,9 @@ class ChineseDefinitionTest extends org.scalatest.FunSpec {
         assert(badPinyin.zhuyin == "")
         assert(badPinyin.wadeGiles == "")
       }
+    }
+    it("does not break if there is no HSK level") {
+      assert(example.hsk == HSKLevel.NONE)
     }
   }
 }
