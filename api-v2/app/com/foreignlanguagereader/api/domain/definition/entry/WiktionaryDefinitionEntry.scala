@@ -34,6 +34,7 @@ case class WiktionaryDefinitionEntry(override val subdefinitions: List[String],
         subdefinitions,
         tag,
         examples,
+        "",
         language,
         DefinitionSource.WIKTIONARY,
         token
