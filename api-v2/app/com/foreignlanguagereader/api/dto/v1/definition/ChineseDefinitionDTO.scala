@@ -9,6 +9,9 @@ case class ChineseDefinitionDTO(subdefinitions: List[String],
                                 pinyin: String = "",
                                 simplified: String = "",
                                 traditional: String = "",
+                                ipa: String,
+                                zhuyin: String,
+                                wadeGiles: String,
                                 hsk: HSKLevel)
     extends DefinitionDTO
 
