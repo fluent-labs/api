@@ -4,6 +4,7 @@ import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.combined
 import com.foreignlanguagereader.api.domain.definition.combined.HSKLevel.HSKLevel
+import com.foreignlanguagereader.api.domain.definition.combined.MandarinTone.Tone
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.dto.v1.definition.ChineseDefinitionDTO
@@ -24,20 +25,46 @@ case class ChineseDefinition(override val subdefinitions: List[String],
                                DefinitionSource.MULTIPLE,
                              override val token: String = "")
     extends Definition {
+  val logger: Logger = Logger(this.getClass)
   val language: Language = Language.CHINESE
 
-  private val pronunciation = pinyin
-    .split(" ")
-    .map(
-      pinyin =>
-        ChineseDefinition.getPronunciation(pinyin) match {
-          case Some(p) => p
-          case None    => ChinesePronunciation("", "", "", "")
-      }
-    )
-    .reduce(_ + _)
-  val (ipa: String, zhuyin: String, wadeGiles: String) =
-    (pronunciation.ipa, pronunciation.zhuyin, pronunciation.wade_giles)
+  val (ipa: String, zhuyin: String, wadeGiles: String, tones: Seq[Tone]) = {
+    val tones: Seq[Option[Tone]] = pinyin match {
+      case "" => List()
+      case _ =>
+        pinyin
+          .split(" ")
+          .map(p => MandarinTone.fromNumber(p.takeRight(1)))
+    }
+
+    val pronunciation = pinyin
+      .split(" ")
+      .map(
+        pinyin =>
+          ChineseDefinition.getPronunciation(pinyin) match {
+            case Some(p) => p
+            case None =>
+              logger.warn(s"Invalid pinyin provided for word $token: $pinyin")
+              ChinesePronunciation("", "", "", "")
+        }
+      )
+      .reduce(_ + _)
+
+    // This is a pain but we need to re-apply tone marks to the end of wade
+    val wadeGiles = pronunciation.wade_giles
+      .split(" ")
+      .zip(tones)
+      .map(x => {
+        val (wade, tone) = x
+        tone match {
+          case Some(tone) => wade + tone.toString
+          case None       => wade
+        }
+      })
+      .reduce(_ + " " + _)
+
+    (pronunciation.ipa, pronunciation.zhuyin, wadeGiles, tones.flatten)
+  }
 
   val hsk: HSKLevel = ChineseDefinition.getHSK(simplified)
 
@@ -176,5 +203,26 @@ object HSKLevel extends Enumeration {
     def reads(json: JsValue): JsResult[Value] =
       JsSuccess(HSKLevel.withName(json.as[String]))
     def writes(level: HSKLevel.HSKLevel) = JsString(level.toString)
+  }
+}
+
+object MandarinTone extends Enumeration {
+  type Tone = Value
+
+  val ONE: Value = Value("1")
+  val TWO: Value = Value("2")
+  val THREE: Value = Value("3")
+  val FOUR: Value = Value("4")
+  val NEUTRAL: Value = Value("5")
+
+  def fromNumber(number: String): Option[Tone] = number match {
+    case n if n.matches("[12345]") => Some(MandarinTone.withName(n))
+    case _                         => None
+  }
+
+  implicit val toneFormat: Format[Tone] = new Format[Tone] {
+    def reads(json: JsValue): JsResult[Value] =
+      JsSuccess(MandarinTone.withName(json.as[String]))
+    def writes(tone: MandarinTone.Tone) = JsString(tone.toString)
   }
 }
