@@ -153,80 +153,112 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         Set(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
       override val webSources: Set[DefinitionSource] =
         Set(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
-      override val definitionFetchers
-        : Map[(DefinitionSource, Language),
-              (Language, String) => Future[Option[Seq[DefinitionEntry]]]] = Map(
-        (DefinitionSource.CEDICT, Language.ENGLISH) -> testFetcher,
-        (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
-      )
-
-      def testFetcher
-        : (Language, String) => Future[Option[Seq[DefinitionEntry]]] =
-        (language: Language, word: String) =>
-          languageServiceClientMock.getDefinition(language, word)
-
-      override def enrichDefinitions(
-        definitionLanguage: Language,
-        word: String,
-        definitions: Seq[DefinitionEntry]
-      ): Seq[Definition] = (definitionLanguage, word, definitions) match {
-        case (
-            Language.ENGLISH,
-            "token",
-            List(dummyWiktionaryDefinition, dummyCEDICTDefinition)
-            ) =>
-          List(
-            dummyWiktionaryDefinition.toDefinition,
-            dummyCEDICTDefinition.toDefinition
-          )
-        case _ => List()
-      }
     }
     val customized = new CustomizedLanguageDefinitionService()
-    it("will refetch from web sources that were not found in elasticsearch") {
-      when(
-        elasticsearchClientMock
-          .getDefinition(Language.CHINESE, Language.ENGLISH, "token")
-      ).thenReturn(Some(List(dummyWiktionaryDefinition)))
-      when(languageServiceClientMock.getDefinition(Language.CHINESE, "token"))
-        .thenReturn(Future.successful(Some(List(dummyCEDICTDefinition))))
 
-      customized
-        .getDefinitions(Language.ENGLISH, "token")
-        .map { response =>
-          assert(response.isDefined)
-          val results = response.get
-          assert(results.length == 2)
-          assert(results(0) == dummyCEDICTDefinition.toDefinition)
-          assert(results(1) == dummyWiktionaryDefinition.toDefinition)
+    describe("with a custom fetcher") {
+      class CustomizedFetcherLanguageDefinitionService
+          extends CustomizedLanguageDefinitionService {
+        override val definitionFetchers
+          : Map[(DefinitionSource, Language),
+                (Language, String) => Future[Option[Seq[DefinitionEntry]]]] =
+          Map(
+            (DefinitionSource.CEDICT, Language.ENGLISH) -> testFetcher,
+            (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
+          )
 
-          verify(elasticsearchClientMock, never())
-            .saveDefinitions(List(dummyWiktionaryDefinition))
+        def testFetcher
+          : (Language, String) => Future[Option[Seq[DefinitionEntry]]] =
+          (language: Language, word: String) =>
+            languageServiceClientMock.getDefinition(language, word)
+      }
 
-          succeed
-        }
+      val customizedFetcher = new CustomizedFetcherLanguageDefinitionService()
+
+      it("will refetch from web sources that were not found in elasticsearch") {
+        when(
+          elasticsearchClientMock
+            .getDefinition(Language.CHINESE, Language.ENGLISH, "token")
+        ).thenReturn(Some(List(dummyWiktionaryDefinition)))
+        when(languageServiceClientMock.getDefinition(Language.ENGLISH, "token"))
+          .thenReturn(Future.successful(Some(List(dummyCEDICTDefinition))))
+
+        customizedFetcher
+          .getDefinitions(Language.ENGLISH, "token")
+          .map { response =>
+            assert(response.isDefined)
+            val results = response.get
+            assert(results.length == 2)
+            results.find(_ == dummyWiktionaryDefinition.toDefinition)
+            results.find(_ == dummyCEDICTDefinition.toDefinition)
+
+            succeed
+          }
+      }
+
+      it("does not break if refetching does not return results") {
+        when(
+          elasticsearchClientMock
+            .getDefinition(Language.CHINESE, Language.ENGLISH, "token")
+        ).thenReturn(Some(List(dummyWiktionaryDefinition)))
+        when(languageServiceClientMock.getDefinition(Language.ENGLISH, "token"))
+          .thenReturn(Future.successful(None))
+
+        customizedFetcher
+          .getDefinitions(Language.ENGLISH, "token")
+          .map { response =>
+            assert(response.isDefined)
+            val results = response.get
+            assert(results.length == 1)
+            results.find(_ == dummyWiktionaryDefinition.toDefinition)
+
+            succeed
+          }
+      }
     }
 
-    it("can define how to enrich definitions") {
-      when(
-        elasticsearchClientMock
-          .getDefinition(Language.CHINESE, Language.ENGLISH, "token")
-      ).thenReturn(Some(List(dummyCEDICTDefinition, dummyWiktionaryDefinition)))
-
-      customized
-        .getDefinitions(Language.ENGLISH, "token")
-        .map { response =>
-          assert(response.isDefined)
-          val results = response.get
-          assert(results.length == 2)
-          assert(results(0) == dummyCEDICTDefinition.toDefinition)
-          assert(results(1) == dummyWiktionaryDefinition.toDefinition)
-
-          verify(elasticsearchClientMock, never())
-            .saveDefinitions(List(dummyWiktionaryDefinition))
-
-          succeed
+    describe("with a custom enricher") {
+      class CustomizedEnricherLangaugeDefinitionService
+          extends CustomizedLanguageDefinitionService {
+        override def enrichDefinitions(
+          definitionLanguage: Language,
+          word: String,
+          definitions: Seq[DefinitionEntry]
+        ): Seq[Definition] = (definitionLanguage, word, definitions) match {
+          case (
+              Language.ENGLISH,
+              "token",
+              List(dummyWiktionaryDefinition, dummyCEDICTDefinition)
+              ) =>
+            List(
+              dummyWiktionaryDefinition.toDefinition,
+              dummyCEDICTDefinition.toDefinition
+            )
+          case _ => List()
         }
+      }
+      val customizedEnricher = new CustomizedEnricherLangaugeDefinitionService()
+
+      it("can define how to enrich definitions") {
+        when(
+          elasticsearchClientMock
+            .getDefinition(Language.CHINESE, Language.ENGLISH, "token")
+        ).thenReturn(
+          Some(List(dummyCEDICTDefinition, dummyWiktionaryDefinition))
+        )
+
+        customizedEnricher
+          .getDefinitions(Language.ENGLISH, "token")
+          .map { response =>
+            assert(response.isDefined)
+            val results = response.get
+            assert(results.length == 2)
+            results.find(_ == dummyWiktionaryDefinition.toDefinition)
+            results.find(_ == dummyCEDICTDefinition.toDefinition)
+
+            succeed
+          }
+      }
     }
   }
 }
