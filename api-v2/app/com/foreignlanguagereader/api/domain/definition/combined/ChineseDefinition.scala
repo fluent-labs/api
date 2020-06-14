@@ -5,7 +5,6 @@ import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.combined
 import com.foreignlanguagereader.api.domain.definition.combined.HSKLevel.HSKLevel
 import com.foreignlanguagereader.api.domain.definition.combined.MandarinTone.Tone
-import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.dto.v1.definition.ChineseDefinitionDTO
 import play.api.Logger
@@ -21,12 +20,12 @@ case class ChineseDefinition(override val subdefinitions: List[String],
                              traditional: String = "",
                              // These fields are needed for elasticsearch lookup
                              // But do not need to be presented to the user.
-                             override val source: DefinitionSource =
-                               DefinitionSource.MULTIPLE,
-                             override val token: String = "")
+                             override val definitionLanguage: Language,
+                             override val source: DefinitionSource,
+                             override val token: String)
     extends Definition {
   val logger: Logger = Logger(this.getClass)
-  val language: Language = Language.CHINESE
+  val wordLanguage: Language = Language.CHINESE
 
   val (ipa: String, zhuyin: String, wadeGiles: String, tones: Seq[Tone]) =
     if (pinyin != "") {

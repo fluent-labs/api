@@ -10,7 +10,8 @@ import scala.util.Try
 
 trait DefinitionEntry {
   val subdefinitions: List[String]
-  val language: Language
+  val wordLanguage: Language
+  val definitionLanguage: Language
   val source: DefinitionSource
   val token: String
 

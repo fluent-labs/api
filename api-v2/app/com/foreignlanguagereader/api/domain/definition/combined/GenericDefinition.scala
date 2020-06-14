@@ -13,7 +13,8 @@ case class GenericDefinition(subdefinitions: List[String],
                              ipa: String,
                              // These fields are needed for elasticsearch lookup
                              // But do not need to be presented to the user.
-                             language: Language,
+                             definitionLanguage: Language,
+                             wordLanguage: Language,
                              source: DefinitionSource,
                              token: String)
     extends Definition {

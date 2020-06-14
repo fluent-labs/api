@@ -1,9 +1,11 @@
 package com.foreignlanguagereader.api.domain.definition.combined
 
+import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource
 import com.foreignlanguagereader.api.dto.v1.definition.ChineseDefinitionDTO
+import org.scalatest.funspec.AnyFunSpec
 
-class ChineseDefinitionTest extends org.scalatest.FunSpec {
+class ChineseDefinitionTest extends AnyFunSpec {
   describe("A single character Chinese definition") {
     val example = ChineseDefinition(
       List("definition 1", "definition 2"),
@@ -12,6 +14,7 @@ class ChineseDefinitionTest extends org.scalatest.FunSpec {
       "hao3",
       "好",
       "好",
+      Language.ENGLISH,
       DefinitionSource.MULTIPLE,
       token = "好"
     )
@@ -59,6 +62,7 @@ class ChineseDefinitionTest extends org.scalatest.FunSpec {
       "ni3 hao3",
       "你好",
       "你好",
+      Language.ENGLISH,
       DefinitionSource.MULTIPLE,
       token = "你好"
     )

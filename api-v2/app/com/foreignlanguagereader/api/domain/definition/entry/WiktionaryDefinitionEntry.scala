@@ -15,17 +15,19 @@ import scala.util.{Success, Try}
 case class WiktionaryDefinitionEntry(override val subdefinitions: List[String],
                                      tag: String,
                                      examples: List[String],
-                                     override val language: Language,
+                                     override val wordLanguage: Language,
+                                     override val definitionLanguage: Language,
                                      override val token: String,
                                      override val source: DefinitionSource =
                                        DefinitionSource.WIKTIONARY)
     extends DefinitionEntry {
-  override lazy val toDefinition: Definition = language match {
+  override lazy val toDefinition: Definition = wordLanguage match {
     case Language.CHINESE =>
       ChineseDefinition(
         subdefinitions,
         tag,
         examples,
+        definitionLanguage = definitionLanguage,
         source = source,
         token = token
       )
@@ -35,7 +37,8 @@ case class WiktionaryDefinitionEntry(override val subdefinitions: List[String],
         tag,
         examples,
         "",
-        language,
+        wordLanguage,
+        definitionLanguage,
         DefinitionSource.WIKTIONARY,
         token
       )
@@ -59,7 +62,8 @@ object WiktionaryDefinitionEntry {
           source("subdefinitions").asInstanceOf[List[String]],
           source("tag").toString,
           source("examples").toString.asInstanceOf[List[String]],
-          Language.withName(source("language").toString),
+          Language.withName(source("wordLanguage").toString),
+          Language.withName(source("definitionLanguage").toString),
           source("token").toString
         )
       )

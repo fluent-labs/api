@@ -11,7 +11,8 @@ trait Definition {
   val ipa: String
   // These fields are needed for elasticsearch lookup
   // But do not need to be presented to the user.
-  val language: Language
+  val definitionLanguage: Language
+  val wordLanguage: Language
   val source: DefinitionSource
   val token: String
 
@@ -24,7 +25,8 @@ object Definition {
             tag: String,
             examples: List[String],
             ipa: String,
-            language: Language,
+            wordLanguage: Language,
+            definitionLanguage: Language,
             source: DefinitionSource,
             token: String): Definition =
     GenericDefinition(
@@ -32,7 +34,8 @@ object Definition {
       tag,
       examples,
       ipa,
-      language,
+      wordLanguage,
+      definitionLanguage,
       source,
       token
     )
