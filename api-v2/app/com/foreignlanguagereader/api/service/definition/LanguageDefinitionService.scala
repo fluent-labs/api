@@ -4,6 +4,7 @@ import com.foreignlanguagereader.api.client.{
   ElasticsearchClient,
   LanguageServiceClient
 }
+import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.combined.Definition
 import com.foreignlanguagereader.api.domain.definition.entry.{
@@ -47,24 +48,30 @@ trait LanguageDefinitionService {
   // These are strongly recommended to implement, but have sane defaults
 
   // Functions that can fetch definitions from web sources should be registered here.
-  val definitionFetchers: Map[DefinitionSource, (Language, String) => Future[
-    Option[Seq[DefinitionEntry]]
-  ]] = Map(DefinitionSource.WIKTIONARY -> languageServiceFetcher)
+  val definitionFetchers
+    : Map[(DefinitionSource, Language), (Language, String) => Future[
+      Option[Seq[DefinitionEntry]]
+    ]] = Map(
+    (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
+  )
 
   // Define logic to combine definition sources here. If there is only one source, this just returns it.
-  def enrichDefinitions(
-    definitionLanguage: Language,
-    word: String,
-    definitions: Seq[DefinitionEntry]
-  ): Option[Seq[Definition]] = Some(definitions.map(e => e.toDefinition))
+  def enrichDefinitions(definitionLanguage: Language,
+                        word: String,
+                        definitions: Seq[DefinitionEntry]): Seq[Definition] =
+    definitions.map(e => e.toDefinition)
 
   // This is the main method that consumers will call
   def getDefinitions(definitionLanguage: Language,
                      word: String): Future[Option[Seq[Definition]]] = {
     findOrFetchDefinitions(definitionLanguage, word) map {
       case Some(definitions) =>
-        enrichDefinitions(definitionLanguage, word, definitions)
-      case None => None
+        Some(enrichDefinitions(definitionLanguage, word, definitions))
+      case None =>
+        logger.info(
+          s"No definitions found for $wordLanguage $word in $definitionLanguage"
+        )
+        None
     }
   }
 
@@ -118,11 +125,19 @@ trait LanguageDefinitionService {
     definitionLanguage: Language,
     word: String
   ): Future[Option[Seq[DefinitionEntry]]] = {
-    definitionFetchers.get(source) match {
-      case Some(fetcher) => fetcher(definitionLanguage, word)
+    definitionFetchers.get(source, definitionLanguage) match {
+      case Some(fetcher) =>
+        fetcher(definitionLanguage, word).recover {
+          case e: Exception =>
+            logger.error(
+              s"Failed to fetch definition from $source for $wordLanguage $word in $definitionLanguage: ${e.getMessage}",
+              e
+            )
+            None
+        }
       case None =>
         logger.error(
-          s"Tried to fetch from unimplemented source $source in $wordLanguage for $word"
+          s"Failed to search in $wordLanguage for $word because $source is not implemented for definitions in $definitionLanguage"
         )
         Future.successful(None)
     }
@@ -131,12 +146,7 @@ trait LanguageDefinitionService {
   // Out of the box, this calls language service for Wiktionary definitions. All languages should use this.
   def languageServiceFetcher
     : (Language, String) => Future[Option[Seq[DefinitionEntry]]] =
-    (definitionLanguage: Language, word: String) =>
-      languageServiceClient.getDefinition(
-        wordLanguage,
-        definitionLanguage,
-        word
-    )
+    (_, word: String) => languageServiceClient.getDefinition(wordLanguage, word)
 
   // Convenience method to request multiple sources in parallel
   private def fetchDefinitions(
