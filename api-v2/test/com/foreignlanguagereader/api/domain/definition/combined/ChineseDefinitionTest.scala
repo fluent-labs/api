@@ -18,24 +18,31 @@ class ChineseDefinitionTest extends AnyFunSpec {
       DefinitionSource.MULTIPLE,
       token = "好"
     )
+
     describe("when getting pronunciation") {
       it("can determine pronunciation from pinyin") {
+        assert(example.pinyin == "hao")
         assert(example.ipa == "[xɑʊ̯]")
         assert(example.zhuyin == "ㄏㄠ")
-        assert(example.wadeGiles == "hao3")
+        assert(example.wadeGiles == "hao")
       }
       it("does not break if invalid pinyin are provided") {
-        val badPinyin = example.copy(pinyin = "invalid")
+        val badPinyin = example.copy(inputPinyin = "invalid")
+        assert(badPinyin.pinyin == "")
         assert(badPinyin.ipa == "")
         assert(badPinyin.zhuyin == "")
         assert(badPinyin.wadeGiles == "")
       }
       it("does not break if no pinyin are provided") {
-        val noPinyin = example.copy(pinyin = "")
+        val noPinyin = example.copy(inputPinyin = "")
+        assert(noPinyin.pinyin == "")
+        assert(noPinyin.ipa == "")
+        assert(noPinyin.zhuyin == "")
+        assert(noPinyin.wadeGiles == "")
       }
     }
     it("can get HSK level") {
-      assert(example.hsk == HSKLevel.ONE)
+      assert(example.hsk == HskLevel.ONE)
     }
     it("can convert itself to a DTO") {
       val compareAgainst = ChineseDefinitionDTO(
@@ -71,17 +78,18 @@ class ChineseDefinitionTest extends AnyFunSpec {
       it("can determine pronunciation from pinyin") {
         assert(example.ipa == "[ni] [xɑʊ̯]")
         assert(example.zhuyin == "ㄋㄧ ㄏㄠ")
-        assert(example.wadeGiles == "ni3 hao3")
+        assert(example.wadeGiles == "ni hao")
       }
       it("does not break if invalid pinyin are provided") {
-        val badPinyin = example.copy(pinyin = "invalid")
+        val badPinyin = example.copy(inputPinyin = "invalid")
+        assert(badPinyin.pinyin == "")
         assert(badPinyin.ipa == "")
         assert(badPinyin.zhuyin == "")
         assert(badPinyin.wadeGiles == "")
       }
     }
     it("does not break if there is no HSK level") {
-      assert(example.hsk == HSKLevel.NONE)
+      assert(example.hsk == HskLevel.NONE)
     }
   }
 }
