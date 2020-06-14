@@ -6,9 +6,13 @@ import com.foreignlanguagereader.api.client.{
 }
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
+import com.foreignlanguagereader.api.domain.definition.combined
+import com.foreignlanguagereader.api.domain.definition.combined.HskLevel.HSKLevel
 import com.foreignlanguagereader.api.domain.definition.combined.{
   ChineseDefinition,
-  Definition
+  ChinesePronunciation,
+  Definition,
+  HskLevel
 }
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.domain.definition.entry.{
@@ -17,8 +21,10 @@ import com.foreignlanguagereader.api.domain.definition.entry.{
   DefinitionSource,
   WiktionaryDefinitionEntry
 }
+import com.foreignlanguagereader.api.util.ContentFileLoader
 import javax.inject.Inject
 import play.api.Logger
+import play.api.libs.json.{Json, Reads}
 
 import scala.concurrent.ExecutionContext
 
@@ -141,4 +147,66 @@ class ChineseDefinitionService @Inject()(
       )
     )
   }
+}
+
+object ChineseDefinitionService {
+  // This tags the words with zhuyin, wade giles, and IPA based on the pinyin.
+  // It also pulls the tones out of the pinyin as a separate thing
+  // This works because pinyin is a perfect sound system
+  def getPronunciation(
+    pinyin: String
+  ): Tuple2[Option[ChinesePronunciation], Option[Array[String]]] = {
+    val (pronunciation, tones) = pinyin
+      .split(" ")
+      .map {
+        case hasTone if hasTone.takeRight(1).matches("[12345]+") =>
+          (hasTone.dropRight(1), Some(hasTone.takeRight(1)))
+        case noTone => (noTone, None)
+      }
+      .map {
+        case (rawPinyin, tone) => (pronunciations.get(rawPinyin), tone)
+      }
+      .unzip
+
+    (pronunciation, tones) match {
+      case (p, t) if t.forall(_.isDefined) && p.forall(_.isDefined) =>
+        (Some(p.flatten.reduce(_ + _)), Some(t.flatten))
+      case (p, t) if p.forall(_.isDefined) =>
+        (Some(p.flatten.reduce(_ + _)), None)
+      case _ => (None, None)
+    }
+  }
+
+  def getHSK(simplified: String): HSKLevel = hsk.getLevel(simplified)
+
+  private[this] val pronunciations: Map[String, ChinesePronunciation] =
+    ContentFileLoader
+      .loadJsonResourceFile[Seq[ChinesePronunciation]](
+        "/resources/definition/chinese/pronunciation.json"
+      )
+      .map(pron => pron.pinyin -> pron)
+      .toMap
+
+  private[this] val hsk: HskHolder = ContentFileLoader
+    .loadJsonResourceFile[HskHolder]("/resources/definition/chinese/hsk.json")
+}
+
+case class HskHolder(hsk1: Set[String],
+                     hsk2: Set[String],
+                     hsk3: Set[String],
+                     hsk4: Set[String],
+                     hsk5: Set[String],
+                     hsk6: Set[String]) {
+  def getLevel(simplified: String): combined.HskLevel.Value = simplified match {
+    case s if hsk1.contains(s) => HskLevel.ONE
+    case s if hsk2.contains(s) => HskLevel.TWO
+    case s if hsk3.contains(s) => HskLevel.THREE
+    case s if hsk4.contains(s) => HskLevel.FOUR
+    case s if hsk5.contains(s) => HskLevel.FIVE
+    case s if hsk6.contains(s) => HskLevel.SIX
+    case _                     => HskLevel.NONE
+  }
+}
+object HskHolder {
+  implicit val reads: Reads[HskHolder] = Json.reads[HskHolder]
 }
