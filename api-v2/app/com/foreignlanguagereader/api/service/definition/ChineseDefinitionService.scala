@@ -45,33 +45,40 @@ class ChineseDefinitionService @Inject()(
     definitionLanguage: Language,
     word: String,
     definitions: Seq[DefinitionEntry]
-  ): Option[Seq[Definition]] = {
+  ): Seq[Definition] = {
+    definitionLanguage match {
+      case Language.ENGLISH => enrichEnglishDefinitions(word, definitions)
+      case _                => super.enrichDefinitions(definitionLanguage, word, definitions)
+    }
+  }
+
+  private def enrichEnglishDefinitions(
+    word: String,
+    definitions: Seq[DefinitionEntry]
+  ): Seq[Definition] = {
     val (cedict, wiktionary) = partitionResultsByDictionary(definitions)
     logger.info(
       s"Enhancing results for $word using cedict with ${cedict.size} cedict results and ${wiktionary.size} wiktionary results"
     )
 
     (cedict, wiktionary) match {
-      case (cedict, wiktionary) if cedict.isEmpty && wiktionary.isEmpty =>
-        logger.info(s"No definitions found for $word")
-        None
       case (cedict, wiktionary) if wiktionary.isEmpty =>
         logger.info(s"Using cedict definitions for $word")
-        Some(cedict.map(_.toDefinition))
+        cedict.map(_.toDefinition)
       case (cedict, wiktionary) if cedict.isEmpty =>
         logger.info(s"Using wiktionary definitions for $word")
-        Some(wiktionary.map(_.toDefinition))
+        wiktionary.map(_.toDefinition)
       // If CEDICT doesn't have subdefinitions, then we should return wiktionary data
       // We still want pronunciation and simplified/traditional mapping, so we will add cedict data
       case (cedict, wiktionary) if cedict(0).subdefinitions.isEmpty =>
         logger.info(s"Using enhanced wiktionary definitions for $word")
-        Some(addCedictDataToWiktionaryResults(word, cedict(0), wiktionary))
+        addCedictDataToWiktionaryResults(word, cedict(0), wiktionary)
       // If are definitions from CEDICT, they are better.
       // In that case, we only want part of speech tag and examples from wiktionary.
       // But everything else will be the single CEDICT definition
       case (cedict, wiktionary) =>
         logger.info(s"Using enhanced cedict definitions for $word")
-        Some(addWiktionaryDataToCedictResults(word, cedict(0), wiktionary))
+        addWiktionaryDataToCedictResults(word, cedict(0), wiktionary)
     }
   }
 
@@ -102,7 +109,10 @@ class ChineseDefinitionService @Inject()(
           w.examples,
           cedict.pinyin,
           cedict.simplified,
-          cedict.traditional
+          cedict.traditional,
+          w.definitionLanguage,
+          DefinitionSource.MULTIPLE,
+          w.tag
       )
     )
   }
@@ -124,7 +134,10 @@ class ChineseDefinitionService @Inject()(
         examples,
         cedict.pinyin,
         cedict.simplified,
-        cedict.traditional
+        cedict.traditional,
+        Language.ENGLISH,
+        DefinitionSource.MULTIPLE,
+        word
       )
     )
   }
