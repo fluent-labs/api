@@ -150,28 +150,31 @@ class ChineseDefinitionService @Inject()(
 }
 
 object ChineseDefinitionService {
+  val toneRegex = "[12345]+"
+
   // This tags the words with zhuyin, wade giles, and IPA based on the pinyin.
   // It also pulls the tones out of the pinyin as a separate thing
   // This works because pinyin is a perfect sound system
   def getPronunciation(pinyin: String): ChinesePronunciation = {
-    val (p, t) = pinyin
-      .split(" ")
-      .map {
-        case hasTone if hasTone.takeRight(1).matches("[12345]+") =>
-          (hasTone.dropRight(1), Some(hasTone.takeRight(1)))
-        case noTone => (noTone, None)
-      }
-      .map {
-        case (rawPinyin, tone) => (pronunciations.get(rawPinyin), tone)
-      }
-      .unzip
+    val (rawPinyin, tones) = pinyin.split(" ") match {
+      case hasTones if hasTones.forall(_.takeRight(1).matches(toneRegex)) =>
+        (hasTones.map(_.dropRight(1)), Some(hasTones.map(_.takeRight(1))))
+      // Specifically remove all tone marks from the pinyin.
+      // Otherwise it will attempt to convert pinyin to other pronunciation with words in, which will fail
+      case hasBadTones
+          if hasBadTones.exists(_.takeRight(1).matches(toneRegex)) =>
+        (hasBadTones.map(_.dropRight(1)), None)
+      case noTones => (noTones, None)
+    }
 
     // We don't want to drop any because tone and pinyin must line up.
     // If any part of the input is garbage then the whole thing should be treated as such.
-    val pronunciation = if (p.forall(_.isDefined)) Some(p.flatten) else None
-    val tone = if (t.forall(_.isDefined)) Some(t.flatten) else None
+    val pronunciation = {
+      val temp = rawPinyin.map(pinyin => pronunciations.get(pinyin))
+      if (temp.forall(_.isDefined)) Some(temp.flatten) else None
+    }
 
-    (pronunciation, tone) match {
+    (pronunciation, tones) match {
       case (Some(p), Some(t)) =>
         p.zip(t)
           .map {
@@ -201,16 +204,9 @@ object ChineseDefinitionService {
 case class ChinesePronunciationFromFile(pinyin: String,
                                         ipa: String,
                                         zhuyin: String,
-                                        wade_giles: String) {
-  def +(b: ChinesePronunciationFromFile): ChinesePronunciationFromFile =
-    ChinesePronunciationFromFile(
-      pinyin + " " + b.pinyin,
-      ipa + " " + b.ipa,
-      zhuyin + " " + b.zhuyin,
-      wade_giles + " " + b.wade_giles
-    )
+                                        wadeGiles: String) {
   def toDomain(tones: List[String] = List()) =
-    ChinesePronunciation(pinyin, ipa, zhuyin, wade_giles, tones)
+    ChinesePronunciation(pinyin, ipa, zhuyin, wadeGiles, tones)
 }
 object ChinesePronunciationFromFile {
   implicit val reads: Reads[ChinesePronunciationFromFile] =
