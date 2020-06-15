@@ -58,9 +58,9 @@ object WiktionaryDefinitionEntry {
       val source = hit.sourceAsMap
 
       val wordLanguage =
-        Language.values.find(_.toString == source("wordLanguage"))
+        Language.fromString(source("wordLanguage").toString)
       val definitionLanguage =
-        Language.values.find(_.toString == source("definitionLanguage"))
+        Language.fromString(source("definitionLanguage").toString)
 
       (wordLanguage, definitionLanguage) match {
         case (Some(word), Some(definition)) =>
