@@ -22,34 +22,8 @@ case class ChineseDefinition(override val subdefinitions: List[String],
     extends Definition {
   val wordLanguage: Language = Language.CHINESE
 
-  val (
-    pinyin: String,
-    ipa: String,
-    zhuyin: String,
-    wadeGiles: String,
-    tones: Seq[String]
-  ) =
-    if (inputPinyin != "") {
-      ChineseDefinitionService.getPronunciation(inputPinyin) match {
-        case (Some(pronunciation), Some(tone)) =>
-          (
-            pronunciation.pinyin,
-            pronunciation.ipa,
-            pronunciation.zhuyin,
-            pronunciation.wade_giles,
-            tone.toSeq
-          )
-        case (Some(pronunciation), None) =>
-          (
-            pronunciation.pinyin,
-            pronunciation.ipa,
-            pronunciation.zhuyin,
-            pronunciation.wade_giles,
-            List()
-          )
-        case _ => ("", "", "", "", List())
-      }
-    } else ("", "", "", "", List())
+  val pronunciation: ChinesePronunciation =
+    ChineseDefinitionService.getPronunciation(inputPinyin)
 
   val hsk: HSKLevel = ChineseDefinitionService.getHSK(simplified)
 
@@ -58,33 +32,29 @@ case class ChineseDefinition(override val subdefinitions: List[String],
       subdefinitions,
       tag,
       examples,
-      pinyin,
       simplified,
       traditional,
-      ipa,
-      zhuyin,
-      wadeGiles,
+      pronunciation,
       hsk
     )
 }
 
-case class ChinesePronunciation(pinyin: String,
-                                ipa: String,
-                                zhuyin: String,
-                                wade_giles: String) {
-  def +(b: ChinesePronunciation): ChinesePronunciation =
+case class ChinesePronunciation(pinyin: String = "",
+                                ipa: String = "",
+                                zhuyin: String = "",
+                                wadeGiles: String = "",
+                                tones: Seq[String] = List()) {
+  def +(that: ChinesePronunciation): ChinesePronunciation =
     ChinesePronunciation(
-      pinyin + " " + b.pinyin,
-      ipa + " " + b.ipa,
-      zhuyin + " " + b.zhuyin,
-      wade_giles + " " + b.wade_giles
+      this.pinyin + " " + that.pinyin,
+      this.ipa + " " + that.ipa,
+      this.zhuyin + " " + that.zhuyin,
+      this.wadeGiles + " " + that.wadeGiles,
+      this.tones ++ that.tones
     )
 }
 object ChinesePronunciation {
-  implicit val reads: Reads[ChinesePronunciation] =
-    Json.reads[ChinesePronunciation]
-  implicit val readsSeq: Reads[Seq[ChinesePronunciation]] =
-    Reads.seq(reads)
+  implicit val format: Format[ChinesePronunciation] = Json.format
 }
 
 object HskLevel extends Enumeration {
