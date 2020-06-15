@@ -58,7 +58,7 @@ class ChineseDefinitionService @Inject()(
     }
   }
 
-  private def enrichEnglishDefinitions(
+  private[this] def enrichEnglishDefinitions(
     word: String,
     definitions: Seq[DefinitionEntry]
   ): Seq[Definition] = {
@@ -88,7 +88,7 @@ class ChineseDefinitionService @Inject()(
     }
   }
 
-  private def partitionResultsByDictionary(
+  private[this] def partitionResultsByDictionary(
     definitions: Seq[DefinitionEntry]
   ): (List[CEDICTDefinitionEntry], List[WiktionaryDefinitionEntry]) = {
     definitions.foldLeft(
@@ -102,7 +102,7 @@ class ChineseDefinitionService @Inject()(
     )
   }
 
-  private def addCedictDataToWiktionaryResults(
+  private[this] def addCedictDataToWiktionaryResults(
     word: String,
     cedict: CEDICTDefinitionEntry,
     wiktionary: Seq[WiktionaryDefinitionEntry]
@@ -123,7 +123,7 @@ class ChineseDefinitionService @Inject()(
     )
   }
 
-  private def addWiktionaryDataToCedictResults(
+  private[this] def addWiktionaryDataToCedictResults(
     word: String,
     cedict: CEDICTDefinitionEntry,
     wiktionary: Seq[WiktionaryDefinitionEntry]
@@ -152,20 +152,22 @@ class ChineseDefinitionService @Inject()(
 object ChineseDefinitionService {
   val toneRegex = "[12345]+"
 
+  private[this] val pronunciations: Map[String, ChinesePronunciationFromFile] =
+    ContentFileLoader
+      .loadJsonResourceFile[Seq[ChinesePronunciationFromFile]](
+        "/resources/definition/chinese/pronunciation.json"
+      )
+      .map(pron => pron.pinyin -> pron)
+      .toMap
+
+  private[this] val hsk: HskHolder = ContentFileLoader
+    .loadJsonResourceFile[HskHolder]("/resources/definition/chinese/hsk.json")
+
   // This tags the words with zhuyin, wade giles, and IPA based on the pinyin.
   // It also pulls the tones out of the pinyin as a separate thing
   // This works because pinyin is a perfect sound system
   def getPronunciation(pinyin: String): ChinesePronunciation = {
-    val (rawPinyin, tones) = pinyin.split(" ") match {
-      case hasTones if hasTones.forall(_.takeRight(1).matches(toneRegex)) =>
-        (hasTones.map(_.dropRight(1)), Some(hasTones.map(_.takeRight(1))))
-      // Specifically remove all tone marks from the pinyin.
-      // Otherwise it will attempt to convert pinyin to other pronunciation with words in, which will fail
-      case hasBadTones
-          if hasBadTones.exists(_.takeRight(1).matches(toneRegex)) =>
-        (hasBadTones.map(_.dropRight(1)), None)
-      case noTones => (noTones, None)
-    }
+    val (rawPinyin, tones) = separatePinyinFromTones(pinyin)
 
     // We don't want to drop any because tone and pinyin must line up.
     // If any part of the input is garbage then the whole thing should be treated as such.
@@ -187,18 +189,32 @@ object ChineseDefinitionService {
     }
   }
 
+  // Pulling tone numbers off pinyin turns out to be complicated
+  // This returns the pinyin with all tones stripped,
+  private[this] def separatePinyinFromTones(
+    pinyin: String
+  ): (Array[String], Option[Array[String]]) = {
+    pinyin.split(" ") match {
+      case hasTones if hasTones.forall(_.takeRight(1).matches(toneRegex)) =>
+        (hasTones.map(_.dropRight(1)), Some(hasTones.map(_.takeRight(1))))
+      // Specifically remove all tone marks from the pinyin.
+      // Otherwise it will attempt to convert pinyin to other pronunciation with words in, which will fail
+      case hasBadTones
+          if hasBadTones.exists(_.takeRight(1).matches(toneRegex)) =>
+        // We need to remove the last number, but there might be numbers within. Eg; 2B
+        (
+          hasBadTones.map(
+            pinyin =>
+              if (pinyin.takeRight(1).matches("[0-9]")) pinyin.dropRight(1)
+              else pinyin
+          ),
+          None
+        )
+      case noTones => (noTones, None)
+    }
+  }
+
   def getHSK(simplified: String): HSKLevel = hsk.getLevel(simplified)
-
-  private[this] val pronunciations: Map[String, ChinesePronunciationFromFile] =
-    ContentFileLoader
-      .loadJsonResourceFile[Seq[ChinesePronunciationFromFile]](
-        "/resources/definition/chinese/pronunciation.json"
-      )
-      .map(pron => pron.pinyin -> pron)
-      .toMap
-
-  private[this] val hsk: HskHolder = ContentFileLoader
-    .loadJsonResourceFile[HskHolder]("/resources/definition/chinese/hsk.json")
 }
 
 case class ChinesePronunciationFromFile(pinyin: String,
