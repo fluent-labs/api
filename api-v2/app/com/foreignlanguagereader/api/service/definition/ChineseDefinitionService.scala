@@ -221,7 +221,7 @@ case class ChinesePronunciationFromFile(pinyin: String,
                                         ipa: String,
                                         zhuyin: String,
                                         wadeGiles: String) {
-  def toDomain(tones: List[String] = List()) =
+  def toDomain(tones: List[String] = List()): ChinesePronunciation =
     ChinesePronunciation(pinyin, ipa, zhuyin, wadeGiles, tones)
 }
 object ChinesePronunciationFromFile {
