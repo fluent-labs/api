@@ -153,10 +153,8 @@ object ChineseDefinitionService {
   // This tags the words with zhuyin, wade giles, and IPA based on the pinyin.
   // It also pulls the tones out of the pinyin as a separate thing
   // This works because pinyin is a perfect sound system
-  def getPronunciation(
-    pinyin: String
-  ): Tuple2[Option[ChinesePronunciation], Option[Array[String]]] = {
-    val (pronunciation, tones) = pinyin
+  def getPronunciation(pinyin: String): ChinesePronunciation = {
+    val (p, t) = pinyin
       .split(" ")
       .map {
         case hasTone if hasTone.takeRight(1).matches("[12345]+") =>
@@ -168,20 +166,29 @@ object ChineseDefinitionService {
       }
       .unzip
 
-    (pronunciation, tones) match {
-      case (p, t) if t.forall(_.isDefined) && p.forall(_.isDefined) =>
-        (Some(p.flatten.reduce(_ + _)), Some(t.flatten))
-      case (p, t) if p.forall(_.isDefined) =>
-        (Some(p.flatten.reduce(_ + _)), None)
-      case _ => (None, None)
+    // We don't want to drop any because tone and pinyin must line up.
+    // If any part of the input is garbage then the whole thing should be treated as such.
+    val pronunciation = if (p.forall(_.isDefined)) Some(p.flatten) else None
+    val tone = if (t.forall(_.isDefined)) Some(t.flatten) else None
+
+    (pronunciation, tone) match {
+      case (Some(p), Some(t)) =>
+        p.zip(t)
+          .map {
+            case (pron, tone) => pron.toDomain(List(tone))
+          }
+          .reduce(_ + _)
+      case (Some(p), None) =>
+        p.map(_.toDomain()).reduce(_ + _)
+      case _ => ChinesePronunciation()
     }
   }
 
   def getHSK(simplified: String): HSKLevel = hsk.getLevel(simplified)
 
-  private[this] val pronunciations: Map[String, ChinesePronunciation] =
+  private[this] val pronunciations: Map[String, ChinesePronunciationFromFile] =
     ContentFileLoader
-      .loadJsonResourceFile[Seq[ChinesePronunciation]](
+      .loadJsonResourceFile[Seq[ChinesePronunciationFromFile]](
         "/resources/definition/chinese/pronunciation.json"
       )
       .map(pron => pron.pinyin -> pron)
@@ -189,6 +196,27 @@ object ChineseDefinitionService {
 
   private[this] val hsk: HskHolder = ContentFileLoader
     .loadJsonResourceFile[HskHolder]("/resources/definition/chinese/hsk.json")
+}
+
+case class ChinesePronunciationFromFile(pinyin: String,
+                                        ipa: String,
+                                        zhuyin: String,
+                                        wade_giles: String) {
+  def +(b: ChinesePronunciationFromFile): ChinesePronunciationFromFile =
+    ChinesePronunciationFromFile(
+      pinyin + " " + b.pinyin,
+      ipa + " " + b.ipa,
+      zhuyin + " " + b.zhuyin,
+      wade_giles + " " + b.wade_giles
+    )
+  def toDomain(tones: List[String] = List()) =
+    ChinesePronunciation(pinyin, ipa, zhuyin, wade_giles, tones)
+}
+object ChinesePronunciationFromFile {
+  implicit val reads: Reads[ChinesePronunciationFromFile] =
+    Json.reads[ChinesePronunciationFromFile]
+  implicit val readsSeq: Reads[Seq[ChinesePronunciationFromFile]] =
+    Reads.seq(reads)
 }
 
 case class HskHolder(hsk1: Set[String],
