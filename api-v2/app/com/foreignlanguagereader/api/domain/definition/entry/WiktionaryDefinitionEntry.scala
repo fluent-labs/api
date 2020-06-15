@@ -10,7 +10,7 @@ import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.De
 import com.sksamuel.elastic4s.{Hit, HitReader}
 import play.api.libs.json.{Format, Json, Reads}
 
-import scala.util.{Success, Try}
+import scala.util.{Failure, Success, Try}
 
 case class WiktionaryDefinitionEntry(override val subdefinitions: List[String],
                                      tag: String,
@@ -56,16 +56,34 @@ object WiktionaryDefinitionEntry {
       extends HitReader[WiktionaryDefinitionEntry] {
     override def read(hit: Hit): Try[WiktionaryDefinitionEntry] = {
       val source = hit.sourceAsMap
-      Success(
-        WiktionaryDefinitionEntry(
-          source("subdefinitions").asInstanceOf[List[String]],
-          source("tag").toString,
-          source("examples").toString.asInstanceOf[List[String]],
-          Language.withName(source("wordLanguage").toString),
-          Language.withName(source("definitionLanguage").toString),
-          source("token").toString
-        )
-      )
+
+      val wordLanguage =
+        Language.values.find(_.toString == source("wordLanguage"))
+      val definitionLanguage =
+        Language.values.find(_.toString == source("definitionLanguage"))
+
+      (wordLanguage, definitionLanguage) match {
+        case (Some(word), Some(definition)) =>
+          Success(
+            WiktionaryDefinitionEntry(
+              source("subdefinitions").asInstanceOf[List[String]],
+              source("tag").toString,
+              source("examples").toString.asInstanceOf[List[String]],
+              word,
+              definition,
+              source("token").toString
+            )
+          )
+        case _ =>
+          val invalidInput: String =
+            if (definitionLanguage.isDefined) source("wordLanguage").toString
+            else source("definitionLanguage").toString
+          Failure(
+            new IllegalArgumentException(
+              s"Invalid language $invalidInput returned from elasticsearch"
+            )
+          )
+      }
     }
   }
 }
