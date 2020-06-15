@@ -10,7 +10,6 @@ import com.foreignlanguagereader.api.dto.v1.definition.{
 case class GenericDefinition(subdefinitions: List[String],
                              tag: String,
                              examples: List[String],
-                             ipa: String,
                              // These fields are needed for elasticsearch lookup
                              // But do not need to be presented to the user.
                              definitionLanguage: Language,

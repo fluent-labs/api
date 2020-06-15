@@ -8,7 +8,6 @@ trait Definition {
   val subdefinitions: List[String]
   val tag: String
   val examples: List[String]
-  val ipa: String
   // These fields are needed for elasticsearch lookup
   // But do not need to be presented to the user.
   val definitionLanguage: Language
@@ -24,7 +23,6 @@ object Definition {
   def apply(subdefinitions: List[String],
             tag: String,
             examples: List[String],
-            ipa: String,
             wordLanguage: Language,
             definitionLanguage: Language,
             source: DefinitionSource,
@@ -33,7 +31,6 @@ object Definition {
       subdefinitions,
       tag,
       examples,
-      ipa,
       wordLanguage,
       definitionLanguage,
       source,
