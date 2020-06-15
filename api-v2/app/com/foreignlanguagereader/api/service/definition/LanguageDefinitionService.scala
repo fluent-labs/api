@@ -69,7 +69,7 @@ trait LanguageDefinitionService {
   // This is the main method that consumers will call
   def getDefinitions(definitionLanguage: Language,
                      word: String): Future[Option[Seq[Definition]]] = {
-    findOrFetchDefinitions(definitionLanguage, word) map {
+    findOrFetchDefinitions(definitionLanguage, preprocessTokenForRequest(word)) map {
       case Some(definitions) =>
         Some(enrichDefinitions(definitionLanguage, word, definitions))
       case None =>
