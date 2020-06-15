@@ -42,6 +42,9 @@ class ChineseDefinitionTest extends AnyFunSpec {
         assert(noPinyin.pronunciation.wadeGiles == "")
       }
       it("does not accept invalid tones") {
+        // Edge case warning! Pronunciation check is necessary
+        // If you don't strip all tones when one tone is bad, then you might try to look up pinyin with tones included
+        // That will come back empty, and is a bug.
         val badTone = example.copy(inputPinyin = "ni3 hao6")
         assert(badTone.pronunciation.pinyin == "ni hao")
         assert(badTone.pronunciation.ipa == "[ni] [xɑʊ̯]")
@@ -52,6 +55,15 @@ class ChineseDefinitionTest extends AnyFunSpec {
 
       it("can handle missing tones") {
         val missingTone = example.copy(inputPinyin = "ni hao")
+        assert(missingTone.pronunciation.pinyin == "ni hao")
+        assert(missingTone.pronunciation.ipa == "[ni] [xɑʊ̯]")
+        assert(missingTone.pronunciation.zhuyin == "ㄋㄧ ㄏㄠ")
+        assert(missingTone.pronunciation.wadeGiles == "ni hao")
+        assert(missingTone.pronunciation.tones.isEmpty)
+      }
+
+      it("can handle partially missing tones") {
+        val missingTone = example.copy(inputPinyin = "ni hao3")
         assert(missingTone.pronunciation.pinyin == "ni hao")
         assert(missingTone.pronunciation.ipa == "[ni] [xɑʊ̯]")
         assert(missingTone.pronunciation.zhuyin == "ㄋㄧ ㄏㄠ")
