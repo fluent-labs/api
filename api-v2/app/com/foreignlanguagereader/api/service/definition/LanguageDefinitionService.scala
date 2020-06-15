@@ -24,7 +24,8 @@ import scala.concurrent.{ExecutionContext, Future}
  * File dictionaries will be loaded into elasticsearch, and only fetched there.
  * Web dictionaries can be scraped on request, but should be cached in elasticsearch.
  *
- * Implementing a language means defining two behaviors:
+ * Implementing a language means defining three behaviors:
+ * - preprocessTokenForRequest lets you do any normalizing of a word before searching. Eg: lemmatization (run, runs, running become the same word)
  * - enrichDefinitions will combine multiple dictionaries into one set of definitions based on the quality of the inputs.
  * - Adding any language specific sources into the definitionFetchers. By default Wiktionary is provided to all languages
  *
@@ -46,6 +47,10 @@ trait LanguageDefinitionService {
   val webSources: Set[DefinitionSource]
 
   // These are strongly recommended to implement, but have sane defaults
+
+  // Pre-request hook for normalizing user requests. Suggested for lemmatization
+  // Eg: run, runs, running all become run so you don't keep re-teaching the same word
+  def preprocessTokenForRequest(token: String): String = token
 
   // Functions that can fetch definitions from web sources should be registered here.
   val definitionFetchers
