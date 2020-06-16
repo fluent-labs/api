@@ -10,22 +10,24 @@ import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.De
 import com.sksamuel.elastic4s.{Hit, HitReader}
 import play.api.libs.json.{Format, Json, Reads}
 
-import scala.util.{Success, Try}
+import scala.util.{Failure, Success, Try}
 
 case class WiktionaryDefinitionEntry(override val subdefinitions: List[String],
                                      tag: String,
                                      examples: List[String],
-                                     override val language: Language,
+                                     override val wordLanguage: Language,
+                                     override val definitionLanguage: Language,
                                      override val token: String,
                                      override val source: DefinitionSource =
                                        DefinitionSource.WIKTIONARY)
     extends DefinitionEntry {
-  override lazy val toDefinition: Definition = language match {
+  override lazy val toDefinition: Definition = wordLanguage match {
     case Language.CHINESE =>
       ChineseDefinition(
         subdefinitions,
         tag,
         examples,
+        definitionLanguage = definitionLanguage,
         source = source,
         token = token
       )
@@ -34,8 +36,8 @@ case class WiktionaryDefinitionEntry(override val subdefinitions: List[String],
         subdefinitions,
         tag,
         examples,
-        "",
-        language,
+        wordLanguage,
+        definitionLanguage,
         DefinitionSource.WIKTIONARY,
         token
       )
@@ -54,15 +56,34 @@ object WiktionaryDefinitionEntry {
       extends HitReader[WiktionaryDefinitionEntry] {
     override def read(hit: Hit): Try[WiktionaryDefinitionEntry] = {
       val source = hit.sourceAsMap
-      Success(
-        WiktionaryDefinitionEntry(
-          source("subdefinitions").asInstanceOf[List[String]],
-          source("tag").toString,
-          source("examples").toString.asInstanceOf[List[String]],
-          Language.withName(source("language").toString),
-          source("token").toString
-        )
-      )
+
+      val wordLanguage =
+        Language.fromString(source("wordLanguage").toString)
+      val definitionLanguage =
+        Language.fromString(source("definitionLanguage").toString)
+
+      (wordLanguage, definitionLanguage) match {
+        case (Some(word), Some(definition)) =>
+          Success(
+            WiktionaryDefinitionEntry(
+              source("subdefinitions").asInstanceOf[List[String]],
+              source("tag").toString,
+              source("examples").toString.asInstanceOf[List[String]],
+              word,
+              definition,
+              source("token").toString
+            )
+          )
+        case _ =>
+          val invalidInput: String =
+            if (definitionLanguage.isDefined) source("wordLanguage").toString
+            else source("definitionLanguage").toString
+          Failure(
+            new IllegalArgumentException(
+              s"Invalid language $invalidInput returned from elasticsearch"
+            )
+          )
+      }
     }
   }
 }

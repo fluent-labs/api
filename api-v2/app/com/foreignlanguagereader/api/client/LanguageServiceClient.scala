@@ -35,7 +35,7 @@ class LanguageServiceClient @Inject()(config: Configuration,
   val languageServiceAuthToken = "simpletoken"
 
   // Used for the health check. Just makes sure we can connect to language service
-  def checkConnection(timeout: Duration): Future[ReadinessStatus] = {
+  def checkConnection(timeout: Duration): Future[ReadinessStatus] =
     ws.url(s"$languageServiceBaseUrl/health")
       .withRequestTimeout(timeout)
       .get()
@@ -55,10 +55,8 @@ class LanguageServiceClient @Inject()(config: Configuration,
             .error(s"Failed to connect to language service: ${e.getMessage}", e)
           ReadinessStatus.DOWN
       }
-  }
 
   def getDefinition(wordLanguage: Language,
-                    _definitionLanguage: Language,
                     word: String): Future[Option[Seq[DefinitionEntry]]] = {
     val url =
       s"$languageServiceBaseUrl/v1/definition/$wordLanguage/$word"

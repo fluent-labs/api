@@ -1,12 +1,12 @@
 package com.foreignlanguagereader.api.client
 
-import java.util.concurrent.TimeUnit
-
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionEntry
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus.ReadinessStatus
+import java.util.concurrent.TimeUnit
+import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s.http.JavaClient
 import com.sksamuel.elastic4s.requests.searches.SearchResponse
 import com.sksamuel.elastic4s.{
@@ -22,6 +22,8 @@ import play.api.{Configuration, Logger}
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
 import com.sksamuel.elastic4s.playjson._
+
+import scala.util.{Failure, Success, Try}
 
 class ElasticsearchClient @Inject()(config: Configuration,
                                     val system: ActorSystem) {
@@ -40,32 +42,32 @@ class ElasticsearchClient @Inject()(config: Configuration,
   val client = ElasticClient(JavaClient(ElasticProperties(elasticSearchUrl)))
 
   val definitionsIndex = "definitions"
+  val maxConcurrentInserts = 5
 
-  import com.sksamuel.elastic4s.ElasticDsl._
-
-  def checkConnection(timeout: Duration): ReadinessStatus =
-    try {
-      Await.result(client.execute(indexExists(definitionsIndex)), timeout) match {
-        case RequestSuccess(_, _, _, result) if result.exists =>
-          ReadinessStatus.UP
-        case RequestSuccess(_, _, _, _) =>
-          logger.error(
-            s"Error connecting to elasticsearch: index $definitionsIndex does not exist"
-          )
-          ReadinessStatus.DOWN
-        case RequestFailure(_, _, _, error) =>
-          logger.error(
-            s"Error connecting to elasticsearch: ${error.reason}",
-            error.asException
-          )
-          ReadinessStatus.DOWN
-      }
-    } catch {
-      case e: Exception =>
+  def checkConnection(timeout: Duration): ReadinessStatus = {
+    Try(Await.result(client.execute(indexExists(definitionsIndex)), timeout)) match {
+      case Success(result) =>
+        result match {
+          case RequestSuccess(_, _, _, result) if result.exists =>
+            ReadinessStatus.UP
+          case RequestSuccess(_, _, _, _) =>
+            logger.error(
+              s"Error connecting to elasticsearch: index $definitionsIndex does not exist"
+            )
+            ReadinessStatus.DOWN
+          case RequestFailure(_, _, _, error) =>
+            logger.error(
+              s"Error connecting to elasticsearch: ${error.reason}",
+              error.asException
+            )
+            ReadinessStatus.DOWN
+        }
+      case Failure(e) =>
         logger
           .error(s"Failed to connect to elasticsearch: ${e.getMessage}", e)
         ReadinessStatus.DOWN
     }
+  }
 
   def getDefinition(wordLanguage: Language,
                     definitionLanguage: Language,
@@ -76,7 +78,8 @@ class ElasticsearchClient @Inject()(config: Configuration,
           search(definitionsIndex).query(
             boolQuery()
               .must(
-                matchQuery("language", wordLanguage.toString),
+                matchQuery("wordLanguage", wordLanguage.toString),
+                matchQuery("definitionLanguage", definitionLanguage.toString),
                 matchQuery("token", word)
               )
           )
@@ -105,20 +108,21 @@ class ElasticsearchClient @Inject()(config: Configuration,
 
   def saveDefinitions(definition: Seq[DefinitionEntry]): Unit = {
     definition
-      .grouped(5)
+      .grouped(maxConcurrentInserts)
       .foreach(
         definitions =>
-          try {
-            client.execute {
-              bulk(
-                definitions
-                  .map(
-                    definition => indexInto(definitionsIndex).doc(definition)
-                  )
+          Try(client.execute {
+            bulk(
+              definitions
+                .map(definition => indexInto(definitionsIndex).doc(definition))
+            )
+          }) match {
+            case Success(s) =>
+              s.foreach(
+                r =>
+                  logger.info(s"Successfully saved to elasticsearch: ${r.body}")
               )
-            }
-          } catch {
-            case e: Exception =>
+            case Failure(e) =>
               logger.warn(
                 s"Failed to persist definitions to elasticsearch: $definitions",
                 e

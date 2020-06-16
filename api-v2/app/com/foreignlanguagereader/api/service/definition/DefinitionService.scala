@@ -37,9 +37,9 @@ class DefinitionService @Inject()(
       case Language.CHINESE =>
         chineseDefinitionService.getDefinitions(definitionLanguage, word)
       case Language.ENGLISH =>
-        englishDefinitionService.getDefinitions(wordLanguage, word)
+        englishDefinitionService.getDefinitions(definitionLanguage, word)
       case Language.SPANISH =>
-        spanishDefinitionService.getDefinitions(wordLanguage, word)
+        spanishDefinitionService.getDefinitions(definitionLanguage, word)
     }
 
   // Convenience method for getting definitions in parallel.

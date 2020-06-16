@@ -4,12 +4,11 @@ import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.combined.{
   ChineseDefinition,
-  Definition,
-  HSKLevel
+  Definition
 }
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
 import com.sksamuel.elastic4s.{Hit, HitReader}
-import play.api.libs.json.{Format, Json, Reads, Writes}
+import play.api.libs.json.{Format, Json, Reads}
 
 import scala.util.{Success, Try}
 
@@ -19,8 +18,9 @@ case class CEDICTDefinitionEntry(override val subdefinitions: List[String],
                                  traditional: String,
                                  override val token: String)
     extends DefinitionEntry {
-  val language: Language = Language.CHINESE
-  val source: DefinitionSource = DefinitionSource.CEDICT
+  override val wordLanguage: Language = Language.CHINESE
+  override val definitionLanguage: Language = Language.ENGLISH
+  override val source: DefinitionSource = DefinitionSource.CEDICT
 
   override lazy val toDefinition: Definition = ChineseDefinition(
     subdefinitions,
@@ -29,6 +29,7 @@ case class CEDICTDefinitionEntry(override val subdefinitions: List[String],
     pinyin,
     simplified,
     traditional,
+    definitionLanguage,
     DefinitionSource.CEDICT,
     token
   )

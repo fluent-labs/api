@@ -10,7 +10,8 @@ import scala.util.Try
 
 trait DefinitionEntry {
   val subdefinitions: List[String]
-  val language: Language
+  val wordLanguage: Language
+  val definitionLanguage: Language
   val source: DefinitionSource
   val token: String
 
@@ -49,7 +50,7 @@ object DefinitionEntry {
   implicit object DefinitionEntryHitReader extends HitReader[DefinitionEntry] {
     override def read(hit: Hit): Try[DefinitionEntry] = {
       val source = hit.sourceAsMap
-      source("source") match {
+      DefinitionSource.withName(source("source").toString) match {
         case DefinitionSource.CEDICT =>
           CEDICTDefinitionEntry.CEDICTHitReader.read(hit)
         case DefinitionSource.WIKTIONARY =>

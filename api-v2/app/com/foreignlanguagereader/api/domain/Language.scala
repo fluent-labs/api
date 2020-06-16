@@ -9,7 +9,8 @@ object Language extends Enumeration {
   val ENGLISH: Value = Value("ENGLISH")
   val SPANISH: Value = Value("SPANISH")
 
-  def isLanguage(s: String): Boolean = values.exists(_.toString == s)
+  def fromString(s: String): Option[Language] =
+    Language.values.find(_.toString == s)
 
   implicit val languageFormat: Format[Language] = new Format[Language] {
     def reads(json: JsValue) = JsSuccess(Language.withName(json.as[String]))
@@ -19,9 +20,9 @@ object Language extends Enumeration {
   implicit def pathBinder: PathBindable[Language] =
     new PathBindable[Language] {
       override def bind(key: String, value: String): Either[String, Language] =
-        value match {
-          case language if Language.isLanguage(language) =>
-            Right(Language.withName(value))
+        fromString(value) match {
+          case Some(language) =>
+            Right(language)
           case _ => Left(value)
         }
       override def unbind(key: String, value: Language): String = value.toString
