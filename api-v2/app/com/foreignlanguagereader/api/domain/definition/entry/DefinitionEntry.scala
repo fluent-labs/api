@@ -50,7 +50,7 @@ object DefinitionEntry {
   implicit object DefinitionEntryHitReader extends HitReader[DefinitionEntry] {
     override def read(hit: Hit): Try[DefinitionEntry] = {
       val source = hit.sourceAsMap
-      source("source") match {
+      DefinitionSource.withName(source("source").toString) match {
         case DefinitionSource.CEDICT =>
           CEDICTDefinitionEntry.CEDICTHitReader.read(hit)
         case DefinitionSource.WIKTIONARY =>
