@@ -68,30 +68,29 @@ class ChineseDefinitionService @Inject()(
     )
 
     (cedict, wiktionary) match {
-      case (cedict, wiktionary) if wiktionary.isEmpty =>
+      case (Some(cedict), Some(wiktionary)) =>
+        logger.info(s"Combining cedict and wiktionary definitions for $word")
+        mergeCedictAndWiktionary(word, cedict(0), wiktionary)
+      case (Some(cedict), None) =>
         logger.info(s"Using cedict definitions for $word")
         cedict.map(_.toDefinition)
-      case (cedict, wiktionary) if cedict.isEmpty =>
+      case (None, Some(wiktionary)) if cedict.isEmpty =>
         logger.info(s"Using wiktionary definitions for $word")
         wiktionary.map(_.toDefinition)
-      // If CEDICT doesn't have subdefinitions, then we should return wiktionary data
-      // We still want pronunciation and simplified/traditional mapping, so we will add cedict data
-      case (cedict, wiktionary) if cedict(0).subdefinitions.isEmpty =>
-        logger.info(s"Using enhanced wiktionary definitions for $word")
-        addCedictDataToWiktionaryResults(word, cedict(0), wiktionary)
-      // If are definitions from CEDICT, they are better.
-      // In that case, we only want part of speech tag and examples from wiktionary.
-      // But everything else will be the single CEDICT definition
-      case (cedict, wiktionary) =>
-        logger.info(s"Using enhanced cedict definitions for $word")
-        addWiktionaryDataToCedictResults(word, cedict(0), wiktionary)
+      // This should not happen. If it does then it's important to log it.
+      case (None, None) =>
+        val message =
+          s"Definitions were lost for chinese word $word, check the request partitioner"
+        logger.error(message)
+        throw new IllegalStateException(message)
     }
   }
 
   private[this] def partitionResultsByDictionary(
     definitions: Seq[DefinitionEntry]
-  ): (List[CEDICTDefinitionEntry], List[WiktionaryDefinitionEntry]) = {
-    definitions.foldLeft(
+  ): (Option[List[CEDICTDefinitionEntry]],
+      Option[List[WiktionaryDefinitionEntry]]) = {
+    val (cedict, wiktionary) = definitions.foldLeft(
       (List[CEDICTDefinitionEntry](), List[WiktionaryDefinitionEntry]())
     )(
       (acc, entry) =>
@@ -100,6 +99,27 @@ class ChineseDefinitionService @Inject()(
           case w: WiktionaryDefinitionEntry => (acc._1, w :: acc._2)
       }
     )
+    (
+      if (cedict.nonEmpty) Some(cedict) else None,
+      if (wiktionary.nonEmpty) Some(wiktionary) else None
+    )
+  }
+
+  private[this] def mergeCedictAndWiktionary(
+    word: String,
+    cedict: CEDICTDefinitionEntry,
+    wiktionary: Seq[WiktionaryDefinitionEntry]
+  ): Seq[ChineseDefinition] = {
+    cedict match {
+      case empty if empty.subdefinitions.isEmpty =>
+        // If CEDICT doesn't have subdefinitions, then we should return wiktionary data
+        // We still want pronunciation and simplified/traditional mapping, so we will add cedict data
+        addCedictDataToWiktionaryResults(word, cedict, wiktionary)
+      // If are definitions from CEDICT, they are better.
+      // In that case, we only want part of speech tag and examples from wiktionary.
+      // But everything else will be the single CEDICT definition
+      case _ => addWiktionaryDataToCedictResults(word, cedict, wiktionary)
+    }
   }
 
   private[this] def addCedictDataToWiktionaryResults(
