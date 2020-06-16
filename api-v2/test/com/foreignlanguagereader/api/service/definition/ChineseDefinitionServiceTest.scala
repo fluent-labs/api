@@ -100,6 +100,46 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           )
         }
       }
+
+      it("and returns cedict definitions if no wiktionary are found") {
+        when(
+          elasticsearchClientMock
+            .getDefinition(Language.CHINESE, Language.ENGLISH, "你好")
+        ).thenReturn(Some(List()))
+        when(languageServiceClientMock.getDefinition(Language.CHINESE, "你好"))
+          .thenReturn(Future.successful(Some(List(dummyCedictDefinition))))
+
+        chineseDefinitionService
+          .getDefinitions(Language.ENGLISH, "你好")
+          .map { result =>
+            assert(result.isDefined)
+            val definitions = result.get
+            assert(definitions.size == 1)
+            assert(definitions.exists(_.eq(dummyCedictDefinition.toDefinition)))
+          }
+      }
+
+      it(
+        "and returns wiktionary definitions if no cedict definitions are found"
+      ) {
+        when(
+          elasticsearchClientMock
+            .getDefinition(Language.CHINESE, Language.ENGLISH, "你好")
+        ).thenReturn(Some(List()))
+        when(languageServiceClientMock.getDefinition(Language.CHINESE, "你好"))
+          .thenReturn(Future.successful(Some(List(dummyWiktionaryDefinition))))
+
+        chineseDefinitionService
+          .getDefinitions(Language.ENGLISH, "你好")
+          .map { result =>
+            assert(result.isDefined)
+            val definitions = result.get
+            assert(definitions.size == 1)
+            assert(
+              definitions.exists(_.eq(dummyWiktionaryDefinition.toDefinition))
+            )
+          }
+      }
     }
   }
 }
