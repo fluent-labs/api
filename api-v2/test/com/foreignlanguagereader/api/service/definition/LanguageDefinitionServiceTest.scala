@@ -253,8 +253,8 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
             assert(response.isDefined)
             val results = response.get
             assert(results.length == 2)
-            results.find(_ == dummyWiktionaryDefinition.toDefinition)
-            results.find(_ == dummyCEDICTDefinition.toDefinition)
+            assert(results.exists(_.eq(dummyWiktionaryDefinition.toDefinition)))
+            assert(results.exists(_.eq(dummyCEDICTDefinition.toDefinition)))
 
             succeed
           }
