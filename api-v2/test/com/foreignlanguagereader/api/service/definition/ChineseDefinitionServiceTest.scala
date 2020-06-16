@@ -61,6 +61,15 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     "你好"
   )
 
+  val dummyWiktionaryDefinitionTwo = WiktionaryDefinitionEntry(
+    List("wiktionary definition 3", "wiktionary definition 4"),
+    "noun",
+    List("example 3", "example 4"),
+    Language.CHINESE,
+    Language.ENGLISH,
+    "你好"
+  )
+
   describe("When getting definitions for a single word") {
     it("Does not enhance non-english definitions") {
       // This will delegate to the base LanguageDefinitionService implementation
@@ -149,7 +158,13 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(languageServiceClientMock.getDefinition(Language.CHINESE, "你好"))
           .thenReturn(
             Future.successful(
-              Some(List(dummyCedictDefinition, dummyWiktionaryDefinition))
+              Some(
+                List(
+                  dummyCedictDefinition,
+                  dummyWiktionaryDefinition,
+                  dummyWiktionaryDefinitionTwo
+                )
+              )
             )
           )
 
@@ -165,13 +180,81 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
                 combined.subdefinitions == dummyCedictDefinition.subdefinitions
               )
               assert(combined.tag == dummyWiktionaryDefinition.tag)
-              assert(combined.examples == dummyWiktionaryDefinition.examples)
+              assert(
+                combined.examples == (dummyWiktionaryDefinitionTwo.examples ++ dummyWiktionaryDefinition.examples)
+              )
               assert(combined.pronunciation.pinyin == "ni hao")
               assert(combined.simplified == dummyCedictDefinition.simplified)
               assert(combined.traditional == dummyCedictDefinition.traditional)
               assert(combined.definitionLanguage == Language.ENGLISH)
               assert(combined.source == DefinitionSource.MULTIPLE)
               assert(combined.token == dummyCedictDefinition.token)
+          }
+      }
+
+      it(
+        "combines cedict and wiktionary definitions correctly when cedict entries are missing key data"
+      ) {
+        when(
+          elasticsearchClientMock
+            .getDefinition(Language.CHINESE, Language.ENGLISH, "你好")
+        ).thenReturn(Some(List()))
+        when(languageServiceClientMock.getDefinition(Language.CHINESE, "你好"))
+          .thenReturn(
+            Future.successful(
+              Some(
+                List(
+                  dummyCedictDefinition.copy(subdefinitions = List()),
+                  dummyWiktionaryDefinitionTwo,
+                  dummyWiktionaryDefinition
+                )
+              )
+            )
+          )
+
+        chineseDefinitionService
+          .getDefinitions(Language.ENGLISH, "你好")
+          .map {
+            case result: Some[Seq[ChineseDefinition]] =>
+              assert(result.isDefined)
+              val definitions = result.get
+              assert(definitions.size == 2)
+              val combinedOne = definitions(0)
+              val combinedTwo = definitions(1)
+
+              print(combinedOne)
+              print(combinedTwo)
+
+              // Cedict sourced data should be the same for all
+              assert(definitions.forall(_.pronunciation.pinyin == "ni hao"))
+              assert(
+                definitions
+                  .forall(_.simplified == dummyCedictDefinition.simplified)
+              )
+              assert(
+                definitions
+                  .forall(_.traditional == dummyCedictDefinition.traditional)
+              )
+              assert(definitions.forall(_.token == dummyCedictDefinition.token))
+
+              // Generated data should be the same for all
+              assert(
+                definitions.forall(_.definitionLanguage == Language.ENGLISH)
+              )
+              assert(definitions.forall(_.source == DefinitionSource.MULTIPLE))
+
+              assert(
+                combinedOne.subdefinitions == dummyWiktionaryDefinition.subdefinitions
+              )
+              assert(combinedOne.tag == dummyWiktionaryDefinition.tag)
+              assert(combinedOne.examples == dummyWiktionaryDefinition.examples)
+              assert(
+                combinedTwo.subdefinitions == dummyWiktionaryDefinitionTwo.subdefinitions
+              )
+              assert(combinedTwo.tag == dummyWiktionaryDefinitionTwo.tag)
+              assert(
+                combinedTwo.examples == dummyWiktionaryDefinitionTwo.examples
+              )
           }
       }
     }

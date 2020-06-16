@@ -138,7 +138,7 @@ class ChineseDefinitionService @Inject()(
           cedict.traditional,
           w.definitionLanguage,
           DefinitionSource.MULTIPLE,
-          w.tag
+          word
       )
     )
   }
