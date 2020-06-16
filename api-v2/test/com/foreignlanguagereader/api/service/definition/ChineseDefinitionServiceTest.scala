@@ -83,7 +83,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           )
         }
     }
-    describe("it can enhance english definitions") {
+    describe("can enhance english definitions") {
       it("and throws an error if no definitions are given to it") {
         when(
           elasticsearchClientMock
@@ -138,6 +138,40 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
             assert(
               definitions.exists(_.eq(dummyWiktionaryDefinition.toDefinition))
             )
+          }
+      }
+
+      it("combines cedict and wiktionary definitions correctly") {
+        when(
+          elasticsearchClientMock
+            .getDefinition(Language.CHINESE, Language.ENGLISH, "你好")
+        ).thenReturn(Some(List()))
+        when(languageServiceClientMock.getDefinition(Language.CHINESE, "你好"))
+          .thenReturn(
+            Future.successful(
+              Some(List(dummyCedictDefinition, dummyWiktionaryDefinition))
+            )
+          )
+
+        chineseDefinitionService
+          .getDefinitions(Language.ENGLISH, "你好")
+          .map {
+            case result: Some[Seq[ChineseDefinition]] =>
+              assert(result.isDefined)
+              val definitions = result.get
+              assert(definitions.size == 1)
+              val combined = definitions(0)
+              assert(
+                combined.subdefinitions == dummyCedictDefinition.subdefinitions
+              )
+              assert(combined.tag == dummyWiktionaryDefinition.tag)
+              assert(combined.examples == dummyWiktionaryDefinition.examples)
+              assert(combined.pronunciation.pinyin == "ni hao")
+              assert(combined.simplified == dummyCedictDefinition.simplified)
+              assert(combined.traditional == dummyCedictDefinition.traditional)
+              assert(combined.definitionLanguage == Language.ENGLISH)
+              assert(combined.source == DefinitionSource.MULTIPLE)
+              assert(combined.token == dummyCedictDefinition.token)
           }
       }
     }
