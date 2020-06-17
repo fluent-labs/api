@@ -32,3 +32,8 @@ libraryDependencies += "com.sksamuel.elastic4s" % "elastic4s-json-play_2.13" % e
 
 // Adds additional packages into conf/routes
 // play.sbt.routes.RoutesKeys.routesImport += "com.foreignlanguagereader.binders._"
+
+// Code coverage settings
+coverageEnabled := true
+coverageMinimum := 50
+coverageFailOnMinimum := true
