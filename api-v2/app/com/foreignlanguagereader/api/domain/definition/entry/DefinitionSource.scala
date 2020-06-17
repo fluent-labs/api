@@ -13,6 +13,9 @@ object DefinitionSource extends Enumeration {
   val WIKTIONARY: Value = Value("WIKTIONARY")
   val MULTIPLE: Value = Value("MULTIPLE")
 
+  def fromString(source: String): Option[DefinitionSource] =
+    DefinitionSource.values.find(_.toString == source)
+
   // Makes sure we can serialize and deserialize this to JSON
   implicit val sourceFormat: Format[DefinitionSource] =
     new Format[DefinitionSource] {
