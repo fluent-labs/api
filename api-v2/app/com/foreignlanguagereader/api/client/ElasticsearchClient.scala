@@ -72,37 +72,38 @@ class ElasticsearchClient @Inject()(config: Configuration,
   def getDefinition(wordLanguage: Language,
                     definitionLanguage: Language,
                     word: String): Option[Seq[DefinitionEntry]] = {
-    try {
-      val request: Future[Response[SearchResponse]] = client
-        .execute({
-          search(definitionsIndex).query(
-            boolQuery()
-              .must(
-                matchQuery("wordLanguage", wordLanguage.toString),
-                matchQuery("definitionLanguage", definitionLanguage.toString),
-                matchQuery("token", word)
-              )
-          )
-        })
+    val request: Future[Response[SearchResponse]] = client
+      .execute({
+        search(definitionsIndex).query(
+          boolQuery()
+            .must(
+              matchQuery("wordLanguage", wordLanguage.toString),
+              matchQuery("definitionLanguage", definitionLanguage.toString),
+              matchQuery("token", word)
+            )
+        )
+      })
 
-      Await.result(request, elasticSearchTimeout) match {
-        case RequestSuccess(_, _, _, result) =>
-          val results = result.hits.hits.map(_.to[DefinitionEntry])
-          if (results.nonEmpty) Some(results.toIndexedSeq) else None
-        case RequestFailure(_, _, _, error) =>
-          logger.error(
-            s"Error fetching definitions from elasticsearch: ${error.reason}",
-            error.asException
-          )
-          None
-      }
-    } catch {
-      case e: Exception =>
+    Try(Await.result(request, elasticSearchTimeout)) match {
+      case Success(result) =>
+        result match {
+          case RequestSuccess(_, _, _, result) =>
+            val results = result.hits.hits.map(_.to[DefinitionEntry])
+            if (results.nonEmpty) Some(results.toIndexedSeq) else None
+          case RequestFailure(_, _, _, error) =>
+            logger.error(
+              s"Error fetching definitions from elasticsearch: ${error.reason}",
+              error.asException
+            )
+            None
+        }
+      case Failure(e) =>
         logger.warn(
           s"Failed to get definitions in $language for word $word from elasticsearch: ${e.getMessage}",
           e
         )
         None
+
     }
   }
 
