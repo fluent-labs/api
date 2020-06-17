@@ -26,7 +26,7 @@ import javax.inject.Inject
 import play.api.Logger
 import play.api.libs.json.{Json, Reads}
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
   * Language specific handling for Chinese.
@@ -45,6 +45,22 @@ class ChineseDefinitionService @Inject()(
     Set(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
   override val webSources: Set[DefinitionSource] = Set(
     DefinitionSource.WIKTIONARY
+  )
+
+  def cedictFetcher
+    : (Language, String) => Future[Option[Seq[DefinitionEntry]]] =
+    (_, word: String) =>
+      Cedict.getDefinition(word) match {
+        case Some(entry) => Future.successful(Some(List(entry)))
+        case None        => Future.successful(None)
+    }
+
+  override val definitionFetchers
+    : Map[(DefinitionSource, Language), (Language, String) => Future[
+      Option[Seq[DefinitionEntry]]
+    ]] = Map(
+    (DefinitionSource.CEDICT, Language.ENGLISH) -> cedictFetcher,
+    (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
   )
 
   // Convert everything to traditional

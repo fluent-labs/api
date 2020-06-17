@@ -27,6 +27,9 @@ object Cedict {
         throw new IllegalStateException("Failed to load CEDICT", e)
     }
 
+  def getDefinition(token: String): Option[CEDICTDefinitionEntry] =
+    definitions.get(token)
+
   private[this] val simplifiedToTraditionalMapping: Map[String, String] =
     definitions.values.map(entry => entry.simplified -> entry.traditional).toMap
   private[this] val simplified: Set[String] =
