@@ -83,26 +83,26 @@ trait LanguageDefinitionService {
   // Below here is trait behavior, implementers need not read further
 
   // Handles fetching definitions from elasticsearch, and getting sources that are missing
-  private def findOrFetchDefinitions(
+  private[this] def findOrFetchDefinitions(
     definitionLanguage: Language,
     word: String
   ): Future[Option[Seq[DefinitionEntry]]] = {
     elasticsearch.getDefinition(wordLanguage, definitionLanguage, word) match {
-      case Some(d) if missingWebSources(d).isEmpty =>
+      case Some(allSources) if missingWebSources(allSources).isEmpty =>
         logger.info(
           s"Using elasticsearch definitions for $word in $wordLanguage"
         )
-        Future.successful(Some(d))
-      case Some(d) =>
-        val missing = missingWebSources(d)
+        Future.successful(Some(allSources))
+      case Some(someSources) =>
+        val missing = missingWebSources(someSources)
         logger.info(
           s"Refreshing definitions for $word in $wordLanguage from $sources"
         )
         fetchDefinitions(missing, definitionLanguage, word) map {
           case Some(refetched) =>
             elasticsearch.saveDefinitions(refetched)
-            Some(d ++ refetched)
-          case None => Some(d)
+            Some(someSources ++ refetched)
+          case None => Some(someSources)
         }
       // Is this just a special case of Some(d) where there are missing sources?
       case None =>
@@ -125,7 +125,7 @@ trait LanguageDefinitionService {
     webSources.filterNot(source => definitions.exists(_.source == source))
 
   // Checks registered definition fetchers and uses them
-  private def fetchDefinition(
+  private[this] def fetchDefinition(
     source: DefinitionSource,
     definitionLanguage: Language,
     word: String
@@ -154,11 +154,11 @@ trait LanguageDefinitionService {
     (_, word: String) => languageServiceClient.getDefinition(wordLanguage, word)
 
   // Convenience method to request multiple sources in parallel
-  private def fetchDefinitions(
+  private[this] def fetchDefinitions(
     sources: Set[DefinitionSource],
     definitionLanguage: Language,
     word: String
-  ): Future[Option[Seq[DefinitionEntry]]] = {
+  ): Future[Option[Seq[DefinitionEntry]]] =
     // Fire off all the results
     Future
       .sequence(
@@ -170,14 +170,13 @@ trait LanguageDefinitionService {
           // Remove all empty results
           sources.flatten match {
             // No results found
-            case s if s.isEmpty => None
+            case empty if empty.isEmpty => None
             // Combine all the results together
             case s =>
               s.reduce(_ ++ _) match {
-                case d if d.isEmpty => None
+                case e if e.isEmpty => None
                 case d              => Some(d)
               }
         }
       )
-  }
 }
