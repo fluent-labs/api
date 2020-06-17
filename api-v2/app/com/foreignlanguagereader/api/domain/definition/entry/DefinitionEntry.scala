@@ -24,14 +24,19 @@ object DefinitionEntry {
     new Format[DefinitionEntry] {
       override def reads(json: JsValue): JsResult[DefinitionEntry] = {
         json \ "source" match {
-          case JsDefined(JsString(source))
-              if source.equals(DefinitionSource.CEDICT.toString) =>
-            CEDICTDefinitionEntry.format.reads(json)
-          case JsDefined(JsString(source))
-              if source.equals(DefinitionSource.WIKTIONARY.toString) =>
-            WiktionaryDefinitionEntry.format.reads(json)
+          case JsDefined(JsString(source)) =>
+            DefinitionSource.fromString(source) match {
+              case Some(DefinitionSource.CEDICT) =>
+                CEDICTDefinitionEntry.format.reads(json)
+              case Some(DefinitionSource.WIKTIONARY) =>
+                WiktionaryDefinitionEntry.format.reads(json)
+              case _ =>
+                JsError("Unknown definition source")
+            }
           case _ =>
-            JsError("Unknown definition source")
+            JsError(
+              "Definition source was not defined, cannot decide how to handle"
+            )
         }
       }
       override def writes(o: DefinitionEntry): JsValue = o match {
