@@ -11,13 +11,13 @@ import play.api.libs.json._
 case class Readiness(database: ReadinessStatus,
                      content: ReadinessStatus,
                      languageService: ReadinessStatus) {
-  def overall: ReadinessStatus = {
-    val statuses = List(database, content, languageService)
-    if (statuses.forall(_.eq(ReadinessStatus.UP))) ReadinessStatus.UP
-    else if (statuses.forall(_.eq(ReadinessStatus.DOWN)))
-      ReadinessStatus.DOWN
-    else ReadinessStatus.DEGRADED
-  }
+  def overall: ReadinessStatus =
+    List(database, content, languageService) match {
+      case up if up.forall(_.eq(ReadinessStatus.UP)) => ReadinessStatus.UP
+      case down if down.forall(_.eq(ReadinessStatus.DOWN)) =>
+        ReadinessStatus.DOWN
+      case _ => ReadinessStatus.DEGRADED
+    }
 }
 
 object Readiness {
@@ -32,7 +32,7 @@ object ReadinessStatus extends Enumeration {
   implicit val readinessStatusFormat: Format[ReadinessStatus] =
     new Format[ReadinessStatus] {
       def reads(json: JsValue) =
-        JsSuccess(ReadinessStatus.withName(json.as[String]))
+        JsError("We don't read these")
       def writes(status: ReadinessStatus.ReadinessStatus) =
         JsString(status.toString)
     }
