@@ -20,6 +20,8 @@ object DefinitionDTO {
     }
 
   // Default to generic
-  def apply(subdefinitions: List[String], tag: String, examples: List[String]) =
+  def apply(subdefinitions: List[String],
+            tag: String,
+            examples: List[String]): DefinitionDTO =
     GenericDefinitionDTO(subdefinitions, tag, examples)
 }
