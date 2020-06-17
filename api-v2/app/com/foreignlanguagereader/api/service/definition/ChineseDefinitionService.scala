@@ -92,13 +92,13 @@ class ChineseDefinitionService @Inject()(
       Option[List[WiktionaryDefinitionEntry]]) = {
     val (cedict, wiktionary) = definitions.foldLeft(
       (List[CEDICTDefinitionEntry](), List[WiktionaryDefinitionEntry]())
-    )(
-      (acc, entry) =>
-        entry match {
-          case c: CEDICTDefinitionEntry     => (c :: acc._1, acc._2)
-          case w: WiktionaryDefinitionEntry => (acc._1, w :: acc._2)
+    )((acc, entry) => {
+      val (cedict, wiktionary) = acc
+      entry match {
+        case c: CEDICTDefinitionEntry     => (c :: cedict, wiktionary)
+        case w: WiktionaryDefinitionEntry => (cedict, w :: wiktionary)
       }
-    )
+    })
     (
       if (cedict.nonEmpty) Some(cedict) else None,
       if (wiktionary.nonEmpty) Some(wiktionary) else None
