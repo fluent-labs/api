@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.api.service.definition
+package com.foreignlanguagereader.api.repository.definition
 
 import com.foreignlanguagereader.api.domain.definition.entry.CEDICTDefinitionEntry
 import play.api.Logger

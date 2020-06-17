@@ -21,6 +21,7 @@ import com.foreignlanguagereader.api.domain.definition.entry.{
   DefinitionSource,
   WiktionaryDefinitionEntry
 }
+import com.foreignlanguagereader.api.repository.definition.Cedict
 import com.foreignlanguagereader.api.util.ContentFileLoader
 import javax.inject.Inject
 import play.api.Logger
