@@ -26,7 +26,7 @@ import javax.inject.Inject
 import play.api.Logger
 import play.api.libs.json.{Json, Reads}
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
   * Language specific handling for Chinese.
@@ -46,6 +46,28 @@ class ChineseDefinitionService @Inject()(
   override val webSources: Set[DefinitionSource] = Set(
     DefinitionSource.WIKTIONARY
   )
+
+  def cedictFetcher
+    : (Language, String) => Future[Option[Seq[DefinitionEntry]]] =
+    (_, word: String) =>
+      Cedict.getDefinition(word) match {
+        case Some(entry) => Future.successful(Some(List(entry)))
+        case None        => Future.successful(None)
+    }
+
+  override val definitionFetchers
+    : Map[(DefinitionSource, Language), (Language, String) => Future[
+      Option[Seq[DefinitionEntry]]
+    ]] = Map(
+    (DefinitionSource.CEDICT, Language.ENGLISH) -> cedictFetcher,
+    (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
+  )
+
+  // Convert everything to traditional
+  // We need one lookup token for elasticsearch.
+  // And traditional is more specific
+  override def preprocessTokenForRequest(token: String): String =
+    Cedict.convertToTraditional(token)
 
   override def enrichDefinitions(
     definitionLanguage: Language,
@@ -92,13 +114,13 @@ class ChineseDefinitionService @Inject()(
       Option[List[WiktionaryDefinitionEntry]]) = {
     val (cedict, wiktionary) = definitions.foldLeft(
       (List[CEDICTDefinitionEntry](), List[WiktionaryDefinitionEntry]())
-    )(
-      (acc, entry) =>
-        entry match {
-          case c: CEDICTDefinitionEntry     => (c :: acc._1, acc._2)
-          case w: WiktionaryDefinitionEntry => (acc._1, w :: acc._2)
+    )((acc, entry) => {
+      val (cedict, wiktionary) = acc
+      entry match {
+        case c: CEDICTDefinitionEntry     => (c :: cedict, wiktionary)
+        case w: WiktionaryDefinitionEntry => (cedict, w :: wiktionary)
       }
-    )
+    })
     (
       if (cedict.nonEmpty) Some(cedict) else None,
       if (wiktionary.nonEmpty) Some(wiktionary) else None

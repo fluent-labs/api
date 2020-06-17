@@ -1,6 +1,13 @@
 package com.foreignlanguagereader.api.domain.definition.entry
 
-import play.api.libs.json.{Format, JsString, JsSuccess, JsValue}
+import play.api.libs.json.{
+  Format,
+  JsError,
+  JsResult,
+  JsString,
+  JsSuccess,
+  JsValue
+}
 
 /*
  * An enum that defines where a definition came from
@@ -13,11 +20,17 @@ object DefinitionSource extends Enumeration {
   val WIKTIONARY: Value = Value("WIKTIONARY")
   val MULTIPLE: Value = Value("MULTIPLE")
 
+  def fromString(source: String): Option[DefinitionSource] =
+    DefinitionSource.values.find(_.toString == source)
+
   // Makes sure we can serialize and deserialize this to JSON
   implicit val sourceFormat: Format[DefinitionSource] =
     new Format[DefinitionSource] {
-      def reads(json: JsValue) =
-        JsSuccess(DefinitionSource.withName(json.as[String]))
+      def reads(json: JsValue): JsResult[DefinitionSource] =
+        fromString(json.as[String]) match {
+          case Some(source) => JsSuccess(source)
+          case None         => JsError("Unknown definition source")
+        }
       def writes(source: DefinitionSource.DefinitionSource) =
         JsString(source.toString)
     }

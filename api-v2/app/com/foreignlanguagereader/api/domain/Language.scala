@@ -13,8 +13,13 @@ object Language extends Enumeration {
     Language.values.find(_.toString == s)
 
   implicit val languageFormat: Format[Language] = new Format[Language] {
-    def reads(json: JsValue) = JsSuccess(Language.withName(json.as[String]))
-    def writes(language: Language.Language) = JsString(language.toString)
+    def reads(json: JsValue): JsResult[Language] =
+      fromString(json.toString) match {
+        case Some(language) => JsSuccess(language)
+        case None           => JsError("Invalid language")
+      }
+    def writes(language: Language.Language): JsString =
+      JsString(language.toString)
   }
 
   implicit def pathBinder: PathBindable[Language] =
