@@ -1,5 +1,6 @@
-package com.foreignlanguagereader.api.controller.v1
-import com.foreignlanguagereader.api.controller.v1.graphql.DefinitionQuery
+package com.foreignlanguagereader.api.controller.v1.graphql
+
+import com.foreignlanguagereader.api.controller.v1.graphql.queries.DefinitionQuery
 import com.foreignlanguagereader.api.service.definition.DefinitionService
 import javax.inject.Inject
 import play.api.libs.json.{JsObject, JsString, JsValue, Json}

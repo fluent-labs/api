@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.api.controller.v1.graphql
+package com.foreignlanguagereader.api.controller.v1.graphql.queries
 
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.dto.v1.definition.DefinitionDTO
