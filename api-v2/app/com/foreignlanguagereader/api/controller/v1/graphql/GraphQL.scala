@@ -3,12 +3,14 @@ package com.foreignlanguagereader.api.controller.v1.graphql
 import com.foreignlanguagereader.api.controller.v1.graphql.queries.DefinitionQuery
 import com.foreignlanguagereader.api.service.definition.DefinitionService
 import javax.inject.Inject
+import play.api.Logger
 import play.api.libs.json.{JsObject, JsString, JsValue, Json}
 import play.api.mvc.{Action, BaseController, ControllerComponents, Result}
 import sangria.ast.Document
 import sangria.execution.{ErrorWithResolver, Executor, QueryAnalysisError}
 import sangria.marshalling.playJson._
 import sangria.parser.{QueryParser, SyntaxError}
+import sangria.renderer.SchemaRenderer
 import sangria.schema.Schema
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -20,7 +22,13 @@ class GraphQL @Inject()(val controllerComponents: ControllerComponents,
                         implicit val ec: ExecutionContext)
     extends BaseController {
 
-  val schema = Schema(definitionQuery.query)
+  val logger: Logger = Logger(this.getClass)
+
+  val schema: Schema[DefinitionService, Unit] = {
+    val s = Schema(definitionQuery.query)
+    logger.info(s"Loaded graphql schema:\n${SchemaRenderer.renderSchema(s)}")
+    s
+  }
 
   def parseVariables(variables: String): JsObject =
     if (variables.trim == "" || variables.trim == "null") Json.obj()
