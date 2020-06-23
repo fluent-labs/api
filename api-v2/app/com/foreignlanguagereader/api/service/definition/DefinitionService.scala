@@ -1,13 +1,8 @@
 package com.foreignlanguagereader.api.service.definition
 
-import com.foreignlanguagereader.api.client.{
-  ElasticsearchClient,
-  LanguageServiceClient
-}
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.combined.Definition
-import com.foreignlanguagereader.api.domain.definition.entry.DefinitionEntry
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 
@@ -47,7 +42,7 @@ class DefinitionService @Inject()(
   def getDefinitions(
     wordLanguage: Language,
     definitionLanguage: Language,
-    words: List[String]
+    words: Seq[String]
   ): Future[Map[String, Option[Seq[Definition]]]] = {
     // Start by requesting everything asynchronously.
     Future
