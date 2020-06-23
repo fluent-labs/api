@@ -36,7 +36,7 @@ object Language extends Enumeration {
     }
 
   val graphqlType: EnumType[Language] = deriveEnumType[Language](
-    EnumTypeName("Foo"),
-    EnumTypeDescription("It's foo")
+    EnumTypeName("Language"),
+    EnumTypeDescription("A human language")
   )
 }
