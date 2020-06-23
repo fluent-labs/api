@@ -3,3 +3,5 @@ GET    /health       com.foreignlanguagereader.api.controller.v1.HealthControlle
 GET    /readiness    com.foreignlanguagereader.api.controller.v1.HealthController.readiness
 
 GET    /v1/language/definition/:wordlanguage/:word/ com.foreignlanguagereader.api.controller.v1.language.DefinitionController.definition(wordlanguage: com.foreignlanguagereader.api.domain.Language.Language, word: String)
+
+POST  /graphql  controllers.GraphQL.graphql
