@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.api.dto.v1.definition
 
 import play.api.libs.json.{Format, JsError, JsResult, JsValue}
+import sangria.schema.{ObjectType, UnionType}
 
 trait DefinitionDTO {
   val subdefinitions: List[String]
@@ -8,6 +9,7 @@ trait DefinitionDTO {
   val examples: List[String]
 }
 object DefinitionDTO {
+  // JSON
   implicit val formatDefinitionDTO: Format[DefinitionDTO] =
     new Format[DefinitionDTO] {
       override def reads(json: JsValue): JsResult[DefinitionDTO] =
@@ -19,7 +21,14 @@ object DefinitionDTO {
       }
     }
 
-  // Default to generic
+  // Graphql
+  val graphQlType = UnionType(
+    "definition",
+    Some("A definition for a word"),
+    List(ChineseDefinitionDTO.graphQlType, GenericDefinitionDTO.graphQlType)
+  )
+
+  // Constructor that defaults to generic
   def apply(subdefinitions: List[String],
             tag: String,
             examples: List[String]): DefinitionDTO =

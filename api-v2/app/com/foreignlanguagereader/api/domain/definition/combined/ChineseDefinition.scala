@@ -7,6 +7,12 @@ import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.De
 import com.foreignlanguagereader.api.dto.v1.definition.ChineseDefinitionDTO
 import com.foreignlanguagereader.api.service.definition.ChineseDefinitionService
 import play.api.libs.json._
+import sangria.macros.derive.{
+  ObjectTypeDescription,
+  deriveEnumType,
+  deriveObjectType
+}
+import sangria.schema.{EnumType, ObjectType}
 
 case class ChineseDefinition(override val subdefinitions: List[String],
                              override val tag: String,
@@ -55,6 +61,12 @@ case class ChinesePronunciation(pinyin: String = "",
 }
 object ChinesePronunciation {
   implicit val format: Format[ChinesePronunciation] = Json.format
+  implicit val graphQlType: ObjectType[Unit, ChinesePronunciation] =
+    deriveObjectType[Unit, ChinesePronunciation](
+      ObjectTypeDescription(
+        "A holder of different pronunciation formats for Chinese words"
+      )
+    )
 }
 
 object HskLevel extends Enumeration {
@@ -73,4 +85,6 @@ object HskLevel extends Enumeration {
       JsError("We don't read these in, only export")
     def writes(level: HskLevel.HSKLevel) = JsString(level.toString)
   }
+  implicit val graphQlType: EnumType[HskLevel.Value] =
+    deriveEnumType[HskLevel.Value]()
 }
