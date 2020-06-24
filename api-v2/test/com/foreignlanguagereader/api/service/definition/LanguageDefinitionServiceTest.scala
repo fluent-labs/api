@@ -43,7 +43,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       override val wordLanguage: Language = Language.ENGLISH
       override val sources: Set[DefinitionSource] =
         Set(DefinitionSource.WIKTIONARY)
-      override val webSources: Set[DefinitionSource] =
+      override val fetchableSources: Set[DefinitionSource] =
         Set(DefinitionSource.WIKTIONARY)
     }
     val defaultDefinitionService = new DefaultLanguageDefinitionService()
@@ -151,7 +151,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       override val wordLanguage: Language = Language.CHINESE
       override val sources: Set[DefinitionSource] =
         Set(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
-      override val webSources: Set[DefinitionSource] =
+      override val fetchableSources: Set[DefinitionSource] =
         Set(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
     }
     val customized = new CustomizedLanguageDefinitionService()

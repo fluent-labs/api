@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.api.service.definition
+package com.foreignlanguagereader.api.repository.definition
 
 import org.scalatest.funspec.AnyFunSpec
 

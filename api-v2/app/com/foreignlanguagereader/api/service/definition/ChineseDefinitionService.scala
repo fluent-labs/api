@@ -21,6 +21,7 @@ import com.foreignlanguagereader.api.domain.definition.entry.{
   DefinitionSource,
   WiktionaryDefinitionEntry
 }
+import com.foreignlanguagereader.api.repository.definition.Cedict
 import com.foreignlanguagereader.api.util.ContentFileLoader
 import javax.inject.Inject
 import play.api.Logger
@@ -43,9 +44,8 @@ class ChineseDefinitionService @Inject()(
   override val wordLanguage: Language = Language.CHINESE
   override val sources: Set[DefinitionSource] =
     Set(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
-  override val webSources: Set[DefinitionSource] = Set(
-    DefinitionSource.WIKTIONARY
-  )
+  override val fetchableSources: Set[DefinitionSource] =
+    Set(DefinitionSource.WIKTIONARY)
 
   def cedictFetcher
     : (Language, String) => Future[Option[Seq[DefinitionEntry]]] =

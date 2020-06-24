@@ -1,8 +1,8 @@
-package com.foreignlanguagereader.api.v1
+package com.foreignlanguagereader.api.controller.v1
 
-import com.foreignlanguagereader.api.controller.v1.HealthController
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.{OptionValues, WordSpec}
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.OptionValues
 import org.scalatestplus.play.WsScalaTestClient
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import play.api.test.Helpers._
@@ -11,7 +11,7 @@ import play.api.test._
 // Shim because scalatestplus is behind scalatest, so dependencies collide
 // More: https://github.com/scalatest/scalatest/issues/1734
 abstract class PlaySpec
-    extends WordSpec
+    extends AnyWordSpec
     with Matchers
     with OptionValues
     with WsScalaTestClient
