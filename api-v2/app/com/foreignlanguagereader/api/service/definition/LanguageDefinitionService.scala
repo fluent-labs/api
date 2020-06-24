@@ -44,7 +44,7 @@ trait LanguageDefinitionService {
   val languageServiceClient: LanguageServiceClient
   val wordLanguage: Language
   val sources: Set[DefinitionSource]
-  val webSources: Set[DefinitionSource]
+  val fetchableSources: Set[DefinitionSource]
 
   // These are strongly recommended to implement, but have sane defaults
 
@@ -88,13 +88,13 @@ trait LanguageDefinitionService {
     word: String
   ): Future[Option[Seq[DefinitionEntry]]] = {
     elasticsearch.getDefinition(wordLanguage, definitionLanguage, word) match {
-      case Some(allSources) if missingWebSources(allSources).isEmpty =>
+      case Some(allSources) if missingRefetchableSources(allSources).isEmpty =>
         logger.info(
           s"Using elasticsearch definitions for $word in $wordLanguage"
         )
         Future.successful(Some(allSources))
       case Some(someSources) =>
-        val missing = missingWebSources(someSources)
+        val missing = missingRefetchableSources(someSources)
         logger.info(
           s"Refreshing definitions for $word in $wordLanguage from $sources"
         )
@@ -109,7 +109,7 @@ trait LanguageDefinitionService {
         logger.info(
           s"Refreshing definitions for $word in $wordLanguage using all sources"
         )
-        fetchDefinitions(webSources, definitionLanguage, word).map {
+        fetchDefinitions(fetchableSources, definitionLanguage, word).map {
           case Some(d) =>
             elasticsearch.saveDefinitions(d)
             Some(d)
@@ -119,10 +119,10 @@ trait LanguageDefinitionService {
   }
 
   // Which sources can be refreshed which we don't have data for?
-  private def missingWebSources(
+  private def missingRefetchableSources(
     definitions: Seq[DefinitionEntry]
   ): Set[DefinitionSource] =
-    webSources.filterNot(source => definitions.exists(_.source == source))
+    fetchableSources.filterNot(source => definitions.exists(_.source == source))
 
   // Checks registered definition fetchers and uses them
   private[this] def fetchDefinition(
