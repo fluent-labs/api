@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.api.domain.definition.entry
+package com.foreignlanguagereader.api.domain.definition.entry.chinese
 
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
@@ -7,6 +7,10 @@ import com.foreignlanguagereader.api.domain.definition.combined.{
   Definition
 }
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.api.domain.definition.entry.{
+  DefinitionEntry,
+  DefinitionSource
+}
 import com.sksamuel.elastic4s.{Hit, HitReader}
 import play.api.libs.json.{Format, Json, Reads}
 
