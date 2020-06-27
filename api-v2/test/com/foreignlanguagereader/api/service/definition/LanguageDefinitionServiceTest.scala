@@ -8,8 +8,8 @@ import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.combined.Definition
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.api.domain.definition.entry.chinese.CEDICTDefinitionEntry
 import com.foreignlanguagereader.api.domain.definition.entry.{
-  CEDICTDefinitionEntry,
   DefinitionEntry,
   DefinitionSource,
   WiktionaryDefinitionEntry

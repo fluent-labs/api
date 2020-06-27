@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.repository.definition
 
-import com.foreignlanguagereader.api.domain.definition.entry.CEDICTDefinitionEntry
+import com.foreignlanguagereader.api.domain.definition.entry.chinese.CEDICTDefinitionEntry
 import play.api.Logger
 
 import scala.io.{BufferedSource, Source}
