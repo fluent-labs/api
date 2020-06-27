@@ -49,3 +49,12 @@ object WebsterPronunciationSound {
   implicit val format: Format[WebsterPronunciationSound] =
     Json.format[WebsterPronunciationSound]
 }
+
+case class WebsterInflection(inflection: Option[String],
+                             ifc: Option[String],
+                             il: Option[String],
+                             prs: Option[WebsterPronunciation])
+object WebsterInflection {
+  implicit val format: Format[WebsterInflection] =
+    Json.format[WebsterInflection]
+}
