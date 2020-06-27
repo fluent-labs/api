@@ -16,7 +16,8 @@ object DefinitionSource extends Enumeration {
   type DefinitionSource = Value
 
   val CEDICT: Value = Value("CEDICT")
-  val MIRRIAM_WEBSTER: Value = Value("MIRRIAMWEBSTER")
+  val MIRRIAM_WEBSTER_LEARNERS: Value = Value("MIRRIAM_WEBSTER_LEARNERS")
+  val MIRRIAM_WEBSTER_SPANISH: Value = Value("MIRRIAM_WEBSTER_SPANISH")
   val WIKTIONARY: Value = Value("WIKTIONARY")
   val MULTIPLE: Value = Value("MULTIPLE")
 
