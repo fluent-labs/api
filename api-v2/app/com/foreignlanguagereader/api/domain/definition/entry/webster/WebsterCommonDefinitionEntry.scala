@@ -13,3 +13,39 @@ case class WebsterMeta(id: String,
 object WebsterMeta {
   implicit val format: Format[WebsterMeta] = Json.format[WebsterMeta]
 }
+
+case class HeadwordInfo(hw: String, prs: Option[Seq[WebsterPronunciation]])
+object HeadwordInfo {
+  implicit val format: Format[HeadwordInfo] = Json.format[HeadwordInfo]
+}
+
+case class WebsterPronunciation(mw: Option[String],
+                                l: Option[String],
+                                l2: Option[String],
+                                pun: Option[String],
+                                sound: Option[WebsterPronunciationSound])
+object WebsterPronunciation {
+  implicit val format: Format[WebsterPronunciation] =
+    Json.format[WebsterPronunciation]
+}
+
+case class WebsterPronunciationSound(audio: String, ref: String, stat: String) {
+  val subdirectory: String = audio match {
+    case bix if bix.startsWith("bix")                      => "bix"
+    case gg if gg.startsWith("gg")                         => "gg"
+    case number if number.matches("^[0-9\\.?!_\\-,;:]+.*") => "number"
+    case _                                                 => audio.charAt(0).toString
+  }
+
+  // For spanish change this to "es"
+  val language = "en"
+  // For spanish definitions change this to "me" Depends on "lang": "es" in the metadata
+  val country = "us"
+
+  val audioUrl: String =
+    s"https://media.merriam-webster.com/audio/prons/$language/$country/mp3/$subdirectory/$audio.mp3"
+}
+object WebsterPronunciationSound {
+  implicit val format: Format[WebsterPronunciationSound] =
+    Json.format[WebsterPronunciationSound]
+}
