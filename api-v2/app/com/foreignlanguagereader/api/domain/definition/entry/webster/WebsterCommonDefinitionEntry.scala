@@ -6,6 +6,25 @@ import play.api.libs.json._
 import play.api.libs.json.Reads._
 
 /**
+  * This helper class exists to get rid of all the boilerplate with nested json parsers
+  * The macros don't handle nested types without being told that they can.
+  * So this tells them that they can
+  * @param reads An implementation of json reading. Just needs to be in scope.
+  * @param writes An implementation of json writing. Just needs to be in scope.
+  * @tparam T The type we are helping with.
+  */
+class JsonHelper[T](implicit val reads: Reads[T],
+                    implicit val writes: Writes[T]) {
+  implicit val readsSeq: Reads[Seq[T]] = Reads.seq(reads)
+  implicit val readsSeqSeq: Reads[Seq[Seq[T]]] = Reads.seq(readsSeq)
+  implicit val readsSeqSeqSeq: Reads[Seq[Seq[Seq[T]]]] = Reads.seq(readsSeqSeq)
+  implicit val writesSeq: Writes[Seq[T]] = Writes.seq(writes)
+  implicit val writesSeqSeq: Writes[Seq[Seq[T]]] = Writes.seq(writesSeq)
+  implicit val writesSeqSeqSeq: Writes[Seq[Seq[Seq[T]]]] =
+    Writes.seq(writesSeqSeq)
+}
+
+/**
   * This file is for all the common parts of the webster schema
   * Anything that would be used by multiple dictionaries should be here
   */
@@ -22,12 +41,21 @@ object WebsterSource extends Enumeration {
 case class WebsterMeta(id: String,
                        uuid: String,
                        sort: String,
-                       src: WebsterSource,
+                       source: WebsterSource,
                        section: String,
                        stems: Seq[String],
                        offensive: Boolean)
 object WebsterMeta {
-  implicit val format: Format[WebsterMeta] = Json.format[WebsterMeta]
+  implicit val writes: Writes[WebsterMeta] = Json.writes[WebsterMeta]
+  implicit val reads: Reads[WebsterMeta] = (
+    (JsPath \ "id").read[String] and
+      (JsPath \ "uuid").read[String] and
+      (JsPath \ "sort").read[String] and
+      (JsPath \ "src").read[WebsterSource] and
+      (JsPath \ "section").read[String] and
+      (JsPath \ "stems").read[Seq[String]](Reads.seq[String]) and
+      (JsPath \ "offensive").read[Boolean]
+  )(WebsterMeta.apply _)
 }
 
 case class HeadwordInfo(headword: String,

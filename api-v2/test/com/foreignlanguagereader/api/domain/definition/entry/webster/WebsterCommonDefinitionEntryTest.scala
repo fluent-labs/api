@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.api.domain.definition.entry.webster
 
 import org.scalatest.funspec.AnyFunSpec
-import play.api.libs.json.{JsError, Json}
+import play.api.libs.json.{JsError, JsValue, Json, Reads}
 
 class WebsterCommonDefinitionEntryTest extends AnyFunSpec {
   describe("a meta section") {
@@ -18,7 +18,7 @@ class WebsterCommonDefinitionEntryTest extends AnyFunSpec {
     it("can be written back out to JSON") {
       val input = Json.parse(webster).validate[WebsterMeta].get
       val output = Json.toJson(input).toString()
-      assert(output == output)
+      assert(output == domain)
     }
   }
 
