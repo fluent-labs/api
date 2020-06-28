@@ -89,11 +89,22 @@ object WebsterPronunciationSound {
   implicit val writes: Writes[WebsterPronunciationSound] =
     Json.writes[WebsterPronunciationSound]
 
+}
+
 case class WebsterInflection(inflection: Option[String],
-                             ifc: Option[String],
-                             il: Option[String],
-                             prs: Option[WebsterPronunciation])
+                             inflectionCutback: Option[String],
+                             inflectionLabel: Option[String],
+                             pronunciation: Option[WebsterPronunciation])
 object WebsterInflection {
-  implicit val format: Format[WebsterInflection] =
-    Json.format[WebsterInflection]
+  implicit val writes: Writes[WebsterInflection] =
+    Json.writes[WebsterInflection]
+  implicit val reads: Reads[WebsterInflection] = (
+    (JsPath \ "if").readNullable[String] and
+      (JsPath \ "ifc").readNullable[String] and
+      (JsPath \ "prs").readNullable[WebsterPronunciation]
+  )(WebsterInflection.apply _)
+  implicit val readsSeq: Reads[Seq[WebsterInflection]] =
+    Reads.seq[WebsterInflection]
+}
+
 }
