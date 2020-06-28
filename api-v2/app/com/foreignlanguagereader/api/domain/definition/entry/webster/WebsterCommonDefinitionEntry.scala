@@ -63,9 +63,9 @@ case class HeadwordInfo(headword: String,
 object HeadwordInfo {
   implicit val writes: Writes[HeadwordInfo] = Json.writes[HeadwordInfo]
   implicit val reads: Reads[HeadwordInfo] = ((JsPath \ "hw")
-    .read[String] and (JsPath \ "prs").readNullable[Seq[WebsterPronunciation]])(
-    HeadwordInfo.apply _
-  )
+    .read[String] and (JsPath \ "prs").readNullable[Seq[WebsterPronunciation]](
+    WebsterPronunciation.helper.readsSeq
+  ))(HeadwordInfo.apply _)
 }
 
 case class WebsterPronunciation(writtenPronunciation: Option[String],
@@ -81,10 +81,10 @@ object WebsterPronunciation {
       (JsPath \ "pun").readNullable[String] and
       (JsPath \ "sound").readNullable[WebsterPronunciationSound]
   )(WebsterPronunciation.apply _)
-  implicit val readsSeq: Reads[Seq[WebsterPronunciation]] = Reads.seq(reads)
   implicit val writes: Writes[WebsterPronunciation] =
     Json.writes[WebsterPronunciation]
-  implicit val writesSeq: Writes[Seq[WebsterPronunciation]] = Writes.seq(writes)
+  implicit val helper: JsonHelper[WebsterPronunciation] =
+    new JsonHelper[WebsterPronunciation]
 }
 
 case class WebsterPronunciationSound(audio: String,
@@ -115,6 +115,8 @@ object WebsterPronunciationSound {
   )(WebsterPronunciationSound.createWithDefaults _)
   implicit val writes: Writes[WebsterPronunciationSound] =
     Json.writes[WebsterPronunciationSound]
+  implicit val helper: JsonHelper[WebsterPronunciationSound] =
+    new JsonHelper[WebsterPronunciationSound]
 
 }
 
@@ -131,8 +133,8 @@ object WebsterInflection {
       (JsPath \ "il").readNullable[String] and
       (JsPath \ "prs").readNullable[WebsterPronunciation]
   )(WebsterInflection.apply _)
-  implicit val readsSeq: Reads[Seq[WebsterInflection]] =
-    Reads.seq[WebsterInflection]
+  implicit val helper: JsonHelper[WebsterInflection] =
+    new JsonHelper[WebsterInflection]
 }
 
 case class WebsterDefinition(senseSequence: Option[Seq[WebsterSense]],
@@ -140,11 +142,7 @@ case class WebsterDefinition(senseSequence: Option[Seq[WebsterSense]],
   // TODO verbDivider seems to be "transitive verb" or "intransitive verb". Opportunity for enum?
 }
 object WebsterDefinition {
-  implicit val jsValueArray: Reads[Seq[JsValue]] = Reads.seq[JsValue]
-  implicit val jsValueArrayArray: Reads[Seq[Seq[JsValue]]] =
-    Reads.seq(jsValueArray)
-  implicit val jsValueArrayArrayArray: Reads[Seq[Seq[Seq[JsValue]]]] =
-    Reads.seq(jsValueArrayArray)
+  implicit val helper: JsonHelper[JsValue] = new JsonHelper[JsValue]
 
   // This really ugly hack is because webster uses triple nested lists
   // With both objects and strings in them.
@@ -161,6 +159,7 @@ object WebsterDefinition {
           .map(row => row(1))
           .map {
             case o: JsObject => o.validate[WebsterSense]
+            case _           => throw new IllegalArgumentException("Invalid definition")
           }
           .map {
             case JsSuccess(s, _) => s
@@ -174,8 +173,10 @@ object WebsterDefinition {
   }
 
   implicit val reads: Reads[WebsterDefinition] = ((JsPath \ "sseq")
-    .readNullable[Seq[Seq[Seq[JsValue]]]] and (JsPath \ "vd")
+    .readNullable[Seq[Seq[Seq[JsValue]]]](helper.readsSeqSeqSeq) and (JsPath \ "vd")
     .readNullable[String])(convertRawDefinitionToDefinitions _)
+  implicit val writes: Writes[WebsterDefinition] =
+    Json.writes[WebsterDefinition]
 }
 
 case class WebsterSense(dt: Seq[Seq[String]],
