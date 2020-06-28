@@ -107,4 +107,58 @@ object WebsterInflection {
     Reads.seq[WebsterInflection]
 }
 
+case class WebsterDefinition(senseSequence: Option[Seq[WebsterSense]],
+                             verbDivider: Option[String]) {
+  // TODO verbDivider seems to be "transitive verb" or "intransitive verb". Opportunity for enum?
+}
+object WebsterDefinition {
+  implicit val jsValueArray: Reads[Seq[JsValue]] = Reads.seq[JsValue]
+  implicit val jsValueArrayArray: Reads[Seq[Seq[JsValue]]] =
+    Reads.seq(jsValueArray)
+  implicit val jsValueArrayArrayArray: Reads[Seq[Seq[Seq[JsValue]]]] =
+    Reads.seq(jsValueArrayArray)
+
+  // This really ugly hack is because webster uses triple nested lists
+  // With both objects and strings in them.
+  // This gives us a sane interface to work with
+  def convertRawDefinitionToDefinitions(
+    sseq: Option[Seq[Seq[Seq[JsValue]]]],
+    verbDivider: Option[String]
+  ): WebsterDefinition = {
+    val senseSequence: Option[Seq[WebsterSense]] = if (sseq.isDefined) {
+      val data: Seq[WebsterSense] =
+        sseq
+          .getOrElse(List())
+          .flatten
+          .map(row => row(1))
+          .map {
+            case o: JsObject => o.validate[WebsterSense]
+          }
+          .map {
+            case JsSuccess(s, _) => s
+            case JsError(e)      => throw new IllegalArgumentException(e.toString())
+          }
+      Some(data)
+    } else {
+      None
+    }
+    WebsterDefinition(senseSequence, verbDivider)
+  }
+
+  implicit val reads: Reads[WebsterDefinition] = ((JsPath \ "sseq")
+    .readNullable[Seq[Seq[Seq[JsValue]]]] and (JsPath \ "vd")
+    .readNullable[String])(convertRawDefinitionToDefinitions _)
+}
+
+case class WebsterSense(dt: Seq[Seq[String]],
+                        et: Option[Seq[Seq[String]]],
+                        ins: Option[Seq[WebsterInflection]],
+                        prs: Option[Seq[WebsterPronunciation]],
+                        sdsense: Option[WebsterSense],
+                        sgram: Option[String],
+                        sls: Option[Seq[String]],
+                        // Sense number - basically an id - probably don't need this.
+                        sn: Option[String],
+                        variations: Option[Seq[WebsterVariant]],
+                        senseDivider: Option[String]) {}
 }
