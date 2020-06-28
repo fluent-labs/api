@@ -19,7 +19,7 @@ class EnglishDefinitionService @Inject()(
 ) extends LanguageDefinitionService {
   override val wordLanguage: Language = Language.ENGLISH
   override val sources: Set[DefinitionSource] =
-    Set(DefinitionSource.MIRRIAM_WEBSTER, DefinitionSource.WIKTIONARY)
+    Set(DefinitionSource.MIRRIAM_WEBSTER_LEARNERS, DefinitionSource.WIKTIONARY)
   override val fetchableSources: Set[DefinitionSource] =
-    Set(DefinitionSource.MIRRIAM_WEBSTER, DefinitionSource.WIKTIONARY)
+    Set(DefinitionSource.MIRRIAM_WEBSTER_LEARNERS, DefinitionSource.WIKTIONARY)
 }
