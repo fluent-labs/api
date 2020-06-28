@@ -101,6 +101,7 @@ object WebsterInflection {
   implicit val reads: Reads[WebsterInflection] = (
     (JsPath \ "if").readNullable[String] and
       (JsPath \ "ifc").readNullable[String] and
+      (JsPath \ "il").readNullable[String] and
       (JsPath \ "prs").readNullable[WebsterPronunciation]
   )(WebsterInflection.apply _)
   implicit val readsSeq: Reads[Seq[WebsterInflection]] =
