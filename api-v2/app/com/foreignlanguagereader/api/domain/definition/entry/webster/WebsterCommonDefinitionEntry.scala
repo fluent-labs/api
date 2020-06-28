@@ -5,6 +5,10 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import play.api.libs.json.Reads._
 
+/**
+  * This file is for all the common parts of the webster schema
+  * Anything that would be used by multiple dictionaries should be here
+  */
 object WebsterSource extends Enumeration {
   type WebsterSource = Value
 
@@ -50,13 +54,8 @@ object WebsterPronunciation {
       (JsPath \ "sound").readNullable[WebsterPronunciationSound]
   )(WebsterPronunciation.apply _)
   implicit val readsSeq: Reads[Seq[WebsterPronunciation]] = Reads.seq(reads)
-  implicit val writes: Writes[WebsterPronunciation] = (
-    (JsPath \ "writtenPronunciation").writeNullable[String] and
-      (JsPath \ "beforePronunciationLabel").writeNullable[String] and
-      (JsPath \ "afterPronunciationLabel").writeNullable[String] and
-      (JsPath \ "seperatorPunctuation").writeNullable[String] and
-      (JsPath \ "sound").writeNullable[WebsterPronunciationSound]
-  )(unlift(WebsterPronunciation.unapply))
+  implicit val writes: Writes[WebsterPronunciation] =
+    Json.writes[WebsterPronunciation]
   implicit val writesSeq: Writes[Seq[WebsterPronunciation]] = Writes.seq(writes)
 }
 
