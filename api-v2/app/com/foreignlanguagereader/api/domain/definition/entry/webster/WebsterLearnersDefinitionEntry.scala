@@ -41,7 +41,6 @@ case class WebsterLearnersDefinitionEntry(meta: WebsterMeta,
   )
 }
 object WebsterLearnersDefinitionEntry {
-  // Allows serializing and deserializing in json
   implicit val format: Format[WebsterLearnersDefinitionEntry] =
     Json.format[WebsterLearnersDefinitionEntry]
   implicit val readsSeq: Reads[Seq[WebsterLearnersDefinitionEntry]] =
