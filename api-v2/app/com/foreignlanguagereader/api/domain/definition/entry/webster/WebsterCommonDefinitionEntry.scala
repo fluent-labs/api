@@ -230,7 +230,8 @@ object WebsterDefiningText {
       case Some(t) => t
       case None    => throw new IllegalArgumentException("Text is required")
     }
-    val bnw = getOrNone[WebsterBiographicalNameWrap](lookup.get("bnw"))
+    val bnw: Option[Seq[WebsterBiographicalNameWrap]] =
+      getOrNone[WebsterBiographicalNameWrap](lookup.get("bnw"))
 
     WebsterDefiningText(text, bnw)
   }
@@ -258,14 +259,20 @@ object WebsterDefiningText {
     Json.format[WebsterDefiningText]
 }
 
-case class WebsterBiographicalNameWrap(personalName: Option[String],
-                                       surname: Option[String],
-                                       alternateName: Option[String])
+case class WebsterBiographicalNameWrap(
+  personalName: Option[String],
+  surname: Option[String],
+  alternateName: Option[String],
+  pronunciations: Option[Seq[WebsterPronunciation]]
+)
 object WebsterBiographicalNameWrap {
   implicit val reads: Reads[WebsterBiographicalNameWrap] = (
     (JsPath \ "pname").readNullable[String] and
       (JsPath \ "sname").readNullable[String] and
-      (JsPath \ "altname").readNullable[String]
+      (JsPath \ "altname").readNullable[String] and
+      (JsPath \ "prs").readNullable[Seq[WebsterPronunciation]](
+        WebsterPronunciation.helper.readsSeq
+      )
   )(WebsterBiographicalNameWrap.apply _)
   implicit val writes: Writes[WebsterBiographicalNameWrap] =
     Json.writes[WebsterBiographicalNameWrap]

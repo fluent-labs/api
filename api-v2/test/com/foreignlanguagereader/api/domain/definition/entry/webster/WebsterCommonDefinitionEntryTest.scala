@@ -77,18 +77,61 @@ class WebsterCommonDefinitionEntryTest extends AnyFunSpec {
     implicit val readsSeqSeq: Reads[Seq[Seq[JsValue]]] = Reads.seq(readsSeq)
 
     describe("a defining text") {
-      val webster =
-        "[[\"text\",\"{bc}a person or way of behaving that is seen as a model that should be followed \"],[\"wsgram\",\"count\"],[\"vis\",[{\"t\":\"He was inspired by the {it}example{/it} of his older brother. [=he wanted to do what his older brother did]\"},{\"t\":\"You should try to follow her {it}example{/it}. [=try to do as she does]\"},{\"t\":\"Let that be an {it}example{/it} to you! [=let that show you what you should or should not do]\"},{\"t\":\"He set a good/bad {it}example{/it} for the rest of us.\"},{\"t\":\"It's up to you to {phrase}set an example{/phrase}. [=to behave in a way that shows other people how to behave]\"}]],[\"wsgram\",\"noncount\"],[\"vis\",[{\"t\":\"She chooses to {phrase}lead by example{/phrase}. [=to lead by behaving in a way that shows others how to behave]\"}]]]"
+      describe("with a text field") {
+        val webster =
+          "[[\"text\",\"{bc}a person or way of behaving that is seen as a model that should be followed \"],[\"wsgram\",\"count\"],[\"vis\",[{\"t\":\"He was inspired by the {it}example{/it} of his older brother. [=he wanted to do what his older brother did]\"},{\"t\":\"You should try to follow her {it}example{/it}. [=try to do as she does]\"},{\"t\":\"Let that be an {it}example{/it} to you! [=let that show you what you should or should not do]\"},{\"t\":\"He set a good/bad {it}example{/it} for the rest of us.\"},{\"t\":\"It's up to you to {phrase}set an example{/phrase}. [=to behave in a way that shows other people how to behave]\"}]],[\"wsgram\",\"noncount\"],[\"vis\",[{\"t\":\"She chooses to {phrase}lead by example{/phrase}. [=to lead by behaving in a way that shows others how to behave]\"}]]]"
+        val domain =
+          "{\"text\":[\"{bc}a person or way of behaving that is seen as a model that should be followed \"]}"
 
-      it("can be read from JSON") {
-        val definingTextRaw =
-          Json.parse(webster).validate[Seq[Seq[JsValue]]].get
-        val definingText =
-          WebsterDefiningText.parseDefiningText(definingTextRaw)
-        assert(definingText.text.size == 1)
-        assert(
-          definingText.text(0) == "{bc}a person or way of behaving that is seen as a model that should be followed "
-        )
+        it("can be read from JSON") {
+          val definingTextRaw =
+            Json.parse(webster).validate[Seq[Seq[JsValue]]].get
+          val definingText =
+            WebsterDefiningText.parseDefiningText(definingTextRaw)
+          assert(definingText.text.size == 1)
+          assert(
+            definingText.text(0) == "{bc}a person or way of behaving that is seen as a model that should be followed "
+          )
+        }
+
+        it("can be written back out to JSON") {
+          val definingTextRaw =
+            Json.parse(webster).validate[Seq[Seq[JsValue]]].get
+          val input =
+            WebsterDefiningText.parseDefiningText(definingTextRaw)
+          val output = Json.toJson(input).toString()
+          assert(output == domain)
+        }
+      }
+
+      describe("with a biological name wrap") {
+        val webster =
+          "[[\"bnw\",{\"pname\":\"Charles Lut*widge\",\"prs\":[{\"mw\":\"ˈlət-wij\",\"sound\":{\"audio\":\"bixdod04\",\"ref\":\"c\",\"stat\":\"1\"}}]}],[\"text\",\"1832–1898 pseudonym\"],[\"bnw\",{\"altname\":\"Lewis Car*roll\",\"prs\":[{\"mw\":\"ˈker-əl\",\"sound\":{\"audio\":\"bixdod05\",\"ref\":\"c\",\"stat\":\"1\"}},{\"mw\":\"ˈka-rəl\"}]}],[\"text\",\" English mathematician and writer\"]]"
+        val domain =
+          "{\"text\":[\"1832–1898 pseudonym\",\" English mathematician and writer\"],\"biographicalName\":[{\"personalName\":\"Charles Lut*widge\",\"pronunciations\":[{\"writtenPronunciation\":\"ˈlət-wij\",\"sound\":{\"audio\":\"bixdod04\",\"language\":\"en\",\"country\":\"us\"}}]},{\"alternateName\":\"Lewis Car*roll\",\"pronunciations\":[{\"writtenPronunciation\":\"ˈker-əl\",\"sound\":{\"audio\":\"bixdod05\",\"language\":\"en\",\"country\":\"us\"}},{\"writtenPronunciation\":\"ˈka-rəl\"}]}]}"
+
+        it("can read a biological name wrap") {
+          val definingTextRaw =
+            Json.parse(webster).validate[Seq[Seq[JsValue]]].get
+          val definingText =
+            WebsterDefiningText.parseDefiningText(definingTextRaw)
+          assert(definingText.biographicalName.isDefined)
+          val biographicalNameWrap = definingText.biographicalName.get
+          assert(biographicalNameWrap.size == 2)
+          assert(
+            biographicalNameWrap(0).personalName.get == "Charles Lut*widge"
+          )
+          assert(biographicalNameWrap(1).alternateName.get == "Lewis Car*roll")
+        }
+
+        it("can be written back out to JSON") {
+          val definingTextRaw =
+            Json.parse(webster).validate[Seq[Seq[JsValue]]].get
+          val input =
+            WebsterDefiningText.parseDefiningText(definingTextRaw)
+          val output = Json.toJson(input).toString()
+          assert(output == domain)
+        }
       }
     }
   }
