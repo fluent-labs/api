@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.api.domain.definition.entry.webster
 
 import org.scalatest.funspec.AnyFunSpec
-import play.api.libs.json.{JsError, JsValue, Json, Reads}
+import play.api.libs.json.{JsValue, Json, Reads}
 
 class WebsterCommonDefinitionEntryTest extends AnyFunSpec {
   describe("a meta section") {
@@ -54,15 +54,42 @@ class WebsterCommonDefinitionEntryTest extends AnyFunSpec {
       "[{\"inflection\":\"tas*seled\",\"inflectionCutback\":\"-seled\"},{\"inflection\":\"tas*selled\",\"inflectionCutback\":\"-selled\",\"inflectionLabel\":\"or\"},{\"inflection\":\"tas*sel*ing\",\"inflectionCutback\":\"-sel*ing\"},{\"inflection\":\"tas*sel*ling\",\"inflectionCutback\":\"-sel*ling\",\"inflectionLabel\":\"or\",\"pronunciation\":{}}]"
 
     it("can be read from JSON") {
-      val inflection = Json.parse(webster).validate[Seq[WebsterInflection]].get
+      val inflection = Json
+        .parse(webster)
+        .validate[Seq[WebsterInflection]](WebsterInflection.helper.readsSeq)
+        .get
       assert(inflection.size == 4)
       assert(inflection(0).inflection.get == "tas*seled")
     }
 
     it("can be written back out to JSON") {
-      val input = Json.parse(webster).validate[Seq[WebsterInflection]].get
+      val input = Json
+        .parse(webster)
+        .validate[Seq[WebsterInflection]](WebsterInflection.helper.readsSeq)
+        .get
       val output = Json.toJson(input).toString()
       assert(output == domain)
+    }
+  }
+
+  describe("a definition section") {
+    implicit val readsSeq: Reads[Seq[JsValue]] = Reads.seq[JsValue]
+    implicit val readsSeqSeq: Reads[Seq[Seq[JsValue]]] = Reads.seq(readsSeq)
+
+    describe("a defining text") {
+      val webster =
+        "[[\"text\",\"{bc}a person or way of behaving that is seen as a model that should be followed \"],[\"wsgram\",\"count\"],[\"vis\",[{\"t\":\"He was inspired by the {it}example{/it} of his older brother. [=he wanted to do what his older brother did]\"},{\"t\":\"You should try to follow her {it}example{/it}. [=try to do as she does]\"},{\"t\":\"Let that be an {it}example{/it} to you! [=let that show you what you should or should not do]\"},{\"t\":\"He set a good/bad {it}example{/it} for the rest of us.\"},{\"t\":\"It's up to you to {phrase}set an example{/phrase}. [=to behave in a way that shows other people how to behave]\"}]],[\"wsgram\",\"noncount\"],[\"vis\",[{\"t\":\"She chooses to {phrase}lead by example{/phrase}. [=to lead by behaving in a way that shows others how to behave]\"}]]]"
+
+      it("can be read from JSON") {
+        val definingTextRaw =
+          Json.parse(webster).validate[Seq[Seq[JsValue]]].get
+        val definingText =
+          WebsterDefiningText.parseDefiningText(definingTextRaw)
+        assert(definingText.text.size == 1)
+        assert(
+          definingText.text(0) == "{bc}a person or way of behaving that is seen as a model that should be followed "
+        )
+      }
     }
   }
 }
