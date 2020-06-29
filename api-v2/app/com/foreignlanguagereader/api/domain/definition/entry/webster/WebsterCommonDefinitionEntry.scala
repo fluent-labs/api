@@ -179,7 +179,7 @@ object WebsterDefinition {
     Json.writes[WebsterDefinition]
 }
 
-case class WebsterSense(dt: Seq[Seq[String]],
+case class WebsterSense(dt: WebsterDefiningText,
                         et: Option[Seq[Seq[String]]],
                         ins: Option[Seq[WebsterInflection]],
                         prs: Option[Seq[WebsterPronunciation]],
@@ -190,4 +190,99 @@ case class WebsterSense(dt: Seq[Seq[String]],
                         sn: Option[String],
                         variations: Option[Seq[WebsterVariant]],
                         senseDivider: Option[String]) {}
+object WebsterSense {
+//  implicit val reads =
+  implicit val format: Format[WebsterSense] = Json.format[WebsterSense]
+}
+//dt (required) and zero or more et, ins, lbs, prs, sdsense, sgram, sls, sn, or vrs
+
+//val validKeys = List("text", "bnw", "ca", "ri", "snote", "uns", "vis")
+case class WebsterDefiningText(
+  text: Seq[String],
+  biographicalName: Option[Seq[WebsterBiographicalNameWrap]]
+)
+object WebsterDefiningText {
+
+  /**
+    * This field is a mess: a list of lists [["key", object], ...]
+    * Where any key can happen 0 to N times except one
+    * We need to manually read this one in.
+    * @param dt
+    * @return
+    */
+  def parseDefiningText(dt: Seq[Seq[JsValue]]): WebsterDefiningText = {
+    val lookup: Map[String, Seq[JsValue]] = dt
+      .map(row => {
+        val typeString = row(0).validate[String] match {
+          case JsSuccess(t, _) => t
+          case JsError(e)      => throw new IllegalArgumentException(e.toString)
+        }
+        (typeString -> row(1))
+      })
+      .groupBy(row => row._1)
+      .map(row => {
+        val key = row._1
+        val values = row._2.map(_._2)
+        (key -> values)
+      })
+
+    val text: Seq[String] = getOrNone[String](lookup.get("text")) match {
+      case Some(t) => t
+      case None    => throw new IllegalArgumentException("Text is required")
+    }
+    val bnw = getOrNone[WebsterBiographicalNameWrap](lookup.get("bnw"))
+
+    WebsterDefiningText(text, bnw)
+  }
+
+  // Helper method to handle pulling optional sequences out of the json.
+  def getOrNone[T](
+    input: Option[Seq[JsValue]]
+  )(implicit r: Reads[T]): Option[Seq[T]] = {
+    implicit val readsSeq: Reads[Seq[T]] = Reads.seq(r)
+    input match {
+      case Some(x) =>
+        val validated = x.flatMap(
+          v =>
+            v.validate[T] match {
+              case JsSuccess(value, _) => Some(value)
+              case JsError(e)          => None
+          }
+        )
+        if (x.nonEmpty) Some(validated) else None
+      case None => None
+    }
+  }
+
+  implicit val format: Format[WebsterDefiningText] =
+    Json.format[WebsterDefiningText]
+}
+
+case class WebsterBiographicalNameWrap(personalName: Option[String],
+                                       surname: Option[String],
+                                       alternateName: Option[String])
+object WebsterBiographicalNameWrap {
+  implicit val reads: Reads[WebsterBiographicalNameWrap] = (
+    (JsPath \ "pname").readNullable[String] and
+      (JsPath \ "sname").readNullable[String] and
+      (JsPath \ "altname").readNullable[String]
+  )(WebsterBiographicalNameWrap.apply _)
+  implicit val writes: Writes[WebsterBiographicalNameWrap] =
+    Json.writes[WebsterBiographicalNameWrap]
+  implicit val helper: JsonHelper[WebsterBiographicalNameWrap] =
+    new JsonHelper[WebsterBiographicalNameWrap]
+}
+
+case class WebsterVariant(variant: String,
+                          variantLabel: Option[String],
+                          pronunciations: Option[Seq[WebsterPronunciation]])
+object WebsterVariant {
+  implicit val writes: Writes[WebsterVariant] = Json.writes[WebsterVariant]
+  implicit val reads: Reads[WebsterVariant] = ((JsPath \ "va")
+    .read[String] and
+    (JsPath \ "vl").readNullable[String] and
+    (JsPath \ "prs")
+      .readNullable[Seq[WebsterPronunciation]](
+        WebsterPronunciation.helper.readsSeq
+      ))(WebsterVariant.apply _)
 }
