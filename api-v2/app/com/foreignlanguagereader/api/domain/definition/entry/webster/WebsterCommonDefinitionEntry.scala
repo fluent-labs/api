@@ -199,7 +199,8 @@ object WebsterSense {
 //val validKeys = List("text", "bnw", "ca", "ri", "snote", "uns", "vis")
 case class WebsterDefiningText(
   text: Seq[String],
-  biographicalName: Option[Seq[WebsterBiographicalNameWrap]]
+  biographicalName: Option[Seq[WebsterBiographicalNameWrap]],
+  calledAlso: Option[Seq[WebsterCalledAlso]]
 )
 object WebsterDefiningText {
 
@@ -232,8 +233,10 @@ object WebsterDefiningText {
     }
     val bnw: Option[Seq[WebsterBiographicalNameWrap]] =
       getOrNone[WebsterBiographicalNameWrap](lookup.get("bnw"))
+    val ca: Option[Seq[WebsterCalledAlso]] =
+      getOrNone[WebsterCalledAlso](lookup.get("ca"))
 
-    WebsterDefiningText(text, bnw)
+    WebsterDefiningText(text, bnw, ca)
   }
 
   // Helper method to handle pulling optional sequences out of the json.
@@ -278,6 +281,44 @@ object WebsterBiographicalNameWrap {
     Json.writes[WebsterBiographicalNameWrap]
   implicit val helper: JsonHelper[WebsterBiographicalNameWrap] =
     new JsonHelper[WebsterBiographicalNameWrap]
+}
+
+case class WebsterCalledAlso(
+  intro: Option[String],
+  calledAlsoTargets: Option[Seq[WebsterCalledAlsoTarget]]
+)
+object WebsterCalledAlso {
+  implicit val reads: Reads[WebsterCalledAlso] =
+    ((JsPath \ "intro").readNullable[String] and
+      (JsPath \ "cats")
+        .readNullable[Seq[WebsterCalledAlsoTarget]](
+          WebsterCalledAlsoTarget.helper.readsSeq
+        ))(WebsterCalledAlso.apply _)
+  implicit val writes: OWrites[WebsterCalledAlso] =
+    Json.writes[WebsterCalledAlso]
+}
+
+case class WebsterCalledAlsoTarget(
+  calledAlsoTargetText: Option[String],
+  calledAlsoReference: Option[String],
+  parenthesizedNumber: Option[String],
+  pronunciations: Option[Seq[WebsterPronunciation]],
+  areaOfUsage: Option[String]
+)
+object WebsterCalledAlsoTarget {
+  implicit val reads: Reads[WebsterCalledAlsoTarget] = (
+    (JsPath \ "cat").readNullable[String] and
+      (JsPath \ "catref").readNullable[String] and
+      (JsPath \ "pn").readNullable[String] and
+      (JsPath \ "prs").readNullable[Seq[WebsterPronunciation]](
+        WebsterPronunciation.helper.readsSeq
+      ) and
+      (JsPath \ "psl").readNullable[String]
+  )(WebsterCalledAlsoTarget.apply _)
+  implicit val writes: Writes[WebsterCalledAlsoTarget] =
+    Json.writes[WebsterCalledAlsoTarget]
+  implicit val helper: JsonHelper[WebsterCalledAlsoTarget] =
+    new JsonHelper[WebsterCalledAlsoTarget]
 }
 
 case class WebsterVariant(variant: String,

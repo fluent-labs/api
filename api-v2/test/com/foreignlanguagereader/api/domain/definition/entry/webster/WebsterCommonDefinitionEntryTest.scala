@@ -110,7 +110,7 @@ class WebsterCommonDefinitionEntryTest extends AnyFunSpec {
         val domain =
           "{\"text\":[\"1832–1898 pseudonym\",\" English mathematician and writer\"],\"biographicalName\":[{\"personalName\":\"Charles Lut*widge\",\"pronunciations\":[{\"writtenPronunciation\":\"ˈlət-wij\",\"sound\":{\"audio\":\"bixdod04\",\"language\":\"en\",\"country\":\"us\"}}]},{\"alternateName\":\"Lewis Car*roll\",\"pronunciations\":[{\"writtenPronunciation\":\"ˈker-əl\",\"sound\":{\"audio\":\"bixdod05\",\"language\":\"en\",\"country\":\"us\"}},{\"writtenPronunciation\":\"ˈka-rəl\"}]}]}"
 
-        it("can read a biological name wrap") {
+        it("can be read from JSON") {
           val definingTextRaw =
             Json.parse(webster).validate[Seq[Seq[JsValue]]].get
           val definingText =
@@ -122,6 +122,29 @@ class WebsterCommonDefinitionEntryTest extends AnyFunSpec {
             biographicalNameWrap(0).personalName.get == "Charles Lut*widge"
           )
           assert(biographicalNameWrap(1).alternateName.get == "Lewis Car*roll")
+        }
+
+        it("can be written back out to JSON") {
+          val definingTextRaw =
+            Json.parse(webster).validate[Seq[Seq[JsValue]]].get
+          val input =
+            WebsterDefiningText.parseDefiningText(definingTextRaw)
+          val output = Json.toJson(input).toString()
+          assert(output == domain)
+        }
+      }
+
+      describe("with a called also") {
+        val webster =
+          "[[\"text\",\"{bc}a drink consisting of soda water, flavoring, and a sweet syrup \"],[\"ca\",{\"intro\":\"called also\",\"cats\":[{\"cat\":\"pop\"},{\"psl\":\"({it}chiefly US{/it}) \",\"cat\":\"soda\"}]}]]"
+        val domain =
+          "{\"text\":[\"{bc}a drink consisting of soda water, flavoring, and a sweet syrup \"],\"calledAlso\":[{\"intro\":\"called also\",\"calledAlsoTargets\":[{\"calledAlsoTargetText\":\"pop\"},{\"calledAlsoTargetText\":\"soda\",\"areaOfUsage\":\"({it}chiefly US{/it}) \"}]}]}"
+
+        it("can be read from JSON") {
+          val definingTextRaw =
+            Json.parse(webster).validate[Seq[Seq[JsValue]]].get
+          val definingText =
+            WebsterDefiningText.parseDefiningText(definingTextRaw)
         }
 
         it("can be written back out to JSON") {
