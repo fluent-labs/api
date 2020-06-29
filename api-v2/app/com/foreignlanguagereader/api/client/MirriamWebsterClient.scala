@@ -20,6 +20,8 @@ class MirriamWebsterClient @Inject()(config: Configuration,
   implicit val myExecutionContext: ExecutionContext =
     system.dispatchers.lookup("webster-context")
 
+  val learnersApiKey = ""
+  val spanishApiKey = ""
 
   val languageServiceTimeout =
     Duration(config.get[Int]("webster.timeout"), TimeUnit.SECONDS)
