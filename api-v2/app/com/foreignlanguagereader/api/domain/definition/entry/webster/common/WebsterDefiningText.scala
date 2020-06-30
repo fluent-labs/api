@@ -7,7 +7,8 @@ case class WebsterDefiningText(
   text: Seq[String],
   biographicalName: Option[Seq[WebsterBiographicalNameWrap]],
   calledAlso: Option[Seq[WebsterCalledAlso]],
-  supplementalNote: Option[Seq[WebsterSupplementalNote]]
+  supplementalNote: Option[Seq[WebsterSupplementalNote]],
+  examples: Option[Seq[WebsterVerbalIllustration]]
 )
 object WebsterDefiningText {
 
@@ -35,7 +36,18 @@ object WebsterDefiningText {
       val snote: Option[Seq[WebsterSupplementalNote]] = NestedArrayHelper
         .getOrNone[WebsterSupplementalNote](lookup.get("snote"))
 
-      WebsterDefiningText(text, bnw, ca, snote)
+      val vis: Option[Seq[WebsterVerbalIllustration]] = {
+        val i = NestedArrayHelper
+          .getOrNone[Seq[WebsterVerbalIllustration]](lookup.get("vis"))(
+            WebsterVerbalIllustration.helper.readsSeq
+          )
+        i match {
+          case Some(x) => Some(x.flatten)
+          case None    => None
+        }
+      }
+
+      WebsterDefiningText(text, bnw, ca, snote, vis)
     })
     .filter(JsonValidationError("Text is a required field"))(
       d => d.text.nonEmpty

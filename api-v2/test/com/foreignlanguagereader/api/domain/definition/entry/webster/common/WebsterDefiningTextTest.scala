@@ -9,8 +9,7 @@ class WebsterDefiningTextTest extends AnyFunSpec {
       val webster =
         "[[\"text\",\"{bc}a person or way of behaving that is seen as a model that should be followed \"],[\"wsgram\",\"count\"],[\"vis\",[{\"t\":\"He was inspired by the {it}example{/it} of his older brother. [=he wanted to do what his older brother did]\"},{\"t\":\"You should try to follow her {it}example{/it}. [=try to do as she does]\"},{\"t\":\"Let that be an {it}example{/it} to you! [=let that show you what you should or should not do]\"},{\"t\":\"He set a good/bad {it}example{/it} for the rest of us.\"},{\"t\":\"It's up to you to {phrase}set an example{/phrase}. [=to behave in a way that shows other people how to behave]\"}]],[\"wsgram\",\"noncount\"],[\"vis\",[{\"t\":\"She chooses to {phrase}lead by example{/phrase}. [=to lead by behaving in a way that shows others how to behave]\"}]]]"
       val domain =
-        "{\"text\":[\"{bc}a person or way of behaving that is seen as a model that should be followed \"]}"
-
+        "{\"text\":[\"{bc}a person or way of behaving that is seen as a model that should be followed \"],\"examples\":[{\"text\":\"He was inspired by the {it}example{/it} of his older brother. [=he wanted to do what his older brother did]\"},{\"text\":\"You should try to follow her {it}example{/it}. [=try to do as she does]\"},{\"text\":\"Let that be an {it}example{/it} to you! [=let that show you what you should or should not do]\"},{\"text\":\"He set a good/bad {it}example{/it} for the rest of us.\"},{\"text\":\"It's up to you to {phrase}set an example{/phrase}. [=to behave in a way that shows other people how to behave]\"},{\"text\":\"She chooses to {phrase}lead by example{/phrase}. [=to lead by behaving in a way that shows others how to behave]\"}]}"
       it("can be read from JSON") {
         val definingText =
           Json.parse(webster).validate[WebsterDefiningText].get
