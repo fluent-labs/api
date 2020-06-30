@@ -7,7 +7,7 @@ case class WebsterSense(definingText: WebsterDefiningText,
                         inflections: Option[Seq[WebsterInflection]],
                         labels: Option[Seq[String]],
                         pronunciations: Option[Seq[WebsterPronunciation]],
-                        sdsense: Option[WebsterDividedSense],
+                        dividedSense: Option[WebsterDividedSense],
                         senseSpecificGrammaticalLabel: Option[String],
                         subjectStatusLabels: Option[Seq[String]],
                         variations: Option[Seq[WebsterVariant]])
