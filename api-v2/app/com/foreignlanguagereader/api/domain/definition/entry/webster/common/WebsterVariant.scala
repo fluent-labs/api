@@ -7,7 +7,6 @@ case class WebsterVariant(variant: String,
                           variantLabel: Option[String],
                           pronunciations: Option[Seq[WebsterPronunciation]])
 object WebsterVariant {
-  implicit val writes: Writes[WebsterVariant] = Json.writes[WebsterVariant]
   implicit val reads: Reads[WebsterVariant] = ((JsPath \ "va")
     .read[String] and
     (JsPath \ "vl").readNullable[String] and
@@ -15,4 +14,7 @@ object WebsterVariant {
       .readNullable[Seq[WebsterPronunciation]](
         WebsterPronunciation.helper.readsSeq
       ))(WebsterVariant.apply _)
+  implicit val writes: Writes[WebsterVariant] = Json.writes[WebsterVariant]
+  implicit val helper: JsonSequenceHelper[WebsterVariant] =
+    new JsonSequenceHelper[WebsterVariant]
 }
