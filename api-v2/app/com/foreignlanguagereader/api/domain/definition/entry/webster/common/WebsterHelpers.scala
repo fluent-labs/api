@@ -42,12 +42,10 @@ object NestedArrayHelper {
         }
         (typeString -> row(1))
       })
-      .groupBy(row => row._1)
-      .map(row => {
-        val key = row._1
-        val values = row._2.map(_._2)
-        (key -> values)
-      })
+      .groupBy { case (key, _) => key }
+      .map {
+        case (key, values) => (key -> values.map { case (_, value) => value })
+      }
 
   def buildLookupMapFromNested(
     input: Seq[Seq[Seq[JsValue]]]

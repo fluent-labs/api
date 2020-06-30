@@ -42,7 +42,8 @@ case class WebsterPronunciationSound(audio: String,
     s"https://media.merriam-webster.com/audio/prons/$language/$country/mp3/$subdirectory/$audio.mp3"
 }
 object WebsterPronunciationSound {
-  def createWithDefaults(audio: String, ref: String) =
+  def createWithDefaults(audio: String,
+                         ref: String): WebsterPronunciationSound =
     WebsterPronunciationSound(audio)
   implicit val reads: Reads[WebsterPronunciationSound] = (
     (JsPath \ "audio").read[String] and

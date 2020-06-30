@@ -3,7 +3,7 @@ package com.foreignlanguagereader.api.domain.definition.entry.webster.common
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
 
-class HeadwordInfoTest extends AnyFunSpec {
+class WebsterHeadwordInfoTest extends AnyFunSpec {
   describe("a headword info section") {
     val webster =
       "{\"hw\":\"pa*ja*ma\",\"prs\":[{\"mw\":\"p\\u0259-\\u02c8j\\u00e4-m\\u0259\",\"sound\":{\"audio\":\"pajama02\",\"ref\":\"c\",\"stat\":\"1\"}},{\"mw\":\"-\\u02c8ja-\",\"sound\":{\"audio\":\"pajama01\",\"ref\":\"c\",\"stat\":\"1\"}}]}"
