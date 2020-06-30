@@ -26,6 +26,8 @@ object WebsterSense {
       .readNullable[Seq[WebsterVariant]](WebsterVariant.helper.readsSeq)
   )(WebsterSense.apply _)
   implicit val writes: Writes[WebsterSense] = Json.writes[WebsterSense]
+  implicit val helper: JsonSequenceHelper[WebsterSense] =
+    new JsonSequenceHelper[WebsterSense]
 }
 
 case class WebsterDividedSense(
