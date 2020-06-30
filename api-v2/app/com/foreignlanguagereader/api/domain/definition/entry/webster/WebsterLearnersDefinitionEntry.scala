@@ -4,14 +4,15 @@ import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.combined.Definition
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.api.domain.definition.entry.webster.common._
 import com.foreignlanguagereader.api.domain.definition.entry.{
   DefinitionEntry,
   DefinitionSource
 }
-import play.api.libs.json.{Format, Json, Reads}
+import play.api.libs.json.{Json, Reads, Writes}
 
 case class WebsterLearnersDefinitionEntry(meta: WebsterMeta,
-                                          hwi: HeadwordInfo,
+                                          hwi: WebsterHeadwordInfo,
                                           fl: String,
                                           ins: Seq[WebsterInflection],
                                           // todo this is called def which is a keyword. Will need to manually handle.
@@ -41,8 +42,10 @@ case class WebsterLearnersDefinitionEntry(meta: WebsterMeta,
   )
 }
 object WebsterLearnersDefinitionEntry {
-  implicit val format: Format[WebsterLearnersDefinitionEntry] =
-    Json.format[WebsterLearnersDefinitionEntry]
-  implicit val readsSeq: Reads[Seq[WebsterLearnersDefinitionEntry]] =
-    Reads.seq(format.reads)
+  implicit val reads: Reads[WebsterLearnersDefinitionEntry] =
+    Json.reads[WebsterLearnersDefinitionEntry]
+  implicit val writes: Writes[WebsterLearnersDefinitionEntry] =
+    Json.writes[WebsterLearnersDefinitionEntry]
+  implicit val helper: JsonSequenceHelper[WebsterLearnersDefinitionEntry] =
+    new JsonSequenceHelper[WebsterLearnersDefinitionEntry]()
 }
