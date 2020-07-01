@@ -36,15 +36,12 @@ object WebsterDefiningText {
       val snote: Option[Seq[WebsterSupplementalNote]] = NestedArrayHelper
         .getOrNone[WebsterSupplementalNote](lookup.get("snote"))
 
-      val vis: Option[Seq[WebsterVerbalIllustration]] = {
-        val i = NestedArrayHelper
-          .getOrNone[Seq[WebsterVerbalIllustration]](lookup.get("vis"))(
-            WebsterVerbalIllustration.helper.readsSeq
-          )
-        i match {
-          case Some(x) => Some(x.flatten)
-          case None    => None
-        }
+      val vis: Option[Seq[WebsterVerbalIllustration]] = NestedArrayHelper
+        .getOrNone[Seq[WebsterVerbalIllustration]](lookup.get("vis"))(
+          WebsterVerbalIllustration.helper.readsSeq
+        ) match {
+        case Some(x) => Some(x.flatten)
+        case None    => None
       }
 
       WebsterDefiningText(text, bnw, ca, snote, vis)

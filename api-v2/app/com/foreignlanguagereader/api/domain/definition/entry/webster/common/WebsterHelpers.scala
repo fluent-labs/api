@@ -27,7 +27,7 @@ object JsonSequenceHelper {
 
 /**
   * Webster has a data structure that uses nested lists.
-  * ["key", [[something] ... [something]]
+  * ["key", [[ something ] ... [something]]
   * Those don't fit very well in our JSON model, so this class is here to help with parsing it.
   *
   * Build a lookup map, and then classes can pull them out.
@@ -40,11 +40,11 @@ object NestedArrayHelper {
           case JsSuccess(t, _) => t
           case JsError(e)      => throw new IllegalArgumentException(e.toString)
         }
-        (typeString -> row(1))
+        typeString -> row(1)
       })
       .groupBy { case (key, _) => key }
       .map {
-        case (key, values) => (key -> values.map { case (_, value) => value })
+        case (key, values) => key -> values.map { case (_, value) => value }
       }
 
   def buildLookupMapFromNested(
@@ -62,7 +62,7 @@ object NestedArrayHelper {
           v =>
             v.validate[T] match {
               case JsSuccess(value, _) => Some(value)
-              case JsError(e)          => None
+              case JsError(_)          => None
           }
         )
         if (validated.nonEmpty) Some(validated) else None
