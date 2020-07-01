@@ -17,9 +17,9 @@ case class WebsterLearnersDefinitionEntry(
   headwordInfo: WebsterHeadwordInfo,
   // TODO figure out if we can turn this into an enum. What are the values?
   partOfSpeech: String,
-  inflections: Seq[WebsterInflection],
+  inflections: Option[Seq[WebsterInflection]],
   definitions: Seq[WebsterDefinition],
-  definedRunOns: Seq[WebsterDefinedRunOnPhrase],
+  definedRunOns: Option[Seq[WebsterDefinedRunOnPhrase]],
   shortDefinitions: Seq[String]
 ) extends DefinitionEntry {
   override val wordLanguage: Language = Language.ENGLISH
@@ -67,10 +67,10 @@ object WebsterLearnersDefinitionEntry {
       (JsPath \ "hwi").read[WebsterHeadwordInfo] and
       (JsPath \ "fl").read[String] and
       (JsPath \ "ins")
-        .read[Seq[WebsterInflection]](WebsterInflection.helper.readsSeq) and
+        .readNullable[Seq[WebsterInflection]](WebsterInflection.helper.readsSeq) and
       (JsPath \ "def")
         .read[Seq[WebsterDefinition]](WebsterDefinition.helper.readsSeq) and
-      (JsPath \ "dros").read[Seq[WebsterDefinedRunOnPhrase]](
+      (JsPath \ "dros").readNullable[Seq[WebsterDefinedRunOnPhrase]](
         WebsterDefinedRunOnPhrase.helper.readsSeq
       ) and
       (JsPath \ "shortdef").read[Seq[String]](Reads.seq[String])

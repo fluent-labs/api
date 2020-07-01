@@ -43,11 +43,11 @@ case class WebsterPronunciationSound(audio: String,
 }
 object WebsterPronunciationSound {
   def createWithDefaults(audio: String,
-                         ref: String): WebsterPronunciationSound =
+                         ref: Option[String]): WebsterPronunciationSound =
     WebsterPronunciationSound(audio)
   implicit val reads: Reads[WebsterPronunciationSound] = (
     (JsPath \ "audio").read[String] and
-      (JsPath \ "ref").read[String]
+      (JsPath \ "ref").readNullable[String]
   )(WebsterPronunciationSound.createWithDefaults _)
   implicit val writes: Writes[WebsterPronunciationSound] =
     Json.writes[WebsterPronunciationSound]
