@@ -9,20 +9,20 @@ import com.foreignlanguagereader.api.domain.definition.entry.{
   DefinitionEntry,
   DefinitionSource
 }
-import play.api.libs.json.{Json, Reads, Writes}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
-case class WebsterLearnersDefinitionEntry(meta: WebsterMeta,
-                                          hwi: WebsterHeadwordInfo,
-                                          fl: String,
-                                          ins: Seq[WebsterInflection],
-                                          // todo this is called def which is a keyword. Will need to manually handle.
-                                          definition: Seq[WebsterDefinition])
-    extends DefinitionEntry {
+case class WebsterLearnersDefinitionEntry(
+  meta: WebsterMeta,
+  headwordInfo: WebsterHeadwordInfo,
   // TODO figure out if we can turn this into an enum. What are the values?
-  val partOfSpeech: String = fl
-
+  tag: String,
+  inflections: Seq[WebsterInflection],
+  definition: Seq[WebsterDefinition],
+  definedRunOns: Seq[WebsterDefinedRunOnPhrase],
+  shortDefinitions: Seq[String]
+) extends DefinitionEntry {
   val subdefinitions: List[String] = List()
-  val tag: String = ""
   val examples: List[String] = List()
   val token: String = ""
 
@@ -42,8 +42,19 @@ case class WebsterLearnersDefinitionEntry(meta: WebsterMeta,
   )
 }
 object WebsterLearnersDefinitionEntry {
-  implicit val reads: Reads[WebsterLearnersDefinitionEntry] =
-    Json.reads[WebsterLearnersDefinitionEntry]
+  implicit val reads: Reads[WebsterLearnersDefinitionEntry] = (
+    (JsPath \ "meta").read[WebsterMeta] and
+      (JsPath \ "hwi").read[WebsterHeadwordInfo] and
+      (JsPath \ "fl").read[String] and
+      (JsPath \ "ins")
+        .read[Seq[WebsterInflection]](WebsterInflection.helper.readsSeq) and
+      (JsPath \ "def")
+        .read[Seq[WebsterDefinition]](WebsterDefinition.helper.readsSeq) and
+      (JsPath \ "dros").read[Seq[WebsterDefinedRunOnPhrase]](
+        WebsterDefinedRunOnPhrase.helper.readsSeq
+      ) and
+      (JsPath \ "shortdef").read[Seq[String]](Reads.seq[String])
+  )(WebsterLearnersDefinitionEntry.apply _)
   implicit val writes: Writes[WebsterLearnersDefinitionEntry] =
     Json.writes[WebsterLearnersDefinitionEntry]
   implicit val helper: JsonSequenceHelper[WebsterLearnersDefinitionEntry] =
