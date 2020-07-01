@@ -16,20 +16,40 @@ case class WebsterLearnersDefinitionEntry(
   meta: WebsterMeta,
   headwordInfo: WebsterHeadwordInfo,
   // TODO figure out if we can turn this into an enum. What are the values?
-  tag: String,
+  partOfSpeech: String,
   inflections: Seq[WebsterInflection],
-  definition: Seq[WebsterDefinition],
+  definitions: Seq[WebsterDefinition],
   definedRunOns: Seq[WebsterDefinedRunOnPhrase],
   shortDefinitions: Seq[String]
 ) extends DefinitionEntry {
-  val subdefinitions: List[String] = List()
-  val examples: List[String] = List()
-  val token: String = ""
-
   override val wordLanguage: Language = Language.ENGLISH
   override val definitionLanguage: Language = Language.ENGLISH
   override val source: DefinitionSource =
     DefinitionSource.MIRRIAM_WEBSTER_LEARNERS
+
+  // Here we make some opinionated choices about how webster definitions map to our model
+  val tag: String = partOfSpeech
+  val subdefinitions: List[String] = shortDefinitions.toList
+
+  val examples: List[String] = {
+    //definitions: Seq[WebsterDefinition]
+    val e = definitions
+    // senseSequence: Option[Seq[Seq[WebsterSense]]]
+    // remove the nones
+      .flatMap(_.senseSequence)
+      // Our data model needs them flattened to one list
+      .flatten
+      .flatten
+      // definingText: WebsterDefiningText => examples: Option[Seq[WebsterVerbalIllustration]]
+      .flatMap(_.definingText.examples)
+      .flatten
+      // Verbal Illustration means examples, so we can just get the text.
+      .map(_.text)
+    if (e.isEmpty) List() else e.toList
+  }
+
+  // Id is either the token, or token:n where n is the nth definition for the token.
+  val token: String = meta.id.split(":")(0)
 
   lazy override val toDefinition: Definition = Definition(
     subdefinitions,
