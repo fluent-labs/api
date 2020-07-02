@@ -1,0 +1,258 @@
+[
+  {
+    "meta": {
+      "id": "animal",
+      "uuid": "dbfe3fc4-9b8f-4107-9199-c78512995c65",
+      "lang": "en",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "animal",
+        "animals",
+        "animallike"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "animal",
+      "prs": [
+        {
+          "mw": "ˈænəm{it}ə{/it}l"
+        }
+      ]
+    },
+    "fl": "noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}animal "
+                  ],
+                  [
+                    "gl",
+                    "masculine"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{sx|brute||} {bc}{a_link|bruto} "
+                  ],
+                  [
+                    "gl",
+                    "masculine"
+                  ],
+                  [
+                    "text",
+                    ", "
+                  ],
+                  [
+                    "gwds",
+                    {
+                      "gwc": "-ta",
+                      "gwd": "bruta"
+                    }
+                  ],
+                  [
+                    "text",
+                    "  "
+                  ],
+                  [
+                    "gl",
+                    "feminine"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "animal",
+      "brute : bruto, bruta"
+    ]
+  },
+  {
+    "meta": {
+      "id": "animal:1",
+      "uuid": "6c9d64c0-7d96-41ce-9f71-23fcda990d26",
+      "lang": "es",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "animal"
+      ],
+      "offensive": false
+    },
+    "hom": 1,
+    "hwi": {
+      "hw": "animal"
+    },
+    "fl": "adjective",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}animal"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{sx|estúpido||} {bc}{a_link|stupid}, {a_link|idiotic}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "3",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|rough}, {a_link|brutish}"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "animal",
+      "estúpido : stupid, idiotic",
+      "rough, brutish"
+    ]
+  },
+  {
+    "meta": {
+      "id": "animal:2",
+      "uuid": "1e8b9ea2-40b2-42ac-8a3a-f48b97f98d1e",
+      "lang": "es",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "animal"
+      ],
+      "offensive": false
+    },
+    "hom": 2,
+    "hwi": {
+      "hw": "animal"
+    },
+    "fl": "masculine noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "dt": [
+                  [
+                    "text",
+                    "{bc}animal"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "animal"
+    ]
+  },
+  {
+    "meta": {
+      "id": "animal:3",
+      "uuid": "538889c3-7472-498a-b5f7-4807001cc084",
+      "lang": "es",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "animal"
+      ],
+      "offensive": false
+    },
+    "hom": 3,
+    "hwi": {
+      "hw": "animal"
+    },
+    "fl": "masculine or feminine noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{sx|idiota||} {bc}{a_link|idiot}, {a_link|fool}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|brute}, beastly person"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "idiota : idiot, fool",
+      "brute, beastly person"
+    ]
+  }
+]
