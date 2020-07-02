@@ -22,7 +22,8 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
 
       val tag = "noun"
       val token = "animal"
-      val subdefinitions = List("animal", "brute : bruto, bruta")
+      val subdefinitions =
+        List("{bc}animal ", "{sx|brute||} {bc}{a_link|bruto} ", ", ", "  ")
       val examples = List()
 
       it("can be read from the webster payload") {
@@ -72,7 +73,12 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
 
         val pop = webster(0)
         assert(pop.token == "pero")
-        assert(pop.subdefinitions == pop.shortDefinitions.toList)
+        assert(
+          pop.subdefinitions == List(
+            "{bc}{a_link|fault}, {a_link|defect} ",
+            "{bc}{a_link|objection}"
+          )
+        )
         assert(pop.tag == "masculine noun")
         assert(pop.examples == List("ponerle peros a"))
       }
@@ -94,9 +100,23 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
       it("can be read from the webster payload") {
         assert(webster.size == 3)
 
-        val perro = webster(1)
+        val perro = webster(0)
         assert(perro.token == "perro")
-        assert(perro.subdefinitions == perro.shortDefinitions.toList)
+        assert(
+          perro.subdefinitions == List(
+            "{bc}{a_link|dog}, {a_link|bitch} ",
+            "{bc}stray dog",
+            "{bc}{a_link|hot dog}",
+            "{bc}{a_link|retriever}",
+            "{bc}{a_link|lapdog}",
+            "{bc}{a_link|guard dog}",
+            "{bc}{a_link|guide dog}",
+            "{bc}{a_link|sheepdog}",
+            "{bc}police dog",
+            "{bc}tracking dog",
+            "{bc}{a_link|dachshund}"
+          )
+        )
         assert(perro.tag == "noun")
         assert(perro.examples == List())
       }
@@ -112,7 +132,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
           "/webster/spanish/websterPop.json"
         )(WebsterSpanishDefinitionEntry.helper.readsSeq)
       val output = ContentFileLoader
-        .loadJsonResourceFile[JsValue]("/webster/spanish/domainPero.json")
+        .loadJsonResourceFile[JsValue]("/webster/spanish/domainPop.json")
         .toString()
 
       it("can be read from the webster payload") {
@@ -120,7 +140,17 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
 
         val pop = webster(0)
         assert(pop.token == "pop")
-        assert(pop.subdefinitions == pop.shortDefinitions.toList)
+        assert(
+          pop.subdefinitions == List(
+            "{sx|burst||} {bc}{a_link|reventarse}, {a_link|estallar}",
+            "{bc}{a_link|saltar} (dícese de un corcho)",
+            "{bc}{a_link|ir}, {a_link|venir}, o aparecer abruptamente ",
+            "{sx|protrude||} {bc}{a_link|salirse}, {a_link|saltarse} ",
+            "{bc}proponerle matrimonio a alguien",
+            "{sx|burst||} {bc}{a_link|reventar}",
+            "{bc}sacar o meter abruptamente "
+          )
+        )
         assert(pop.tag == "verb")
         assert(
           pop.examples == List(
@@ -144,7 +174,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
           "/webster/spanish/websterPorque.json"
         )(WebsterSpanishDefinitionEntry.helper.readsSeq)
       val output = ContentFileLoader
-        .loadJsonResourceFile[JsValue]("/webster/spanish/domainPero.json")
+        .loadJsonResourceFile[JsValue]("/webster/spanish/domainPorque.json")
         .toString()
 
       it("can be read from the webster payload") {
@@ -152,7 +182,9 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
 
         val perro = webster(1)
         assert(perro.token == "porque'")
-        assert(perro.subdefinitions == perro.shortDefinitions.toList)
+        assert(
+          perro.subdefinitions == List("{bc}{a_link|reason}, {a_link|cause} ")
+        )
         assert(perro.tag == "masculine noun")
         assert(perro.examples == List("no explicó el porqué"))
       }
@@ -168,7 +200,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
           "/webster/spanish/websterVale.json"
         )(WebsterSpanishDefinitionEntry.helper.readsSeq)
       val output = ContentFileLoader
-        .loadJsonResourceFile[JsValue]("/webster/spanish/domainPerro.json")
+        .loadJsonResourceFile[JsValue]("/webster/spanish/domainVale.json")
         .toString()
 
       it("can be read from the webster payload") {
@@ -176,7 +208,12 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
 
         val perro = webster(1)
         assert(perro.token == "vale")
-        assert(perro.subdefinitions == perro.shortDefinitions.toList)
+        assert(
+          perro.subdefinitions == List(
+            "{bc}{a_link|voucher}",
+            "{sx|pagaré||} {bc}promissory note, {a_link|IOU}"
+          )
+        )
         assert(perro.tag == "masculine noun")
         assert(perro.examples == List())
       }
