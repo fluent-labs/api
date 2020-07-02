@@ -1,0 +1,157 @@
+[
+  {
+    "meta": {
+      "id": "pero:1",
+      "uuid": "d4c162ef-b63c-47fe-96a5-c37ccf7286da",
+      "lang": "es",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "pero"
+      ],
+      "offensive": false
+    },
+    "hom": 1,
+    "hwi": {
+      "hw": "pero",
+      "prs": [
+        {
+          "sound": {
+            "audio": "pero001sp"
+          }
+        }
+      ]
+    },
+    "fl": "masculine noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|fault}, {a_link|defect} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "ponerle peros a",
+                        "tr": "to find fault with"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|objection}"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "fault, defect",
+      "objection"
+    ]
+  },
+  {
+    "meta": {
+      "id": "pero:2",
+      "uuid": "233de477-a40b-4973-a7fd-d6bd23c74ce7",
+      "lang": "es",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "pero"
+      ],
+      "offensive": false
+    },
+    "hom": 2,
+    "hwi": {
+      "hw": "pero",
+      "prs": [
+        {
+          "sound": {
+            "audio": "pero002sp"
+          }
+        }
+      ]
+    },
+    "fl": "conjunction",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|but} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "lo siento, pero no puedo",
+                        "tr": "I'm sorry, but I can't"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "sls": [
+                  "(used for emphasis)"
+                ],
+                "dt": [
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "¿pero que le ve?",
+                        "tr": "what on earth does she see in him?"
+                      },
+                      {
+                        "t": "es muy, pero muy caro",
+                        "tr": "it's extremely expensive"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "but"
+    ]
+  }
+]

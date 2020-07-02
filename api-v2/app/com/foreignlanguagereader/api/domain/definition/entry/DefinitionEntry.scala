@@ -3,6 +3,7 @@ package com.foreignlanguagereader.api.domain.definition.entry
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.combined.Definition
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.api.domain.definition.entry.chinese.CEDICTDefinitionEntry
 import com.sksamuel.elastic4s.{Hit, HitReader}
 import play.api.libs.json._
 

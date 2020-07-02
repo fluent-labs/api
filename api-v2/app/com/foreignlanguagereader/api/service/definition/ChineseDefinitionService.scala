@@ -15,8 +15,8 @@ import com.foreignlanguagereader.api.domain.definition.combined.{
   HskLevel
 }
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.api.domain.definition.entry.chinese.CEDICTDefinitionEntry
 import com.foreignlanguagereader.api.domain.definition.entry.{
-  CEDICTDefinitionEntry,
   DefinitionEntry,
   DefinitionSource,
   WiktionaryDefinitionEntry
