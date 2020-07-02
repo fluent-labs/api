@@ -3,7 +3,10 @@ package com.foreignlanguagereader.api.client
 import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
-import com.foreignlanguagereader.api.domain.definition.entry.webster.WebsterLearnersDefinitionEntry
+import com.foreignlanguagereader.api.domain.definition.entry.webster.{
+  WebsterLearnersDefinitionEntry,
+  WebsterSpanishDefinitionEntry
+}
 import javax.inject.Inject
 import play.api.{Configuration, Logger}
 import play.api.libs.json.{JsError, JsSuccess}
@@ -36,6 +39,35 @@ class MirriamWebsterClient @Inject()(config: Configuration,
       .get()
       .map(response => {
         response.json.validate[WebsterLearnersDefinitionEntry] match {
+          case JsSuccess(result, _) => Some(result)
+          case JsError(errors) =>
+            logger.error(
+              s"Failed to parse definition for word $word from mirriam webster: $errors"
+            )
+            throw new IllegalStateException(
+              s"Failed to get definitions for word $word"
+            )
+        }
+      })
+      .recover {
+        case e: Exception =>
+          logger.error(
+            s"Failed to get definitions for word $word from Mirriam Webster: ${e.getMessage}",
+            e
+          )
+          throw e
+      }
+
+  def getSpanishDefinition(
+    word: String
+  ): Future[Option[WebsterSpanishDefinitionEntry]] =
+    ws.url(
+        s"https://www.dictionaryapi.com/api/v3/references/spanish/json/$word?key=$spanishApiKey"
+      )
+      .withRequestTimeout(languageServiceTimeout)
+      .get()
+      .map(response => {
+        response.json.validate[WebsterSpanishDefinitionEntry] match {
           case JsSuccess(result, _) => Some(result)
           case JsError(errors) =>
             logger.error(
