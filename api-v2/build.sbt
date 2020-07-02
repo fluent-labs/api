@@ -37,5 +37,5 @@ libraryDependencies += "org.sangria-graphql" %% "sangria-play-json" % "2.0.1"
 
 // Code coverage settings
 coverageEnabled := true
-coverageMinimum := 50
+coverageMinimum := 60
 coverageFailOnMinimum := true
