@@ -31,14 +31,16 @@ class MirriamWebsterClient @Inject()(config: Configuration,
 
   def getLearnersDefinition(
     word: String
-  ): Future[Option[WebsterLearnersDefinitionEntry]] =
+  ): Future[Option[Seq[WebsterLearnersDefinitionEntry]]] =
     ws.url(
         s"https://www.dictionaryapi.com/api/v3/references/learners/json/$word?key=$learnersApiKey"
       )
       .withRequestTimeout(languageServiceTimeout)
       .get()
       .map(response => {
-        response.json.validate[WebsterLearnersDefinitionEntry] match {
+        response.json.validate[Seq[WebsterLearnersDefinitionEntry]](
+          WebsterLearnersDefinitionEntry.helper.readsSeq
+        ) match {
           case JsSuccess(result, _) => Some(result)
           case JsError(errors) =>
             logger.error(
@@ -60,14 +62,16 @@ class MirriamWebsterClient @Inject()(config: Configuration,
 
   def getSpanishDefinition(
     word: String
-  ): Future[Option[WebsterSpanishDefinitionEntry]] =
+  ): Future[Option[Seq[WebsterSpanishDefinitionEntry]]] =
     ws.url(
         s"https://www.dictionaryapi.com/api/v3/references/spanish/json/$word?key=$spanishApiKey"
       )
       .withRequestTimeout(languageServiceTimeout)
       .get()
       .map(response => {
-        response.json.validate[WebsterSpanishDefinitionEntry] match {
+        response.json.validate[Seq[WebsterSpanishDefinitionEntry]](
+          WebsterSpanishDefinitionEntry.helper.readsSeq
+        ) match {
           case JsSuccess(result, _) => Some(result)
           case JsError(errors) =>
             logger.error(
