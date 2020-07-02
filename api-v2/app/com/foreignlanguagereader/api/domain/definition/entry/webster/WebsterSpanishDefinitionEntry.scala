@@ -12,7 +12,7 @@ import com.foreignlanguagereader.api.domain.definition.entry.{
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
-case class WebsterLearnersDefinitionEntry(
+case class WebsterSpanishDefinitionEntry(
   meta: WebsterMeta,
   headwordInfo: WebsterHeadwordInfo,
   // TODO figure out if we can turn this into an enum. What are the values?
@@ -22,10 +22,15 @@ case class WebsterLearnersDefinitionEntry(
   definedRunOns: Option[Seq[WebsterDefinedRunOnPhrase]],
   shortDefinitions: Seq[String]
 ) extends DefinitionEntry {
-  override val wordLanguage: Language = Language.ENGLISH
-  override val definitionLanguage: Language = Language.ENGLISH
+
+  val (wordLanguage: Language, definitionLanguage: Language) =
+    meta.language match {
+      case Some("en") => (Language.ENGLISH, Language.SPANISH)
+      case Some("es") => (Language.SPANISH, Language.ENGLISH)
+      case _          => (Language.SPANISH, Language.ENGLISH)
+    }
   override val source: DefinitionSource =
-    DefinitionSource.MIRRIAM_WEBSTER_LEARNERS
+    DefinitionSource.MIRRIAM_WEBSTER_SPANISH
 
   // Here we make some opinionated choices about how webster definitions map to our model
   val tag: String = partOfSpeech
@@ -61,8 +66,8 @@ case class WebsterLearnersDefinitionEntry(
     token
   )
 }
-object WebsterLearnersDefinitionEntry {
-  implicit val reads: Reads[WebsterLearnersDefinitionEntry] = (
+object WebsterSpanishDefinitionEntry {
+  implicit val reads: Reads[WebsterSpanishDefinitionEntry] = (
     (JsPath \ "meta").read[WebsterMeta] and
       (JsPath \ "hwi").read[WebsterHeadwordInfo] and
       (JsPath \ "fl").read[String] and
@@ -74,9 +79,9 @@ object WebsterLearnersDefinitionEntry {
         WebsterDefinedRunOnPhrase.helper.readsSeq
       ) and
       (JsPath \ "shortdef").read[Seq[String]](Reads.seq[String])
-  )(WebsterLearnersDefinitionEntry.apply _)
-  implicit val writes: Writes[WebsterLearnersDefinitionEntry] =
-    Json.writes[WebsterLearnersDefinitionEntry]
-  implicit val helper: JsonSequenceHelper[WebsterLearnersDefinitionEntry] =
-    new JsonSequenceHelper[WebsterLearnersDefinitionEntry]
+  )(WebsterSpanishDefinitionEntry.apply _)
+  implicit val writes: Writes[WebsterSpanishDefinitionEntry] =
+    Json.writes[WebsterSpanishDefinitionEntry]
+  implicit val helper: JsonSequenceHelper[WebsterSpanishDefinitionEntry] =
+    new JsonSequenceHelper[WebsterSpanishDefinitionEntry]
 }
