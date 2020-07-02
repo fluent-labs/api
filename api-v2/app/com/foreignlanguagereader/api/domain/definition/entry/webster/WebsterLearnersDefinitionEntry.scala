@@ -29,7 +29,20 @@ case class WebsterLearnersDefinitionEntry(
 
   // Here we make some opinionated choices about how webster definitions map to our model
   val tag: String = partOfSpeech
-  val subdefinitions: List[String] = shortDefinitions.toList
+
+  val subdefinitions: List[String] = {
+    val d = definitions
+    // senseSequence: Option[Seq[Seq[WebsterSense]]]
+    // remove the nones
+      .flatMap(_.senseSequence)
+      // Our data model needs them flattened to one list
+      .flatten
+      .flatten
+      // definingText: WebsterDefiningText => examples: Option[Seq[WebsterVerbalIllustration]]
+      .flatMap(_.definingText.text)
+
+    if (d.nonEmpty) d.toList else shortDefinitions.toList
+  }
 
   val examples: List[String] = {
     //definitions: Seq[WebsterDefinition]

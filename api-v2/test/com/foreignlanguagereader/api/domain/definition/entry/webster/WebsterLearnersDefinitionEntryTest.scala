@@ -21,9 +21,11 @@ class WebsterLearnersDefinitionEntryTest extends AnyFunSpec {
       val tag = "noun"
       val token = "example"
       val subdefinitions = List(
-        "a person or way of behaving that is seen as a model that should be followed",
-        "someone or something that is mentioned to help explain what you are saying or to show that a general statement is true",
-        "something or someone chosen from a group in order to show what the whole group is like"
+        "{bc}a person or way of behaving that is seen as a model that should be followed ",
+        "{bc}someone or something that is mentioned to help explain what you are saying or to show that a general statement is true ",
+        "{bc}something or someone chosen from a group in order to show what the whole group is like ",
+        "{bc}a phrase or sentence that shows how a word is used ",
+        "{bc}something (such as a problem that a student has to solve) that is used to teach how a rule or process works "
       )
       val examples = List(
         "He was inspired by the {it}example{/it} of his older brother. [=he wanted to do what his older brother did]",
@@ -87,7 +89,19 @@ class WebsterLearnersDefinitionEntryTest extends AnyFunSpec {
 
         val pop = webster(0)
         assert(pop.token == "pop")
-        assert(pop.subdefinitions == pop.shortDefinitions.toList)
+        assert(
+          pop.subdefinitions == List(
+            "{bc}to suddenly break open or come away from something often with a short, loud noise ",
+            "{bc}to make a short, loud noise ",
+            "{bc}to cook (popcorn) ",
+            "{bc}to come from, into, or out of a place suddenly or briefly ",
+            "{bc}to go to or from a place quickly, suddenly, or briefly ",
+            "{bc}to put (something) in, into, or onto a place suddenly or briefly ",
+            "{bc}to hit (someone) ",
+            "{bc}to hit a pop fly ",
+            "{bc}to open and drink (a bottle or can of beer) "
+          )
+        )
         assert(pop.tag == "verb")
         assert(
           pop.examples == List(
@@ -142,7 +156,20 @@ class WebsterLearnersDefinitionEntryTest extends AnyFunSpec {
 
         val test = webster(0)
         assert(test.token == "test")
-        assert(test.subdefinitions == test.shortDefinitions.toList)
+        assert(
+          test.subdefinitions == List(
+            "{bc}a set of questions or problems that are designed to measure a person's knowledge, skills, or abilities ",
+            "{dx}see also {dxt|intelligence test||} {dxt|rorschach test||} {dxt|screen test||}{/dx}",
+            "{bc}a careful study of a part of the body or of a substance taken from the body ",
+            "{dx}see also {dxt|blood test||} {dxt|breath test||} {dxt|stress test||}{/dx}",
+            "{bc}a careful study of a small amount of water, soil, air, etc., in order to see if its quality is good, to find out if it contains a dangerous substance, etc. ",
+            "{bc}a planned and usually controlled act or series of acts that is done to learn something, to see if something works properly, etc. ",
+            "{dx}see also {dxt|road test||}{/dx}",
+            "{bc}something (such as a difficult situation or task) that shows how strong or skilled someone or something is ",
+            "{dx}see also {dxt|acid test||} {dxt|litmus test||}{/dx}",
+            "{bc}{sx|test match||}"
+          )
+        )
         assert(test.tag == "noun")
         assert(
           test.examples == List(
