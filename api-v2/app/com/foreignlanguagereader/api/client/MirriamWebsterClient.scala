@@ -11,9 +11,10 @@ import javax.inject.Inject
 import play.api.{Configuration, Logger}
 import play.api.libs.json.{JsError, JsSuccess}
 import play.api.libs.ws.WSClient
+import play.api.{Configuration, Logger}
 
-import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration.Duration
+import scala.concurrent.{ExecutionContext, Future}
 
 class MirriamWebsterClient @Inject()(config: Configuration,
                                      val ws: WSClient,
