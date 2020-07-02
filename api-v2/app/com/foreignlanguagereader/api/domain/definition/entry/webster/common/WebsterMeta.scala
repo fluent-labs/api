@@ -7,6 +7,7 @@ import play.api.libs.json.{JsPath, Json, Reads, Writes}
 case class WebsterMeta(id: String,
                        uuid: String,
                        sort: Option[String],
+                       language: Option[String],
                        source: WebsterSource,
                        section: String,
                        stems: Seq[String],
@@ -17,6 +18,7 @@ object WebsterMeta {
     (JsPath \ "id").read[String] and
       (JsPath \ "uuid").read[String] and
       (JsPath \ "sort").readNullable[String] and
+      (JsPath \ "lang").readNullable[String] and
       (JsPath \ "src").read[WebsterSource] and
       (JsPath \ "section").read[String] and
       (JsPath \ "stems").read[Seq[String]](Reads.seq[String]) and
