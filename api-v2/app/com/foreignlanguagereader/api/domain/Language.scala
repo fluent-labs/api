@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.domain
 
+import com.foreignlanguagereader.api.domain
 import play.api.libs.json._
 import play.api.mvc.PathBindable
 import sangria.macros.derive.{EnumTypeDescription, EnumTypeName, deriveEnumType}
@@ -8,6 +9,7 @@ import sangria.schema.EnumType
 object Language extends Enumeration {
   type Language = Value
   val CHINESE: Value = Value("CHINESE")
+  val CHINESE_TRADITIONAL: domain.Language.Value = Value("CHINESE_TRADITIONAL")
   val ENGLISH: Value = Value("ENGLISH")
   val SPANISH: Value = Value("SPANISH")
 
