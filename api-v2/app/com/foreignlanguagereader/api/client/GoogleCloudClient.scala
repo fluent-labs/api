@@ -56,7 +56,19 @@ class GoogleCloudClient @Inject()(config: Configuration,
 
     Future {
       Try(gcloud.analyzeSyntax(request).getTokensList.asScala.toList) match {
-        case Success(tokens) => Some(convertTokensToWord(language, tokens))
+        case Success(t) =>
+          t match {
+            case List() =>
+              logger.info(
+                s"No tokens found in language=$language for document=$document"
+              )
+              None
+            case tokens =>
+              logger.info(
+                s"Found tokens in language=$language for document=$document"
+              )
+              Some(convertTokensToWord(language, tokens))
+          }
         case Failure(e) =>
           logger.error(
             s"Failed to get tokens from google cloud: ${e.getMessage}",
