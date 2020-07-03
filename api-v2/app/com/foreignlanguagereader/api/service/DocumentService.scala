@@ -13,11 +13,15 @@ import scala.concurrent.{ExecutionContext, Future}
 class DocumentService @Inject()(val googleCloudClient: GoogleCloudClient,
                                 val definitionService: DefinitionService,
                                 implicit val ec: ExecutionContext) {
+  /*
+   * Splits text into words, and then gets definitions for them.
+   */
   def getWordsForDocument(wordLanguage: Language,
                           definitionLanguage: Language,
                           document: String): Future[Option[Seq[WordDTO]]] =
     (googleCloudClient.getWordsForDocument(wordLanguage, document) map {
       case Some(words) =>
+        // Requests go out at the same time, and then we block until they are all done.
         Future
           .sequence(
             words.toList
@@ -32,5 +36,5 @@ class DocumentService @Inject()(val googleCloudClient: GoogleCloudClient,
           )
           .map(words => Some(words.map(_.toDTO)))
       case None => Future.successful(None)
-    }).flatten
+    }).flatten // Nested futures, blocks until they are all complete.
 }

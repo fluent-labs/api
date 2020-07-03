@@ -27,6 +27,12 @@ case class WebsterLearnersDefinitionEntry(
   override val source: DefinitionSource =
     DefinitionSource.MIRRIAM_WEBSTER_LEARNERS
 
+  // TODO Usage labels https://www.merriam-webster.com/help/explanatory-notes/dict-usage
+  // Might be worth noting if a word is obsolete
+  // Or non-standard
+  // Learners may not even want to see obsolete words
+  // And definitely should be discouraged from adding them to their vocabulary list.
+
   // Here we make some opinionated choices about how webster definitions map to our model
   val tag: String = partOfSpeech
 
