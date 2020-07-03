@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionEntry
-import com.foreignlanguagereader.api.dto.v1.document.Word
+import com.foreignlanguagereader.api.dto.v1.document.WordDTO
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus.ReadinessStatus
 import javax.inject.Inject
@@ -89,14 +89,14 @@ class LanguageServiceClient @Inject()(config: Configuration,
   }
 
   def getWordsForDocument(documentLanguage: Language,
-                          document: String): Future[Seq[Word]] = {
+                          document: String): Future[Seq[WordDTO]] = {
     ws.url(s"$languageServiceBaseUrl/v1/tagging/$documentLanguage/document")
       .withRequestTimeout(languageServiceTimeout)
       .withHttpHeaders(("Authorization", languageServiceAuthToken))
       .post(document)
       .map(
         response =>
-          response.json.validate[Seq[Word]] match {
+          response.json.validate[Seq[WordDTO]] match {
             case JsSuccess(result, _) => result
             case JsError(errors) =>
               logger.error(
