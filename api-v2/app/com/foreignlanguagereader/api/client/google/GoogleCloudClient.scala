@@ -1,19 +1,12 @@
 package com.foreignlanguagereader.api.client.google
 
-import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.word.Count.Count
 import com.foreignlanguagereader.api.domain.word.GrammaticalGender.GrammaticalGender
-import com.foreignlanguagereader.api.domain.word.WordTense.WordTense
-import com.foreignlanguagereader.api.domain.word.{
-  Count,
-  GrammaticalGender,
-  PartOfSpeech,
-  Word,
-  WordTense
-}
 import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
+import com.foreignlanguagereader.api.domain.word.WordTense.WordTense
+import com.foreignlanguagereader.api.domain.word.{PartOfSpeech, _}
 import com.google.cloud.language.v1.Document.Type
 import com.google.cloud.language.v1.PartOfSpeech.{
   Gender,
@@ -22,19 +15,21 @@ import com.google.cloud.language.v1.PartOfSpeech.{
   Tag,
   Tense
 }
-import com.google.cloud.language.v1._
+import com.google.cloud.language.v1.{
+  AnalyzeSyntaxRequest,
+  Document,
+  EncodingType,
+  Token
+}
 import javax.inject.Inject
-import play.api.{Configuration, Logger}
+import play.api.Logger
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
-class GoogleCloudClient @Inject()(config: Configuration,
-                                  gcloud: GoogleLanguageServiceClientHolder,
-                                  val system: ActorSystem) {
+class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
+                                  implicit val ec: ExecutionContext) {
   val logger: Logger = Logger(this.getClass)
-  implicit val myExecutionContext: ExecutionContext =
-    system.dispatchers.lookup("language-service-context")
 
   def getWordsForDocument(language: Language,
                           document: String): Future[Option[Set[Word]]] = {
