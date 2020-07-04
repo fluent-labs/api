@@ -68,7 +68,10 @@ object WiktionaryDefinitionEntry {
           Success(
             WiktionaryDefinitionEntry(
               source("subdefinitions").asInstanceOf[List[String]],
-              source("tag").toString,
+              // TODO HUGE TODO HERE
+              // Leaving it for now since we're gonna set up our own wiktionary parsing.
+//            source("tag").toString,
+              None,
               source("examples").toString.asInstanceOf[List[String]],
               word,
               definition,
