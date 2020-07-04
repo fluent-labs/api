@@ -4,7 +4,13 @@ import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.word.GrammaticalGender
 import com.foreignlanguagereader.api.domain.word.{PartOfSpeech, _}
 import com.google.cloud.language.v1.AnalyzeSyntaxRequest
-import com.google.cloud.language.v1.PartOfSpeech.{Gender, Number, Tag}
+import com.google.cloud.language.v1.PartOfSpeech.{
+  Gender,
+  Number,
+  Proper,
+  Tag,
+  Tense
+}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
 import org.scalatest.funspec.AsyncFunSpec
@@ -178,6 +184,62 @@ class GoogleCloudClientTest extends AsyncFunSpec with MockitoSugar {
         assert(
           client
             .googleCountToDomainCount(Number.UNRECOGNIZED)
+            .isEmpty
+        )
+      }
+
+      it("can correctly convert proper nouns") {
+        assert(
+          client
+            .isProperNoun(Proper.PROPER)
+            .contains(true)
+        )
+        assert(
+          client
+            .isProperNoun(Proper.NOT_PROPER)
+            .contains(false)
+        )
+        assert(
+          client
+            .isProperNoun(Proper.UNRECOGNIZED)
+            .isEmpty
+        )
+      }
+
+      it("can correctly convert tense") {
+        assert(
+          client
+            .googleTenseToDomainTense(Tense.CONDITIONAL_TENSE)
+            .contains(WordTense.CONDITIONAL)
+        )
+        assert(
+          client
+            .googleTenseToDomainTense(Tense.PAST)
+            .contains(WordTense.PAST)
+        )
+        assert(
+          client
+            .googleTenseToDomainTense(Tense.PRESENT)
+            .contains(WordTense.PRESENT)
+        )
+        assert(
+          client
+            .googleTenseToDomainTense(Tense.FUTURE)
+            .contains(WordTense.FUTURE)
+        )
+        assert(
+          client
+            .googleTenseToDomainTense(Tense.IMPERFECT)
+            .contains(WordTense.IMPERFECT)
+        )
+        assert(
+          client
+            .googleTenseToDomainTense(Tense.PLUPERFECT)
+            .contains(WordTense.PLUPERFECT)
+        )
+        assert(
+          client
+            .googleTenseToDomainTense(Tense.UNRECOGNIZED)
             .isEmpty
         )
       }
