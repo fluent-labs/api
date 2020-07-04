@@ -7,13 +7,14 @@ import com.foreignlanguagereader.api.domain.definition.combined.{
   Definition
 }
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
 import com.sksamuel.elastic4s.{Hit, HitReader}
 import play.api.libs.json.{Format, Json, Reads}
 
 import scala.util.{Failure, Success, Try}
 
 case class WiktionaryDefinitionEntry(override val subdefinitions: List[String],
-                                     tag: String,
+                                     tag: Option[PartOfSpeech],
                                      examples: List[String],
                                      override val wordLanguage: Language,
                                      override val definitionLanguage: Language,

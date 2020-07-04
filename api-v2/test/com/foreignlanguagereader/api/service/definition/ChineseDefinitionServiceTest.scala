@@ -13,6 +13,7 @@ import com.foreignlanguagereader.api.domain.definition.entry.{
   DefinitionSource,
   WiktionaryDefinitionEntry
 }
+import com.foreignlanguagereader.api.domain.word.PartOfSpeech
 import org.mockito.Mockito._
 import org.scalatest.funspec.AsyncFunSpec
 import org.scalatestplus.mockito.MockitoSugar
@@ -34,7 +35,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
   val dummyChineseDefinition = ChineseDefinition(
     List("definition 1", "definition 2"),
-    "noun",
+    Some(PartOfSpeech.NOUN),
     List("example 1", "example 2"),
     "ni3 hao3",
     "你好",
@@ -54,7 +55,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
   val dummyWiktionaryDefinition = WiktionaryDefinitionEntry(
     List("wiktionary definition 1", "wiktionary definition 2"),
-    "noun",
+    Some(PartOfSpeech.NOUN),
     List("example 1", "example 2"),
     Language.CHINESE,
     Language.ENGLISH,
@@ -63,7 +64,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
   val dummyWiktionaryDefinitionTwo = WiktionaryDefinitionEntry(
     List("wiktionary definition 3", "wiktionary definition 4"),
-    "noun",
+    Some(PartOfSpeech.NOUN),
     List("example 3", "example 4"),
     Language.CHINESE,
     Language.ENGLISH,

@@ -9,6 +9,7 @@ import com.foreignlanguagereader.api.domain.definition.entry.{
   DefinitionEntry,
   DefinitionSource
 }
+import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
@@ -33,7 +34,7 @@ case class WebsterSpanishDefinitionEntry(
     DefinitionSource.MIRRIAM_WEBSTER_SPANISH
 
   // Here we make some opinionated choices about how webster definitions map to our model
-  val tag: String = partOfSpeech
+  val tag: Option[PartOfSpeech] = None
 
   val subdefinitions: List[String] = {
     val d = definitions

@@ -28,7 +28,7 @@ case class CEDICTDefinitionEntry(override val subdefinitions: List[String],
 
   override lazy val toDefinition: Definition = ChineseDefinition(
     subdefinitions,
-    tag = "",
+    tag = None,
     examples = List(),
     pinyin,
     simplified,

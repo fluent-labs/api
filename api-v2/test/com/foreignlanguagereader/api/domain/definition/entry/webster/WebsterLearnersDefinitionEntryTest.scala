@@ -3,6 +3,7 @@ package com.foreignlanguagereader.api.domain.definition.entry.webster
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.definition.combined.Definition
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource
+import com.foreignlanguagereader.api.domain.word.PartOfSpeech
 import com.foreignlanguagereader.api.util.ContentFileLoader
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.{JsValue, Json}
@@ -18,7 +19,7 @@ class WebsterLearnersDefinitionEntryTest extends AnyFunSpec {
         .loadJsonResourceFile[JsValue]("/webster/learners/domainExample.json")
         .toString()
 
-      val tag = "noun"
+      val tag = Some(PartOfSpeech.NOUN)
       val token = "example"
       val subdefinitions = List(
         "{bc}a person or way of behaving that is seen as a model that should be followed ",
@@ -102,7 +103,7 @@ class WebsterLearnersDefinitionEntryTest extends AnyFunSpec {
             "{bc}to open and drink (a bottle or can of beer) "
           )
         )
-        assert(pop.tag == "verb")
+        assert(pop.tag.contains(PartOfSpeech.VERB))
         assert(
           pop.examples == List(
             "The balloon {it}popped{/it}. [={it}burst{/it}]",
@@ -170,7 +171,7 @@ class WebsterLearnersDefinitionEntryTest extends AnyFunSpec {
             "{bc}{sx|test match||}"
           )
         )
-        assert(test.tag == "noun")
+        assert(test.tag.contains(PartOfSpeech.NOUN))
         assert(
           test.examples == List(
             "She is studying for her math/spelling/history {it}test{/it}.",

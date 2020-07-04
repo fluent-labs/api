@@ -1,11 +1,12 @@
 package com.foreignlanguagereader.api.dto.v1.definition
 
+import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
 import play.api.libs.json.{Format, JsError, JsResult, JsValue}
-import sangria.schema.{ObjectType, UnionType}
+import sangria.schema.UnionType
 
 trait DefinitionDTO {
   val subdefinitions: List[String]
-  val tag: String
+  val tag: Option[PartOfSpeech]
   val examples: List[String]
 }
 object DefinitionDTO {
@@ -30,7 +31,7 @@ object DefinitionDTO {
 
   // Constructor that defaults to generic
   def apply(subdefinitions: List[String],
-            tag: String,
+            tag: Option[PartOfSpeech],
             examples: List[String]): DefinitionDTO =
     GenericDefinitionDTO(subdefinitions, tag, examples)
 }

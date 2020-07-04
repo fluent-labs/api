@@ -2,13 +2,14 @@ package com.foreignlanguagereader.api.domain.definition.combined
 
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource
+import com.foreignlanguagereader.api.domain.word.PartOfSpeech
 import com.foreignlanguagereader.api.dto.v1.definition.ChineseDefinitionDTO
 import org.scalatest.funspec.AnyFunSpec
 
 class ChineseDefinitionTest extends AnyFunSpec {
   val example = ChineseDefinition(
     List("definition 1", "definition 2"),
-    "noun",
+    Some(PartOfSpeech.NOUN),
     List("example 1", "example 2"),
     "ni3 hao3",
     "你好",

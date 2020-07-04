@@ -7,6 +7,7 @@ import com.foreignlanguagereader.api.domain.definition.combined.{
   GenericDefinition
 }
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource
+import com.foreignlanguagereader.api.domain.word.PartOfSpeech
 import org.mockito.Mockito._
 import org.scalatest.funspec.AsyncFunSpec
 import org.scalatestplus.mockito.MockitoSugar
@@ -31,7 +32,7 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
   val dummyChineseDefinition = ChineseDefinition(
     List("definition 1", "definition 2"),
-    "noun",
+    Some(PartOfSpeech.NOUN),
     List("example 1", "example 2"),
     "ni3 hao3",
     "你好",
@@ -42,7 +43,7 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   )
   val dummyGenericDefinition = GenericDefinition(
     List("definition 1", "definition 2"),
-    "noun",
+    Some(PartOfSpeech.NOUN),
     List("example 1", "example 2"),
     Language.ENGLISH,
     Language.ENGLISH,

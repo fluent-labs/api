@@ -4,6 +4,7 @@ import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.combined.HskLevel.HSKLevel
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.api.dto.v1.definition.ChineseDefinitionDTO
 import com.foreignlanguagereader.api.service.definition.ChineseDefinitionService
 import play.api.libs.json._
@@ -15,7 +16,7 @@ import sangria.macros.derive.{
 import sangria.schema.{EnumType, ObjectType}
 
 case class ChineseDefinition(override val subdefinitions: List[String],
-                             override val tag: String,
+                             override val tag: Option[PartOfSpeech],
                              override val examples: List[String],
                              private val inputPinyin: String = "",
                              simplified: String = "",

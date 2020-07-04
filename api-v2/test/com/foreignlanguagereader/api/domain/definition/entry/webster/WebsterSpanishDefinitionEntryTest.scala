@@ -3,6 +3,7 @@ package com.foreignlanguagereader.api.domain.definition.entry.webster
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.definition.combined.Definition
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource
+import com.foreignlanguagereader.api.domain.word.PartOfSpeech
 import com.foreignlanguagereader.api.util.ContentFileLoader
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.{JsValue, Json}
@@ -20,7 +21,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         .loadJsonResourceFile[JsValue]("/webster/spanish/domainAnimal.json")
         .toString()
 
-      val tag = "noun"
+      val tag = Some(PartOfSpeech.NOUN)
       val token = "animal"
       val subdefinitions =
         List("{bc}animal ", "{sx|brute||} {bc}{a_link|bruto} ", ", ", "  ")
