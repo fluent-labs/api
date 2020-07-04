@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.api.client.webster.common
+package com.foreignlanguagereader.api.contentsource.webster.common
 
 import com.foreignlanguagereader.api.contentsource.definition.webster.common.WebsterVariant
 import org.scalatest.funspec.AnyFunSpec

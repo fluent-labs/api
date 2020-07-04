@@ -1,11 +1,6 @@
-package com.foreignlanguagereader.api.domain.definition.combined
+package com.foreignlanguagereader.api.domain.definition
 
 import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.definition.{
-  ChineseDefinition,
-  DefinitionSource,
-  HskLevel
-}
 import com.foreignlanguagereader.api.domain.word.PartOfSpeech
 import com.foreignlanguagereader.api.dto.v1.definition.ChineseDefinitionDTO
 import org.scalatest.funspec.AnyFunSpec

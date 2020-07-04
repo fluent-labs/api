@@ -13,7 +13,8 @@ import scala.jdk.CollectionConverters._
   * Allows us to swap this out for testing
   */
 class GoogleLanguageServiceClientHolder {
-  private[this] val gcloud = LanguageServiceClient.create()
+  private[this] val gcloud: LanguageServiceClient =
+    LanguageServiceClient.create()
 
   def analyzeSyntax(request: AnalyzeSyntaxRequest): AnalyzeSyntaxResponse =
     gcloud.analyzeSyntax(request)

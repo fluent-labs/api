@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.api.client.webster
+package com.foreignlanguagereader.api.contentsource.webster
 
 import com.foreignlanguagereader.api.contentsource.definition.webster.WebsterSpanishDefinitionEntry
 import com.foreignlanguagereader.api.domain.Language
