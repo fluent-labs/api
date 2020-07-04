@@ -2,7 +2,7 @@ package com.foreignlanguagereader.api.service.definition
 
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.combined.Definition
+import com.foreignlanguagereader.api.domain.definition.Definition
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 

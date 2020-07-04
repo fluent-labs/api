@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.domain.word
 import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.combined.Definition
+import com.foreignlanguagereader.api.domain.definition.Definition
 import com.foreignlanguagereader.api.domain.word.Count.Count
 import com.foreignlanguagereader.api.domain.word.GrammaticalGender.GrammaticalGender
 import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech

@@ -6,12 +6,12 @@ import com.foreignlanguagereader.api.client.{
   ElasticsearchClient,
   LanguageServiceClient
 }
+import com.foreignlanguagereader.api.contentsource.definition.WiktionaryDefinitionEntry
+import com.foreignlanguagereader.api.contentsource.definition.cedict.CEDICTDefinitionEntry
 import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.definition.combined.ChineseDefinition
-import com.foreignlanguagereader.api.domain.definition.entry.chinese.CEDICTDefinitionEntry
-import com.foreignlanguagereader.api.domain.definition.entry.{
-  DefinitionSource,
-  WiktionaryDefinitionEntry
+import com.foreignlanguagereader.api.domain.definition.{
+  ChineseDefinition,
+  DefinitionSource
 }
 import com.foreignlanguagereader.api.domain.word.PartOfSpeech
 import org.mockito.Mockito._

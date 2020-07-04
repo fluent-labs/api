@@ -4,16 +4,18 @@ import com.foreignlanguagereader.api.client.{
   ElasticsearchClient,
   LanguageServiceClient
 }
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.combined.Definition
-import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.api.domain.definition.entry.chinese.CEDICTDefinitionEntry
-import com.foreignlanguagereader.api.domain.definition.entry.{
+import com.foreignlanguagereader.api.contentsource.definition.{
   DefinitionEntry,
-  DefinitionSource,
   WiktionaryDefinitionEntry
 }
+import com.foreignlanguagereader.api.contentsource.definition.cedict.CEDICTDefinitionEntry
+import com.foreignlanguagereader.api.domain.Language
+import com.foreignlanguagereader.api.domain.Language.Language
+import com.foreignlanguagereader.api.domain.definition.{
+  Definition,
+  DefinitionSource
+}
+import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.domain.word.PartOfSpeech
 import org.mockito.Mockito._
 import org.scalatest.funspec.AsyncFunSpec

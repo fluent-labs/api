@@ -2,7 +2,7 @@ package com.foreignlanguagereader.api.controller.v1.graphql
 
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.combined.Definition
+import com.foreignlanguagereader.api.domain.definition.Definition
 import com.foreignlanguagereader.api.service.definition.{
   ChineseDefinitionService,
   DefinitionService,
