@@ -80,7 +80,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
             "{bc}{a_link|objection}"
           )
         )
-        assert(pop.tag == "masculine noun")
+        assert(pop.tag.contains(PartOfSpeech.NOUN))
         assert(pop.examples == List("ponerle peros a"))
       }
 
@@ -118,7 +118,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
             "{bc}{a_link|dachshund}"
           )
         )
-        assert(perro.tag == "noun")
+        assert(perro.tag.contains(PartOfSpeech.NOUN))
         assert(perro.examples == List())
       }
 
@@ -152,7 +152,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
             "{bc}sacar o meter abruptamente "
           )
         )
-        assert(pop.tag == "verb")
+        assert(pop.tag.contains(PartOfSpeech.VERB))
         assert(
           pop.examples == List(
             "he popped into the house",
@@ -186,7 +186,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         assert(
           perro.subdefinitions == List("{bc}{a_link|reason}, {a_link|cause} ")
         )
-        assert(perro.tag == "masculine noun")
+        assert(perro.tag.contains(PartOfSpeech.NOUN))
         assert(perro.examples == List("no explicó el porqué"))
       }
 
@@ -215,7 +215,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
             "{sx|pagaré||} {bc}promissory note, {a_link|IOU}"
           )
         )
-        assert(perro.tag == "masculine noun")
+        assert(perro.tag.contains(PartOfSpeech.NOUN))
         assert(perro.examples == List())
       }
 

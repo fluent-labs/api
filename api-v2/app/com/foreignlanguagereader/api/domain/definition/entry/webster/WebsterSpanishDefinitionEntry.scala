@@ -34,7 +34,17 @@ case class WebsterSpanishDefinitionEntry(
     DefinitionSource.MIRRIAM_WEBSTER_SPANISH
 
   // Here we make some opinionated choices about how webster definitions map to our model
-  val tag: Option[PartOfSpeech] = None
+
+  // Why can't we use an enum to read this in?
+  // The Spanish dictionary puts multiple pieces of information within this string.
+  // eg: "masculine or feminine noun"
+  val tag: Option[PartOfSpeech] =
+    WebsterPartOfSpeech.parseFromString(partOfSpeech) match {
+      case Some(part) => Some(WebsterPartOfSpeech.toDomain(part))
+      case None       => None
+    }
+
+  // TODO gender
 
   val subdefinitions: List[String] = {
     val d = definitions

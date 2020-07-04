@@ -20,6 +20,43 @@ object WebsterPartOfSpeech extends Enumeration {
     Reads.enumNameReads(WebsterPartOfSpeech)
   implicit val writes: Writes[WebsterPartOfSpeech] = Writes.enumNameWrites
 
+  def parseFromString(partOfSpeech: String): Option[WebsterPartOfSpeech] = {
+    // Special case - pronoun might match for noun.
+    val (hasNoun, hasPronoun) =
+      if (partOfSpeech.contains("pronoun")) (false, true)
+      else (partOfSpeech.contains("noun"), false)
+
+    val matches = List(
+      if (partOfSpeech.contains("abbreviation"))
+        Some(WebsterPartOfSpeech.ABBREVIATION)
+      else None,
+      if (partOfSpeech.contains("adjective"))
+        Some(WebsterPartOfSpeech.ADJECTIVE)
+      else None,
+      if (partOfSpeech.contains("adverb"))
+        Some(WebsterPartOfSpeech.ADVERB)
+      else None,
+      if (partOfSpeech.contains("conjunction"))
+        Some(WebsterPartOfSpeech.CONJUNCTION)
+      else None,
+      if (partOfSpeech.contains("interjection"))
+        Some(WebsterPartOfSpeech.INTERJECTION)
+      else None,
+      if (partOfSpeech.contains("preposition"))
+        Some(WebsterPartOfSpeech.PREPOSITION)
+      else None,
+      if (partOfSpeech.contains("verb")) Some(WebsterPartOfSpeech.VERB)
+      else None,
+      if (hasNoun) Some(WebsterPartOfSpeech.NOUN) else None,
+      if (hasPronoun) Some(WebsterPartOfSpeech.PRONOUN) else None
+    ).flatten
+
+    // There are some definitions that will have multiple parts of speech.
+    // Our model can't really handle that, and there's no way to automatically tell which one is right
+    // So we should throw it out.
+    if (matches.size == 1) Some(matches(0)) else None
+  }
+
   // Webster's model of part of speech varies a bit from ours. This is how we go between them.
   def toDomain(partOfSpeech: WebsterPartOfSpeech): PartOfSpeech =
     partOfSpeech match {
