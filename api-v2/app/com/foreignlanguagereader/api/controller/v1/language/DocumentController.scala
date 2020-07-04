@@ -29,9 +29,10 @@ class DocumentController @Inject()(
               definitionLanguage,
               documentRequest.text
             )
-            .map(words => {
-              Ok(Json.toJson(words))
-            })
+            .map {
+              case Some(words) => Ok(Json.toJson(words.map(_.toDTO)))
+              case None        => NoContent
+            }
             .recover(error => {
               val message =
                 s"Failed to get words in $wordLanguage: ${error.getMessage}"

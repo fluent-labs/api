@@ -2,7 +2,7 @@ package com.foreignlanguagereader.api.service
 
 import com.foreignlanguagereader.api.client.google.GoogleCloudClient
 import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.dto.v1.document.WordDTO
+import com.foreignlanguagereader.api.domain.word.Word
 import com.foreignlanguagereader.api.service.definition.DefinitionService
 import com.google.inject.Inject
 import javax.inject
@@ -18,7 +18,7 @@ class DocumentService @Inject()(val googleCloudClient: GoogleCloudClient,
    */
   def getWordsForDocument(wordLanguage: Language,
                           definitionLanguage: Language,
-                          document: String): Future[Option[Seq[WordDTO]]] =
+                          document: String): Future[Option[Seq[Word]]] =
     (googleCloudClient.getWordsForDocument(wordLanguage, document) map {
       case Some(words) =>
         // Requests go out at the same time, and then we block until they are all done.
@@ -34,7 +34,7 @@ class DocumentService @Inject()(val googleCloudClient: GoogleCloudClient,
                     })
               )
           )
-          .map(words => Some(words.map(_.toDTO)))
+          .map(words => Some(words))
       case None => Future.successful(None)
     }).flatten // Nested futures, blocks until they are all complete.
 }
