@@ -4,13 +4,12 @@ import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.combined.Definition
 import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.api.domain.definition.entry.webster.WebsterPartOfSpeech.WebsterPartOfSpeech
+import com.foreignlanguagereader.api.domain.definition.entry.webster.common.WebsterPartOfSpeech.WebsterPartOfSpeech
 import com.foreignlanguagereader.api.domain.definition.entry.webster.common._
 import com.foreignlanguagereader.api.domain.definition.entry.{
   DefinitionEntry,
   DefinitionSource
 }
-import com.foreignlanguagereader.api.domain.word.PartOfSpeech
 import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
@@ -36,20 +35,9 @@ case class WebsterLearnersDefinitionEntry(
   // And definitely should be discouraged from adding them to their vocabulary list.
 
   // Here we make some opinionated choices about how webster definitions map to our model
-  val tag: Option[PartOfSpeech] = partOfSpeech match {
-    // Obvious mappings
-    case WebsterPartOfSpeech.ADJECTIVE   => Some(PartOfSpeech.ADJECTIVE)
-    case WebsterPartOfSpeech.ADVERB      => Some(PartOfSpeech.ADVERB)
-    case WebsterPartOfSpeech.CONJUNCTION => Some(PartOfSpeech.CONJUNCTION)
-    case WebsterPartOfSpeech.NOUN        => Some(PartOfSpeech.NOUN)
-    case WebsterPartOfSpeech.PRONOUN     => Some(PartOfSpeech.PRONOUN)
-    case WebsterPartOfSpeech.VERB        => Some(PartOfSpeech.VERB)
-
-    // The ones that needed interpretation
-    case WebsterPartOfSpeech.ABBREVIATION => Some(PartOfSpeech.OTHER)
-    case WebsterPartOfSpeech.INTERJECTION => Some(PartOfSpeech.PARTICLE)
-    case WebsterPartOfSpeech.PREPOSITION  => Some(PartOfSpeech.ADPOSITION)
-  }
+  val tag: Option[PartOfSpeech] = Some(
+    WebsterPartOfSpeech.toDomain(partOfSpeech)
+  )
 
   val subdefinitions: List[String] = {
     val d = definitions
@@ -113,21 +101,4 @@ object WebsterLearnersDefinitionEntry {
     Json.writes[WebsterLearnersDefinitionEntry]
   implicit val helper: JsonSequenceHelper[WebsterLearnersDefinitionEntry] =
     new JsonSequenceHelper[WebsterLearnersDefinitionEntry]
-}
-
-object WebsterPartOfSpeech extends Enumeration {
-  type WebsterPartOfSpeech = Value
-  val ABBREVIATION: Value = Value("abbreviation")
-  val ADJECTIVE: Value = Value("adjective")
-  val ADVERB: Value = Value("adverb")
-  val CONJUNCTION: Value = Value("conjunction")
-  val INTERJECTION: Value = Value("interjection")
-  val NOUN: Value = Value("noun")
-  val PREPOSITION: Value = Value("preposition")
-  val PRONOUN: Value = Value("pronoun")
-  val VERB: Value = Value("verb")
-
-  implicit val reads: Reads[WebsterPartOfSpeech] =
-    Reads.enumNameReads(WebsterPartOfSpeech)
-  implicit val writes: Writes[WebsterPartOfSpeech] = Writes.enumNameWrites
 }
