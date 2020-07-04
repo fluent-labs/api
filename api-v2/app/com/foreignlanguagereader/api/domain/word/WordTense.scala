@@ -1,6 +1,5 @@
 package com.foreignlanguagereader.api.domain.word
 
-import com.foreignlanguagereader.api.domain.word
 import play.api.libs.json.{Reads, Writes}
 
 object WordTense extends Enumeration {
@@ -12,7 +11,6 @@ object WordTense extends Enumeration {
   val IMPERFECT: Value = Value("Imperfect")
   val PLUPERFECT: Value = Value("Pluperfect")
 
-  implicit val reads: Reads[word.WordTense.Value] =
-    Reads.enumNameReads(WordTense)
-  implicit val writes = Writes.enumNameWrites
+  implicit val reads: Reads[WordTense] = Reads.enumNameReads(WordTense)
+  implicit val writes: Writes[WordTense] = Writes.enumNameWrites
 }

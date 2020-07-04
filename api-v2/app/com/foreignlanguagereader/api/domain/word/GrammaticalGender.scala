@@ -1,6 +1,5 @@
 package com.foreignlanguagereader.api.domain.word
 
-import com.foreignlanguagereader.api.domain.word
 import play.api.libs.json.{Reads, Writes}
 
 object GrammaticalGender extends Enumeration {
@@ -9,7 +8,7 @@ object GrammaticalGender extends Enumeration {
   val FEMALE: Value = Value("Female")
   val NEUTER: Value = Value("Neuter")
 
-  implicit val reads: Reads[word.GrammaticalGender.Value] =
+  implicit val reads: Reads[GrammaticalGender] =
     Reads.enumNameReads(GrammaticalGender)
-  implicit val writes = Writes.enumNameWrites
+  implicit val writes: Writes[GrammaticalGender] = Writes.enumNameWrites
 }

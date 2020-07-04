@@ -1,7 +1,8 @@
 package com.foreignlanguagereader.api.domain.word
 
-import com.foreignlanguagereader.api.domain.word
 import play.api.libs.json.{Reads, Writes}
+import sangria.macros.derive.{EnumTypeDescription, EnumTypeName, deriveEnumType}
+import sangria.schema.EnumType
 
 /**
   * This is a crude bucketing of all possible parts of speech in a language.
@@ -18,6 +19,7 @@ import play.api.libs.json.{Reads, Writes}
 object PartOfSpeech extends Enumeration {
   type PartOfSpeech = Value
   val ADJECTIVE: Value = Value("Adjective")
+  // What's an adposition? Prepositions and postpositions
   val ADPOSITION: Value = Value("Adposition")
   val ADVERB: Value = Value("Adverb")
   val CONJUNCTION: Value = Value("Conjunction")
@@ -25,13 +27,19 @@ object PartOfSpeech extends Enumeration {
   val NOUN: Value = Value("Noun")
   val NUMBER: Value = Value("Number")
   val PRONOUN: Value = Value("Pronoun")
+  // Particles are a bit of a grab bag. Interjections are a big part.
   val PARTICLE: Value = Value("Particle")
   val PUNCTUATION: Value = Value("Punctuation")
   val VERB: Value = Value("Verb")
   val OTHER: Value = Value("Other")
   val AFFIX: Value = Value("Affix")
 
-  implicit val reads: Reads[word.PartOfSpeech.Value] =
-    Reads.enumNameReads(PartOfSpeech)
-  implicit val writes = Writes.enumNameWrites
+  implicit val reads: Reads[PartOfSpeech] = Reads.enumNameReads(PartOfSpeech)
+  implicit val writes: Writes[PartOfSpeech] = Writes.enumNameWrites
+
+  implicit val graphqlType: EnumType[PartOfSpeech] =
+    deriveEnumType[PartOfSpeech](
+      EnumTypeName("PartOfSpeech"),
+      EnumTypeDescription("The part of speech for a word")
+    )
 }

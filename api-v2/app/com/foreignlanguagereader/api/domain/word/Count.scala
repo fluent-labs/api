@@ -1,6 +1,5 @@
 package com.foreignlanguagereader.api.domain.word
 
-import com.foreignlanguagereader.api.domain.word
 import play.api.libs.json.{Reads, Writes}
 
 object Count extends Enumeration {
@@ -9,7 +8,6 @@ object Count extends Enumeration {
   val PLURAL: Value = Value("Plural")
   val DUAL: Value = Value("Dual")
 
-  implicit val reads: Reads[word.WordTense.Value] =
-    Reads.enumNameReads(WordTense)
-  implicit val writes = Writes.enumNameWrites
+  implicit val reads: Reads[Count] = Reads.enumNameReads(Count)
+  implicit val writes: Writes[Count] = Writes.enumNameWrites
 }
