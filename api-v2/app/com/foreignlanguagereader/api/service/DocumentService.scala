@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.service
 
-import com.foreignlanguagereader.api.client.GoogleCloudClient
+import com.foreignlanguagereader.api.client.google.GoogleCloudClient
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.dto.v1.document.WordDTO
 import com.foreignlanguagereader.api.service.definition.DefinitionService
