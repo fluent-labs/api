@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.domain
 
+import com.foreignlanguagereader.api.domain
 import play.api.libs.json._
 import play.api.mvc.PathBindable
 import sangria.macros.derive.{EnumTypeDescription, EnumTypeName, deriveEnumType}
@@ -8,21 +9,15 @@ import sangria.schema.EnumType
 object Language extends Enumeration {
   type Language = Value
   val CHINESE: Value = Value("CHINESE")
+  val CHINESE_TRADITIONAL: domain.Language.Value = Value("CHINESE_TRADITIONAL")
   val ENGLISH: Value = Value("ENGLISH")
   val SPANISH: Value = Value("SPANISH")
 
   def fromString(s: String): Option[Language] =
     Language.values.find(_.toString == s)
 
-  implicit val languageFormat: Format[Language] = new Format[Language] {
-    def reads(json: JsValue): JsResult[Language] =
-      fromString(json.toString) match {
-        case Some(language) => JsSuccess(language)
-        case None           => JsError("Invalid language")
-      }
-    def writes(language: Language.Language): JsString =
-      JsString(language.toString)
-  }
+  implicit val reads: Reads[Language] = Reads.enumNameReads(Language)
+  implicit val writes: Writes[Language] = Writes.enumNameWrites
 
   implicit def pathBinder: PathBindable[Language] =
     new PathBindable[Language] {

@@ -1,11 +1,12 @@
 package com.foreignlanguagereader.api.dto.v1.definition
 
+import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
 import play.api.libs.json.{Format, Json}
 import sangria.macros.derive.{ObjectTypeDescription, deriveObjectType}
 import sangria.schema.ObjectType
 
 case class GenericDefinitionDTO(subdefinitions: List[String],
-                                tag: String,
+                                tag: Option[PartOfSpeech],
                                 examples: List[String])
     extends DefinitionDTO
 object GenericDefinitionDTO {

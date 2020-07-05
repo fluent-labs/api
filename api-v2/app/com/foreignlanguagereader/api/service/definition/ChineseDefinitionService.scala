@@ -4,23 +4,23 @@ import com.foreignlanguagereader.api.client.{
   ElasticsearchClient,
   LanguageServiceClient
 }
+import com.foreignlanguagereader.api.contentsource.definition.{
+  DefinitionEntry,
+  WiktionaryDefinitionEntry
+}
+import com.foreignlanguagereader.api.contentsource.definition.cedict.CEDICTDefinitionEntry
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.combined
-import com.foreignlanguagereader.api.domain.definition.combined.HskLevel.HSKLevel
-import com.foreignlanguagereader.api.domain.definition.combined.{
+import com.foreignlanguagereader.api.domain.definition.{
   ChineseDefinition,
   ChinesePronunciation,
   Definition,
-  HskLevel
-}
-import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.api.domain.definition.entry.chinese.CEDICTDefinitionEntry
-import com.foreignlanguagereader.api.domain.definition.entry.{
-  DefinitionEntry,
   DefinitionSource,
-  WiktionaryDefinitionEntry
+  HskLevel,
 }
+import com.foreignlanguagereader.api.domain.definition.HskLevel.HSKLevel
+
+import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.repository.definition.Cedict
 import com.foreignlanguagereader.api.util.ContentFileLoader
 import javax.inject.Inject
@@ -279,7 +279,7 @@ case class HskHolder(hsk1: Set[String],
                      hsk4: Set[String],
                      hsk5: Set[String],
                      hsk6: Set[String]) {
-  def getLevel(simplified: String): combined.HskLevel.Value = simplified match {
+  def getLevel(simplified: String): HskLevel.Value = simplified match {
     case s if hsk1.contains(s) => HskLevel.ONE
     case s if hsk2.contains(s) => HskLevel.TWO
     case s if hsk3.contains(s) => HskLevel.THREE

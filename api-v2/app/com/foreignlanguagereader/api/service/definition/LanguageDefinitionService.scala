@@ -4,14 +4,14 @@ import com.foreignlanguagereader.api.client.{
   ElasticsearchClient,
   LanguageServiceClient
 }
+import com.foreignlanguagereader.api.contentsource.definition.DefinitionEntry
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.combined.Definition
-import com.foreignlanguagereader.api.domain.definition.entry.{
-  DefinitionEntry,
+import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.api.domain.definition.{
+  Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
 import play.api.Logger
 
 import scala.concurrent.{ExecutionContext, Future}

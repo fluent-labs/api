@@ -23,6 +23,8 @@ libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0
 // REST calls
 libraryDependencies += ws
 
+libraryDependencies += "com.google.cloud" % "google-cloud-language" % "1.100.0"
+
 val elastic4sVersion = "7.6.1"
 libraryDependencies ++= Seq(
   "com.sksamuel.elastic4s" %% "elastic4s-client-esjava" % elastic4sVersion,
@@ -37,5 +39,5 @@ libraryDependencies += "org.sangria-graphql" %% "sangria-play-json" % "2.0.1"
 
 // Code coverage settings
 coverageEnabled := true
-coverageMinimum := 60
+coverageMinimum := 70
 coverageFailOnMinimum := true

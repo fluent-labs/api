@@ -4,16 +4,19 @@ import com.foreignlanguagereader.api.client.{
   ElasticsearchClient,
   LanguageServiceClient
 }
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.combined.Definition
-import com.foreignlanguagereader.api.domain.definition.entry.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.api.domain.definition.entry.chinese.CEDICTDefinitionEntry
-import com.foreignlanguagereader.api.domain.definition.entry.{
+import com.foreignlanguagereader.api.contentsource.definition.{
   DefinitionEntry,
-  DefinitionSource,
   WiktionaryDefinitionEntry
 }
+import com.foreignlanguagereader.api.contentsource.definition.cedict.CEDICTDefinitionEntry
+import com.foreignlanguagereader.api.domain.Language
+import com.foreignlanguagereader.api.domain.Language.Language
+import com.foreignlanguagereader.api.domain.definition.{
+  Definition,
+  DefinitionSource
+}
+import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.api.domain.word.PartOfSpeech
 import org.mockito.Mockito._
 import org.scalatest.funspec.AsyncFunSpec
 import org.scalatestplus.mockito.MockitoSugar
@@ -23,7 +26,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   val dummyWiktionaryDefinition = WiktionaryDefinitionEntry(
     List("definition 1", "definition 2"),
-    "tag",
+    Some(PartOfSpeech.NOUN),
     List("example 1", "example 2"),
     Language.ENGLISH,
     Language.ENGLISH,

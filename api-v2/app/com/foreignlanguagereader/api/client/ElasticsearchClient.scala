@@ -2,10 +2,11 @@ package com.foreignlanguagereader.api.client
 
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.entry.DefinitionEntry
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus.ReadinessStatus
 import java.util.concurrent.TimeUnit
+
+import com.foreignlanguagereader.api.contentsource.definition.DefinitionEntry
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s.http.JavaClient
 import com.sksamuel.elastic4s.requests.searches.SearchResponse

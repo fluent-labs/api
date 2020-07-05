@@ -3,12 +3,11 @@ package com.foreignlanguagereader.api.client
 import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
-import com.foreignlanguagereader.api.domain.definition.entry.webster.{
+import com.foreignlanguagereader.api.contentsource.definition.webster.{
   WebsterLearnersDefinitionEntry,
   WebsterSpanishDefinitionEntry
 }
 import javax.inject.Inject
-import play.api.{Configuration, Logger}
 import play.api.libs.json.{JsError, JsSuccess}
 import play.api.libs.ws.WSClient
 import play.api.{Configuration, Logger}

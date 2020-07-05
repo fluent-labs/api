@@ -1,13 +1,14 @@
 package com.foreignlanguagereader.api.dto.v1.definition
 
-import com.foreignlanguagereader.api.domain.definition.combined.ChinesePronunciation
-import com.foreignlanguagereader.api.domain.definition.combined.HskLevel.HSKLevel
+import com.foreignlanguagereader.api.domain.definition.ChinesePronunciation
+import com.foreignlanguagereader.api.domain.definition.HskLevel.HSKLevel
+import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
 import play.api.libs.json.{Format, Json}
 import sangria.macros.derive.{ObjectTypeDescription, deriveObjectType}
 import sangria.schema.ObjectType
 
 case class ChineseDefinitionDTO(subdefinitions: List[String],
-                                tag: String,
+                                tag: Option[PartOfSpeech],
                                 examples: List[String],
                                 simplified: String = "",
                                 traditional: String = "",

@@ -18,15 +18,21 @@ class DocumentController @Inject()(
 ) extends BaseController {
   val logger: Logger = Logger(this.getClass)
 
-  def definition(wordLanguage: Language): Action[JsValue] =
+  def definition(wordLanguage: Language,
+                 definitionLanguage: Language): Action[JsValue] =
     Action.async(parse.json) { request =>
       request.body.validate[DocumentRequest] match {
         case JsSuccess(documentRequest: DocumentRequest, _) =>
           documentService
-            .getWordsForDocument(wordLanguage, documentRequest.text)
-            .map(words => {
-              Ok(Json.toJson(words))
-            })
+            .getWordsForDocument(
+              wordLanguage,
+              definitionLanguage,
+              documentRequest.text
+            )
+            .map {
+              case Some(words) => Ok(Json.toJson(words.map(_.toDTO)))
+              case None        => NoContent
+            }
             .recover(error => {
               val message =
                 s"Failed to get words in $wordLanguage: ${error.getMessage}"
