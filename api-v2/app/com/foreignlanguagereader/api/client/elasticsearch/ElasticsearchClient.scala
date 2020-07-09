@@ -36,8 +36,10 @@ class ElasticsearchClient @Inject()(config: Configuration,
   val elasticSearchTimeout =
     Duration(config.get[Int]("elasticsearch.timeout"), TimeUnit.SECONDS)
 
+  val attemptsIndex = "attempts"
   val definitionsIndex = "definitions"
   val maxConcurrentInserts = 5
+  val maxFetchRetries = 5
 
   def checkConnection(timeout: Duration): ReadinessStatus = {
     Try(Await.result(client.execute(indexExists(definitionsIndex)), timeout)) match {
@@ -150,11 +152,40 @@ class ElasticsearchClient @Inject()(config: Configuration,
     }
   }
 
+  private[this] def getAttempts(index: String,
+                                fields: Seq[Tuple2[String, String]]): Int = {
+    1
+  }
+
+  private[this] def saveAttempts(
+    index: String,
+    fields: Seq[Tuple2[String, String]],
+    count: Int
+  )(implicit indexable: Indexable[LookupAttempt]): Unit = {
+    val request = client.execute {
+      indexInto(attemptsIndex)
+        .doc(LookupAttempt(index = index, fields = fields, count = count))
+    }
+
+    Try(Await.result(request, elasticSearchTimeout)) match {
+      case Failure(error) =>
+        logger.error(
+          s"Failed to save record of fetch attempts for index=$index and fields=$fields"
+        )
+      case _ =>
+        logger.info(
+          s"Saved record of fetch attempts for index=$index and fields=$fields"
+        )
+    }
+
+  }
+
   private[this] def save[T: Indexable](index: String, values: Seq[T]): Unit = {
     values
       .grouped(maxConcurrentInserts)
       .foreach(
         batch =>
+          // Todo timeout
           Try(client.execute {
             bulk(
               batch
