@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.api.service.definition
 
+import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
 import com.foreignlanguagereader.api.client.{
-  ElasticsearchClient,
   LanguageServiceClient,
   MirriamWebsterClient
 }
@@ -22,8 +22,6 @@ class SpanishDefinitionService @Inject()(
 ) extends LanguageDefinitionService {
   override val wordLanguage: Language = Language.SPANISH
   override val sources: Set[DefinitionSource] =
-    Set(DefinitionSource.MIRRIAM_WEBSTER_SPANISH, DefinitionSource.WIKTIONARY)
-  override val fetchableSources: Set[DefinitionSource] =
     Set(DefinitionSource.MIRRIAM_WEBSTER_SPANISH, DefinitionSource.WIKTIONARY)
 
   def websterFetcher

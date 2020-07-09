@@ -2,10 +2,8 @@ package com.foreignlanguagereader.api.service.definition
 
 import java.util.concurrent.TimeUnit
 
-import com.foreignlanguagereader.api.client.{
-  ElasticsearchClient,
-  LanguageServiceClient
-}
+import com.foreignlanguagereader.api.client.LanguageServiceClient
+import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
 import com.foreignlanguagereader.api.contentsource.definition.WiktionaryDefinitionEntry
 import com.foreignlanguagereader.api.contentsource.definition.cedict.CEDICTDefinitionEntry
 import com.foreignlanguagereader.api.domain.Language

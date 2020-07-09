@@ -1,9 +1,7 @@
 package com.foreignlanguagereader.api.service.definition
 
-import com.foreignlanguagereader.api.client.{
-  ElasticsearchClient,
-  LanguageServiceClient
-}
+import com.foreignlanguagereader.api.client.LanguageServiceClient
+import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
 import com.foreignlanguagereader.api.contentsource.definition.DefinitionEntry
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
@@ -44,7 +42,6 @@ trait LanguageDefinitionService {
   val languageServiceClient: LanguageServiceClient
   val wordLanguage: Language
   val sources: Set[DefinitionSource]
-  val fetchableSources: Set[DefinitionSource]
 
   // These are strongly recommended to implement, but have sane defaults
 
@@ -69,7 +66,11 @@ trait LanguageDefinitionService {
   // This is the main method that consumers will call
   def getDefinitions(definitionLanguage: Language,
                      word: String): Future[Option[Seq[Definition]]] = {
-    findOrFetchDefinitions(definitionLanguage, preprocessTokenForRequest(word)) map {
+    fetchDefinitions(
+      sources,
+      definitionLanguage,
+      preprocessTokenForRequest(word)
+    ) map {
       case Some(definitions) =>
         Some(enrichDefinitions(definitionLanguage, word, definitions))
       case None =>
@@ -82,48 +83,6 @@ trait LanguageDefinitionService {
 
   // Below here is trait behavior, implementers need not read further
 
-  // Handles fetching definitions from elasticsearch, and getting sources that are missing
-  private[this] def findOrFetchDefinitions(
-    definitionLanguage: Language,
-    word: String
-  ): Future[Option[Seq[DefinitionEntry]]] = {
-    elasticsearch.getDefinition(wordLanguage, definitionLanguage, word) match {
-      case Some(allSources) if missingRefetchableSources(allSources).isEmpty =>
-        logger.info(
-          s"Using elasticsearch definitions for $word in $wordLanguage"
-        )
-        Future.successful(Some(allSources))
-      case Some(someSources) =>
-        val missing = missingRefetchableSources(someSources)
-        logger.info(
-          s"Refreshing definitions for $word in $wordLanguage from $sources"
-        )
-        fetchDefinitions(missing, definitionLanguage, word) map {
-          case Some(refetched) =>
-            elasticsearch.saveDefinitions(refetched)
-            Some(someSources ++ refetched)
-          case None => Some(someSources)
-        }
-      // Is this just a special case of Some(d) where there are missing sources?
-      case None =>
-        logger.info(
-          s"Refreshing definitions for $word in $wordLanguage using all sources"
-        )
-        fetchDefinitions(fetchableSources, definitionLanguage, word).map {
-          case Some(d) =>
-            elasticsearch.saveDefinitions(d)
-            Some(d)
-          case None => None
-        }
-    }
-  }
-
-  // Which sources can be refreshed which we don't have data for?
-  private def missingRefetchableSources(
-    definitions: Seq[DefinitionEntry]
-  ): Set[DefinitionSource] =
-    fetchableSources.filterNot(source => definitions.exists(_.source == source))
-
   // Checks registered definition fetchers and uses them
   private[this] def fetchDefinition(
     source: DefinitionSource,
@@ -132,14 +91,14 @@ trait LanguageDefinitionService {
   ): Future[Option[Seq[DefinitionEntry]]] = {
     definitionFetchers.get(source, definitionLanguage) match {
       case Some(fetcher) =>
-        fetcher(definitionLanguage, word).recover {
-          case e: Exception =>
-            logger.error(
-              s"Failed to fetch definition from $source for $wordLanguage $word in $definitionLanguage: ${e.getMessage}",
-              e
-            )
-            None
-        }
+        elasticsearch
+          .getDefinition(
+            wordLanguage,
+            definitionLanguage,
+            word,
+            source,
+            () => fetcher(definitionLanguage, word)
+          )
       case None =>
         logger.error(
           s"Failed to search in $wordLanguage for $word because $source is not implemented for definitions in $definitionLanguage"

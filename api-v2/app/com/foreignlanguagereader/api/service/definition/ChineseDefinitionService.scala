@@ -1,9 +1,7 @@
 package com.foreignlanguagereader.api.service.definition
 
-import com.foreignlanguagereader.api.client.{
-  ElasticsearchClient,
-  LanguageServiceClient
-}
+import com.foreignlanguagereader.api.client.LanguageServiceClient
+import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
 import com.foreignlanguagereader.api.contentsource.definition.{
   DefinitionEntry,
   WiktionaryDefinitionEntry
@@ -16,10 +14,9 @@ import com.foreignlanguagereader.api.domain.definition.{
   ChinesePronunciation,
   Definition,
   DefinitionSource,
-  HskLevel,
+  HskLevel
 }
 import com.foreignlanguagereader.api.domain.definition.HskLevel.HSKLevel
-
 import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.repository.definition.Cedict
 import com.foreignlanguagereader.api.util.ContentFileLoader
@@ -44,8 +41,6 @@ class ChineseDefinitionService @Inject()(
   override val wordLanguage: Language = Language.CHINESE
   override val sources: Set[DefinitionSource] =
     Set(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
-  override val fetchableSources: Set[DefinitionSource] =
-    Set(DefinitionSource.WIKTIONARY)
 
   def cedictFetcher
     : (Language, String) => Future[Option[Seq[DefinitionEntry]]] =

@@ -1,9 +1,7 @@
 package com.foreignlanguagereader.api.service.definition
 
-import com.foreignlanguagereader.api.client.{
-  ElasticsearchClient,
-  LanguageServiceClient
-}
+import com.foreignlanguagereader.api.client.LanguageServiceClient
+import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
 import com.foreignlanguagereader.api.contentsource.definition.{
   DefinitionEntry,
   WiktionaryDefinitionEntry
