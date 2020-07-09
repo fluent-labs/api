@@ -73,13 +73,12 @@ class ElasticsearchClient @Inject()(config: Configuration,
   ): Future[Option[Seq[DefinitionEntry]]] = {
     cacheWithElasticsearch[DefinitionEntry, Tuple3[Language, Language, String]](
       definitionsIndex,
-      boolQuery()
-        .must(
-          matchQuery("wordLanguage", wordLanguage.toString),
-          matchQuery("definitionLanguage", definitionLanguage.toString),
-          matchQuery("token", word),
-          matchQuery("source", source.toString)
-        ),
+      List(
+        ("wordLanguage", wordLanguage.toString),
+        ("definitionLanguage", definitionLanguage.toString),
+        ("token", word),
+        ("source", source.toString)
+      ),
       fetcher
     )
   }
@@ -89,12 +88,15 @@ class ElasticsearchClient @Inject()(config: Configuration,
 
   private[this] def cacheWithElasticsearch[T: Indexable, U](
     index: String,
-    query: BoolQuery,
+    fields: Seq[Tuple2[String, String]],
     fetcher: () => Future[Option[Seq[T]]]
   )(implicit hitReader: HitReader[T],
     handler: Handler[SearchRequest, SearchResponse],
-    tag: ClassTag[T]): Future[Option[Seq[T]]] =
-    get(index, query) match {
+    tag: ClassTag[T]): Future[Option[Seq[T]]] = {
+    val query = boolQuery().must(fields.map {
+      case (field, value) => matchQuery(field, value)
+    })
+    get(index, boolQuery().must(query)) match {
       case Some(x) => Future.successful(Some(x))
       case None =>
         Try(fetcher()) match {
@@ -112,6 +114,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
             Future.successful(None)
         }
     }
+  }
 
   // Why Type tag? Runtime information needed to make a seq of an arbitrary type.
   // JVM type erasure would remove this unless we pass it along this way
