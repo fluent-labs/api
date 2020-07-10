@@ -85,9 +85,6 @@ class ElasticsearchClient @Inject()(config: Configuration,
     )
   }
 
-  def saveDefinitions(definitions: Seq[DefinitionEntry]): Unit =
-    save[DefinitionEntry](definitionsIndex, definitions)
-
   private[this] def cacheWithElasticsearch[T: Indexable, U](
     index: String,
     fields: Seq[Tuple2[String, String]],
@@ -99,22 +96,37 @@ class ElasticsearchClient @Inject()(config: Configuration,
       case (field, value) => matchQuery(field, value)
     })
     get(index, boolQuery().must(query)) match {
+      // Happy case - we already have this fetched
       case Some(x) => Future.successful(Some(x))
-      case None =>
-        Try(fetcher()) match {
-          case Success(result) =>
-            result map {
-              case Some(y) =>
-                save(index, y)
-                Some(y)
-              case None => None
+      case None    =>
+        // Check to make sure we haven't tried this search too many times
+        getAttempts(index, fields) match {
+          case n if n < maxFetchRetries =>
+            Try(fetcher()) match {
+              case Success(result) =>
+                result map {
+                  case Some(y) =>
+                    save(index, y)
+                    Some(y)
+                  case None =>
+                    saveAttempts(index, fields, n + 1)
+                    None
+                }
+              case Failure(error) =>
+                logger.error(
+                  s"Failed to refresh data on index: $index with query $query: $error"
+                )
+                saveAttempts(index, fields, n + 1)
+                Future.successful(None)
             }
-          case Failure(error) =>
-            logger.error(
-              s"Failed to refresh data on index: $index with query $query: $error"
+          // If we've tried thi
+          case _ =>
+            logger.warn(
+              s"Not fetching on index=$index for fields=$fields because maximum number of attempts has been exceeded"
             )
             Future.successful(None)
         }
+
     }
   }
 
@@ -157,11 +169,9 @@ class ElasticsearchClient @Inject()(config: Configuration,
     1
   }
 
-  private[this] def saveAttempts(
-    index: String,
-    fields: Seq[Tuple2[String, String]],
-    count: Int
-  )(implicit indexable: Indexable[LookupAttempt]): Unit = {
+  private[this] def saveAttempts(index: String,
+                                 fields: Seq[Tuple2[String, String]],
+                                 count: Int): Unit = {
     val request = client.execute {
       indexInto(attemptsIndex)
         .doc(LookupAttempt(index = index, fields = fields, count = count))
@@ -170,7 +180,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
     Try(Await.result(request, elasticSearchTimeout)) match {
       case Failure(error) =>
         logger.error(
-          s"Failed to save record of fetch attempts for index=$index and fields=$fields"
+          s"Failed to save record of fetch attempts for index=$index and fields=$fields: $error"
         )
       case _ =>
         logger.info(
