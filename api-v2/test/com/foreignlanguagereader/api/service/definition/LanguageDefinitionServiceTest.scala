@@ -15,6 +15,10 @@ import com.foreignlanguagereader.api.domain.definition.{
 }
 import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.domain.word.PartOfSpeech
+import org.mockito.ArgumentMatchers.{
+  any,
+  eq => mockitoEq
+} // eq conflicts with scala language types
 import org.mockito.Mockito._
 import org.scalatest.funspec.AsyncFunSpec
 import org.scalatestplus.mockito.MockitoSugar
@@ -44,16 +48,20 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       override val wordLanguage: Language = Language.ENGLISH
       override val sources: Set[DefinitionSource] =
         Set(DefinitionSource.WIKTIONARY)
-      override val fetchableSources: Set[DefinitionSource] =
-        Set(DefinitionSource.WIKTIONARY)
     }
     val defaultDefinitionService = new DefaultLanguageDefinitionService()
 
     it("will return results from elasticsearch if they are found") {
       when(
         elasticsearchClientMock
-          .getDefinition(Language.ENGLISH, Language.ENGLISH, "test")
-      ).thenReturn(Some(List(dummyWiktionaryDefinition)))
+          .getDefinition(
+            mockitoEq(Language.ENGLISH),
+            mockitoEq(Language.ENGLISH),
+            mockitoEq("test"),
+            mockitoEq(DefinitionSource.WIKTIONARY),
+            any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+          )
+      ).thenReturn(Future.successful(None))
       defaultDefinitionService
         .getDefinitions(Language.ENGLISH, "test")
         .map { response =>
@@ -61,39 +69,20 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           val results = response.get
           assert(results.length == 1)
           assert(results(0) == dummyWiktionaryDefinition.toDefinition)
-        }
-    }
-
-    it(
-      "will return results from language service if elasticsearch cannot find definitions"
-    ) {
-      when(
-        elasticsearchClientMock
-          .getDefinition(Language.ENGLISH, Language.ENGLISH, "test")
-      ).thenReturn(None)
-      when(languageServiceClientMock.getDefinition(Language.ENGLISH, "test"))
-        .thenReturn(Future.successful(Some(List(dummyWiktionaryDefinition))))
-
-      defaultDefinitionService
-        .getDefinitions(Language.ENGLISH, "test")
-        .map { response =>
-          assert(response.isDefined)
-          val results = response.get
-          assert(results.length == 1)
-          assert(results(0) == dummyWiktionaryDefinition.toDefinition)
-
-          verify(elasticsearchClientMock, times(1))
-            .saveDefinitions(List(dummyWiktionaryDefinition))
-
-          succeed
         }
     }
 
     it("does not break if no results are found") {
       when(
         elasticsearchClientMock
-          .getDefinition(Language.ENGLISH, Language.ENGLISH, "test")
-      ).thenReturn(None)
+          .getDefinition(
+            mockitoEq(Language.ENGLISH),
+            mockitoEq(Language.ENGLISH),
+            mockitoEq("test"),
+            mockitoEq(DefinitionSource.WIKTIONARY),
+            any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+          )
+      ).thenReturn(Future.successful(None))
       when(languageServiceClientMock.getDefinition(Language.ENGLISH, "test"))
         .thenReturn(Future.successful(None))
 
@@ -107,8 +96,14 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     it("does not break if a future is failed") {
       when(
         elasticsearchClientMock
-          .getDefinition(Language.ENGLISH, Language.ENGLISH, "test")
-      ).thenReturn(None)
+          .getDefinition(
+            mockitoEq(Language.ENGLISH),
+            mockitoEq(Language.ENGLISH),
+            mockitoEq("test"),
+            mockitoEq(DefinitionSource.WIKTIONARY),
+            any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+          )
+      ).thenReturn(Future.successful(None))
       when(languageServiceClientMock.getDefinition(Language.ENGLISH, "test"))
         .thenReturn(Future.failed(new IllegalStateException("Uh oh")))
 
@@ -122,8 +117,14 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     it("does not break if a fetcher cannot work with the requested language") {
       when(
         elasticsearchClientMock
-          .getDefinition(Language.ENGLISH, Language.CHINESE, "test")
-      ).thenReturn(None)
+          .getDefinition(
+            mockitoEq(Language.ENGLISH),
+            mockitoEq(Language.CHINESE),
+            mockitoEq("test"),
+            mockitoEq(DefinitionSource.WIKTIONARY),
+            any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+          )
+      ).thenReturn(Future.successful(None))
 
       defaultDefinitionService
         .getDefinitions(Language.CHINESE, "test")
@@ -152,10 +153,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       override val wordLanguage: Language = Language.CHINESE
       override val sources: Set[DefinitionSource] =
         Set(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
-      override val fetchableSources: Set[DefinitionSource] =
-        Set(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
     }
-    val customized = new CustomizedLanguageDefinitionService()
 
     describe("with a custom fetcher") {
       class CustomizedFetcherLanguageDefinitionService
@@ -179,8 +177,14 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       it("will refetch from web sources that were not found in elasticsearch") {
         when(
           elasticsearchClientMock
-            .getDefinition(Language.CHINESE, Language.ENGLISH, "token")
-        ).thenReturn(Some(List(dummyWiktionaryDefinition)))
+            .getDefinition(
+              mockitoEq(Language.CHINESE),
+              mockitoEq(Language.ENGLISH),
+              mockitoEq("token"),
+              mockitoEq(DefinitionSource.WIKTIONARY),
+              any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+            )
+        ).thenReturn(Future.successful(Some(List(dummyWiktionaryDefinition))))
         when(languageServiceClientMock.getDefinition(Language.ENGLISH, "token"))
           .thenReturn(Future.successful(Some(List(dummyCEDICTDefinition))))
 
@@ -200,10 +204,16 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       it("does not break if refetching does not return results") {
         when(
           elasticsearchClientMock
-            .getDefinition(Language.CHINESE, Language.ENGLISH, "token")
-        ).thenReturn(Some(List(dummyWiktionaryDefinition)))
+            .getDefinition(
+              mockitoEq(Language.ENGLISH),
+              mockitoEq(Language.CHINESE),
+              mockitoEq("test"),
+              mockitoEq(DefinitionSource.WIKTIONARY),
+              any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+            )
+        ).thenReturn(Future.successful(None))
         when(languageServiceClientMock.getDefinition(Language.ENGLISH, "token"))
-          .thenReturn(Future.successful(None))
+          .thenReturn(Future.successful(Some(List(dummyWiktionaryDefinition))))
 
         customizedFetcher
           .getDefinitions(Language.ENGLISH, "token")
@@ -243,9 +253,17 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       it("can define how to enrich definitions") {
         when(
           elasticsearchClientMock
-            .getDefinition(Language.CHINESE, Language.ENGLISH, "token")
+            .getDefinition(
+              mockitoEq(Language.CHINESE),
+              mockitoEq(Language.ENGLISH),
+              mockitoEq("token"),
+              mockitoEq(DefinitionSource.WIKTIONARY),
+              any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+            )
         ).thenReturn(
-          Some(List(dummyCEDICTDefinition, dummyWiktionaryDefinition))
+          Future.successful(
+            Some(List(dummyCEDICTDefinition, dummyWiktionaryDefinition))
+          )
         )
 
         customizedEnricher

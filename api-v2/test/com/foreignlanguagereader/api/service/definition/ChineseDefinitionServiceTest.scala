@@ -4,7 +4,10 @@ import java.util.concurrent.TimeUnit
 
 import com.foreignlanguagereader.api.client.LanguageServiceClient
 import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
-import com.foreignlanguagereader.api.contentsource.definition.WiktionaryDefinitionEntry
+import com.foreignlanguagereader.api.contentsource.definition.{
+  DefinitionEntry,
+  WiktionaryDefinitionEntry
+}
 import com.foreignlanguagereader.api.contentsource.definition.cedict.CEDICTDefinitionEntry
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.definition.{
@@ -12,6 +15,10 @@ import com.foreignlanguagereader.api.domain.definition.{
   DefinitionSource
 }
 import com.foreignlanguagereader.api.domain.word.PartOfSpeech
+import org.mockito.ArgumentMatchers.{
+  any,
+  eq => mockitoEq
+} // eq conflicts with scala language types
 import org.mockito.Mockito._
 import org.scalatest.funspec.AsyncFunSpec
 import org.scalatestplus.mockito.MockitoSugar
@@ -70,14 +77,29 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   )
 
   describe("When getting definitions for a single word") {
-    it("Does not enhance non-english definitions") {
+    it("Does not enhance non-chinese definitions") {
       // This will delegate to the base LanguageDefinitionService implementation
       // So the assertions may fail if that changes.
-
       when(
         elasticsearchClientMock
-          .getDefinition(Language.CHINESE, Language.CHINESE, "你好")
-      ).thenReturn(Some(List(dummyCedictDefinition, dummyWiktionaryDefinition)))
+          .getDefinition(
+            mockitoEq(Language.CHINESE),
+            mockitoEq(Language.CHINESE),
+            mockitoEq("你好"),
+            mockitoEq(DefinitionSource.CEDICT),
+            any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+          )
+      ).thenReturn(Future.successful(Some(List(dummyCedictDefinition))))
+      when(
+        elasticsearchClientMock
+          .getDefinition(
+            mockitoEq(Language.CHINESE),
+            mockitoEq(Language.CHINESE),
+            mockitoEq("你好"),
+            mockitoEq(DefinitionSource.WIKTIONARY),
+            any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+          )
+      ).thenReturn(Future.successful(Some(List(dummyWiktionaryDefinition))))
 
       chineseDefinitionService
         .getDefinitions(Language.CHINESE, "你好")
@@ -91,12 +113,29 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           )
         }
     }
-    describe("can enhance english definitions") {
+
+    describe("can enhance chinese definitions") {
       it("and throws an error if no definitions are given to it") {
         when(
           elasticsearchClientMock
-            .getDefinition(Language.CHINESE, Language.ENGLISH, "你好")
-        ).thenReturn(Some(List()))
+            .getDefinition(
+              mockitoEq(Language.CHINESE),
+              mockitoEq(Language.ENGLISH),
+              mockitoEq("你好"),
+              mockitoEq(DefinitionSource.CEDICT),
+              any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+            )
+        ).thenReturn(Future.successful(Some(List())))
+        when(
+          elasticsearchClientMock
+            .getDefinition(
+              mockitoEq(Language.CHINESE),
+              mockitoEq(Language.ENGLISH),
+              mockitoEq("你好"),
+              mockitoEq(DefinitionSource.WIKTIONARY),
+              any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+            )
+        ).thenReturn(Future.successful(None))
         when(languageServiceClientMock.getDefinition(Language.CHINESE, "你好"))
           .thenReturn(Future.successful(Some(List())))
 
@@ -112,8 +151,14 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       it("and returns cedict definitions if no wiktionary are found") {
         when(
           elasticsearchClientMock
-            .getDefinition(Language.CHINESE, Language.ENGLISH, "你好")
-        ).thenReturn(Some(List()))
+            .getDefinition(
+              mockitoEq(Language.CHINESE),
+              mockitoEq(Language.ENGLISH),
+              mockitoEq("你好"),
+              mockitoEq(DefinitionSource.CEDICT),
+              any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+            )
+        ).thenReturn(Future.successful(Some(List())))
         when(languageServiceClientMock.getDefinition(Language.CHINESE, "你好"))
           .thenReturn(Future.successful(Some(List(dummyCedictDefinition))))
 
@@ -132,8 +177,24 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       ) {
         when(
           elasticsearchClientMock
-            .getDefinition(Language.CHINESE, Language.ENGLISH, "你好")
-        ).thenReturn(Some(List()))
+            .getDefinition(
+              mockitoEq(Language.CHINESE),
+              mockitoEq(Language.ENGLISH),
+              mockitoEq("你好"),
+              mockitoEq(DefinitionSource.CEDICT),
+              any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+            )
+        ).thenReturn(Future.successful(Some(List())))
+        when(
+          elasticsearchClientMock
+            .getDefinition(
+              mockitoEq(Language.CHINESE),
+              mockitoEq(Language.ENGLISH),
+              mockitoEq("你好"),
+              mockitoEq(DefinitionSource.WIKTIONARY),
+              any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+            )
+        ).thenReturn(Future.successful(None))
         when(languageServiceClientMock.getDefinition(Language.CHINESE, "你好"))
           .thenReturn(Future.successful(Some(List(dummyWiktionaryDefinition))))
 
@@ -152,8 +213,24 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       it("combines cedict and wiktionary definitions correctly") {
         when(
           elasticsearchClientMock
-            .getDefinition(Language.CHINESE, Language.ENGLISH, "你好")
-        ).thenReturn(Some(List()))
+            .getDefinition(
+              mockitoEq(Language.CHINESE),
+              mockitoEq(Language.ENGLISH),
+              mockitoEq("你好"),
+              mockitoEq(DefinitionSource.CEDICT),
+              any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+            )
+        ).thenReturn(Future.successful(Some(List())))
+        when(
+          elasticsearchClientMock
+            .getDefinition(
+              mockitoEq(Language.CHINESE),
+              mockitoEq(Language.ENGLISH),
+              mockitoEq("你好"),
+              mockitoEq(DefinitionSource.WIKTIONARY),
+              any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+            )
+        ).thenReturn(Future.successful(None))
         when(languageServiceClientMock.getDefinition(Language.CHINESE, "你好"))
           .thenReturn(
             Future.successful(
@@ -196,8 +273,24 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       ) {
         when(
           elasticsearchClientMock
-            .getDefinition(Language.CHINESE, Language.ENGLISH, "你好")
-        ).thenReturn(Some(List()))
+            .getDefinition(
+              mockitoEq(Language.CHINESE),
+              mockitoEq(Language.ENGLISH),
+              mockitoEq("你好"),
+              mockitoEq(DefinitionSource.CEDICT),
+              any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+            )
+        ).thenReturn(Future.successful(Some(List())))
+        when(
+          elasticsearchClientMock
+            .getDefinition(
+              mockitoEq(Language.CHINESE),
+              mockitoEq(Language.ENGLISH),
+              mockitoEq("你好"),
+              mockitoEq(DefinitionSource.WIKTIONARY),
+              any(classOf[() => Future[Option[Seq[DefinitionEntry]]]])
+            )
+        ).thenReturn(Future.successful(None))
         when(languageServiceClientMock.getDefinition(Language.CHINESE, "你好"))
           .thenReturn(
             Future.successful(
