@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.contentsource.definition.webster.common
 
+import com.foreignlanguagereader.api.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 

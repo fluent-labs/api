@@ -2,7 +2,6 @@ package com.foreignlanguagereader.api.contentsource.definition.webster
 
 import com.foreignlanguagereader.api.contentsource.definition.DefinitionEntry
 import com.foreignlanguagereader.api.contentsource.definition.webster.common.{
-  JsonSequenceHelper,
   WebsterDefinedRunOnPhrase,
   WebsterDefinition,
   WebsterHeadwordInfo,
@@ -18,6 +17,7 @@ import com.foreignlanguagereader.api.domain.definition.{
 }
 import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
+import com.foreignlanguagereader.api.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
