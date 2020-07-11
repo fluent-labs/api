@@ -7,10 +7,7 @@ import com.foreignlanguagereader.api.domain.definition.{
   Definition,
   DefinitionSource
 }
-import com.sksamuel.elastic4s.{Hit, HitReader}
 import play.api.libs.json._
-
-import scala.util.Try
 
 trait DefinitionEntry {
   val subdefinitions: List[String]
@@ -54,18 +51,4 @@ object DefinitionEntry {
 
   def convertToSeqOfDefinitions(d: Seq[DefinitionEntry]): Seq[Definition] =
     d.map(e => e.toDefinition)
-
-  // For elasticsearch - this does dynamic dispatch based on the type
-  implicit object DefinitionEntryHitReader extends HitReader[DefinitionEntry] {
-    override def read(hit: Hit): Try[DefinitionEntry] = {
-      val source = hit.sourceAsMap
-      DefinitionSource.withName(source("source").toString) match {
-        case DefinitionSource.CEDICT =>
-          CEDICTDefinitionEntry.CEDICTHitReader.read(hit)
-        case DefinitionSource.WIKTIONARY =>
-          WiktionaryDefinitionEntry.WiktionaryHitReader.read(hit)
-        case _ => throw new IllegalStateException("This should be impossible.")
-      }
-    }
-  }
 }

@@ -45,6 +45,10 @@ case class ChineseDefinition(override val subdefinitions: List[String],
       hsk
     )
 }
+object ChineseDefinition {
+  implicit val format: Format[ChineseDefinition] =
+    Json.format[ChineseDefinition]
+}
 
 case class ChinesePronunciation(pinyin: String = "",
                                 ipa: String = "",

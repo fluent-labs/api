@@ -7,6 +7,7 @@ import com.foreignlanguagereader.api.dto.v1.definition.{
   DefinitionDTO,
   GenericDefinitionDTO
 }
+import play.api.libs.json.{Format, Json}
 
 case class GenericDefinition(subdefinitions: List[String],
                              tag: Option[PartOfSpeech],
@@ -20,4 +21,8 @@ case class GenericDefinition(subdefinitions: List[String],
     extends Definition {
   override lazy val toDTO: DefinitionDTO =
     GenericDefinitionDTO(subdefinitions, tag, examples)
+}
+object GenericDefinition {
+  implicit val format: Format[GenericDefinition] =
+    Json.format[GenericDefinition]
 }
