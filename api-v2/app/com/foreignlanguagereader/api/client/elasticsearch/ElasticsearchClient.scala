@@ -3,9 +3,6 @@ package com.foreignlanguagereader.api.client.elasticsearch
 import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
-import com.foreignlanguagereader.api.contentsource.definition.DefinitionEntry
-import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus.ReadinessStatus
 import com.sksamuel.elastic4s.ElasticDsl._
@@ -37,19 +34,18 @@ class ElasticsearchClient @Inject()(config: Configuration,
     Duration(config.get[Int]("elasticsearch.timeout"), TimeUnit.SECONDS)
 
   val attemptsIndex = "attempts"
-  val definitionsIndex = "definitions"
   val maxConcurrentInserts = 5
   val maxFetchRetries = 5
 
   def checkConnection(timeout: Duration): ReadinessStatus = {
-    Try(Await.result(client.execute(indexExists(definitionsIndex)), timeout)) match {
+    Try(Await.result(client.execute(indexExists(attemptsIndex)), timeout)) match {
       case Success(result) =>
         result match {
           case RequestSuccess(_, _, _, result) if result.exists =>
             ReadinessStatus.UP
           case RequestSuccess(_, _, _, _) =>
             logger.error(
-              s"Error connecting to elasticsearch: index $definitionsIndex does not exist"
+              s"Error connecting to elasticsearch: index $attemptsIndex does not exist"
             )
             ReadinessStatus.DOWN
           case RequestFailure(_, _, _, error) =>
@@ -66,31 +62,11 @@ class ElasticsearchClient @Inject()(config: Configuration,
     }
   }
 
-  def getDefinition(
-    wordLanguage: Language,
-    definitionLanguage: Language,
-    word: String,
-    source: DefinitionSource,
-    fetcher: () => Future[Option[Seq[DefinitionEntry]]]
-  ): Future[Option[Seq[DefinitionEntry]]] = {
-    cacheWithElasticsearch[DefinitionEntry, Tuple3[Language, Language, String]](
-      definitionsIndex,
-      List(
-        ("wordLanguage", wordLanguage.toString),
-        ("definitionLanguage", definitionLanguage.toString),
-        ("token", word),
-        ("source", source.toString)
-      ),
-      fetcher
-    )
-  }
-
-  private[this] def cacheWithElasticsearch[T: Indexable, U](
+  def cacheWithElasticsearch[T: Indexable, U](
     index: String,
     fields: Seq[Tuple2[String, String]],
     fetcher: () => Future[Option[Seq[T]]]
   )(implicit hitReader: HitReader[T],
-    handler: Handler[SearchRequest, SearchResponse],
     tag: ClassTag[T]): Future[Option[Seq[T]]] = {
     val query = boolQuery().must(fields.map {
       case (field, value) => matchQuery(field, value)
@@ -119,7 +95,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
                 saveAttempts(index, fields, n + 1)
                 Future.successful(None)
             }
-          // If we've tried thi
+          // If we've tried this before then leave it alone.
           case _ =>
             logger.warn(
               s"Not fetching on index=$index for fields=$fields because maximum number of attempts has been exceeded"
@@ -132,11 +108,10 @@ class ElasticsearchClient @Inject()(config: Configuration,
 
   // Why Type tag? Runtime information needed to make a seq of an arbitrary type.
   // JVM type erasure would remove this unless we pass it along this way
-  private[this] def get[T](index: String, query: BoolQuery)(
-    implicit hitReader: HitReader[T],
-    handler: Handler[SearchRequest, SearchResponse],
-    tag: ClassTag[T]
-  ): Option[Seq[T]] = {
+  private[this] def get[T](
+    index: String,
+    query: BoolQuery
+  )(implicit hitReader: HitReader[T], tag: ClassTag[T]): Option[Seq[T]] = {
     val request: Future[Response[SearchResponse]] =
       client.execute[SearchRequest, SearchResponse]({
         search(index).query(query)

@@ -67,7 +67,7 @@ class ChineseDefinitionService @Inject()(
   override def enrichDefinitions(
     definitionLanguage: Language,
     word: String,
-    definitions: Seq[DefinitionEntry]
+    definitions: Seq[Definition]
   ): Seq[Definition] = {
     definitionLanguage match {
       case Language.ENGLISH => enrichEnglishDefinitions(word, definitions)
@@ -77,7 +77,7 @@ class ChineseDefinitionService @Inject()(
 
   private[this] def enrichEnglishDefinitions(
     word: String,
-    definitions: Seq[DefinitionEntry]
+    definitions: Seq[Definition]
   ): Seq[Definition] = {
     val (cedict, wiktionary) = partitionResultsByDictionary(definitions)
     logger.info(
@@ -104,7 +104,7 @@ class ChineseDefinitionService @Inject()(
   }
 
   private[this] def partitionResultsByDictionary(
-    definitions: Seq[DefinitionEntry]
+    definitions: Seq[Definition]
   ): (Option[List[CEDICTDefinitionEntry]],
       Option[List[WiktionaryDefinitionEntry]]) = {
     val (cedict, wiktionary) = definitions.foldLeft(

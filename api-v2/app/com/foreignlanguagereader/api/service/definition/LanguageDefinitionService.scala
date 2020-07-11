@@ -60,8 +60,8 @@ trait LanguageDefinitionService {
   // Define logic to combine definition sources here. If there is only one source, this just returns it.
   def enrichDefinitions(definitionLanguage: Language,
                         word: String,
-                        definitions: Seq[DefinitionEntry]): Seq[Definition] =
-    definitions.map(e => e.toDefinition)
+                        definitions: Seq[Definition]): Seq[Definition] =
+    definitions
 
   // This is the main method that consumers will call
   def getDefinitions(definitionLanguage: Language,
@@ -83,21 +83,33 @@ trait LanguageDefinitionService {
 
   // Below here is trait behavior, implementers need not read further
 
+  val definitionsIndex = "definitions"
+
   // Checks registered definition fetchers and uses them
   private[this] def fetchDefinition(
     source: DefinitionSource,
     definitionLanguage: Language,
     word: String
-  ): Future[Option[Seq[DefinitionEntry]]] = {
+  ): Future[Option[Seq[Definition]]] = {
+
     definitionFetchers.get(source, definitionLanguage) match {
       case Some(fetcher) =>
         elasticsearch
-          .getDefinition(
-            wordLanguage,
-            definitionLanguage,
-            word,
-            source,
-            () => fetcher(definitionLanguage, word)
+          .cacheWithElasticsearch[Definition, Tuple3[Language,
+                                                     Language,
+                                                     String]](
+            definitionsIndex,
+            List(
+              ("wordLanguage", wordLanguage.toString),
+              ("definitionLanguage", definitionLanguage.toString),
+              ("token", word),
+              ("source", source.toString)
+            ),
+            () =>
+              fetcher(definitionLanguage, word).map {
+                case Some(results) => Some(results.map(_.toDefinition))
+                case None          => None
+            }
           )
       case None =>
         logger.error(
@@ -117,7 +129,7 @@ trait LanguageDefinitionService {
     sources: Set[DefinitionSource],
     definitionLanguage: Language,
     word: String
-  ): Future[Option[Seq[DefinitionEntry]]] =
+  ): Future[Option[Seq[Definition]]] =
     // Fire off all the results
     Future
       .sequence(
