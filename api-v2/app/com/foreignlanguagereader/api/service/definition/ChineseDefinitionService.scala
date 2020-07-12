@@ -2,22 +2,12 @@ package com.foreignlanguagereader.api.service.definition
 
 import com.foreignlanguagereader.api.client.LanguageServiceClient
 import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
-import com.foreignlanguagereader.api.contentsource.definition.{
-  DefinitionEntry,
-  WiktionaryDefinitionEntry
-}
-import com.foreignlanguagereader.api.contentsource.definition.cedict.CEDICTDefinitionEntry
+import com.foreignlanguagereader.api.contentsource.definition.DefinitionEntry
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.{
-  ChineseDefinition,
-  ChinesePronunciation,
-  Definition,
-  DefinitionSource,
-  HskLevel
-}
-import com.foreignlanguagereader.api.domain.definition.HskLevel.HSKLevel
 import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.api.domain.definition.HskLevel.HSKLevel
+import com.foreignlanguagereader.api.domain.definition._
 import com.foreignlanguagereader.api.repository.definition.Cedict
 import com.foreignlanguagereader.api.util.ContentFileLoader
 import javax.inject.Inject
@@ -67,7 +57,7 @@ class ChineseDefinitionService @Inject()(
   override def enrichDefinitions(
     definitionLanguage: Language,
     word: String,
-    definitions: Seq[Definition]
+    definitions: Map[DefinitionSource, Option[Seq[Definition]]]
   ): Seq[Definition] = {
     definitionLanguage match {
       case Language.ENGLISH => enrichEnglishDefinitions(word, definitions)
@@ -77,9 +67,10 @@ class ChineseDefinitionService @Inject()(
 
   private[this] def enrichEnglishDefinitions(
     word: String,
-    definitions: Seq[Definition]
+    definitions: Map[DefinitionSource, Option[Seq[Definition]]]
   ): Seq[Definition] = {
-    val (cedict, wiktionary) = partitionResultsByDictionary(definitions)
+    val cedict = definitions.getOrElse(DefinitionSource.CEDICT, None)
+    val wiktionary = definitions.getOrElse(DefinitionSource.WIKTIONARY, None)
     logger.info(
       s"Enhancing results for $word using cedict with ${cedict.size} cedict results and ${wiktionary.size} wiktionary results"
     )
@@ -87,13 +78,17 @@ class ChineseDefinitionService @Inject()(
     (cedict, wiktionary) match {
       case (Some(cedict), Some(wiktionary)) =>
         logger.info(s"Combining cedict and wiktionary definitions for $word")
-        mergeCedictAndWiktionary(word, cedict(0), wiktionary)
+        mergeCedictAndWiktionary(
+          word,
+          cedict(0).asInstanceOf[ChineseDefinition],
+          wiktionary.map(_.asInstanceOf[ChineseDefinition])
+        )
       case (Some(cedict), None) =>
         logger.info(s"Using cedict definitions for $word")
-        cedict.map(_.toDefinition)
+        cedict
       case (None, Some(wiktionary)) if cedict.isEmpty =>
         logger.info(s"Using wiktionary definitions for $word")
-        wiktionary.map(_.toDefinition)
+        wiktionary
       // This should not happen. If it does then it's important to log it.
       case (None, None) =>
         val message =
@@ -103,29 +98,10 @@ class ChineseDefinitionService @Inject()(
     }
   }
 
-  private[this] def partitionResultsByDictionary(
-    definitions: Seq[Definition]
-  ): (Option[List[CEDICTDefinitionEntry]],
-      Option[List[WiktionaryDefinitionEntry]]) = {
-    val (cedict, wiktionary) = definitions.foldLeft(
-      (List[CEDICTDefinitionEntry](), List[WiktionaryDefinitionEntry]())
-    )((acc, entry) => {
-      val (cedict, wiktionary) = acc
-      entry match {
-        case c: CEDICTDefinitionEntry     => (c :: cedict, wiktionary)
-        case w: WiktionaryDefinitionEntry => (cedict, w :: wiktionary)
-      }
-    })
-    (
-      if (cedict.nonEmpty) Some(cedict) else None,
-      if (wiktionary.nonEmpty) Some(wiktionary) else None
-    )
-  }
-
   private[this] def mergeCedictAndWiktionary(
     word: String,
-    cedict: CEDICTDefinitionEntry,
-    wiktionary: Seq[WiktionaryDefinitionEntry]
+    cedict: ChineseDefinition,
+    wiktionary: Seq[ChineseDefinition]
   ): Seq[ChineseDefinition] = {
     cedict match {
       case empty if empty.subdefinitions.isEmpty =>
@@ -141,8 +117,8 @@ class ChineseDefinitionService @Inject()(
 
   private[this] def addCedictDataToWiktionaryResults(
     word: String,
-    cedict: CEDICTDefinitionEntry,
-    wiktionary: Seq[WiktionaryDefinitionEntry]
+    cedict: ChineseDefinition,
+    wiktionary: Seq[ChineseDefinition]
   ): Seq[ChineseDefinition] = {
     wiktionary.map(
       w =>
@@ -150,7 +126,7 @@ class ChineseDefinitionService @Inject()(
           w.subdefinitions,
           w.tag,
           w.examples,
-          cedict.pinyin,
+          cedict.pronunciation.pinyin,
           cedict.simplified,
           cedict.traditional,
           w.definitionLanguage,
@@ -162,20 +138,19 @@ class ChineseDefinitionService @Inject()(
 
   private[this] def addWiktionaryDataToCedictResults(
     word: String,
-    cedict: CEDICTDefinitionEntry,
-    wiktionary: Seq[WiktionaryDefinitionEntry]
+    cedict: ChineseDefinition,
+    wiktionary: Seq[ChineseDefinition]
   ): Seq[ChineseDefinition] = {
-    val examples = wiktionary.foldLeft(List[String]())(
-      (acc, entry: WiktionaryDefinitionEntry) => {
+    val examples =
+      wiktionary.foldLeft(List[String]())((acc, entry: ChineseDefinition) => {
         acc ++ entry.examples
-      }
-    )
+      })
     Seq(
       ChineseDefinition(
         cedict.subdefinitions,
         wiktionary(0).tag,
         examples,
-        cedict.pinyin,
+        cedict.pronunciation.pinyin,
         cedict.simplified,
         cedict.traditional,
         Language.ENGLISH,

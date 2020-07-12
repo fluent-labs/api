@@ -59,10 +59,17 @@ trait LanguageDefinitionService {
   )
 
   // Define logic to combine definition sources here. If there is only one source, this just returns it.
-  def enrichDefinitions(definitionLanguage: Language,
-                        word: String,
-                        definitions: Seq[Definition]): Seq[Definition] =
-    definitions
+  def enrichDefinitions(
+    definitionLanguage: Language,
+    word: String,
+    definitions: Map[DefinitionSource, Option[Seq[Definition]]]
+  ): Seq[Definition] =
+    definitions.iterator
+      .flatMap {
+        case (_, result) => result
+      }
+      .flatten
+      .toList
 
   // This is the main method that consumers will call
   def getDefinitions(definitionLanguage: Language,
@@ -72,13 +79,17 @@ trait LanguageDefinitionService {
       definitionLanguage,
       preprocessTokenForRequest(word)
     ) map {
-      case Some(definitions) =>
-        Some(enrichDefinitions(definitionLanguage, word, definitions))
-      case None =>
+      case r if r.forall {
+            // (source, Option[Seq[results]]
+            case (_, None) => true
+            case _         => false
+          } =>
         logger.info(
           s"No definitions found for $wordLanguage $word in $definitionLanguage"
         )
         None
+      case definitions =>
+        Some(enrichDefinitions(definitionLanguage, word, definitions))
     }
   }
 
@@ -95,7 +106,7 @@ trait LanguageDefinitionService {
     sources: Set[DefinitionSource],
     definitionLanguage: Language,
     word: String
-  ): Future[Option[Seq[Definition]]] = {
+  ): Future[Map[DefinitionSource, Option[Seq[Definition]]]] = {
     val sourceList = sources.toList
     elasticsearch
       .getFromCache[Definition](
@@ -104,6 +115,9 @@ trait LanguageDefinitionService {
             source => makeDefinitionRequest(source, definitionLanguage, word)
           )
       )
+      .map(results => {
+        sourceList.zip(results).toMap
+      })
   }
 
   // Definition domain to elasticsearch domain
