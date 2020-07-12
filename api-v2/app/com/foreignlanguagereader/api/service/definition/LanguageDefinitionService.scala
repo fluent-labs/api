@@ -91,7 +91,6 @@ trait LanguageDefinitionService {
     : (Language, String) => Future[Option[Seq[DefinitionEntry]]] =
     (_, word: String) => languageServiceClient.getDefinition(wordLanguage, word)
 
-  // Convenience method to request multiple sources in parallel
   private[this] def fetchDefinitions(
     sources: Set[DefinitionSource],
     definitionLanguage: Language,
@@ -105,10 +104,6 @@ trait LanguageDefinitionService {
             source => makeDefinitionRequest(source, definitionLanguage, word)
           )
       )
-      .map(result => {
-        val r = result.flatten.flatten
-        if (r.isEmpty) None else Some(r)
-      })
   }
 
   // Definition domain to elasticsearch domain

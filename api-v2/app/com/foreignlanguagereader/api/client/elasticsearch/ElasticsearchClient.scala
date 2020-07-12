@@ -74,7 +74,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
   def getFromCache[T: Indexable](requests: Seq[ElasticsearchRequest[T]])(
     implicit hitReader: HitReader[T],
     tag: ClassTag[T]
-  ): Future[Seq[Option[Seq[T]]]] = {
+  ): Future[Option[Seq[T]]] = {
     // Checks elasticsearch first. Responses will have ES results or none
     val responses: Future[Seq[ElasticsearchResponse[T]]] = Future
       .sequence(requests.map(r => getMultiple(r.query)))
@@ -97,7 +97,8 @@ class ElasticsearchClient @Inject()(config: Configuration,
         // toIndex only exists when results were fetched from the fetchers
         Future.apply(saveToCache(results.flatMap(_.toIndex).flatten))
 
-        results.map(_.result)
+        val r = results.flatMap(_.result).flatten
+        if (r.isEmpty) None else Some(r)
       })
   }
 
