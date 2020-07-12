@@ -25,7 +25,7 @@ libraryDependencies += ws
 
 libraryDependencies += "com.google.cloud" % "google-cloud-language" % "1.100.0"
 
-val elastic4sVersion = "7.6.1"
+val elastic4sVersion = "7.8.0"
 libraryDependencies ++= Seq(
   "com.sksamuel.elastic4s" %% "elastic4s-client-esjava" % elastic4sVersion,
   "com.sksamuel.elastic4s" %% "elastic4s-testkit" % elastic4sVersion % "test"
