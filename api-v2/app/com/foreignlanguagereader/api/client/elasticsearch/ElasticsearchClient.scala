@@ -3,14 +3,20 @@ package com.foreignlanguagereader.api.client.elasticsearch
 import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
+import com.foreignlanguagereader.api.client.elasticsearch.searchstates.{
+  ElasticsearchRequest,
+  ElasticsearchResponse
+}
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus.ReadinessStatus
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s._
-import com.sksamuel.elastic4s.playjson._
-import com.sksamuel.elastic4s.requests.searches.queries.BoolQuery
-import com.sksamuel.elastic4s.requests.searches.{SearchRequest, SearchResponse}
-import javax.inject.Inject
+import com.sksamuel.elastic4s.requests.indexes.IndexRequest
+import com.sksamuel.elastic4s.requests.searches.{
+  MultiSearchRequest,
+  MultiSearchResponse
+}
+import javax.inject.{Inject, Singleton}
 import play.api.{Configuration, Logger}
 
 import scala.concurrent.duration.Duration
@@ -18,6 +24,7 @@ import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.reflect.ClassTag
 import scala.util.{Failure, Success, Try}
 
+@Singleton
 class ElasticsearchClient @Inject()(config: Configuration,
                                     val client: ElasticsearchClientHolder,
                                     val system: ActorSystem) {
@@ -62,120 +69,46 @@ class ElasticsearchClient @Inject()(config: Configuration,
     }
   }
 
-  def cacheWithElasticsearch[T: Indexable, U](
-    index: String,
-    fields: Seq[Tuple2[String, String]],
-    fetcher: () => Future[Option[Seq[T]]]
-  )(implicit hitReader: HitReader[T],
-    tag: ClassTag[T]): Future[Option[Seq[T]]] = {
-    val query = boolQuery().must(fields.map {
-      case (field, value) => matchQuery(field, value)
-    })
-    get(index, boolQuery().must(query)) match {
-      // Happy case - we already have this fetched
-      case Some(x) => Future.successful(Some(x))
-      case None    =>
-        // Check to make sure we haven't tried this search too many times
-        getAttempts(index, fields) match {
-          case n if n < maxFetchRetries =>
-            Try(fetcher()) match {
-              case Success(result) =>
-                result map {
-                  case Some(y) =>
-                    save(index, y)
-                    Some(y)
-                  case None =>
-                    saveAttempts(index, fields, n + 1)
-                    None
-                }
-              case Failure(error) =>
-                logger.error(
-                  s"Failed to refresh data on index: $index with query $query: $error"
-                )
-                saveAttempts(index, fields, n + 1)
-                Future.successful(None)
-            }
-          // If we've tried this before then leave it alone.
-          case _ =>
-            logger.warn(
-              s"Not fetching on index=$index for fields=$fields because maximum number of attempts has been exceeded"
-            )
-            Future.successful(None)
-        }
-
-    }
-  }
-
   // Why Type tag? Runtime information needed to make a seq of an arbitrary type.
   // JVM type erasure would remove this unless we pass it along this way
-  private[this] def get[T](
-    index: String,
-    query: BoolQuery
-  )(implicit hitReader: HitReader[T], tag: ClassTag[T]): Option[Seq[T]] = {
-    val request: Future[Response[SearchResponse]] =
-      client.execute[SearchRequest, SearchResponse]({
-        search(index).query(query)
-      })
-
-    Try(Await.result(request, elasticSearchTimeout)) match {
-      case Success(result) =>
-        result match {
-          case RequestSuccess(_, _, _, result) =>
-            val results = result.hits.hits.map(_.to[T])
-            if (results.nonEmpty) Some(results.toIndexedSeq) else None
-          case RequestFailure(_, _, _, error) =>
-            logger.error(
-              s"Error fetching on $index from elasticsearch due to error: ${error.reason}",
-              error.asException
-            )
-            None
+  def getFromCache[T: Indexable](requests: Seq[ElasticsearchRequest[T]])(
+    implicit hitReader: HitReader[T],
+    tag: ClassTag[T]
+  ): Future[Seq[Option[Seq[T]]]] = {
+    // Checks elasticsearch first. Responses will have ES results or none
+    val responses: Future[Seq[ElasticsearchResponse[T]]] = Future
+      .sequence(requests.map(r => getMultiple(r.query)))
+      .map(
+        results =>
+          requests.zip(results) map {
+            case (request, result) =>
+              ElasticsearchResponse.fromResult(request, result)
         }
-      case Failure(e) =>
-        logger.warn(
-          s"Error fetching on $index from elasticsearch due to exception: ${e.getMessage}",
-          e
-        )
-        None
-    }
+      )
+
+    responses
+    // This is where fetchers are called to get results if they aren't in elasticsearch
+    // There is also logic to remember what has been fetched from external sources
+    // So that we don't try too many times on the same query
+      .map(r => Future.sequence(r.map(_.getResult)))
+      .flatten
+      .map(results => {
+        // Asychronously save results back to elasticsearch
+        // toIndex only exists when results were fetched from the fetchers
+        Future.apply(saveToCache(results.flatMap(_.toIndex).flatten))
+
+        results.map(_.result)
+      })
   }
 
-  private[this] def getAttempts(index: String,
-                                fields: Seq[Tuple2[String, String]]): Int = {
-    1
-  }
-
-  private[this] def saveAttempts(index: String,
-                                 fields: Seq[Tuple2[String, String]],
-                                 count: Int): Unit = {
-    val request = client.execute {
-      indexInto(attemptsIndex)
-        .doc(LookupAttempt(index = index, fields = fields, count = count))
-    }
-
-    Try(Await.result(request, elasticSearchTimeout)) match {
-      case Failure(error) =>
-        logger.error(
-          s"Failed to save record of fetch attempts for index=$index and fields=$fields: $error"
-        )
-      case _ =>
-        logger.info(
-          s"Saved record of fetch attempts for index=$index and fields=$fields"
-        )
-    }
-
-  }
-
-  private[this] def save[T: Indexable](index: String, values: Seq[T]): Unit = {
-    values
+  // Saves back to elasticsearch in baches
+  private[this] def saveToCache(requests: Seq[IndexRequest]): Unit = {
+    requests
       .grouped(maxConcurrentInserts)
       .foreach(
         batch =>
-          // Todo timeout
           Try(client.execute {
-            bulk(
-              batch
-                .map(item => indexInto(index).doc(item))
-            )
+            bulk(batch)
           }) match {
             case Success(s) =>
               s.foreach(
@@ -183,8 +116,34 @@ class ElasticsearchClient @Inject()(config: Configuration,
                   logger.info(s"Successfully saved to elasticsearch: ${r.body}")
               )
             case Failure(e) =>
-              logger.warn(s"Failed to persist to elasticsearch: $values", e)
+              logger.warn(s"Failed to persist to elasticsearch: $requests", e)
         }
       )
+  }
+
+  // Get method for multisearch, but with error handling
+  private[this] def getMultiple[T](
+    request: MultiSearchRequest
+  ): Future[Option[MultiSearchResponse]] = {
+    client
+      .execute[MultiSearchRequest, MultiSearchResponse](request)
+      .map {
+        case RequestSuccess(_, _, _, result) =>
+          Some(result)
+        case RequestFailure(_, _, _, error) =>
+          logger.error(
+            s"Error fetching from elasticsearch for request: $request due to error: ${error.reason}",
+            error.asException
+          )
+          None
+      }
+      .recover {
+        case e: Exception =>
+          logger.error(
+            s"Failed to fetch from elasticsearch for request: $request",
+            e
+          )
+          None
+      }
   }
 }
