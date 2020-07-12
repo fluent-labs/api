@@ -86,11 +86,9 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           )
       ).thenReturn(
         Future.successful(
-          Some(
-            List(
-              dummyCedictDefinition.toDefinition,
-              dummyWiktionaryDefinition.toDefinition
-            )
+          List(
+            Some(List(dummyCedictDefinition.toDefinition)),
+            Some(List(dummyWiktionaryDefinition.toDefinition))
           )
         )
       )
@@ -117,7 +115,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
               any[HitReader[Definition]],
               any[ClassTag[Definition]]
             )
-        ).thenReturn(Future.successful(None))
+        ).thenReturn(Future.successful(List(Some(List()))))
         when(languageServiceClientMock.getDefinition(Language.CHINESE, "你好"))
           .thenReturn(Future.successful(Some(List())))
 
@@ -138,7 +136,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
               any[HitReader[Definition]],
               any[ClassTag[Definition]]
             )
-        ).thenReturn(Future.successful(Some(List())))
+        ).thenReturn(Future.successful(List(Some(List()))))
         when(languageServiceClientMock.getDefinition(Language.CHINESE, "你好"))
           .thenReturn(Future.successful(Some(List(dummyCedictDefinition))))
 
@@ -162,7 +160,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
               any[HitReader[Definition]],
               any[ClassTag[Definition]]
             )
-        ).thenReturn(Future.successful(None))
+        ).thenReturn(Future.successful(List(None)))
         when(languageServiceClientMock.getDefinition(Language.CHINESE, "你好"))
           .thenReturn(Future.successful(Some(List(dummyWiktionaryDefinition))))
 
@@ -186,7 +184,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
               any[HitReader[Definition]],
               any[ClassTag[Definition]]
             )
-        ).thenReturn(Future.successful(Some(List())))
+        ).thenReturn(Future.successful(List(Some(List()))))
         when(languageServiceClientMock.getDefinition(Language.CHINESE, "你好"))
           .thenReturn(
             Future.successful(
@@ -234,7 +232,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
               any[HitReader[Definition]],
               any[ClassTag[Definition]]
             )
-        ).thenReturn(Future.successful(None))
+        ).thenReturn(Future.successful(List(None)))
         when(languageServiceClientMock.getDefinition(Language.CHINESE, "你好"))
           .thenReturn(
             Future.successful(
