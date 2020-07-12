@@ -2,6 +2,7 @@ package com.foreignlanguagereader.api.service.definition
 
 import com.foreignlanguagereader.api.client.LanguageServiceClient
 import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
+import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchRequest
 import com.foreignlanguagereader.api.contentsource.definition.DefinitionEntry
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
@@ -85,40 +86,6 @@ trait LanguageDefinitionService {
 
   val definitionsIndex = "definitions"
 
-  // Checks registered definition fetchers and uses them
-  private[this] def fetchDefinition(
-    source: DefinitionSource,
-    definitionLanguage: Language,
-    word: String
-  ): Future[Option[Seq[Definition]]] = {
-
-    definitionFetchers.get(source, definitionLanguage) match {
-      case Some(fetcher) =>
-        elasticsearch
-          .cacheWithElasticsearch[Definition, Tuple3[Language,
-                                                     Language,
-                                                     String]](
-            definitionsIndex,
-            List(
-              ("wordLanguage", wordLanguage.toString),
-              ("definitionLanguage", definitionLanguage.toString),
-              ("token", word),
-              ("source", source.toString)
-            ),
-            () =>
-              fetcher(definitionLanguage, word).map {
-                case Some(results) => Some(results.map(_.toDefinition))
-                case None          => None
-            }
-          )
-      case None =>
-        logger.error(
-          s"Failed to search in $wordLanguage for $word because $source is not implemented for definitions in $definitionLanguage"
-        )
-        Future.successful(None)
-    }
-  }
-
   // Out of the box, this calls language service for Wiktionary definitions. All languages should use this.
   def languageServiceFetcher
     : (Language, String) => Future[Option[Seq[DefinitionEntry]]] =
@@ -129,25 +96,53 @@ trait LanguageDefinitionService {
     sources: Set[DefinitionSource],
     definitionLanguage: Language,
     word: String
-  ): Future[Option[Seq[Definition]]] =
-    // Fire off all the results
-    Future
-      .sequence(
-        sources.map(source => fetchDefinition(source, definitionLanguage, word))
+  ): Future[Option[Seq[Definition]]] = {
+    val sourceList = sources.toList
+    elasticsearch
+      .getFromCache[Definition](
+        sourceList
+          .map(
+            source => makeDefinitionRequest(source, definitionLanguage, word)
+          )
       )
-      // Wait until completion
-      .map(
-        sources =>
-          // Remove all empty results
-          sources.flatten match {
-            // No results found
-            case empty if empty.isEmpty => None
-            // Combine all the results together
-            case s =>
-              s.reduce(_ ++ _) match {
-                case e if e.isEmpty => None
-                case d              => Some(d)
-              }
-        }
-      )
+      .map(result => {
+        val r = result.flatten.flatten
+        if (r.isEmpty) None else Some(r)
+      })
+  }
+
+  // Definition domain to elasticsearch domain
+  private[this] def makeDefinitionRequest(
+    source: DefinitionSource,
+    definitionLanguage: Language,
+    word: String
+  ): ElasticsearchRequest[Definition] = {
+    val fetcher =
+      definitionFetchers.get(source, definitionLanguage) match {
+        case Some(fetcher) =>
+          () =>
+            fetcher(definitionLanguage, word).map {
+              case Some(results) => Some(results.map(_.toDefinition))
+              case None          => None
+            }
+        case None =>
+          logger.error(
+            s"Failed to search in $wordLanguage for $word because $source is not implemented for definitions in $definitionLanguage"
+          )
+          () =>
+            Future.successful(None)
+      }
+
+    ElasticsearchRequest(
+      definitionsIndex,
+      List(
+        ("wordLanguage", wordLanguage.toString),
+        ("definitionLanguage", definitionLanguage.toString),
+        ("token", word),
+        ("source", source.toString)
+      ),
+      fetcher,
+      maxFetchAttempts = 5
+    )
+  }
 }
