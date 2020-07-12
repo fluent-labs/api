@@ -29,8 +29,8 @@ class ChineseDefinitionService @Inject()(
   override val logger: Logger = Logger(this.getClass)
 
   override val wordLanguage: Language = Language.CHINESE
-  override val sources: Set[DefinitionSource] =
-    Set(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
+  override val sources: List[DefinitionSource] =
+    List(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
 
   def cedictFetcher
     : (Language, String) => Future[Option[Seq[DefinitionEntry]]] =

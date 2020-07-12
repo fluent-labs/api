@@ -42,7 +42,7 @@ trait LanguageDefinitionService {
   val elasticsearch: ElasticsearchClient
   val languageServiceClient: LanguageServiceClient
   val wordLanguage: Language
-  val sources: Set[DefinitionSource]
+  val sources: List[DefinitionSource]
 
   // These are strongly recommended to implement, but have sane defaults
 
@@ -103,11 +103,11 @@ trait LanguageDefinitionService {
     (_, word: String) => languageServiceClient.getDefinition(wordLanguage, word)
 
   private[this] def fetchDefinitions(
-    sources: Set[DefinitionSource],
+    sources: List[DefinitionSource],
     definitionLanguage: Language,
     word: String
   ): Future[Map[DefinitionSource, Option[Seq[Definition]]]] = {
-    val sourceList = sources.toList
+    val sourceList = sources
     elasticsearch
       .getFromCache[Definition](
         sourceList

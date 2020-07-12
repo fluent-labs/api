@@ -21,8 +21,8 @@ class SpanishDefinitionService @Inject()(
   implicit val ec: ExecutionContext
 ) extends LanguageDefinitionService {
   override val wordLanguage: Language = Language.SPANISH
-  override val sources: Set[DefinitionSource] =
-    Set(DefinitionSource.MIRRIAM_WEBSTER_SPANISH, DefinitionSource.WIKTIONARY)
+  override val sources: List[DefinitionSource] =
+    List(DefinitionSource.MIRRIAM_WEBSTER_SPANISH, DefinitionSource.WIKTIONARY)
 
   def websterFetcher
     : (Language, String) => Future[Option[Seq[DefinitionEntry]]] =

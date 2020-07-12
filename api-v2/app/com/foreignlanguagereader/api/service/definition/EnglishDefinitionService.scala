@@ -21,8 +21,8 @@ class EnglishDefinitionService @Inject()(
   implicit val ec: ExecutionContext
 ) extends LanguageDefinitionService {
   override val wordLanguage: Language = Language.ENGLISH
-  override val sources: Set[DefinitionSource] =
-    Set(
+  override val sources: List[DefinitionSource] =
+    List(
       DefinitionSource.MIRRIAM_WEBSTER_LEARNERS,
       DefinitionSource.MIRRIAM_WEBSTER_SPANISH,
       DefinitionSource.WIKTIONARY
