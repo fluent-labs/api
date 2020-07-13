@@ -14,7 +14,7 @@ import scala.reflect.ClassTag
 
 case class ElasticsearchResponse[T: Indexable](
   index: String,
-  fields: Seq[Tuple2[String, String]],
+  fields: Seq[(String, String)],
   fetcher: () => Future[Option[Seq[T]]],
   maxFetchAttempts: Int,
   response: Option[MultiSearchResponse]

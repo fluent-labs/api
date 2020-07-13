@@ -6,13 +6,11 @@ import com.sksamuel.elastic4s.Indexable
 import com.sksamuel.elastic4s.playjson._
 import com.sksamuel.elastic4s.requests.indexes.IndexRequest
 
-case class ElasticsearchResult[T: Indexable](
-  index: String,
-  fields: Seq[Tuple2[String, String]],
-  result: Option[Seq[T]],
-  fetchCount: Int,
-  refetched: Boolean
-) {
+case class ElasticsearchResult[T: Indexable](index: String,
+                                             fields: Seq[(String, String)],
+                                             result: Option[Seq[T]],
+                                             fetchCount: Int,
+                                             refetched: Boolean) {
   val attemptsIndex = "attempts"
 
   val cacheQueries: List[IndexRequest] = result match {

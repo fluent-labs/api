@@ -7,7 +7,7 @@ import com.sksamuel.elastic4s.requests.searches.queries.BoolQuery
 import scala.concurrent.Future
 
 case class ElasticsearchRequest[T](index: String,
-                                   fields: Seq[Tuple2[String, String]],
+                                   fields: Seq[(String, String)],
                                    fetcher: () => Future[Option[Seq[T]]],
                                    maxFetchAttempts: Int) {
   val query: MultiSearchRequest = {
