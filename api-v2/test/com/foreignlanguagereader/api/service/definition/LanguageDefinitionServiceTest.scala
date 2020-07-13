@@ -16,12 +16,14 @@ import com.foreignlanguagereader.api.domain.definition.{
   DefinitionSource
 }
 import com.foreignlanguagereader.api.domain.word.PartOfSpeech
+import com.sksamuel.elastic4s.{HitReader, Indexable}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
 import org.scalatest.funspec.AsyncFunSpec
 import org.scalatestplus.mockito.MockitoSugar
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.reflect.ClassTag
 
 class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   val dummyWiktionaryDefinition = WiktionaryDefinitionEntry(
@@ -52,7 +54,11 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     it("will return results from elasticsearch if they are found") {
       when(
         elasticsearchClientMock
-          .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))
+          .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
+            any[Indexable[Definition]],
+            any[HitReader[Definition]],
+            any[ClassTag[Definition]]
+          )
       ).thenReturn(
         Future
           .successful(List(Some(List(dummyWiktionaryDefinition.toDefinition))))
@@ -70,7 +76,11 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     it("does not break if no results are found") {
       when(
         elasticsearchClientMock
-          .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))
+          .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
+            any[Indexable[Definition]],
+            any[HitReader[Definition]],
+            any[ClassTag[Definition]]
+          )
       ).thenReturn(Future.successful(List(None)))
       when(languageServiceClientMock.getDefinition(Language.ENGLISH, "test"))
         .thenReturn(Future.successful(None))
@@ -85,7 +95,11 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     it("does not break if a future is failed") {
       when(
         elasticsearchClientMock
-          .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))
+          .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
+            any[Indexable[Definition]],
+            any[HitReader[Definition]],
+            any[ClassTag[Definition]]
+          )
       ).thenReturn(Future.successful(List(None)))
       when(languageServiceClientMock.getDefinition(Language.ENGLISH, "test"))
         .thenReturn(Future.failed(new IllegalStateException("Uh oh")))
@@ -100,7 +114,11 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     it("does not break if a fetcher cannot work with the requested language") {
       when(
         elasticsearchClientMock
-          .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))
+          .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
+            any[Indexable[Definition]],
+            any[HitReader[Definition]],
+            any[ClassTag[Definition]]
+          )
       ).thenReturn(Future.successful(List(None)))
 
       defaultDefinitionService
@@ -154,7 +172,11 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       it("will refetch from web sources that were not found in elasticsearch") {
         when(
           elasticsearchClientMock
-            .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))
+            .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
+              any[Indexable[Definition]],
+              any[HitReader[Definition]],
+              any[ClassTag[Definition]]
+            )
         ).thenReturn(
           Future.successful(
             List(None, Some(List(dummyWiktionaryDefinition.toDefinition)))
@@ -179,7 +201,11 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       it("does not break if refetching does not return results") {
         when(
           elasticsearchClientMock
-            .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))
+            .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
+              any[Indexable[Definition]],
+              any[HitReader[Definition]],
+              any[ClassTag[Definition]]
+            )
         ).thenReturn(Future.successful(List(None, None)))
         when(languageServiceClientMock.getDefinition(Language.ENGLISH, "token"))
           .thenReturn(Future.successful(Some(List(dummyWiktionaryDefinition))))
@@ -228,7 +254,11 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       it("can define how to enrich definitions") {
         when(
           elasticsearchClientMock
-            .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))
+            .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
+              any[Indexable[Definition]],
+              any[HitReader[Definition]],
+              any[ClassTag[Definition]]
+            )
         ).thenReturn(
           Future.successful(
             List(
