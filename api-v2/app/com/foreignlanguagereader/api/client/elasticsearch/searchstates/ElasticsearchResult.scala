@@ -7,7 +7,7 @@ import com.sksamuel.elastic4s.playjson._
 import com.sksamuel.elastic4s.requests.indexes.IndexRequest
 
 case class ElasticsearchResult[T: Indexable](index: String,
-                                             fields: Seq[(String, String)],
+                                             fields: Map[String, String],
                                              result: Option[Seq[T]],
                                              fetchCount: Int,
                                              refetched: Boolean) {

@@ -141,11 +141,11 @@ trait LanguageDefinitionService {
 
     ElasticsearchRequest(
       definitionsIndex,
-      List(
-        ("wordLanguage", wordLanguage.toString),
-        ("definitionLanguage", definitionLanguage.toString),
-        ("token", word),
-        ("source", source.toString)
+      Map(
+        "wordLanguage" -> wordLanguage.toString,
+        "definitionLanguage" -> definitionLanguage.toString,
+        "token" -> word,
+        "source" -> source.toString
       ),
       fetcher,
       maxFetchAttempts = 5
