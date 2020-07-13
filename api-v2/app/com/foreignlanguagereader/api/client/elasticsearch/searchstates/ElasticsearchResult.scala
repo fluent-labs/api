@@ -18,7 +18,9 @@ case class ElasticsearchResult[T: Indexable](index: String,
     case None         => List()
   }
   val attemptsQuery: IndexRequest = indexInto(attemptsIndex)
-    .doc(LookupAttempt(index = index, fields = fields, count = fetchCount))
+    .doc(
+      LookupAttempt(index = index, fields = fields.toMap, count = fetchCount)
+    )
 
   val toIndex: Option[List[IndexRequest]] =
     if (refetched) Some(attemptsQuery :: cacheQueries)
