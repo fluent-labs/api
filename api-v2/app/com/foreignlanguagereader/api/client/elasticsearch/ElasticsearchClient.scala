@@ -1,7 +1,5 @@
 package com.foreignlanguagereader.api.client.elasticsearch
 
-import java.util.concurrent.TimeUnit
-
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.client.elasticsearch.searchstates.{
   ElasticsearchRequest,
@@ -29,20 +27,11 @@ class ElasticsearchClient @Inject()(config: Configuration,
                                     val client: ElasticsearchClientHolder,
                                     val system: ActorSystem) {
   val logger: Logger = Logger(this.getClass)
-
-  // What's with all the awaits? elastic4s does not implement connection timeouts.
-  // Instead, we need to implement them ourselves.
-  // Not the end of the world, we would have been blocking here anyway since it is IO
-  // We use this thread pool to keep it out of the main server threads
   implicit val myExecutionContext: ExecutionContext =
     system.dispatchers.lookup("elasticsearch-context")
 
-  val elasticSearchTimeout =
-    Duration(config.get[Int]("elasticsearch.timeout"), TimeUnit.SECONDS)
-
   val attemptsIndex = "attempts"
   val maxConcurrentInserts = 5
-  val maxFetchRetries = 5
 
   def checkConnection(timeout: Duration): ReadinessStatus = {
     Try(Await.result(client.execute(indexExists(attemptsIndex)), timeout)) match {
@@ -91,6 +80,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
     // There is also logic to remember what has been fetched from external sources
     // So that we don't try too many times on the same query
       .map(r => Future.sequence(r.map(_.getResult)))
+      // Now we have a future of a future
       .flatten
       .map(results => {
         // Asychronously save results back to elasticsearch
