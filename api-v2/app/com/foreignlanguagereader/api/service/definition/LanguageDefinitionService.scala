@@ -107,17 +107,14 @@ trait LanguageDefinitionService {
     definitionLanguage: Language,
     word: String
   ): Future[Map[DefinitionSource, Option[Seq[Definition]]]] = {
-    val sourceList = sources
     elasticsearch
       .getFromCache[Definition](
-        sourceList
+        sources
           .map(
             source => makeDefinitionRequest(source, definitionLanguage, word)
           )
       )
-      .map(results => {
-        sourceList.zip(results).toMap
-      })
+      .map(results => sources.zip(results).toMap)
   }
 
   // Definition domain to elasticsearch domain
