@@ -9,8 +9,8 @@ import javax.inject._
 import play.api.libs.json.Json
 import play.api.mvc._
 
+import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.Duration
-import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class HealthController @Inject()(val controllerComponents: ControllerComponents,
@@ -35,33 +35,22 @@ class HealthController @Inject()(val controllerComponents: ControllerComponents,
    * - Check connection to Elasticsearch
    * But for now a static response is fine
    */
-  def readiness: Action[AnyContent] = Action.async {
+  def readiness: Action[AnyContent] = Action.apply {
     implicit request: Request[AnyContent] =>
       // Trigger all the requests in parallel
       val database = ReadinessStatus.UP
-      val elasticsearchFuture = Future {
-        elasticsearchClient.checkConnection(timeout)
-      }
-      val languageServiceFuture = languageServiceClient
-        .checkConnection(timeout)
 
-      // Block until all the results are back or timed out
-      val status = for {
-        elasticsearch <- elasticsearchFuture
-        languageService <- languageServiceFuture
-      } yield Readiness(database, elasticsearch, languageService)
-
-      status.map { status =>
-        {
-          val response = Json.toJson(status)
-
-          status.overall match {
-            case ReadinessStatus.UP => Ok(response)
-            case ReadinessStatus.DOWN =>
-              ServiceUnavailable(response)
-            case ReadinessStatus.DEGRADED => ImATeapot(response)
-          }
-        }
+      val status = Readiness(
+        database,
+        elasticsearchClient.health(),
+        languageServiceClient.health()
+      )
+      val response = Json.toJson(status)
+      status.overall match {
+        case ReadinessStatus.UP => Ok(response)
+        case ReadinessStatus.DOWN =>
+          ServiceUnavailable(response)
+        case ReadinessStatus.DEGRADED => ImATeapot(response)
       }
   }
 }
