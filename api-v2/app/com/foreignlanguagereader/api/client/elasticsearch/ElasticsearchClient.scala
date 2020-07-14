@@ -1,12 +1,18 @@
 package com.foreignlanguagereader.api.client.elasticsearch
 
+import java.util.concurrent.TimeUnit
+
 import akka.actor.ActorSystem
+import com.foreignlanguagereader.api.client.common.{
+  CircuitBreakerAttempt,
+  CircuitBreakerNonAttempt,
+  CircuitBreakerResult,
+  Circuitbreaker
+}
 import com.foreignlanguagereader.api.client.elasticsearch.searchstates.{
   ElasticsearchRequest,
   ElasticsearchResponse
 }
-import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus
-import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus.ReadinessStatus
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s._
 import com.sksamuel.elastic4s.requests.indexes.IndexRequest
@@ -17,49 +23,39 @@ import com.sksamuel.elastic4s.requests.searches.{
 import javax.inject.{Inject, Singleton}
 import play.api.{Configuration, Logger}
 
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.duration.{Duration, FiniteDuration}
+import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
-import scala.util.{Failure, Success, Try}
+import scala.util.{Failure, Success}
 
 @Singleton
 class ElasticsearchClient @Inject()(config: Configuration,
                                     val client: ElasticsearchClientHolder,
-                                    val system: ActorSystem) {
-  val logger: Logger = Logger(this.getClass)
-  implicit val myExecutionContext: ExecutionContext =
+                                    val system: ActorSystem)
+    extends Circuitbreaker {
+  override val logger: Logger = Logger(this.getClass)
+  implicit val ec: ExecutionContext =
     system.dispatchers.lookup("elasticsearch-context")
+  override val timeout =
+    Duration(config.get[Int]("elasticsearch.timeout"), TimeUnit.SECONDS)
+  override val resetTimeout: FiniteDuration =
+    FiniteDuration(60, TimeUnit.SECONDS)
 
   val attemptsIndex = "attempts"
   val maxConcurrentInserts = 5
 
-  def checkConnection(timeout: Duration): ReadinessStatus = {
-    Try(Await.result(client.execute(indexExists(attemptsIndex)), timeout)) match {
-      case Success(result) =>
-        result match {
-          case RequestSuccess(_, _, _, result) if result.exists =>
-            ReadinessStatus.UP
-          case RequestSuccess(_, _, _, _) =>
-            logger.error(
-              s"Error connecting to elasticsearch: index $attemptsIndex does not exist"
-            )
-            ReadinessStatus.DOWN
-          case RequestFailure(_, _, _, error) =>
-            logger.error(
-              s"Error connecting to elasticsearch: ${error.reason}",
-              error.asException
-            )
-            ReadinessStatus.DOWN
-        }
-      case Failure(e) =>
-        logger
-          .error(s"Failed to connect to elasticsearch: ${e.getMessage}", e)
-        ReadinessStatus.DOWN
-    }
-  }
-
-  // Why Type tag? Runtime information needed to make a seq of an arbitrary type.
-  // JVM type erasure would remove this unless we pass it along this way
+  /**
+    *
+    * We cache in elasticsearch because some content sources have request rate limits.
+    * This caching prevents us from using requests for things we have already searched for,
+    * and puts a limit on the number of times we will retry a search that hasn't given us results before.
+    *
+    * @param requests The search requests to cache.
+    * @param hitReader Automatically generated from Reads[T]
+    * @param tag The class of T, captured at runtime. This is needed to make a Seq of an arbitrary type due to JVM type erasure.
+    * @tparam T A case class with Reads[T] and Writes[T]
+    * @return
+    */
   def getFromCache[T: Indexable](requests: Seq[ElasticsearchRequest[T]])(
     implicit hitReader: HitReader[T],
     tag: ClassTag[T]
@@ -79,7 +75,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
     // This is where fetchers are called to get results if they aren't in elasticsearch
     // There is also logic to remember what has been fetched from external sources
     // So that we don't try too many times on the same query
-      .map(r => Future.sequence(r.map(_.getResult)))
+      .map(r => Future.sequence(r.map(_.getResultOrFetchFromSource)))
       // Now we have a future of a future
       .flatten
       .map(results => {
@@ -97,14 +93,17 @@ class ElasticsearchClient @Inject()(config: Configuration,
       .grouped(maxConcurrentInserts)
       .foreach(
         batch =>
-          Try(client.execute {
+          withBreaker(client.execute {
             bulk(batch)
-          }) match {
-            case Success(s) =>
-              s.foreach(
-                r =>
-                  logger.info(s"Successfully saved to elasticsearch: ${r.body}")
-              )
+          }, _ => true) map {
+            case Success(CircuitBreakerAttempt(s)) =>
+              logger
+                .info(s"Successfully saved to elasticsearch: ${s.body}")
+            case Success(CircuitBreakerNonAttempt()) =>
+              logger
+                .info(
+                  s"Failed to persist to elasticsearch because the circuit breaker is closed"
+                )
             case Failure(e) =>
               logger.warn(s"Failed to persist to elasticsearch: $requests", e)
         }
@@ -114,26 +113,31 @@ class ElasticsearchClient @Inject()(config: Configuration,
   // Get method for multisearch, but with error handling
   private[this] def getMultiple[T](
     request: MultiSearchRequest
-  ): Future[Option[MultiSearchResponse]] = {
-    client
-      .execute[MultiSearchRequest, MultiSearchResponse](request)
-      .map {
-        case RequestSuccess(_, _, _, result) =>
-          Some(result)
-        case RequestFailure(_, _, _, error) =>
-          logger.error(
-            s"Error fetching from elasticsearch for request: $request due to error: ${error.reason}",
-            error.asException
-          )
-          None
-      }
-      .recover {
-        case e: Exception =>
-          logger.error(
-            s"Failed to fetch from elasticsearch for request: $request",
-            e
-          )
-          None
-      }
+  ): Future[CircuitBreakerResult[Option[MultiSearchResponse]]] = {
+    withBreaker(
+      client
+        .execute[MultiSearchRequest, MultiSearchResponse](request)
+        .map {
+          case RequestSuccess(_, _, _, result) => result
+          case RequestFailure(_, _, _, error) =>
+            logger.error(
+              s"Error fetching from elasticsearch for request: $request due to error: ${error.reason}",
+              error.asException
+            )
+            throw error.asException
+        },
+      _ => true
+    ).map {
+      case Success(CircuitBreakerAttempt(value)) =>
+        CircuitBreakerAttempt(Some(value))
+      case Success(CircuitBreakerNonAttempt()) =>
+        CircuitBreakerNonAttempt[Option[MultiSearchResponse]]()
+      case Failure(e) =>
+        logger.error(
+          s"Error fetching from elasticsearch for request: $request due to error: ${e.getMessage}",
+          e
+        )
+        CircuitBreakerAttempt(None)
+    }
   }
 }
