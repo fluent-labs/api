@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.client.elasticsearch.searchstates
 
+import com.foreignlanguagereader.api.client.common.CircuitBreakerAttempt
 import com.foreignlanguagereader.api.domain.definition.Definition
 import com.sksamuel.elastic4s.ElasticDsl.{boolQuery, matchQuery, multi, search}
 import org.scalatest.funspec.AnyFunSpec
@@ -24,7 +25,7 @@ class ElasticsearchRequestTest extends AnyFunSpec {
     val request = ElasticsearchRequest[Definition](
       index,
       Map("field1" -> "value1", "field2" -> "value2", "field3" -> "value3"),
-      () => Future.successful(None),
+      () => Future.successful(CircuitBreakerAttempt(None)),
       maxFetchAttempts = 5
     )
 

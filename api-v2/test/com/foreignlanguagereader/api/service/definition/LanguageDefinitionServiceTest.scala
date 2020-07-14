@@ -3,11 +3,8 @@ package com.foreignlanguagereader.api.service.definition
 import com.foreignlanguagereader.api.client.LanguageServiceClient
 import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
 import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchRequest
+import com.foreignlanguagereader.api.contentsource.definition.WiktionaryDefinitionEntry
 import com.foreignlanguagereader.api.contentsource.definition.cedict.CEDICTDefinitionEntry
-import com.foreignlanguagereader.api.contentsource.definition.{
-  DefinitionEntry,
-  WiktionaryDefinitionEntry
-}
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
@@ -82,8 +79,6 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
             any[ClassTag[Definition]]
           )
       ).thenReturn(Future.successful(List(None)))
-      when(languageServiceClientMock.getDefinition(Language.ENGLISH, "test"))
-        .thenReturn(Future.successful(None))
 
       defaultDefinitionService
         .getDefinitions(Language.ENGLISH, "test")

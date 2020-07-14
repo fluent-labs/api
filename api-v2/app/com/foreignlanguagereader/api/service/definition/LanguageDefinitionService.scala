@@ -1,6 +1,11 @@
 package com.foreignlanguagereader.api.service.definition
 
 import com.foreignlanguagereader.api.client.LanguageServiceClient
+import com.foreignlanguagereader.api.client.common.{
+  CircuitBreakerAttempt,
+  CircuitBreakerNonAttempt,
+  CircuitBreakerResult
+}
 import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
 import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchRequest
 import com.foreignlanguagereader.api.contentsource.definition.DefinitionEntry
@@ -53,10 +58,11 @@ trait LanguageDefinitionService {
   // Functions that can fetch definitions from web sources should be registered here.
   val definitionFetchers
     : Map[(DefinitionSource, Language), (Language, String) => Future[
-      Option[Seq[DefinitionEntry]]
+      CircuitBreakerResult[Option[Seq[Definition]]]
     ]] = Map(
     (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
   )
+  val maxFetchAttempts = 5
 
   // Define logic to combine definition sources here. If there is only one source, this just returns it.
   def enrichDefinitions(
@@ -99,7 +105,8 @@ trait LanguageDefinitionService {
 
   // Out of the box, this calls language service for Wiktionary definitions. All languages should use this.
   def languageServiceFetcher
-    : (Language, String) => Future[Option[Seq[DefinitionEntry]]] =
+    : (Language,
+       String) => Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
     (_, word: String) => languageServiceClient.getDefinition(wordLanguage, word)
 
   private[this] def fetchDefinitions(
@@ -123,20 +130,17 @@ trait LanguageDefinitionService {
     definitionLanguage: Language,
     word: String
   ): ElasticsearchRequest[Definition] = {
-    val fetcher =
+    val fetcher: () => Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
       definitionFetchers.get(source, definitionLanguage) match {
         case Some(fetcher) =>
           () =>
-            fetcher(definitionLanguage, word).map {
-              case Some(results) => Some(results.map(_.toDefinition))
-              case None          => None
-            }
+            fetcher(definitionLanguage, word)
         case None =>
           logger.error(
             s"Failed to search in $wordLanguage for $word because $source is not implemented for definitions in $definitionLanguage"
           )
           () =>
-            Future.successful(None)
+            Future.successful(CircuitBreakerNonAttempt())
       }
 
     ElasticsearchRequest(
@@ -148,7 +152,7 @@ trait LanguageDefinitionService {
         "source" -> source.toString
       ),
       fetcher,
-      maxFetchAttempts = 5
+      maxFetchAttempts
     )
   }
 }

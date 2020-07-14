@@ -1,8 +1,12 @@
 package com.foreignlanguagereader.api.service.definition
 
 import com.foreignlanguagereader.api.client.LanguageServiceClient
+import com.foreignlanguagereader.api.client.common.{
+  CircuitBreakerAttempt,
+  CircuitBreakerNonAttempt,
+  CircuitBreakerResult
+}
 import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
-import com.foreignlanguagereader.api.contentsource.definition.DefinitionEntry
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
@@ -33,16 +37,20 @@ class ChineseDefinitionService @Inject()(
     List(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
 
   def cedictFetcher
-    : (Language, String) => Future[Option[Seq[DefinitionEntry]]] =
+    : (Language,
+       String) => Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
     (_, word: String) =>
       Cedict.getDefinition(word) match {
-        case Some(entry) => Future.successful(Some(List(entry)))
-        case None        => Future.successful(None)
+        case Some(entry) =>
+          Future.successful(
+            CircuitBreakerAttempt(Some(List(entry.toDefinition)))
+          )
+        case None => Future.successful(CircuitBreakerNonAttempt())
     }
 
   override val definitionFetchers
     : Map[(DefinitionSource, Language), (Language, String) => Future[
-      Option[Seq[DefinitionEntry]]
+      CircuitBreakerResult[Option[Seq[Definition]]]
     ]] = Map(
     (DefinitionSource.CEDICT, Language.ENGLISH) -> cedictFetcher,
     (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
