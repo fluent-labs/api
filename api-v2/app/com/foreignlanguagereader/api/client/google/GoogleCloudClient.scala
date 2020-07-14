@@ -1,5 +1,11 @@
 package com.foreignlanguagereader.api.client.google
 
+import akka.actor.ActorSystem
+import com.foreignlanguagereader.api.client.common.{
+  CircuitBreakerAttempt,
+  CircuitBreakerNonAttempt,
+  Circuitbreaker
+}
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.word.Count.Count
@@ -25,11 +31,13 @@ import javax.inject.Inject
 import play.api.Logger
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success, Try}
+import scala.util.{Failure, Success}
 
 class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
-                                  implicit val ec: ExecutionContext) {
-  val logger: Logger = Logger(this.getClass)
+                                  implicit val ec: ExecutionContext,
+                                  val system: ActorSystem)
+    extends Circuitbreaker {
+  override val logger: Logger = Logger(this.getClass)
 
   def getWordsForDocument(language: Language,
                           document: String): Future[Option[Set[Word]]] = {
@@ -47,28 +55,27 @@ class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
       .setEncodingType(EncodingType.UTF16)
       .build
 
-    Future {
-      Try(gcloud.getTokens(request)) match {
-        case Success(t) =>
-          t match {
-            case List() =>
-              logger.info(
-                s"No tokens found in language=$language for document=$document"
-              )
-              None
-            case tokens =>
-              logger.info(
-                s"Found tokens in language=$language for document=$document"
-              )
-              Some(convertTokensToWord(language, tokens))
-          }
-        case Failure(e) =>
-          logger.error(
-            s"Failed to get tokens from google cloud: ${e.getMessage}",
-            e
-          )
-          None
-      }
+    withBreaker(Future { gcloud.getTokens(request) }, _ => true) map {
+      case Success(CircuitBreakerAttempt(t)) =>
+        t match {
+          case List() =>
+            logger.info(
+              s"No tokens found in language=$language for document=$document"
+            )
+            None
+          case tokens =>
+            logger.info(
+              s"Found tokens in language=$language for document=$document"
+            )
+            Some(convertTokensToWord(language, tokens))
+        }
+      case Success(CircuitBreakerNonAttempt()) => None
+      case Failure(e) =>
+        logger.error(
+          s"Failed to get tokens from google cloud: ${e.getMessage}",
+          e
+        )
+        None
     }
   }
 

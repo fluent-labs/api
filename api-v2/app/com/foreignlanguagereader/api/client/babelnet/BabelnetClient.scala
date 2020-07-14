@@ -1,5 +1,7 @@
 package com.foreignlanguagereader.api.client.babelnet
 
+import akka.actor.ActorSystem
+import com.foreignlanguagereader.api.client.common.Circuitbreaker
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import it.uniroma1.lcl.babelnet.{BabelNetQuery, BabelSense}
@@ -11,8 +13,10 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
 class BabelnetClient @Inject()(babelnet: BabelnetClientHolder,
-                               implicit val ec: ExecutionContext) {
-  val logger: Logger = Logger(this.getClass)
+                               implicit val ec: ExecutionContext,
+                               val system: ActorSystem)
+    extends Circuitbreaker {
+  override val logger: Logger = Logger(this.getClass)
 
   def getSenses(language: Language,
                 lemma: String): Future[Option[List[BabelSense]]] = {
