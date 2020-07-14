@@ -6,6 +6,19 @@ import com.sksamuel.elastic4s.Indexable
 import com.sksamuel.elastic4s.playjson._
 import com.sksamuel.elastic4s.requests.indexes.IndexRequest
 
+/**
+  *
+  * Holds the final result from an elasticsearch lookup,
+  * Decides whether we need to cache data back to elasticsearch,
+  * and also updates the search count.
+  *
+  * @param index The elasticsearch index to cache the data. Should just be the type
+  * @param fields The fields needed to look up the correct item. Think of this as the primary key.
+  * @param result The final result of the query
+  * @param fetchCount How many times has fetch been called?
+  * @param refetched Did we refetch this data?
+  * @tparam T A case class with Reads[T] and Writes[T] defined.
+  */
 case class ElasticsearchResult[T: Indexable](index: String,
                                              fields: Map[String, String],
                                              result: Option[Seq[T]],
