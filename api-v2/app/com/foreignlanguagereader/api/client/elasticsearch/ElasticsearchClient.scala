@@ -38,8 +38,6 @@ class ElasticsearchClient @Inject()(config: Configuration,
     system.dispatchers.lookup("elasticsearch-context")
   override val timeout =
     Duration(config.get[Int]("elasticsearch.timeout"), TimeUnit.SECONDS)
-  override val resetTimeout: FiniteDuration =
-    FiniteDuration(60, TimeUnit.SECONDS)
 
   val attemptsIndex = "attempts"
   val maxConcurrentInserts = 5

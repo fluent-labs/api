@@ -13,18 +13,22 @@ import scala.concurrent.duration._
 import scala.util.{Failure, Success, Try}
 
 trait Circuitbreaker {
+  val defaultTimeout = 60
+  val defaultResetTimeout = 60
+
   val system: ActorSystem
   implicit val ec: ExecutionContext
-  val timeout: FiniteDuration = FiniteDuration(60, TimeUnit.SECONDS)
-  val resetTimeout: FiniteDuration = FiniteDuration(60, TimeUnit.SECONDS)
-  val exponentialBackoff: Boolean = false
+  val maxFailures = 5
+  val timeout: FiniteDuration = FiniteDuration(defaultTimeout, TimeUnit.SECONDS)
+  val resetTimeout: FiniteDuration =
+    FiniteDuration(defaultResetTimeout, TimeUnit.SECONDS)
 
   val logger: Logger = Logger(this.getClass)
 
   val breaker: CircuitBreaker =
     new CircuitBreaker(
       system.scheduler,
-      maxFailures = 5,
+      maxFailures = maxFailures,
       callTimeout = timeout,
       resetTimeout = resetTimeout
     ).onOpen(logger.error("Circuit breaker opening due to failures"))
