@@ -9,14 +9,13 @@ import com.foreignlanguagereader.api.client.{
   LanguageServiceClient,
   MirriamWebsterClient
 }
-import com.foreignlanguagereader.api.contentsource.definition.DefinitionEntry
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
+import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.domain.definition.{
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
 import javax.inject.Inject
 
 import scala.concurrent.{ExecutionContext, Future}

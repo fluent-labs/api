@@ -52,9 +52,9 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
-            any[Indexable[Definition]],
-            any[HitReader[Definition]],
-            any[ClassTag[Definition]]
+            any(classOf[Indexable[Definition]]),
+            any(classOf[HitReader[Definition]]),
+            any(classOf[ClassTag[Definition]])
           )
       ).thenReturn(
         Future
@@ -74,9 +74,9 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
-            any[Indexable[Definition]],
-            any[HitReader[Definition]],
-            any[ClassTag[Definition]]
+            any(classOf[Indexable[Definition]]),
+            any(classOf[HitReader[Definition]]),
+            any(classOf[ClassTag[Definition]])
           )
       ).thenReturn(Future.successful(List(None)))
 
@@ -91,9 +91,9 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
-            any[Indexable[Definition]],
-            any[HitReader[Definition]],
-            any[ClassTag[Definition]]
+            any(classOf[Indexable[Definition]]),
+            any(classOf[HitReader[Definition]]),
+            any(classOf[ClassTag[Definition]])
           )
       ).thenReturn(Future.successful(List(None)))
       when(languageServiceClientMock.getDefinition(Language.ENGLISH, "test"))
@@ -110,9 +110,9 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
-            any[Indexable[Definition]],
-            any[HitReader[Definition]],
-            any[ClassTag[Definition]]
+            any(classOf[Indexable[Definition]]),
+            any(classOf[HitReader[Definition]]),
+            any(classOf[ClassTag[Definition]])
           )
       ).thenReturn(Future.successful(List(None)))
 
@@ -177,9 +177,9 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
-              any[Indexable[Definition]],
-              any[HitReader[Definition]],
-              any[ClassTag[Definition]]
+              any(classOf[Indexable[Definition]]),
+              any(classOf[HitReader[Definition]]),
+              any(classOf[ClassTag[Definition]])
             )
         ).thenReturn(
           Future.successful(

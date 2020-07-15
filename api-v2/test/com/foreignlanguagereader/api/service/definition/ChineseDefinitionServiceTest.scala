@@ -89,9 +89,9 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           .getFromCache[Definition](
             any(classOf[Seq[ElasticsearchRequest[Definition]]])
           )(
-            any[Indexable[Definition]],
-            any[HitReader[Definition]],
-            any[ClassTag[Definition]]
+            any(classOf[Indexable[Definition]]),
+            any(classOf[HitReader[Definition]]),
+            any(classOf[ClassTag[Definition]])
           )
       ).thenReturn(
         Future.successful(
@@ -118,9 +118,9 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
-              any[Indexable[Definition]],
-              any[HitReader[Definition]],
-              any[ClassTag[Definition]]
+              any(classOf[Indexable[Definition]]),
+              any(classOf[HitReader[Definition]]),
+              any(classOf[ClassTag[Definition]])
             )
         ).thenReturn(
           Future.successful(List(Some(List(dummyCedictDefinition)), None))
@@ -142,9 +142,9 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
-              any[Indexable[Definition]],
-              any[HitReader[Definition]],
-              any[ClassTag[Definition]]
+              any(classOf[Indexable[Definition]]),
+              any(classOf[HitReader[Definition]]),
+              any(classOf[ClassTag[Definition]])
             )
         ).thenReturn(
           Future.successful(List(None, Some(List(dummyWiktionaryDefinition))))
@@ -164,9 +164,9 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
-              any[Indexable[Definition]],
-              any[HitReader[Definition]],
-              any[ClassTag[Definition]]
+              any(classOf[Indexable[Definition]]),
+              any(classOf[HitReader[Definition]]),
+              any(classOf[ClassTag[Definition]])
             )
         ).thenReturn(
           Future.successful(
@@ -209,9 +209,9 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .getFromCache(any(classOf[Seq[ElasticsearchRequest[Definition]]]))(
-              any[Indexable[Definition]],
-              any[HitReader[Definition]],
-              any[ClassTag[Definition]]
+              any(classOf[Indexable[Definition]]),
+              any(classOf[HitReader[Definition]]),
+              any(classOf[ClassTag[Definition]])
             )
         ).thenReturn(
           Future.successful(
