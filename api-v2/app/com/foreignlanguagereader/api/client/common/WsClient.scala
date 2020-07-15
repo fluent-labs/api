@@ -41,6 +41,7 @@ trait WsClient extends Circuitbreaker {
         }),
       isFailure
     ).map {
+      // We are converting errors into Options here
       case Success(CircuitBreakerAttempt(value)) =>
         CircuitBreakerAttempt(Some(value))
       case Success(CircuitBreakerNonAttempt()) =>

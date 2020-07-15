@@ -4,7 +4,6 @@ import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.client.common.{
-  CircuitBreakerAttempt,
   CircuitBreakerResult,
   Circuitbreaker,
   WsClient
@@ -17,7 +16,7 @@ import play.api.libs.json.Reads
 import play.api.libs.ws.WSClient
 import play.api.{Configuration, Logger}
 
-import scala.concurrent.duration.{Duration, FiniteDuration}
+import scala.concurrent.duration.Duration
 import scala.concurrent.{ExecutionContext, Future}
 
 class LanguageServiceClient @Inject()(config: Configuration,
@@ -30,8 +29,6 @@ class LanguageServiceClient @Inject()(config: Configuration,
     system.dispatchers.lookup("language-service-context")
   override val timeout =
     Duration(config.get[Int]("language-service.timeout"), TimeUnit.SECONDS)
-  override val resetTimeout: FiniteDuration =
-    FiniteDuration(60, TimeUnit.SECONDS)
 
   // This token only works for localhost
   // Will need to replace this with config properties when I learn how secrets work in play

@@ -54,6 +54,7 @@ trait Circuitbreaker {
     case Failure(e) =>
       e match {
         case _: CircuitBreakerOpenException =>
+          logger.warn("Failing fast because circuit breaker is open.")
           Success(CircuitBreakerNonAttempt[T]())
         case attempt: Exception => Failure(attempt)
       }

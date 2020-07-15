@@ -40,6 +40,9 @@ class MirriamWebsterClient @Inject()(config: Configuration,
   implicit val readsSeqSpanish: Reads[Seq[WebsterSpanishDefinitionEntry]] =
     WebsterSpanishDefinitionEntry.helper.readsSeq
 
+  // TODO: Make definition not found not be an error that increments the circuit breaker.
+  // That means the input is bad, not the connection to the service.
+
   def getLearnersDefinition(
     word: String
   ): Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
