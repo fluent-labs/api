@@ -26,16 +26,24 @@ case class ElasticsearchResult[T: Indexable](index: String,
                                              refetched: Boolean) {
   val attemptsIndex = "attempts"
 
-  val cacheQueries: List[IndexRequest] = result match {
-    case Some(values) => values.map(v => indexInto(index).doc(v)).toList
-    case None         => List()
+  val cacheQueries: Option[List[IndexRequest]] = result match {
+    case Some(values) => Some(values.map(v => indexInto(index).doc(v)).toList)
+    case None         => None
   }
-  val attemptsQuery: IndexRequest = indexInto(attemptsIndex)
-    .doc(
-      LookupAttempt(index = index, fields = fields.toMap, count = fetchCount)
-    )
+  val attemptsQuery: Option[IndexRequest] =
+    if (refetched)
+      Some(
+        indexInto(attemptsIndex)
+          .doc(
+            LookupAttempt(index = index, fields = fields, count = fetchCount)
+          )
+      )
+    else None
 
   val toIndex: Option[List[IndexRequest]] =
-    if (refetched) Some(attemptsQuery :: cacheQueries)
-    else None
+    (cacheQueries, attemptsQuery) match {
+      case (Some(cache), Some(attempts)) => Some(attempts :: cache)
+      case (None, Some(attempts))        => Some(List(attempts))
+      case _                             => None
+    }
 }
