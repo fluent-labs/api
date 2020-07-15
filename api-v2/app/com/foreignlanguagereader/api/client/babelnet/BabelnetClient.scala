@@ -43,7 +43,7 @@ class BabelnetClient @Inject()(babelnet: BabelnetClientHolder,
         babelnet.getSenses(query)
       }
     }, _ => true) map {
-      case Success(CircuitBreakerAttempt(empty)) if empty.isEmpty =>
+      case Success(CircuitBreakerAttempt(List())) =>
         CircuitBreakerAttempt(None)
       case Success(CircuitBreakerAttempt(senses)) =>
         CircuitBreakerAttempt(Some(senses))
