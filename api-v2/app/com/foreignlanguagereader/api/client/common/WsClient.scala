@@ -29,16 +29,15 @@ trait WsClient extends Circuitbreaker {
         .withRequestTimeout(timeout * 2)
         .withHttpHeaders(headers: _*)
         .get()
-        .map(response => {
-          response.json.validate[T] match {
-            case JsSuccess(result, _) => result
-            case JsError(errors) =>
-              val typeName = implicitly[ClassTag[T]].runtimeClass.getSimpleName
-              val error = s"Failed to parse $typeName from $url: $errors"
-              logger.error(error)
-              throw new IllegalArgumentException(error)
-          }
-        }),
+        .map(_.json.validate[T])
+        .map {
+          case JsSuccess(result, _) => result
+          case JsError(errors) =>
+            val typeName = implicitly[ClassTag[T]].runtimeClass.getSimpleName
+            val error = s"Failed to parse $typeName from $url: $errors"
+            logger.error(error)
+            throw new IllegalArgumentException(error)
+        },
       isFailure
     ).map {
       // We are converting errors into Options here
