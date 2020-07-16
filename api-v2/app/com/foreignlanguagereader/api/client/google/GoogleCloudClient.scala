@@ -55,7 +55,7 @@ class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
       .setEncodingType(EncodingType.UTF16)
       .build
 
-    withBreaker(Future { gcloud.getTokens(request) }, _ => true) map {
+    withBreaker(Future { gcloud.getTokens(request) }) map {
       case Success(CircuitBreakerAttempt(t)) =>
         t match {
           case List() =>

@@ -38,11 +38,9 @@ class BabelnetClient @Inject()(babelnet: BabelnetClientHolder,
       .from(lang)
       .build
 
-    withBreaker({
-      Future {
-        babelnet.getSenses(query)
-      }
-    }, _ => true) map {
+    withBreaker(Future {
+      babelnet.getSenses(query)
+    }) map {
       case Success(CircuitBreakerAttempt(List())) =>
         CircuitBreakerAttempt(None)
       case Success(CircuitBreakerAttempt(senses)) =>

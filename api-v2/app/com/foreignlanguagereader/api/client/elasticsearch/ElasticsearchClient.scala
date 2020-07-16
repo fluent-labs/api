@@ -91,9 +91,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
       .grouped(maxConcurrentInserts)
       .foreach(
         batch =>
-          withBreaker(client.execute {
-            bulk(batch)
-          }, _ => true) map {
+          withBreaker(client.execute { bulk(batch) }) map {
             case Success(CircuitBreakerAttempt(s)) =>
               logger
                 .info(s"Successfully saved to elasticsearch: ${s.body}")
@@ -123,8 +121,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
               error.asException
             )
             throw error.asException
-        },
-      _ => true
+        }
     ).map {
       case Success(CircuitBreakerAttempt(value)) =>
         CircuitBreakerAttempt(Some(value))

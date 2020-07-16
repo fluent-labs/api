@@ -43,7 +43,7 @@ trait Circuitbreaker {
 
   def withBreaker[T](
     body: => Future[T],
-    isFailure: Throwable => Boolean
+    isFailure: Throwable => Boolean = _ => true
   ): Future[Try[CircuitBreakerResult[T]]] =
     breaker
       .withCircuitBreaker[T](body, makeFailureFunction(isFailure))
