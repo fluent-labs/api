@@ -1,23 +1,57 @@
 package com.foreignlanguagereader.api.util
 
+import com.foreignlanguagereader.api.client.elasticsearch.LookupAttempt
 import com.sksamuel.elastic4s.requests.common.Shards
 import com.sksamuel.elastic4s.requests.searches._
-import com.sksamuel.elastic4s.{ElasticError, HitReader}
+import com.sksamuel.elastic4s.{ElasticError, Hit, HitReader}
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{mock, when}
+
+import scala.util.Try
 
 /**
   * Helper library to get rid of boilerplate when testing elasticsearch responses
   */
 object ElasticsearchTestUtil {
-  def multisearchResponseFrom(
-    searches: List[Either[ElasticError, SearchResponse]]
-  ): MultiSearchResponse = {
+  def cacheQueryResponseFrom[T](results: Either[Exception, Seq[T]],
+                                attempts: Either[Exception, LookupAttempt],
+  )(implicit hitReader: HitReader[T],
+    attemptsHitReader: HitReader[LookupAttempt]): MultiSearchResponse = {
+
+    val resultsResponse = results match {
+      case Left(e) =>
+        val result = mock(classOf[ElasticError])
+        when(result.asException).thenReturn(e)
+        Left(result)
+      case Right(r) =>
+        val hits = r
+          .map(result => {
+            val hit = mock(classOf[SearchHit])
+            when(hitReader.read(hit)).thenReturn(Try(result))
+            hit
+          })
+          .toArray
+        Right(searchResponseFrom(hits))
+    }
+    val attemptsResponse = attempts match {
+      case Left(e) =>
+        val result = mock(classOf[ElasticError])
+        when(result.asException).thenReturn(e)
+        Left(result)
+      case Right(a) =>
+        when(attemptsHitReader.read(any(classOf[Hit]))).thenReturn(Try(a))
+        Right(searchResponseFrom(Array(mock(classOf[SearchHit]))))
+    }
+
     MultiSearchResponse(
-      searches.map(search => MultisearchResponseItem(0, 200, search))
+      List(
+        MultisearchResponseItem(0, 200, resultsResponse),
+        MultisearchResponseItem(0, 200, attemptsResponse)
+      )
     )
   }
 
-  def searchResponseFrom[T](hits: List[T])(implicit hitReader: HitReader[T]) =
+  def searchResponseFrom[T](hits: Array[SearchHit]) =
     SearchResponse(
       took = 5L,
       isTimedOut = false,
@@ -26,21 +60,6 @@ object ElasticsearchTestUtil {
       Shards(1, 1, 0),
       None,
       Map(),
-      SearchHits(
-        Total(value = 5L, relation = ""),
-        maxScore = 4,
-        hits = searchHitsFrom(hits)
-      )
+      SearchHits(Total(value = 5L, relation = ""), maxScore = 4, hits = hits)
     )
-  def searchHitsFrom[T](
-    hits: List[T]
-  )(implicit hitReader: HitReader[T]): Array[SearchHit] = {
-    hits
-      .map(item => {
-        val mockHit = mock(classOf[SearchHit])
-        when(mockHit.to).thenReturn(item)
-        mockHit
-      })
-      .toArray
-  }
 }

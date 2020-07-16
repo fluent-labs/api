@@ -23,7 +23,7 @@ import com.sksamuel.elastic4s.requests.searches.{
 import javax.inject.{Inject, Singleton}
 import play.api.{Configuration, Logger}
 
-import scala.concurrent.duration.{Duration, FiniteDuration}
+import scala.concurrent.duration.Duration
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
 import scala.util.{Failure, Success}

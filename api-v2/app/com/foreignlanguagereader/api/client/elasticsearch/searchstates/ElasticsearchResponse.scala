@@ -29,6 +29,7 @@ import scala.reflect.ClassTag
   * @param response The elasticsearch response created by using the query in ElasticsearchRequest
   * @param indexable$T$0 Automatically generated if Reads[T] is defined
   * @param hitReader Automatically generated if Writes[T] is defined
+  * @param attemptsHitReader Automatically generated from lookup attempts
   * @param tag The class of T so that sequences can be initialized. Automatically given.
   * @param ec Automatically taken from the implicit val near the caller. This is the thread pool to block on when fetching.
   * @tparam T A case class with Reads[T] and Writes[T] defined.
@@ -39,7 +40,10 @@ case class ElasticsearchResponse[T: Indexable](
   fetcher: () => Future[CircuitBreakerResult[Option[Seq[T]]]],
   maxFetchAttempts: Int,
   response: Option[MultiSearchResponse]
-)(implicit hitReader: HitReader[T], tag: ClassTag[T], ec: ExecutionContext) {
+)(implicit hitReader: HitReader[T],
+  attemptsHitReader: HitReader[LookupAttempt],
+  tag: ClassTag[T],
+  ec: ExecutionContext) {
   val logger: Logger = Logger(this.getClass)
 
   val (elasticsearchResult: Option[Seq[T]], fetchAttempts: Int) =
@@ -62,24 +66,40 @@ case class ElasticsearchResponse[T: Indexable](
           )
         )
       case None if fetchAttempts < maxFetchAttempts =>
-        fetcher().map {
-          case CircuitBreakerAttempt(result) =>
-            ElasticsearchResult(
-              index,
-              fields,
-              result,
-              fetchAttempts + 1,
-              refetched = true
-            )
-          case CircuitBreakerNonAttempt() =>
-            ElasticsearchResult(
-              index,
-              fields,
-              None,
-              fetchAttempts,
-              refetched = false
-            )
-        }
+        fetcher()
+          .map {
+            case CircuitBreakerAttempt(result) =>
+              ElasticsearchResult(
+                index,
+                fields,
+                result,
+                fetchAttempts + 1,
+                refetched = true
+              )
+            case CircuitBreakerNonAttempt() =>
+              ElasticsearchResult(
+                index,
+                fields,
+                None,
+                fetchAttempts,
+                refetched = false
+              )
+          }
+          .recover {
+            case e: Exception =>
+              logger.error(
+                s"Failed to get result from elasticsearch on index $index due to error ${e.getMessage}",
+                e
+              )
+              ElasticsearchResult(
+                index,
+                fields,
+                None,
+                fetchAttempts + 1,
+                refetched = true
+              )
+
+          }
       case None =>
         Future.successful(
           ElasticsearchResult(
@@ -108,14 +128,18 @@ case class ElasticsearchResponse[T: Indexable](
 
   private[this] def parseAttempts(
     attempts: Either[ElasticError, SearchResponse]
-  ) = attempts match {
+  ): Int = attempts match {
     case Left(error) =>
       logger.error(
         s"Failed to get request count from elasticsearch on index $index due to error ${error.reason}",
         error.asException
       )
       0
-    case Right(response) => response.hits.hits(0).to[LookupAttempt].count
+    case Right(response) =>
+      val hit = response.hits.hits(0)
+      val attempt = hit.to[LookupAttempt]
+      val result = attempt.count
+      result
   }
 }
 
