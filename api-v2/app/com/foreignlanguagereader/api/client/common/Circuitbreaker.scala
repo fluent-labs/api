@@ -41,10 +41,11 @@ trait Circuitbreaker {
     case breaker if breaker.isOpen     => ReadinessStatus.DOWN
   }
 
-  def withBreaker[T](
-    body: => Future[T],
-    isFailure: Throwable => Boolean = _ => true
-  ): Future[Try[CircuitBreakerResult[T]]] =
+  def withBreaker[T](body: => Future[T]): Future[Try[CircuitBreakerResult[T]]] =
+    withBreaker(_ => true, body)
+
+  def withBreaker[T](isFailure: Throwable => Boolean = _ => true,
+                     body: => Future[T]): Future[Try[CircuitBreakerResult[T]]] =
     breaker
       .withCircuitBreaker[T](body, makeFailureFunction(isFailure))
       .transform(wrapWithAttemptInformation)
