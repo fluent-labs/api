@@ -53,7 +53,7 @@ case class ElasticsearchResponse[T: Indexable](
       case None => (None, 0)
     }
 
-  def getResultOrFetchFromSource: Future[ElasticsearchResult[T]] =
+  lazy val getResultOrFetchFromSource: Future[ElasticsearchResult[T]] =
     elasticsearchResult match {
       case Some(es) =>
         Future.successful(
@@ -65,41 +65,7 @@ case class ElasticsearchResponse[T: Indexable](
             refetched = false
           )
         )
-      case None if fetchAttempts < maxFetchAttempts =>
-        fetcher()
-          .map {
-            case CircuitBreakerAttempt(result) =>
-              ElasticsearchResult(
-                index,
-                fields,
-                result,
-                fetchAttempts + 1,
-                refetched = true
-              )
-            case CircuitBreakerNonAttempt() =>
-              ElasticsearchResult(
-                index,
-                fields,
-                None,
-                fetchAttempts,
-                refetched = false
-              )
-          }
-          .recover {
-            case e: Exception =>
-              logger.error(
-                s"Failed to get result from elasticsearch on index $index due to error ${e.getMessage}",
-                e
-              )
-              ElasticsearchResult(
-                index,
-                fields,
-                None,
-                fetchAttempts + 1,
-                refetched = true
-              )
-
-          }
+      case None if fetchAttempts < maxFetchAttempts => fetchFromSource
       case None =>
         Future.successful(
           ElasticsearchResult(
@@ -111,6 +77,44 @@ case class ElasticsearchResponse[T: Indexable](
           )
         )
     }
+
+  lazy val fetchFromSource: Future[ElasticsearchResult[T]] = {
+    logger.info(s"Refetching from source for query on $index")
+    fetcher()
+      .map {
+        case CircuitBreakerAttempt(result) =>
+          ElasticsearchResult(
+            index,
+            fields,
+            result,
+            fetchAttempts + 1,
+            refetched = true
+          )
+        case CircuitBreakerNonAttempt() =>
+          ElasticsearchResult(
+            index,
+            fields,
+            None,
+            fetchAttempts,
+            refetched = false
+          )
+      }
+      .recover {
+        case e: Exception =>
+          logger.error(
+            s"Failed to get result from elasticsearch on index $index due to error ${e.getMessage}",
+            e
+          )
+          ElasticsearchResult(
+            index,
+            fields,
+            None,
+            fetchAttempts + 1,
+            refetched = true
+          )
+
+      }
+  }
 
   private[this] def parseResults(
     results: Either[ElasticError, SearchResponse]
