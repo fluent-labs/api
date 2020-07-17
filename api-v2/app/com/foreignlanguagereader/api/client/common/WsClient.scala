@@ -24,6 +24,7 @@ trait WsClient extends Circuitbreaker {
   )(implicit reads: Reads[T]): Future[CircuitBreakerResult[Option[T]]] = {
     logger.info(s"Calling url $url")
     withBreaker(
+      isFailure,
       ws.url(url)
         // Doubled so that the circuit breaker will handle it.
         .withRequestTimeout(timeout * 2)
@@ -37,8 +38,7 @@ trait WsClient extends Circuitbreaker {
             val error = s"Failed to parse $typeName from $url: $errors"
             logger.error(error)
             throw new IllegalArgumentException(error)
-        },
-      isFailure
+        }
     ).map {
       // We are converting errors into Options here
       case Success(CircuitBreakerAttempt(value)) =>
