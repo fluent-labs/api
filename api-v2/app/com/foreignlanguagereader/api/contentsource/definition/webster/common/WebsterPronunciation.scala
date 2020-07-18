@@ -8,14 +8,17 @@ case class WebsterPronunciation(writtenPronunciation: Option[String],
                                 beforePronunciationLabel: Option[String],
                                 afterPronunciationLabel: Option[String],
                                 seperatorPunctuation: Option[String],
-                                sound: Option[WebsterPronunciationSound])
+                                sound: Option[WebsterPronunciationSound],
+                                ipa: Option[String])
 object WebsterPronunciation {
   implicit val reads: Reads[WebsterPronunciation] = (
     (JsPath \ "mw").readNullable[String] and
       (JsPath \ "l").readNullable[String] and
       (JsPath \ "l2").readNullable[String] and
       (JsPath \ "pun").readNullable[String] and
-      (JsPath \ "sound").readNullable[WebsterPronunciationSound]
+      (JsPath \ "sound")
+        .readNullable[WebsterPronunciationSound] and
+      (JsPath \ "ipa").readNullable[String]
   )(WebsterPronunciation.apply _)
   implicit val writes: Writes[WebsterPronunciation] =
     Json.writes[WebsterPronunciation]
