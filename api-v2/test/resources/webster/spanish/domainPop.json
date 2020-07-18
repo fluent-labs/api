@@ -30,7 +30,7 @@
         }
       ]
     },
-    "partOfSpeech": "verb",
+    "partOfSpeechRaw": "verb",
     "inflections": [
       {
         "inflection": "popped"
@@ -169,7 +169,7 @@
     "headwordInfo": {
       "headword": "pop"
     },
-    "partOfSpeech": "adjective",
+    "partOfSpeechRaw": "adjective",
     "definitions": [
       {
         "senseSequence": [
@@ -213,7 +213,7 @@
     "headwordInfo": {
       "headword": "pop"
     },
-    "partOfSpeech": "noun",
+    "partOfSpeechRaw": "noun",
     "definitions": [
       {
         "senseSequence": [
@@ -265,7 +265,7 @@
         }
       ]
     },
-    "partOfSpeech": "adjective & masculine noun",
+    "partOfSpeechRaw": "adjective & masculine noun",
     "definitions": [
       {
         "senseSequence": [
@@ -306,7 +306,7 @@
         }
       ]
     },
-    "partOfSpeech": "noun",
+    "partOfSpeechRaw": "noun",
     "definitions": [
       {
         "senseSequence": [
@@ -356,7 +356,7 @@
         }
       ]
     },
-    "partOfSpeech": "noun",
+    "partOfSpeechRaw": "noun",
     "definitions": [
       {
         "senseSequence": [

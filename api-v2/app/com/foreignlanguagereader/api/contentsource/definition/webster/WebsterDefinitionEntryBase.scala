@@ -60,8 +60,12 @@ trait WebsterDefinitionEntryBase {
   val pronunciation: String = {
     val prons: Option[Seq[String]] = headwordInfo.pronunciations match {
       case Some(p) =>
-        val pr = p.flatMap(_.ipa)
-        if (pr.isEmpty) None else Some(pr)
+        val ipas = p.flatMap(_.ipa)
+        if (ipas.isEmpty) {
+          val writtenPronunciations = p.flatMap(_.writtenPronunciation)
+          if (writtenPronunciations.isEmpty) None
+          else Some(writtenPronunciations)
+        } else Some(ipas)
       case None => None
     }
 

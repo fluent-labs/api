@@ -24,7 +24,7 @@
         }
       ]
     },
-    "partOfSpeech": "conjunction",
+    "partOfSpeechRaw": "conjunction",
     "definitions": [
       {
         "senseSequence": [
@@ -84,7 +84,7 @@
         }
       ]
     },
-    "partOfSpeech": "masculine noun",
+    "partOfSpeechRaw": "masculine noun",
     "definitions": [
       {
         "senseSequence": [
@@ -142,7 +142,7 @@
         }
       ]
     },
-    "partOfSpeech": "preposition",
+    "partOfSpeechRaw": "preposition",
     "definitions": [
       {
         "senseSequence": [
@@ -549,7 +549,7 @@
         }
       ]
     },
-    "partOfSpeech": "pronoun",
+    "partOfSpeechRaw": "pronoun",
     "definitions": [
       {
         "senseSequence": [
@@ -682,7 +682,7 @@
         }
       ]
     },
-    "partOfSpeech": "pronoun",
+    "partOfSpeechRaw": "pronoun",
     "definitions": [
       {
         "senseSequence": [
@@ -824,7 +824,7 @@
         }
       ]
     },
-    "partOfSpeech": "adverb",
+    "partOfSpeechRaw": "adverb",
     "definitions": [
       {
         "senseSequence": [
