@@ -9,7 +9,7 @@ import sangria.schema.ObjectType
 
 case class ChineseDefinitionDTO(subdefinitions: List[String],
                                 tag: Option[PartOfSpeech],
-                                examples: List[String],
+                                examples: Option[List[String]],
                                 simplified: String = "",
                                 traditional: String = "",
                                 pronunciation: ChinesePronunciation,

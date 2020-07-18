@@ -12,8 +12,9 @@ import play.api.libs.json._
 
 trait Definition {
   val subdefinitions: List[String]
+  val ipa: String
   val tag: Option[PartOfSpeech]
-  val examples: List[String]
+  val examples: Option[List[String]]
   // These fields are needed for elasticsearch lookup
   // But do not need to be presented to the user.
   val definitionLanguage: Language
@@ -27,14 +28,16 @@ trait Definition {
 
 object Definition {
   def apply(subdefinitions: List[String],
+            ipa: String,
             tag: Option[PartOfSpeech],
-            examples: List[String],
+            examples: Option[List[String]],
             wordLanguage: Language,
             definitionLanguage: Language,
             source: DefinitionSource,
             token: String): Definition =
     GenericDefinition(
       subdefinitions,
+      ipa,
       tag,
       examples,
       wordLanguage,

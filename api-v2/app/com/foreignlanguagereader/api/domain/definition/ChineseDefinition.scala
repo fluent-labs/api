@@ -17,20 +17,32 @@ import sangria.schema.{EnumType, ObjectType}
 
 case class ChineseDefinition(override val subdefinitions: List[String],
                              override val tag: Option[PartOfSpeech],
-                             override val examples: List[String],
+                             override val examples: Option[List[String]],
                              private val inputPinyin: String = "",
-                             simplified: String = "",
-                             traditional: String = "",
+                             private val isTraditional: Boolean,
+                             private val inputSimplified: Option[String],
+                             private val inputTraditional: Option[String],
                              // These fields are needed for elasticsearch lookup
                              // But do not need to be presented to the user.
                              override val definitionLanguage: Language,
                              override val source: DefinitionSource,
                              override val token: String)
     extends Definition {
-  val wordLanguage: Language = Language.CHINESE
+  val wordLanguage: Language =
+    if (isTraditional) Language.CHINESE_TRADITIONAL else Language.CHINESE
 
   val pronunciation: ChinesePronunciation =
     ChineseDefinitionService.getPronunciation(inputPinyin)
+  val ipa: String = pronunciation.ipa
+
+  val (simplified, traditional) = (inputSimplified, inputTraditional) match {
+    case (Some(s), Some(t))                => (s, t)
+    case (Some(s), None) if isTraditional  => (s, token)
+    case (None, Some(t)) if !isTraditional => (token, t)
+    case (None, None)                      =>
+      // TODO automatic conversion.
+      if (isTraditional) ("", token) else (token, "")
+  }
 
   val hsk: HSKLevel = ChineseDefinitionService.getHSK(simplified)
 

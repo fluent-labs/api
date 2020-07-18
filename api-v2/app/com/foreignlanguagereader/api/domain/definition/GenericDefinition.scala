@@ -10,8 +10,9 @@ import com.foreignlanguagereader.api.dto.v1.definition.{
 import play.api.libs.json.{Format, Json}
 
 case class GenericDefinition(subdefinitions: List[String],
+                             ipa: String,
                              tag: Option[PartOfSpeech],
-                             examples: List[String],
+                             examples: Option[List[String]],
                              // These fields are needed for elasticsearch lookup
                              // But do not need to be presented to the user.
                              definitionLanguage: Language,

@@ -9,10 +9,8 @@ import com.foreignlanguagereader.api.domain.definition.{
   DefinitionSource
 }
 import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
-import com.sksamuel.elastic4s.{Hit, HitReader}
+import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
 import play.api.libs.json.{Format, Json, Reads}
-
-import scala.util.{Success, Try}
 
 case class CEDICTDefinitionEntry(override val subdefinitions: List[String],
                                  pinyin: String,
@@ -20,20 +18,26 @@ case class CEDICTDefinitionEntry(override val subdefinitions: List[String],
                                  traditional: String,
                                  override val token: String)
     extends DefinitionEntry {
+  override val tag: Option[PartOfSpeech] = None
+  override val pronunciation: String = pinyin
+  override val examples: Option[List[String]] = None
+
   override val wordLanguage: Language = Language.CHINESE
   override val definitionLanguage: Language = Language.ENGLISH
   override val source: DefinitionSource = DefinitionSource.CEDICT
 
+  // We clearly do have simplified and traditional values so let's use them.
   override lazy val toDefinition: Definition = ChineseDefinition(
-    subdefinitions,
-    tag = None,
-    examples = List(),
-    pinyin,
-    simplified,
-    traditional,
-    definitionLanguage,
-    DefinitionSource.CEDICT,
-    token
+    subdefinitions = subdefinitions,
+    tag = tag,
+    examples = examples,
+    inputPinyin = pinyin,
+    isTraditional = false, // TODO get this ourselves
+    inputSimplified = Some(simplified),
+    inputTraditional = Some(traditional),
+    definitionLanguage = definitionLanguage,
+    source = source,
+    token = token
   )
 }
 
@@ -43,20 +47,4 @@ object CEDICTDefinitionEntry {
     Json.format[CEDICTDefinitionEntry]
   implicit val readsSeq: Reads[Seq[CEDICTDefinitionEntry]] =
     Reads.seq(format.reads)
-
-  // Lets us pull this from elasticsearch
-  implicit object CEDICTHitReader extends HitReader[CEDICTDefinitionEntry] {
-    override def read(hit: Hit): Try[CEDICTDefinitionEntry] = {
-      val source = hit.sourceAsMap
-      Success(
-        CEDICTDefinitionEntry(
-          source("subdefinitions").asInstanceOf[List[String]],
-          source("pinyin").toString,
-          source("simplified").toString,
-          source("traditional").toString,
-          source("token").toString
-        )
-      )
-    }
-  }
 }
