@@ -59,8 +59,7 @@ class ChineseDefinitionService @Inject()(
   // Convert everything to traditional
   // We need one lookup token for elasticsearch.
   // And traditional is more specific
-  override def preprocessTokenForRequest(token: String): String =
-    Cedict.convertToTraditional(token)
+  // TODO reimplement this
 
   override def enrichDefinitions(
     definitionLanguage: Language,
