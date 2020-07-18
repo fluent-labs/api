@@ -39,7 +39,7 @@ case class ChineseDefinition(override val subdefinitions: List[String],
     case (Some(s), Some(t))                => (s, t)
     case (Some(s), None) if isTraditional  => (s, token)
     case (None, Some(t)) if !isTraditional => (token, t)
-    case (None, None)                      =>
+    case _                                 =>
       // TODO automatic conversion.
       if (isTraditional) ("", token) else (token, "")
   }
