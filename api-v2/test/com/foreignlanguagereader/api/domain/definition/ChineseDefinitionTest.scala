@@ -11,7 +11,6 @@ class ChineseDefinitionTest extends AnyFunSpec {
     tag = Some(PartOfSpeech.NOUN),
     examples = Some(List("example 1", "example 2")),
     inputPinyin = "ni3 hao3",
-    isTraditional = false,
     inputSimplified = Some("你好"),
     inputTraditional = Some("你好"),
     definitionLanguage = Language.ENGLISH,

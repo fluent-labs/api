@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.domain
 
-class LanguageTest extends org.scalatest.FunSuite {
+class LanguageTest extends org.scalatest.funsuite.AnyFunSuite {
 
   test("Enums should evaluate to their value using toString") {
     assert(Language.CHINESE.toString == "CHINESE")

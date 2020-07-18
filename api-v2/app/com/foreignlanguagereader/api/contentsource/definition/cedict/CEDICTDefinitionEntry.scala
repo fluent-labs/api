@@ -3,12 +3,12 @@ package com.foreignlanguagereader.api.contentsource.definition.cedict
 import com.foreignlanguagereader.api.contentsource.definition.DefinitionEntry
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
+import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.domain.definition.{
   ChineseDefinition,
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
 import play.api.libs.json.{Format, Json, Reads}
 
@@ -32,7 +32,6 @@ case class CEDICTDefinitionEntry(override val subdefinitions: List[String],
     tag = tag,
     examples = examples,
     inputPinyin = pinyin,
-    isTraditional = false, // TODO get this ourselves
     inputSimplified = Some(simplified),
     inputTraditional = Some(traditional),
     definitionLanguage = definitionLanguage,

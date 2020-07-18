@@ -82,7 +82,6 @@ object DefinitionEntry {
       tag = entry.tag,
       examples = entry.examples,
       inputPinyin = entry.pronunciation,
-      isTraditional = entry.wordLanguage == Language.CHINESE_TRADITIONAL,
       inputSimplified = None,
       inputTraditional = None,
       definitionLanguage = entry.definitionLanguage,

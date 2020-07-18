@@ -7,6 +7,7 @@ import com.foreignlanguagereader.api.domain.definition.HskLevel.HSKLevel
 import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.api.dto.v1.definition.ChineseDefinitionDTO
 import com.foreignlanguagereader.api.service.definition.ChineseDefinitionService
+import com.github.houbb.opencc4j.util.ZhConverterUtil
 import play.api.libs.json._
 import sangria.macros.derive.{
   ObjectTypeDescription,
@@ -19,7 +20,6 @@ case class ChineseDefinition(override val subdefinitions: List[String],
                              override val tag: Option[PartOfSpeech],
                              override val examples: Option[List[String]],
                              private val inputPinyin: String = "",
-                             private val isTraditional: Boolean,
                              private val inputSimplified: Option[String],
                              private val inputTraditional: Option[String],
                              // These fields are needed for elasticsearch lookup
@@ -28,6 +28,7 @@ case class ChineseDefinition(override val subdefinitions: List[String],
                              override val source: DefinitionSource,
                              override val token: String)
     extends Definition {
+  private val isTraditional = ZhConverterUtil.isTraditional(token)
   val wordLanguage: Language =
     if (isTraditional) Language.CHINESE_TRADITIONAL else Language.CHINESE
 
@@ -39,9 +40,9 @@ case class ChineseDefinition(override val subdefinitions: List[String],
     case (Some(s), Some(t))                => (s, t)
     case (Some(s), None) if isTraditional  => (s, token)
     case (None, Some(t)) if !isTraditional => (token, t)
-    case _                                 =>
-      // TODO automatic conversion.
-      if (isTraditional) ("", token) else (token, "")
+    case _ =>
+      if (isTraditional) (ZhConverterUtil.toSimple(token), token)
+      else (token, ZhConverterUtil.toTraditional(token))
   }
 
   val hsk: HSKLevel = ChineseDefinitionService.getHSK(simplified)

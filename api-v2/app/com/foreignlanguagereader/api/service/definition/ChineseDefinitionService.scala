@@ -134,7 +134,6 @@ class ChineseDefinitionService @Inject()(
           tag = w.tag,
           examples = w.examples,
           inputPinyin = cedict.pronunciation.pinyin,
-          isTraditional = true, // TODO get this ourselves
           inputSimplified = Some(cedict.simplified),
           inputTraditional = Some(cedict.traditional),
           definitionLanguage = Language.ENGLISH,
@@ -160,7 +159,6 @@ class ChineseDefinitionService @Inject()(
         tag = wiktionary(0).tag,
         examples = examples,
         inputPinyin = cedict.pronunciation.pinyin,
-        isTraditional = true, // TODO get this ourselves
         inputSimplified = Some(cedict.simplified),
         inputTraditional = Some(cedict.traditional),
         definitionLanguage = Language.ENGLISH,
