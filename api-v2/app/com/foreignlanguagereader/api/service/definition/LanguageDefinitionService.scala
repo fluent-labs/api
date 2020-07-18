@@ -51,7 +51,7 @@ trait LanguageDefinitionService {
 
   // Pre-request hook for normalizing user requests. Suggested for lemmatization
   // Eg: run, runs, running all become run so you don't keep re-teaching the same word
-  def preprocessTokenForRequest(token: String): String = token
+  def preprocessTokenForRequest(token: String): Seq[String] = List(token)
 
   // Functions that can fetch definitions from web sources should be registered here.
   val definitionFetchers
@@ -78,11 +78,28 @@ trait LanguageDefinitionService {
   // This is the main method that consumers will call
   def getDefinitions(definitionLanguage: Language,
                      word: String): Future[Option[Seq[Definition]]] = {
-    fetchDefinitions(
-      sources,
-      definitionLanguage,
-      preprocessTokenForRequest(word)
-    ) map {
+    Future
+      .sequence(
+        preprocessTokenForRequest(word)
+          .map(token => fetchDefinitions(sources, definitionLanguage, token))
+      )
+      .map(
+        results =>
+          results.reduce((a, b) => {
+            // Each possible token gives a Map[DefinitionSource, Option[Seq[Definition]]]
+            // So this just adds them up in the obvious way
+            sources
+              .map(source => {
+                (a.getOrElse(source, None), b.getOrElse(source, None)) match {
+                  case (Some(as), Some(bs)) => source -> Some(as ++ bs)
+                  case (Some(as), None)     => source -> Some(as)
+                  case (None, Some(bs))     => source -> Some(bs)
+                  case _                    => source -> None
+                }
+              })
+              .toMap[DefinitionSource, Option[Seq[Definition]]]
+          })
+      ) map {
       case r if r.forall {
             // (source, Option[Seq[results]]
             case (_, None) => true

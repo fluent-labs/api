@@ -14,11 +14,13 @@ import com.foreignlanguagereader.api.domain.definition.HskLevel.HSKLevel
 import com.foreignlanguagereader.api.domain.definition._
 import com.foreignlanguagereader.api.repository.definition.Cedict
 import com.foreignlanguagereader.api.util.ContentFileLoader
+import com.github.houbb.opencc4j.util.ZhConverterUtil
 import javax.inject.Inject
 import play.api.Logger
 import play.api.libs.json.{Json, Reads}
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success, Try}
 
 /**
   * Language specific handling for Chinese.
@@ -59,7 +61,13 @@ class ChineseDefinitionService @Inject()(
   // Convert everything to traditional
   // We need one lookup token for elasticsearch.
   // And traditional is more specific
-  // TODO reimplement this
+  override def preprocessTokenForRequest(token: String): Seq[String] =
+    if (ZhConverterUtil.isSimple(token)) {
+      toTraditional(token) match {
+        case Some(s) => s
+        case None    => List(token)
+      }
+    } else List(token)
 
   override def enrichDefinitions(
     definitionLanguage: Language,
@@ -81,6 +89,8 @@ class ChineseDefinitionService @Inject()(
     logger.info(
       s"Enhancing results for $word using cedict with ${cedict.size} cedict results and ${wiktionary.size} wiktionary results"
     )
+
+    // TODO - handle CEDICT duplicates
 
     (cedict, wiktionary) match {
       case (Some(cedict), Some(wiktionary)) =>
@@ -166,6 +176,30 @@ class ChineseDefinitionService @Inject()(
         token = word
       )
     )
+  }
+
+  def toTraditional(simplified: String): Option[Seq[String]] = {
+    Try({
+      val s"[$tokens]" = simplified
+      tokens.split(", ")
+    }) match {
+      case Success(values) => Some(values)
+      case Failure(e) =>
+        logger.error(s"Failed to convert $simplified to traditional", e)
+        None
+    }
+  }
+
+  def toSimplified(traditional: String): Option[String] = {
+    Try({
+      val s"[$simplified]" = traditional
+      simplified
+    }) match {
+      case Success(simplified) => Some(simplified)
+      case Failure(e) =>
+        logger.error(s"Failed to convert $traditional to simplified", e)
+        None
+    }
   }
 }
 
