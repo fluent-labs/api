@@ -33,51 +33,55 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   val definitionsIndex = "definitions"
 
   val dummyChineseDefinition = ChineseDefinition(
-    List("definition 1", "definition 2"),
-    Some(PartOfSpeech.NOUN),
-    List("example 1", "example 2"),
-    "ni3 hao3",
-    "你好",
-    "你好",
-    Language.ENGLISH,
-    DefinitionSource.MULTIPLE,
+    subdefinitions = List("definition 1", "definition 2"),
+    tag = Some(PartOfSpeech.NOUN),
+    examples = Some(List("example 1", "example 2")),
+    inputPinyin = "ni3 hao3",
+    isTraditional = false,
+    inputSimplified = Some("你好"),
+    inputTraditional = Some("你好"),
+    definitionLanguage = Language.ENGLISH,
+    source = DefinitionSource.MULTIPLE,
     token = "你好"
   )
 
   val dummyCedictDefinition: ChineseDefinition = ChineseDefinition(
-    List("cedict definition 1", "cedict definition 2"),
-    None,
-    List(),
-    "ni3 hao3",
-    "你好",
-    "你好",
-    Language.ENGLISH,
-    DefinitionSource.CEDICT,
-    "你好"
+    subdefinitions = List("cedict definition 1", "cedict definition 2"),
+    tag = None,
+    examples = None,
+    inputPinyin = "ni3 hao3",
+    isTraditional = false,
+    inputSimplified = Some("你好"),
+    inputTraditional = Some("你好"),
+    definitionLanguage = Language.ENGLISH,
+    source = DefinitionSource.CEDICT,
+    token = "你好"
   )
 
   val dummyWiktionaryDefinition = ChineseDefinition(
-    List("wiktionary definition 1", "wiktionary definition 2"),
-    Some(PartOfSpeech.NOUN),
-    List("example 1", "example 2"),
-    "",
-    "",
-    "",
-    Language.ENGLISH,
-    DefinitionSource.WIKTIONARY,
-    "你好"
+    subdefinitions = List("wiktionary definition 1", "wiktionary definition 2"),
+    tag = Some(PartOfSpeech.NOUN),
+    examples = Some(List("example 1", "example 2")),
+    inputPinyin = "",
+    isTraditional = false,
+    inputSimplified = None,
+    inputTraditional = None,
+    definitionLanguage = Language.ENGLISH,
+    source = DefinitionSource.WIKTIONARY,
+    token = "你好"
   )
 
   val dummyWiktionaryDefinitionTwo = ChineseDefinition(
-    List("wiktionary definition 3", "wiktionary definition 4"),
-    Some(PartOfSpeech.NOUN),
-    List("example 3", "example 4"),
-    "",
-    "",
-    "",
-    Language.ENGLISH,
-    DefinitionSource.WIKTIONARY,
-    "你好"
+    subdefinitions = List("wiktionary definition 3", "wiktionary definition 4"),
+    tag = Some(PartOfSpeech.NOUN),
+    examples = Some(List("example 3", "example 4")),
+    inputPinyin = "",
+    isTraditional = false,
+    inputTraditional = Some(""),
+    inputSimplified = Some(""),
+    definitionLanguage = Language.ENGLISH,
+    source = DefinitionSource.WIKTIONARY,
+    token = "你好"
   )
 
   describe("When getting definitions for a single word") {
@@ -192,7 +196,9 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
               )
               assert(combined.tag == dummyWiktionaryDefinition.tag)
               assert(
-                combined.examples == (dummyWiktionaryDefinition.examples ++ dummyWiktionaryDefinitionTwo.examples)
+                combined.examples.contains(
+                  (dummyWiktionaryDefinition.examples ++ dummyWiktionaryDefinitionTwo.examples).flatten
+                )
               )
               assert(combined.pronunciation.pinyin == "ni hao")
               assert(combined.simplified == dummyCedictDefinition.simplified)

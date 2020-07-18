@@ -24,12 +24,13 @@ import scala.reflect.ClassTag
 
 class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   val dummyWiktionaryDefinition = WiktionaryDefinitionEntry(
-    List("definition 1", "definition 2"),
-    Some(PartOfSpeech.NOUN),
-    List("example 1", "example 2"),
-    Language.ENGLISH,
-    Language.ENGLISH,
-    "test",
+    subdefinitions = List("definition 1", "definition 2"),
+    pronunciation = "",
+    tag = Some(PartOfSpeech.NOUN),
+    examples = Some(List("example 1", "example 2")),
+    definitionLanguage = Language.ENGLISH,
+    wordLanguage = Language.ENGLISH,
+    token = "test",
   )
   val elasticsearchClientMock: ElasticsearchClient = mock[ElasticsearchClient]
   val languageServiceClientMock: LanguageServiceClient =

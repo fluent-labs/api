@@ -53,24 +53,26 @@ class ElasticsearchResultTest extends AnyFunSpec {
     }
     describe("where refetching produced results") {
       val dummyChineseDefinition = ChineseDefinition(
-        List("definition 1", "definition 2"),
-        Some(PartOfSpeech.NOUN),
-        List("example 1", "example 2"),
-        "ni3 hao3",
-        "你好",
-        "你好",
-        Language.ENGLISH,
-        DefinitionSource.MULTIPLE,
+        subdefinitions = List("definition 1", "definition 2"),
+        tag = Some(PartOfSpeech.NOUN),
+        examples = Some(List("example 1", "example 2")),
+        inputPinyin = "ni3 hao3",
+        isTraditional = true,
+        inputSimplified = Some("你好"),
+        inputTraditional = Some("你好"),
+        definitionLanguage = Language.ENGLISH,
+        source = DefinitionSource.MULTIPLE,
         token = "你好"
       )
       val dummyGenericDefinition = GenericDefinition(
-        List("definition 1", "definition 2"),
-        Some(PartOfSpeech.NOUN),
-        List("example 1", "example 2"),
-        Language.ENGLISH,
-        Language.ENGLISH,
-        DefinitionSource.MULTIPLE,
-        "anything"
+        subdefinitions = List("definition 1", "definition 2"),
+        ipa = "ipa",
+        tag = Some(PartOfSpeech.NOUN),
+        examples = Some(List("example 1", "example 2")),
+        definitionLanguage = Language.ENGLISH,
+        wordLanguage = Language.ENGLISH,
+        source = DefinitionSource.MULTIPLE,
+        token = "anything"
       )
       val result = ElasticsearchResult[Definition](
         index = index,

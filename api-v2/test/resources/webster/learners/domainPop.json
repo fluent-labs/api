@@ -485,7 +485,12 @@
       "offensive": false
     },
     "headwordInfo": {
-      "headword": "pop"
+      "headword": "pop",
+      "alternatePronunciations":[
+        {
+          "ipa":"ˈpɑːp"
+        }
+      ]
     },
     "partOfSpeech": "noun",
     "inflections": [
@@ -635,7 +640,12 @@
       "offensive": false
     },
     "headwordInfo": {
-      "headword": "pop"
+      "headword": "pop",
+      "alternatePronunciations":[
+        {
+          "ipa":"ˈpɑːp"
+        }
+      ]
     },
     "partOfSpeech": "adjective",
     "definitions": [
@@ -694,7 +704,12 @@
       "offensive": false
     },
     "headwordInfo": {
-      "headword": "pop"
+      "headword": "pop",
+      "alternatePronunciations":[
+        {
+          "ipa":"ˈpɑːp"
+        }
+      ]
     },
     "partOfSpeech": "noun",
     "inflections": [
@@ -756,7 +771,12 @@
       "offensive": false
     },
     "headwordInfo": {
-      "headword": "pop"
+      "headword": "pop",
+      "alternatePronunciations":[
+        {
+          "ipa":"ˈpɑːp"
+        }
+      ]
     },
     "partOfSpeech": "noun",
     "inflections": [
@@ -949,7 +969,8 @@
             "audio": "popeye02",
             "language": "en",
             "country": "us"
-          }
+          },
+          "ipa":"ˈpɑːpˌaɪd"
         }
       ]
     },

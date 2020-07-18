@@ -23,7 +23,8 @@
             "audio": "exampl01",
             "language": "en",
             "country": "us"
-          }
+          },
+          "ipa":"ɪgˈzæmpəl"
         }
       ]
     },
@@ -163,7 +164,12 @@
       "offensive": false
     },
     "headwordInfo": {
-      "headword": "textbook"
+      "headword": "textbook",
+      "alternatePronunciations":[
+        {
+          "ipa":"ˈtɛkstˌbʊk"
+        }
+      ]
     },
     "partOfSpeech": "adjective",
     "definitions": [
@@ -231,7 +237,8 @@
             "audio": "follow01",
             "language": "en",
             "country": "us"
-          }
+          },
+          "ipa":"ˈfɑːloʊ"
         }
       ]
     },
@@ -880,7 +887,8 @@
             "audio": "lead0001",
             "language": "en",
             "country": "us"
-          }
+          },
+          "ipa":"ˈliːd"
         }
       ]
     },
@@ -1465,7 +1473,8 @@
             "audio": "prime001",
             "language": "en",
             "country": "us"
-          }
+          },
+          "ipa":"ˈpraɪm"
         }
       ]
     },
@@ -1649,7 +1658,8 @@
             "audio": "set00001",
             "language": "en",
             "country": "us"
-          }
+          },
+          "ipa":"ˈsɛt"
         }
       ]
     },

@@ -7,14 +7,15 @@ import org.scalatest.funspec.AnyFunSpec
 
 class ChineseDefinitionTest extends AnyFunSpec {
   val example = ChineseDefinition(
-    List("definition 1", "definition 2"),
-    Some(PartOfSpeech.NOUN),
-    List("example 1", "example 2"),
-    "ni3 hao3",
-    "你好",
-    "你好",
-    Language.ENGLISH,
-    DefinitionSource.MULTIPLE,
+    subdefinitions = List("definition 1", "definition 2"),
+    tag = Some(PartOfSpeech.NOUN),
+    examples = Some(List("example 1", "example 2")),
+    inputPinyin = "ni3 hao3",
+    isTraditional = false,
+    inputSimplified = Some("你好"),
+    inputTraditional = Some("你好"),
+    definitionLanguage = Language.ENGLISH,
+    source = DefinitionSource.MULTIPLE,
     token = "你好"
   )
 
@@ -74,7 +75,7 @@ class ChineseDefinitionTest extends AnyFunSpec {
 
     describe("when getting HSK level") {
       it("can get HSK level") {
-        val withHSK = example.copy(simplified = "好")
+        val withHSK = example.copy(inputSimplified = Some("好"))
         assert(withHSK.hsk == HskLevel.ONE)
       }
 

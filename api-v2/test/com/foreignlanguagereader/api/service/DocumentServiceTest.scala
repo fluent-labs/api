@@ -66,8 +66,9 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
 
       val testDefinition = Definition(
         subdefinitions = List("test"),
+        ipa = "",
         tag = None,
-        examples = List(),
+        examples = None,
         wordLanguage = Language.ENGLISH,
         definitionLanguage = Language.SPANISH,
         source = DefinitionSource.MULTIPLE,
@@ -80,8 +81,9 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
 
       val phraseDefinition = Definition(
         subdefinitions = List("phrase"),
+        ipa = "",
         tag = None,
-        examples = List(),
+        examples = None,
         wordLanguage = Language.ENGLISH,
         definitionLanguage = Language.SPANISH,
         source = DefinitionSource.MULTIPLE,
