@@ -41,9 +41,9 @@ class ChineseDefinitionService @Inject()(
        String) => Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
     (_, word: String) =>
       Cedict.getDefinition(word) match {
-        case Some(entry) =>
+        case Some(entries) =>
           Future.successful(
-            CircuitBreakerAttempt(Some(List(entry.toDefinition)))
+            CircuitBreakerAttempt(Some(entries.map(_.toDefinition)))
           )
         case None => Future.successful(CircuitBreakerNonAttempt())
     }
@@ -131,15 +131,16 @@ class ChineseDefinitionService @Inject()(
     wiktionary.map(
       w =>
         ChineseDefinition(
-          w.subdefinitions,
-          w.tag,
-          w.examples,
-          cedict.pronunciation.pinyin,
-          cedict.simplified,
-          cedict.traditional,
-          w.definitionLanguage,
-          DefinitionSource.MULTIPLE,
-          word
+          subdefinitions = w.subdefinitions,
+          tag = w.tag,
+          examples = w.examples,
+          inputPinyin = cedict.pronunciation.pinyin,
+          isTraditional = true, // TODO get this ourselves
+          inputSimplified = Some(cedict.simplified),
+          inputTraditional = Some(cedict.traditional),
+          definitionLanguage = Language.ENGLISH,
+          source = DefinitionSource.MULTIPLE,
+          token = word
       )
     )
   }
@@ -149,21 +150,23 @@ class ChineseDefinitionService @Inject()(
     cedict: ChineseDefinition,
     wiktionary: Seq[ChineseDefinition]
   ): Seq[ChineseDefinition] = {
-    val examples =
-      wiktionary.foldLeft(List[String]())((acc, entry: ChineseDefinition) => {
-        acc ++ entry.examples
-      })
+    val examples = {
+      val e = wiktionary.flatMap(_.examples).flatten.toList
+      if (e.isEmpty) None else Some(e)
+    }
+
     Seq(
       ChineseDefinition(
-        cedict.subdefinitions,
-        wiktionary(0).tag,
-        examples,
-        cedict.pronunciation.pinyin,
-        cedict.simplified,
-        cedict.traditional,
-        Language.ENGLISH,
-        DefinitionSource.MULTIPLE,
-        word
+        subdefinitions = cedict.subdefinitions,
+        tag = wiktionary(0).tag,
+        examples = examples,
+        inputPinyin = cedict.pronunciation.pinyin,
+        isTraditional = true, // TODO get this ourselves
+        inputSimplified = Some(cedict.simplified),
+        inputTraditional = Some(cedict.traditional),
+        definitionLanguage = Language.ENGLISH,
+        source = DefinitionSource.MULTIPLE,
+        token = word
       )
     )
   }
