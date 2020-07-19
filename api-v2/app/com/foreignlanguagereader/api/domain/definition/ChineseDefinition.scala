@@ -36,16 +36,21 @@ case class ChineseDefinition(override val subdefinitions: List[String],
     ChineseDefinitionService.getPronunciation(inputPinyin)
   val ipa: String = pronunciation.ipa
 
-  val (simplified, traditional) = (inputSimplified, inputTraditional) match {
-    case (Some(s), Some(t))                => (s, t)
-    case (Some(s), None) if isTraditional  => (s, token)
-    case (None, Some(t)) if !isTraditional => (token, t)
-    case _ =>
-      if (isTraditional) (ZhConverterUtil.toSimple(token), token)
-      else (token, ZhConverterUtil.toTraditional(token))
-  }
+  val (simplified: Option[String], traditional: Option[String]) =
+    (inputSimplified, inputTraditional) match {
+      case (Some(s), Some(t))                => (Some(s), Some(t))
+      case (Some(s), None) if isTraditional  => (Some(s), Some(token))
+      case (None, Some(t)) if !isTraditional => (Some(token), Some(t))
+      case _ =>
+        if (isTraditional)
+          (ChineseDefinitionService.toSimplified(token), Some(token))
+        else (Some(token), ChineseDefinitionService.toTraditional(token))
+    }
 
-  val hsk: HSKLevel = ChineseDefinitionService.getHSK(simplified)
+  val hsk: HSKLevel = simplified match {
+    case Some(s) => ChineseDefinitionService.getHSK(s)
+    case None    => HskLevel.NONE
+  }
 
   lazy val toDTO: ChineseDefinitionDTO =
     ChineseDefinitionDTO(
