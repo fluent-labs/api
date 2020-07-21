@@ -7,12 +7,14 @@ import com.sksamuel.elastic4s.{ElasticError, Hit, HitReader}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{mock, when}
 
-import scala.util.Try
+import scala.util.{Random, Try}
 
 /**
   * Helper library to get rid of boilerplate when testing elasticsearch responses
   */
 object ElasticsearchTestUtil {
+  val random = new Random()
+
   def cacheQueryResponseFrom[T](results: Either[Exception, Seq[T]],
                                 attempts: Either[Exception, LookupAttempt],
   )(implicit hitReader: HitReader[T],
@@ -40,7 +42,9 @@ object ElasticsearchTestUtil {
         Left(result)
       case Right(a) =>
         when(attemptsHitReader.read(any(classOf[Hit]))).thenReturn(Try(a))
-        Right(searchResponseFrom(Array(mock(classOf[SearchHit]))))
+        val hit = mock(classOf[SearchHit])
+        when(hit.id).thenReturn(random.nextString(8))
+        Right(searchResponseFrom(Array(hit)))
     }
 
     MultiSearchResponse(
