@@ -15,14 +15,17 @@ import com.foreignlanguagereader.api.client.elasticsearch.searchstates.{
 }
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s._
+import com.sksamuel.elastic4s.requests.bulk.BulkCompatibleRequest
 import com.sksamuel.elastic4s.requests.indexes.IndexRequest
 import com.sksamuel.elastic4s.requests.searches.{
   MultiSearchRequest,
   MultiSearchResponse
 }
+import com.sksamuel.elastic4s.requests.update.UpdateRequest
 import javax.inject.{Inject, Singleton}
 import play.api.{Configuration, Logger}
 
+import scala.collection.mutable
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
@@ -41,6 +44,10 @@ class ElasticsearchClient @Inject()(config: Configuration,
 
   val attemptsIndex = "attempts"
   val maxConcurrentInserts = 5
+
+  // Holds inserts that weren't performed due to the circuit breaker being closed
+  val insertionQueue: mutable.Queue[Either[IndexRequest, UpdateRequest]] =
+    new mutable.Queue()
 
   /**
     *
@@ -107,6 +114,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
               .info(
                 s"Failed to persist to elasticsearch because the circuit breaker is closed"
               )
+            insertionQueue.addAll(batch)
           case Failure(e) =>
             logger.warn(
               s"Failed to persist to elasticsearch in bulk, retrying individually: $requests",
@@ -137,10 +145,26 @@ class ElasticsearchClient @Inject()(config: Configuration,
             .info(
               s"Failed to persist to elasticsearch because the circuit breaker is closed"
             )
+          insertionQueue.addOne(request)
         case Failure(e) =>
           logger.warn(s"Failed to persist to elasticsearch: $requests", e)
       }
     })
+
+  breaker.onOpen(() => {
+    logger.info("Retrying inserts because the circuit breaker is open.")
+    retryInserts()
+  })
+
+  @scala.annotation.tailrec
+  private[this] def retryInserts(): Unit = if (breaker.isOpen) {
+    val batchSize =
+      if (insertionQueue.size >= maxConcurrentInserts) maxConcurrentInserts
+      else insertionQueue.size
+    val requests = (1 to batchSize).map(_ => insertionQueue.dequeue())
+    saveToCacheInBatches(requests)
+
+    if (insertionQueue.nonEmpty) retryInserts()
   }
 
   // Get method for multisearch, but with error handling
