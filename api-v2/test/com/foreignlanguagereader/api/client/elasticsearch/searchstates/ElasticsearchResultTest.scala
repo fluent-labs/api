@@ -25,11 +25,12 @@ class ElasticsearchResultTest extends AnyFunSpec {
           fields = fields,
           result = None,
           fetchCount = 5,
+          lookupId = None,
           refetched = false
         )
 
         assert(result.cacheQueries.isEmpty)
-        assert(result.attemptsQuery.isEmpty)
+        assert(result.updateAttemptsQuery.isEmpty)
         assert(result.toIndex.isEmpty)
       }
     }
@@ -39,12 +40,13 @@ class ElasticsearchResultTest extends AnyFunSpec {
         fields = fields,
         result = None,
         fetchCount = 5,
+        lookupId = None,
         refetched = true
       )
       val attemptsQuery =
         indexInto("attempts").doc(LookupAttempt(index, fields, 5))
       it("correctly saves fetch attempts to elasticsearch") {
-        assert(result.attemptsQuery.contains(attemptsQuery))
+        assert(result.updateAttemptsQuery.contains(Left(attemptsQuery)))
       }
       it("does not cache anything") {
         assert(result.cacheQueries.isEmpty)
@@ -78,16 +80,17 @@ class ElasticsearchResultTest extends AnyFunSpec {
         fields = fields,
         result = Some(List(dummyChineseDefinition, dummyGenericDefinition)),
         fetchCount = 5,
+        lookupId = None,
         refetched = true
       )
       val attemptsQuery =
         indexInto("attempts").doc(LookupAttempt(index, fields, 5))
       val indexQuery = List(
-        indexInto(index).doc(dummyChineseDefinition),
-        indexInto(index).doc(dummyGenericDefinition)
+        Left(indexInto(index).doc(dummyChineseDefinition)),
+        Left(indexInto(index).doc(dummyGenericDefinition))
       )
       it("correctly saves fetch attempts to elasticsearch") {
-        assert(result.attemptsQuery.contains(attemptsQuery))
+        assert(result.updateAttemptsQuery.contains(Left(attemptsQuery)))
       }
       it("caches search results to elasticsearch") {
         assert(result.cacheQueries.contains(indexQuery))

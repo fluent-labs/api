@@ -46,11 +46,18 @@ case class ElasticsearchResponse[T: Indexable](
   ec: ExecutionContext) {
   val logger: Logger = Logger(this.getClass)
 
-  val (elasticsearchResult: Option[Seq[T]], fetchAttempts: Int) =
+  val (
+    elasticsearchResult: Option[Seq[T]],
+    fetchCount: Int,
+    lookupId: Option[String]
+  ) =
     response match {
       case Some(r) =>
-        (parseResults(r.items(0).response), parseAttempts(r.items(1).response))
-      case None => (None, 0)
+        val result = parseResults(r.items(0).response)
+        val (attempts, id) = parseAttempts(r.items(1).response)
+        (result, attempts, id)
+      case None =>
+        (None, 0, None)
     }
 
   lazy val getResultOrFetchFromSource: Future[ElasticsearchResult[T]] =
@@ -58,21 +65,23 @@ case class ElasticsearchResponse[T: Indexable](
       case Some(es) =>
         Future.successful(
           ElasticsearchResult(
-            index,
-            fields,
-            Some(es),
-            fetchAttempts,
+            index = index,
+            fields = fields,
+            result = Some(es),
+            fetchCount = fetchCount,
+            lookupId = lookupId,
             refetched = false
           )
         )
-      case None if fetchAttempts < maxFetchAttempts => fetchFromSource
+      case None if fetchCount < maxFetchAttempts => fetchFromSource
       case None =>
         Future.successful(
           ElasticsearchResult(
-            index,
-            fields,
-            None,
-            fetchAttempts,
+            index = index,
+            fields = fields,
+            result = None,
+            fetchCount = fetchCount,
+            lookupId = lookupId,
             refetched = false
           )
         )
@@ -84,18 +93,20 @@ case class ElasticsearchResponse[T: Indexable](
       .map {
         case CircuitBreakerAttempt(result) =>
           ElasticsearchResult(
-            index,
-            fields,
-            result,
-            fetchAttempts + 1,
+            index = index,
+            fields = fields,
+            result = result,
+            fetchCount = fetchCount + 1,
+            lookupId = lookupId,
             refetched = true
           )
         case CircuitBreakerNonAttempt() =>
           ElasticsearchResult(
-            index,
-            fields,
-            None,
-            fetchAttempts,
+            index = index,
+            fields = fields,
+            result = None,
+            fetchCount = fetchCount,
+            lookupId = lookupId,
             refetched = false
           )
       }
@@ -106,10 +117,11 @@ case class ElasticsearchResponse[T: Indexable](
             e
           )
           ElasticsearchResult(
-            index,
-            fields,
-            None,
-            fetchAttempts + 1,
+            index = index,
+            fields = fields,
+            result = None,
+            fetchCount = fetchCount + 1,
+            lookupId = lookupId,
             refetched = true
           )
 
@@ -132,18 +144,16 @@ case class ElasticsearchResponse[T: Indexable](
 
   private[this] def parseAttempts(
     attempts: Either[ElasticError, SearchResponse]
-  ): Int = attempts match {
+  ): (Int, Option[String]) = attempts match {
     case Left(error) =>
       logger.error(
         s"Failed to get request count from elasticsearch on index $index due to error ${error.reason}",
         error.asException
       )
-      0
+      (0, None)
     case Right(response) =>
       val hit = response.hits.hits(0)
-      val attempt = hit.to[LookupAttempt]
-      val result = attempt.count
-      result
+      (hit.to[LookupAttempt].count, Some(hit.id))
   }
 }
 
