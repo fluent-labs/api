@@ -77,7 +77,7 @@ trait LanguageDefinitionService {
 
   // This is the main method that consumers will call
   def getDefinitions(definitionLanguage: Language,
-                     word: String): Future[Option[Seq[Definition]]] = {
+                     word: String): Future[Option[Seq[Definition]]] =
     Future
       .sequence(
         preprocessTokenForRequest(word)
@@ -90,7 +90,11 @@ trait LanguageDefinitionService {
             // So this just adds them up in the obvious way
             sources
               .map(source => {
-                (a.getOrElse(source, None), b.getOrElse(source, None)) match {
+                // The option here refers to if the source returned results
+                // Not whether the key is in the map
+                val sourceA = a.getOrElse(source, None)
+                val sourceB = b.getOrElse(source, None)
+                (sourceA, sourceB) match {
                   case (Some(as), Some(bs)) => source -> Some(as ++ bs)
                   case (Some(as), None)     => source -> Some(as)
                   case (None, Some(bs))     => source -> Some(bs)
@@ -112,7 +116,6 @@ trait LanguageDefinitionService {
       case definitions =>
         Some(enrichDefinitions(definitionLanguage, word, definitions))
     }
-  }
 
   // Below here is trait behavior, implementers need not read further
 

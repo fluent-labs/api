@@ -28,7 +28,7 @@ case class ChineseDefinition(override val subdefinitions: List[String],
                              override val source: DefinitionSource,
                              override val token: String)
     extends Definition {
-  private val isTraditional = ZhConverterUtil.isTraditional(token)
+  private[this] val isTraditional = ZhConverterUtil.isTraditional(token)
   val wordLanguage: Language =
     if (isTraditional) Language.CHINESE_TRADITIONAL else Language.CHINESE
 

@@ -267,7 +267,7 @@ object ChineseDefinitionService {
     Try(simplified.toCharArray.map(ZhConverterUtil.toTraditional).map {
       // Java library will return null on errors - we want to box these with option
       // Otherwise Success(null) throws an exception that has escaped the Try()
-      case null => None
+      case null => None // scalastyle:off
       case s    => Some(s)
     }) match {
       case Success(values) if values.forall(_.isDefined) =>
