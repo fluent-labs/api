@@ -34,6 +34,8 @@ class EnglishDefinitionService @Inject()(
       DefinitionSource.WIKTIONARY
     )
 
+  // TODO enhance by searching for all versions of stems
+
   def websterFetcher
     : (Language,
        String) => Future[CircuitBreakerResult[Option[Seq[Definition]]]] =

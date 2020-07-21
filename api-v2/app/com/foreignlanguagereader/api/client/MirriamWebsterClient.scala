@@ -43,6 +43,8 @@ class MirriamWebsterClient @Inject()(config: Configuration,
   // TODO: Make definition not found not be an error that increments the circuit breaker.
   // That means the input is bad, not the connection to the service.
 
+  // TODO filter garbage
+
   def getLearnersDefinition(
     word: String
   ): Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
