@@ -123,9 +123,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
               s"Failed to persist to elasticsearch in bulk, retrying individually: $requests",
               e
             )
-            Future {
-              batch.foreach(request => saveToCache(request))
-            }
+            batch.foreach(request => saveToCache(request))
         }
       })
   }
