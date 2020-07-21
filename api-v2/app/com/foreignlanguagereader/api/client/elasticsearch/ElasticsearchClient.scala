@@ -59,7 +59,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
     tag: ClassTag[T]
   ): Future[Seq[Option[Seq[T]]]] = {
     // Checks elasticsearch first. Responses will have ES results or none
-    val responses: Future[Seq[ElasticsearchResponse[T]]] = Future
+    Future
       .sequence(requests.map(r => getMultiple(r.query)))
       .map(
         results =>
@@ -69,41 +69,78 @@ class ElasticsearchClient @Inject()(config: Configuration,
         }
       )
 
-    responses
-    // This is where fetchers are called to get results if they aren't in elasticsearch
-    // There is also logic to remember what has been fetched from external sources
-    // So that we don't try too many times on the same query
+      // This is where fetchers are called to get results if they aren't in elasticsearch
+      // There is also logic to remember what has been fetched from external sources
+      // So that we don't try too many times on the same query
       .map(r => Future.sequence(r.map(_.getResultOrFetchFromSource)))
       // Now we have a future of a future
       .flatten
       .map(results => {
         // Asychronously save results back to elasticsearch
         // toIndex only exists when results were fetched from the fetchers
-        Future.apply(saveToCache(results.flatMap(_.toIndex).flatten))
+        Future.apply(saveToCacheInBatches(results.flatMap(_.toIndex).flatten))
 
         results.map(_.result)
       })
   }
 
-  // Saves back to elasticsearch in baches
-  private[this] def saveToCache(requests: Seq[IndexRequest]): Unit = {
+  // Saves documents in batches, and retries each item in the batch in case of a batch failure.
+  // Why? If there is one bad document, it'll fail the batch, but the rest of the requests may be fine.
+  private[this] def saveToCacheInBatches(
+    requests: Seq[Either[IndexRequest, UpdateRequest]]
+  ): Unit = {
     requests
       .grouped(maxConcurrentInserts)
-      .foreach(
-        batch =>
-          withBreaker(client.execute { bulk(batch) }) map {
-            case Success(CircuitBreakerAttempt(s)) =>
-              logger
-                .info(s"Successfully saved to elasticsearch: ${s.body}")
-            case Success(CircuitBreakerNonAttempt()) =>
-              logger
-                .info(
-                  s"Failed to persist to elasticsearch because the circuit breaker is closed"
-                )
-            case Failure(e) =>
-              logger.warn(s"Failed to persist to elasticsearch: $requests", e)
+      .foreach(batch => {
+        val queries: Seq[BulkCompatibleRequest] = batch.map {
+          case Left(index)   => index
+          case Right(update) => update
         }
-      )
+        withBreaker(client.execute {
+          bulk(queries)
+        }) map {
+          case Success(CircuitBreakerAttempt(s)) =>
+            logger
+              .info(s"Successfully saved to elasticsearch: ${s.body}")
+          case Success(CircuitBreakerNonAttempt()) =>
+            logger
+              .info(
+                s"Failed to persist to elasticsearch because the circuit breaker is closed"
+              )
+          case Failure(e) =>
+            logger.warn(
+              s"Failed to persist to elasticsearch in bulk, retrying individually: $requests",
+              e
+            )
+            Future {
+              saveToCacheOneByOne(batch)
+            }
+        }
+      })
+  }
+
+  // Useful for retrying batches to see if there are good requests in the batch
+  private[this] def saveToCacheOneByOne(
+    requests: Seq[Either[IndexRequest, UpdateRequest]]
+  ): Unit =
+    requests.foreach(request => {
+      (request match {
+        // This works around a limitation in the client library
+        case Left(index)   => withBreaker(client.execute(index))
+        case Right(update) => withBreaker(client.execute(update))
+      }).map {
+        case Success(CircuitBreakerAttempt(s)) =>
+          logger
+            .info(s"Successfully saved to elasticsearch: ${s.body}")
+        case Success(CircuitBreakerNonAttempt()) =>
+          logger
+            .info(
+              s"Failed to persist to elasticsearch because the circuit breaker is closed"
+            )
+        case Failure(e) =>
+          logger.warn(s"Failed to persist to elasticsearch: $requests", e)
+      }
+    })
   }
 
   // Get method for multisearch, but with error handling
