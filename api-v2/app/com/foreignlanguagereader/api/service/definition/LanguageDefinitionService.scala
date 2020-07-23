@@ -14,6 +14,7 @@ import com.foreignlanguagereader.api.domain.definition.{
   Definition,
   DefinitionSource
 }
+import com.sksamuel.elastic4s.playjson._
 import play.api.Logger
 
 import scala.concurrent.{ExecutionContext, Future}

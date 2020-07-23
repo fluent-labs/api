@@ -6,7 +6,6 @@ import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerResult
 }
 import com.foreignlanguagereader.api.client.elasticsearch.LookupAttempt
-import com.sksamuel.elastic4s.playjson._
 import com.sksamuel.elastic4s.requests.searches.{
   MultiSearchResponse,
   SearchResponse
@@ -153,7 +152,8 @@ case class ElasticsearchResponse[T: Indexable](
       (0, None)
     case Right(response) =>
       val hit = response.hits.hits(0)
-      (hit.to[LookupAttempt].count, Some(hit.id))
+      val attempt = hit.to[LookupAttempt]
+      (attempt.count, Some(hit.id))
   }
 }
 
@@ -162,6 +162,7 @@ object ElasticsearchResponse {
     request: ElasticsearchRequest[T],
     result: CircuitBreakerResult[Option[MultiSearchResponse]]
   )(implicit hitReader: HitReader[T],
+    attemptsHitReader: HitReader[LookupAttempt],
     tag: ClassTag[T],
     ec: ExecutionContext): ElasticsearchResponse[T] = {
     val r = result match {
