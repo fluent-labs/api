@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.client.elasticsearch
 
-import java.util.concurrent.{ConcurrentLinkedQueue, TimeUnit}
+import java.util.concurrent.ConcurrentLinkedQueue
 
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.client.common.{
@@ -11,7 +11,8 @@ import com.foreignlanguagereader.api.client.common.{
 }
 import com.foreignlanguagereader.api.client.elasticsearch.searchstates.{
   ElasticsearchRequest,
-  ElasticsearchResponse
+  ElasticsearchResponse,
+  ElasticsearchResult
 }
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s._
@@ -25,7 +26,6 @@ import com.sksamuel.elastic4s.requests.update.UpdateRequest
 import javax.inject.{Inject, Singleton}
 import play.api.{Configuration, Logger}
 
-import scala.concurrent.duration.Duration
 import scala.concurrent.{ExecutionContext, Future}
 import scala.jdk.CollectionConverters._
 import scala.reflect.ClassTag
@@ -39,8 +39,6 @@ class ElasticsearchClient @Inject()(config: Configuration,
   override val logger: Logger = Logger(this.getClass)
   implicit val ec: ExecutionContext =
     system.dispatchers.lookup("elasticsearch-context")
-  override val timeout =
-    Duration(config.get[Int]("elasticsearch.timeout"), TimeUnit.SECONDS)
 
   val attemptsIndex = "attempts"
   val maxConcurrentInserts = 5
@@ -66,29 +64,34 @@ class ElasticsearchClient @Inject()(config: Configuration,
     */
   def getFromCache[T: Indexable](requests: Seq[ElasticsearchRequest[T]])(
     implicit hitReader: HitReader[T],
+    attemptsHitReader: HitReader[LookupAttempt],
     tag: ClassTag[T]
   ): Future[Seq[Option[Seq[T]]]] = {
-    // Checks elasticsearch first. Responses will have ES results or none
+    // Fork and join for getting each request
     Future
-      .sequence(requests.map(r => getMultiple(r.query)))
-      .map(
-        results =>
-          requests.zip(results) map {
-            case (request, result) =>
-              ElasticsearchResponse.fromResult(request, result)
-        }
+      .sequence(
+        requests
+          .map(
+            request =>
+              // Checks elasticsearch first. Responses will have ES results or none
+              getMultiple(request.query)
+                .map(
+                  result => ElasticsearchResponse.fromResult(request, result)
+                )
+                // This is where fetchers are called to get results if they aren't in elasticsearch
+                // There is also logic to remember what has been fetched from external sources
+                // So that we don't try too many times on the same query
+                .map(_.getResultOrFetchFromSource)
+                .flatten
+          )
       )
-
-      // This is where fetchers are called to get results if they aren't in elasticsearch
-      // There is also logic to remember what has been fetched from external sources
-      // So that we don't try too many times on the same query
-      .map(r => Future.sequence(r.map(_.getResultOrFetchFromSource)))
-      // Now we have a future of a future
-      .flatten
+      // Block here until we have finished with all of the requests
       .map(results => {
         // Asychronously save results back to elasticsearch
         // toIndex only exists when results were fetched from the fetchers
-        Future.apply(saveToCacheInBatches(results.flatMap(_.toIndex).flatten))
+        val toSave = results.flatMap(_.toIndex).flatten
+        logger.info(s"Saving results back to elasticsearch: $toSave")
+        Future.apply(saveToCacheInBatches(toSave))
 
         results.map(_.result)
       })
@@ -134,6 +137,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
   ): Unit =
     (request match {
       // This works around a limitation in the client library
+      // Since there is no parent type for the different requests
       case Left(index)   => withBreaker(client.execute(index))
       case Right(update) => withBreaker(client.execute(update))
     }).map {
@@ -150,8 +154,8 @@ class ElasticsearchClient @Inject()(config: Configuration,
         logger.warn(s"Failed to persist to elasticsearch: $request", e)
     }
 
-  breaker.onOpen(() => {
-    logger.info("Retrying inserts because the circuit breaker is open.")
+  breaker.onClose(() => {
+    logger.info("Retrying inserts because the circuit breaker is closed.")
     retryInserts()
   })
 
