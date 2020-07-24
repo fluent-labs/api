@@ -11,8 +11,7 @@ import com.foreignlanguagereader.api.client.common.{
 }
 import com.foreignlanguagereader.api.client.elasticsearch.searchstates.{
   ElasticsearchRequest,
-  ElasticsearchResponse,
-  ElasticsearchResult
+  ElasticsearchResponse
 }
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s._
