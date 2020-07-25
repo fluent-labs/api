@@ -137,12 +137,12 @@ class ElasticsearchClient @Inject()(config: Configuration,
     (request match {
       // This works around a limitation in the client library
       // Since there is no parent type for the different requests
-      case Left(index)   => withBreaker(execute(index))
-      case Right(update) => withBreaker(execute(update))
+      case Left(index)   => execute(index)
+      case Right(update) => execute(update)
     }).map {
       case Success(CircuitBreakerAttempt(s)) =>
         logger
-          .info(s"Successfully saved to elasticsearch: ${s.get}")
+          .info(s"Successfully saved to elasticsearch: $s")
       case Success(CircuitBreakerNonAttempt()) =>
         logger
           .info(
