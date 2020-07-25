@@ -143,7 +143,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
           request.retries match {
             case Some(retries) =>
               logger.info(s"Retrying request individually: $request")
-              insertionQueue.addAll(retries asJava)
+              retries.map(save)
             case None =>
               logger.warn(
                 s"Not retrying request because this is our second attempt: $request"
