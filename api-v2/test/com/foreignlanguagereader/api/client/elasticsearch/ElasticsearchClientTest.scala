@@ -132,14 +132,6 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
           )
         )
         .map(results => {
-          // Make sure we saved this back to the cache
-          // Matchers are OK because the specifics of the request is tested in the search states
-          verify(holder)
-            .execute[BulkRequest, BulkResponse](any(classOf[BulkRequest]))(
-              any(classOf[Handler[BulkRequest, BulkResponse]]),
-              any(classOf[Manifest[BulkResponse]])
-            )
-
           val result = results(0)
           assert(result.contains(List(fetchedDefinition)))
         })
