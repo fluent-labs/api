@@ -1,7 +1,5 @@
 package com.foreignlanguagereader.api.client.elasticsearch
 
-import java.util.concurrent.ConcurrentLinkedQueue
-
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerAttempt,
@@ -22,6 +20,7 @@ import com.sksamuel.elastic4s.requests.searches.{
   MultiSearchResponse
 }
 import com.sksamuel.elastic4s.requests.update.UpdateRequest
+import java.util.concurrent.ConcurrentLinkedQueue
 import javax.inject.{Inject, Singleton}
 import play.api.{Configuration, Logger}
 
@@ -112,17 +111,17 @@ class ElasticsearchClient @Inject()(config: Configuration,
         execute(bulk(queries)) map {
           case Success(CircuitBreakerAttempt(s)) =>
             logger
-              .info(s"Successfully saved to elasticsearch: ${s.items}")
+              .info(s"Successfully saved batch to elasticsearch: ${s.items}")
             batch.foreach(request => saveToCache(request))
           case Success(CircuitBreakerNonAttempt()) =>
             logger
               .info(
-                s"Failed to persist to elasticsearch because the circuit breaker is closed"
+                "Elasticsearch connection is unhealthy, retrying batch insert when it is healthy."
               )
             insertionQueue.addAll(batch asJava)
           case Failure(e) =>
             logger.warn(
-              s"Failed to persist to elasticsearch in bulk, retrying individually: $requests",
+              s"Failed to persist batch to elasticsearch, retrying individually: $requests",
               e
             )
             batch.foreach(request => saveToCache(request))
@@ -146,7 +145,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
       case Success(CircuitBreakerNonAttempt()) =>
         logger
           .info(
-            s"Failed to persist to elasticsearch because the circuit breaker is closed"
+            "Elasticsearch connection is unhealthy, retrying inserts when it is healthy."
           )
         insertionQueue.add(request)
       case Failure(e) =>
@@ -154,7 +153,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
     }
 
   breaker.onClose(() => {
-    logger.info("Retrying inserts because the circuit breaker is closed.")
+    logger.info("Retrying inserts because elasticsearch is healthy again.")
     retryInserts()
   })
 
@@ -165,8 +164,8 @@ class ElasticsearchClient @Inject()(config: Configuration,
     // We could check if the queue is empty but that opens us up to race conditions.
     // Removing and null checking is atomic, and the queue is thread safe, so we are protected.
     insertionQueue.poll() match {
-      case null => logger.info("Finished retrying inserts.") // scalastyle:off
-      case item => saveToCache(item)
+      case null                                      => logger.info("Finished retrying inserts.") // scalastyle:off
+      case item: Either[IndexRequest, UpdateRequest] => saveToCache(item)
     }
     retryInserts()
   }
