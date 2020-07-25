@@ -48,7 +48,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
 
   // Read only way to check state
   // Only use this for testing
-  def getQueue: Seq[ElasticsearchCacheRequest] = insertionQueue.asScala.toSeq
+  def viewQueue: Seq[ElasticsearchCacheRequest] = insertionQueue.asScala.toSeq
 
   /**
     *
@@ -159,19 +159,14 @@ class ElasticsearchClient @Inject()(config: Configuration,
 
   // Common wrappers for all requests below here
 
-  // Wraps all elasticsearch requests with error handling
+  // Unwraps all elasticsearch requests so there can be a single failure path
   private[this] def execute[T, U](request: T)(
     implicit handler: Handler[T, U],
     manifest: Manifest[U]
   ): Future[Try[CircuitBreakerResult[U]]] =
     withBreaker(client.execute(request) map {
       case RequestSuccess(_, _, _, result) => result
-      case RequestFailure(_, _, _, error) =>
-        logger.error(
-          s"Error executing elasticearch query: $request due to error: ${error.reason}",
-          error.asException
-        )
-        throw error.asException
+      case RequestFailure(_, _, _, error)  => throw error.asException
     })
 
   // Wrap the result with an option

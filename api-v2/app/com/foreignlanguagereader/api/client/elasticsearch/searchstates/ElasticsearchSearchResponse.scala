@@ -120,7 +120,7 @@ case class ElasticsearchSearchResponse[T: Indexable](
       .recover {
         case e: Exception =>
           logger.error(
-            s"Failed to get result from elasticsearch on index $index due to error ${e.getMessage}",
+            s"Failed to call fetcher on index=$index fields=$fields due to error ${e.getMessage}",
             e
           )
           ElasticsearchSearchResult(
@@ -175,8 +175,8 @@ object ElasticsearchSearchResponse {
     tag: ClassTag[T],
     ec: ExecutionContext): ElasticsearchSearchResponse[T] = {
     val r = result match {
-      case CircuitBreakerAttempt(x)   => x
-      case CircuitBreakerNonAttempt() => None
+      case CircuitBreakerAttempt(x) => x
+      case _                        => None
     }
 
     ElasticsearchSearchResponse(
