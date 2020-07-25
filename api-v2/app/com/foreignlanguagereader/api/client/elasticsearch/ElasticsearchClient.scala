@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.client.elasticsearch
 
-import java.util.concurrent.{ConcurrentLinkedQueue, TimeUnit}
+import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.client.common.{
@@ -25,8 +25,6 @@ import play.api.{Configuration, Logger}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
-import scala.jdk.CollectionConverters._
-import scala.language.postfixOps
 import scala.reflect.ClassTag
 import scala.util.{Failure, Success, Try}
 
@@ -38,17 +36,6 @@ class ElasticsearchClient @Inject()(config: Configuration,
   override val logger: Logger = Logger(this.getClass)
   implicit val ec: ExecutionContext =
     system.dispatchers.lookup("elasticsearch-context")
-
-  // Holds inserts that weren't performed due to the circuit breaker being closed
-  // Mutability is a risk but a decent tradeoff because the cost of losing an insert or two is low
-  // But setting up actors makes this much more complicated and is not worth it IMO
-  private[this] val insertionQueue
-    : ConcurrentLinkedQueue[ElasticsearchCacheRequest] =
-    new ConcurrentLinkedQueue()
-
-  // Read only way to check state
-  // Only use this for testing
-  def viewQueue: Seq[ElasticsearchCacheRequest] = insertionQueue.asScala.toSeq
 
   /**
     *
@@ -94,7 +81,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
         val toSave = results.flatMap(_.toIndex).flatten
 
         if (toSave.nonEmpty) {
-          insertionQueue.addAll(toSave.asJava)
+          client.addInsertsToQueue(toSave)
 
           // Spin up a thread to work on the queue
           // And return to user without waiting for it to finish
@@ -113,12 +100,12 @@ class ElasticsearchClient @Inject()(config: Configuration,
   @scala.annotation.tailrec
   final def startInserting(): Unit = if (breaker.isOpen) {
     // We could check if the queue is empty but that opens us up to race conditions.
-    // Removing and null checking is atomic, and the queue is thread safe, so we are protected.
-    insertionQueue.poll() match {
-      case null => logger.info("Finished inserting") // scalastyle:off
-      case item: ElasticsearchCacheRequest =>
+    // Removing and checking is atomic, and the queue is thread safe, so we are protected.
+    client.nextInsert() match {
+      case Some(item) =>
         save(item)
         startInserting()
+      case None => logger.info("Finished inserting")
     }
   }
 
@@ -134,7 +121,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
             .info(
               "Elasticsearch connection is unhealthy, retrying insert when it is healthy."
             )
-          insertionQueue.add(request)
+          client.addInsertToQueue(request)
         case Failure(e) =>
           logger.warn(
             s"Failed to persist request to elasticsearch: $request, ${e.getMessage}",
