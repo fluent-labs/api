@@ -134,7 +134,7 @@ trait LanguageDefinitionService {
     word: String
   ): Future[Map[DefinitionSource, Option[Seq[Definition]]]] = {
     elasticsearch
-      .getFromCache[Definition](
+      .findFromCacheOrRefetch[Definition](
         sources
           .map(
             source => makeDefinitionRequest(source, definitionLanguage, word)

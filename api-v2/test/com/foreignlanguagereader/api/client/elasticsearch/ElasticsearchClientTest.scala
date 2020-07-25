@@ -11,18 +11,12 @@ import com.foreignlanguagereader.api.domain.definition.{
 }
 import com.foreignlanguagereader.api.domain.word.PartOfSpeech
 import com.foreignlanguagereader.api.util.ElasticsearchTestUtil
+import com.sksamuel.elastic4s._
 import com.sksamuel.elastic4s.playjson._
 import com.sksamuel.elastic4s.requests.bulk.{BulkRequest, BulkResponse}
 import com.sksamuel.elastic4s.requests.searches.{
   MultiSearchRequest,
   MultiSearchResponse
-}
-import com.sksamuel.elastic4s.{
-  ElasticError,
-  Handler,
-  HitReader,
-  RequestFailure,
-  RequestSuccess
 }
 import com.typesafe.config.ConfigFactory
 import org.mockito.ArgumentMatchers.any
@@ -80,17 +74,17 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
         )
       when(
         holder.execute[MultiSearchRequest, MultiSearchResponse](
-          any[MultiSearchRequest]
+          any(classOf[MultiSearchRequest])
         )(
-          any[Handler[MultiSearchRequest, MultiSearchResponse]],
-          any[Manifest[MultiSearchResponse]]
+          any(classOf[Handler[MultiSearchRequest, MultiSearchResponse]]),
+          any(classOf[Manifest[MultiSearchResponse]])
         )
       ).thenReturn(
         Future.successful(RequestSuccess(200, None, Map(), response))
       )
 
       client
-        .getFromCache[Definition](
+        .findFromCacheOrRefetch[Definition](
           List(
             ElasticsearchRequest(
               "definitions",
@@ -114,17 +108,17 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
         )
       when(
         holder.execute[MultiSearchRequest, MultiSearchResponse](
-          any[MultiSearchRequest]
+          any(classOf[MultiSearchRequest])
         )(
-          any[Handler[MultiSearchRequest, MultiSearchResponse]],
-          any[Manifest[MultiSearchResponse]]
+          any(classOf[Handler[MultiSearchRequest, MultiSearchResponse]]),
+          any(classOf[Manifest[MultiSearchResponse]])
         )
       ).thenReturn(
         Future.successful(RequestSuccess(200, None, Map(), response))
       )
 
       client
-        .getFromCache[Definition](
+        .findFromCacheOrRefetch[Definition](
           List(
             ElasticsearchRequest(
               "definitions",
@@ -142,8 +136,8 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
           // Matchers are OK because the specifics of the request is tested in the search states
           verify(holder)
             .execute[BulkRequest, BulkResponse](any(classOf[BulkRequest]))(
-              any[Handler[BulkRequest, BulkResponse]],
-              any[Manifest[BulkResponse]]
+              any(classOf[Handler[BulkRequest, BulkResponse]]),
+              any(classOf[Manifest[BulkResponse]])
             )
 
           val result = results(0)
@@ -151,17 +145,72 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
         })
     }
     describe("gracefully handles failures") {
-//      it(
-//        "retries indexing attempts which happened while the circuit breaker was open."
-//      )
-//      it("retries requests one by one if bulk requests failed")
+      it("retries requests one by one if bulk requests failed") {
+        val response: MultiSearchResponse = ElasticsearchTestUtil
+          .cacheQueryResponseFrom[Definition](
+            Right(List()),
+            Right(attemptsRefreshEligible)
+          )
+        when(
+          holder.execute[MultiSearchRequest, MultiSearchResponse](
+            any(classOf[MultiSearchRequest])
+          )(
+            any(classOf[Handler[MultiSearchRequest, MultiSearchResponse]]),
+            any(classOf[Manifest[MultiSearchResponse]])
+          )
+        ).thenReturn(
+          Future.successful(RequestSuccess(200, None, Map(), response))
+        )
+        when(
+          holder.execute[BulkRequest, BulkResponse](any(classOf[BulkRequest]))(
+            any(classOf[Handler[BulkRequest, BulkResponse]]),
+            any(classOf[Manifest[BulkResponse]])
+          )
+        ).thenReturn(
+          Future.successful(
+            RequestFailure(
+              200,
+              None,
+              Map(),
+              new ElasticError(
+                "",
+                "Please try again",
+                None,
+                None,
+                None,
+                List(),
+                None
+              )
+            )
+          )
+        )
+
+        client
+          .findFromCacheOrRefetch[Definition](
+            List(
+              ElasticsearchRequest(
+                "definitions",
+                Map(),
+                () =>
+                  Future.successful(
+                    CircuitBreakerAttempt(Some(List(fetchedDefinition)))
+                ),
+                5
+              )
+            )
+          )
+          .map(results => {
+            val result = results(0)
+            assert(result.contains(List(fetchedDefinition)))
+          })
+      }
       it("can handle failures when searching from elasticsearch") {
         when(
           holder.execute[MultiSearchRequest, MultiSearchResponse](
-            any[MultiSearchRequest]
+            any(classOf[MultiSearchRequest])
           )(
-            any[Handler[MultiSearchRequest, MultiSearchResponse]],
-            any[Manifest[MultiSearchResponse]]
+            any(classOf[Handler[MultiSearchRequest, MultiSearchResponse]]),
+            any(classOf[Manifest[MultiSearchResponse]])
           )
         ).thenReturn(
           Future.successful(
@@ -183,7 +232,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
         )
 
         client
-          .getFromCache[Definition](
+          .findFromCacheOrRefetch[Definition](
             List(
               ElasticsearchRequest(
                 "definitions",

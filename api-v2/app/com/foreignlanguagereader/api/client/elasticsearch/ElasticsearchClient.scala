@@ -28,7 +28,7 @@ import play.api.{Configuration, Logger}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.jdk.CollectionConverters._
 import scala.reflect.ClassTag
-import scala.util.{Failure, Success}
+import scala.util.{Failure, Success, Try}
 
 @Singleton
 class ElasticsearchClient @Inject()(config: Configuration,
@@ -61,11 +61,11 @@ class ElasticsearchClient @Inject()(config: Configuration,
     * @tparam T A case class with Reads[T] and Writes[T]
     * @return
     */
-  def getFromCache[T: Indexable](requests: Seq[ElasticsearchRequest[T]])(
-    implicit hitReader: HitReader[T],
+  def findFromCacheOrRefetch[T: Indexable](
+    requests: Seq[ElasticsearchRequest[T]]
+  )(implicit hitReader: HitReader[T],
     attemptsHitReader: HitReader[LookupAttempt],
-    tag: ClassTag[T]
-  ): Future[Seq[Option[Seq[T]]]] = {
+    tag: ClassTag[T]): Future[Seq[Option[Seq[T]]]] = {
     // Fork and join for getting each request
     Future
       .sequence(
@@ -73,9 +73,10 @@ class ElasticsearchClient @Inject()(config: Configuration,
           .map(
             request =>
               // Checks elasticsearch first. Responses will have ES results or none
-              getMultiple(request.query)
-                .map(
-                  result => ElasticsearchResponse.fromResult(request, result)
+              executeWithOption[MultiSearchRequest, MultiSearchResponse](
+                request.query
+              ).map(
+                  result => ElasticsearchResponse.fromResult[T](request, result)
                 )
                 // This is where fetchers are called to get results if they aren't in elasticsearch
                 // There is also logic to remember what has been fetched from external sources
@@ -108,12 +109,11 @@ class ElasticsearchClient @Inject()(config: Configuration,
           case Left(index)   => index
           case Right(update) => update
         }
-        withBreaker(client.execute {
-          bulk(queries)
-        }) map {
+        execute(bulk(queries)) map {
           case Success(CircuitBreakerAttempt(s)) =>
             logger
-              .info(s"Successfully saved to elasticsearch: ${s.body}")
+              .info(s"Successfully saved to elasticsearch: ${s.items}")
+            batch.foreach(request => saveToCache(request))
           case Success(CircuitBreakerNonAttempt()) =>
             logger
               .info(
@@ -137,12 +137,12 @@ class ElasticsearchClient @Inject()(config: Configuration,
     (request match {
       // This works around a limitation in the client library
       // Since there is no parent type for the different requests
-      case Left(index)   => withBreaker(client.execute(index))
-      case Right(update) => withBreaker(client.execute(update))
+      case Left(index)   => withBreaker(execute(index))
+      case Right(update) => withBreaker(execute(update))
     }).map {
       case Success(CircuitBreakerAttempt(s)) =>
         logger
-          .info(s"Successfully saved to elasticsearch: ${s.body}")
+          .info(s"Successfully saved to elasticsearch: ${s.get}")
       case Success(CircuitBreakerNonAttempt()) =>
         logger
           .info(
@@ -171,33 +171,48 @@ class ElasticsearchClient @Inject()(config: Configuration,
     retryInserts()
   }
 
-  // Get method for multisearch, but with error handling
-  private[this] def getMultiple[T](
-    request: MultiSearchRequest
-  ): Future[CircuitBreakerResult[Option[MultiSearchResponse]]] = {
-    withBreaker(
-      client
-        .execute[MultiSearchRequest, MultiSearchResponse](request)
-        .map {
-          case RequestSuccess(_, _, _, result) => result
-          case RequestFailure(_, _, _, error) =>
-            logger.error(
-              s"Error fetching from elasticsearch for request: $request due to error: ${error.reason}",
-              error.asException
-            )
-            throw error.asException
-        }
-    ).map {
-      case Success(CircuitBreakerAttempt(value)) =>
-        CircuitBreakerAttempt(Some(value))
-      case Success(CircuitBreakerNonAttempt()) =>
-        CircuitBreakerNonAttempt[Option[MultiSearchResponse]]()
-      case Failure(e) =>
+  // Wraps all elasticsearch requests with error handling
+  private[this] def execute[T, U](request: T)(
+    implicit handler: Handler[T, U],
+    manifest: Manifest[U]
+  ): Future[Try[CircuitBreakerResult[U]]] =
+    withBreaker(client.execute(request) map {
+      case RequestSuccess(_, _, _, result) => result
+      case RequestFailure(_, _, _, error) =>
         logger.error(
-          s"Error fetching from elasticsearch for request: $request due to error: ${e.getMessage}",
-          e
+          s"Error executing elasticearch query: $request due to error: ${error.reason}",
+          error.asException
         )
-        CircuitBreakerAttempt(None)
-    }
+        throw error.asException
+    })
+
+  // Wrap the result with an option
+  private[this] def executeWithOption[T, U](request: T)(
+    implicit handler: Handler[T, U],
+    manifest: Manifest[U]
+  ): Future[CircuitBreakerResult[Option[U]]] = execute(request).map {
+    case Success(CircuitBreakerAttempt(value)) =>
+      CircuitBreakerAttempt(Some(value))
+    case Success(CircuitBreakerNonAttempt()) =>
+      CircuitBreakerNonAttempt()
+    case Failure(e) =>
+      logger.error(
+        s"Error executing elasticearch query: $request due to error: ${e.getMessage}",
+        e
+      )
+      CircuitBreakerAttempt(None)
+  }
+
+  /**
+    * This makes the circuitbreaker know when elasticsearch requests are failing
+    * Without this, errors show up as successes.
+    * @param result The result to work with
+    * @tparam T Whatever the request is. Doesn't matter for this one
+    * @return Was it a failure?
+    */
+  override def defaultIsSuccess[T](result: T): Boolean = result match {
+    case RequestSuccess(_, _, _, _) => true
+    case RequestFailure(_, _, _, _) => false
+    case _                          => true
   }
 }

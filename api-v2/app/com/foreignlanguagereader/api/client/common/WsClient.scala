@@ -25,6 +25,7 @@ trait WsClient extends Circuitbreaker {
     logger.info(s"Calling url $url")
     withBreaker(
       isFailure,
+      defaultIsSuccess[T],
       ws.url(url)
         // Doubled so that the circuit breaker will handle it.
         .withRequestTimeout(timeout * 2)

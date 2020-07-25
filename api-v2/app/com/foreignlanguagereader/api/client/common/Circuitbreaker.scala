@@ -35,6 +35,9 @@ trait Circuitbreaker {
       .onHalfOpen(logger.info("Circuit breaker resetting"))
       .onClose(logger.info("Circuit breaker reset"))
 
+  def defaultIsFailure(error: Throwable): Boolean = true
+  def defaultIsSuccess[T](result: T): Boolean = true
+
   def health(): ReadinessStatus = breaker match {
     case breaker if breaker.isClosed   => ReadinessStatus.UP
     case breaker if breaker.isHalfOpen => ReadinessStatus.DEGRADED
@@ -42,18 +45,19 @@ trait Circuitbreaker {
   }
 
   def withBreaker[T](body: => Future[T]): Future[Try[CircuitBreakerResult[T]]] =
-    withBreaker(_ => true, body)
+    withBreaker(defaultIsFailure, defaultIsSuccess[T], body)
 
-  def withBreaker[T](isFailure: Throwable => Boolean = _ => true,
+  def withBreaker[T](isFailure: Throwable => Boolean,
+                     isSuccess: T => Boolean,
                      body: => Future[T]): Future[Try[CircuitBreakerResult[T]]] =
     breaker
-      .withCircuitBreaker[T](body, makeFailureFunction(isFailure))
+      .withCircuitBreaker[T](body, makeFailureFunction(isFailure, isSuccess))
       .transform(wrapWithAttemptInformation)
       .map(s => Success(s))
       .recover(e => Failure(e))
 
   private[this] def wrapWithAttemptInformation[T](
-    t: Try[T]
+    t: Try[T],
   ): Try[CircuitBreakerResult[T]] = t match {
     case Success(s) => Success(CircuitBreakerAttempt[T](s))
     case Failure(e) =>
@@ -66,9 +70,10 @@ trait Circuitbreaker {
   }
 
   private[this] def makeFailureFunction[T](
-    isFailure: Throwable => Boolean
+    isFailure: Throwable => Boolean,
+    isSuccess: T => Boolean
   ): Try[T] => Boolean = {
-    case Success(_)         => false
+    case Success(result)    => isSuccess(result)
     case Failure(exception) => isFailure(exception)
   }
 }
