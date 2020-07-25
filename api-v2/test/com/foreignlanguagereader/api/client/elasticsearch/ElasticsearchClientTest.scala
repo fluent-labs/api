@@ -2,7 +2,7 @@ package com.foreignlanguagereader.api.client.elasticsearch
 
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.client.common.CircuitBreakerAttempt
-import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchRequest
+import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchSearchRequest
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.definition.{
   Definition,
@@ -86,7 +86,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
       client
         .findFromCacheOrRefetch[Definition](
           List(
-            ElasticsearchRequest(
+            ElasticsearchSearchRequest(
               "definitions",
               Map(),
               () =>
@@ -120,7 +120,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
       client
         .findFromCacheOrRefetch[Definition](
           List(
-            ElasticsearchRequest(
+            ElasticsearchSearchRequest(
               "definitions",
               Map(),
               () =>
@@ -180,7 +180,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
         client
           .findFromCacheOrRefetch[Definition](
             List(
-              ElasticsearchRequest(
+              ElasticsearchSearchRequest(
                 "definitions",
                 Map(),
                 () =>
@@ -226,7 +226,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
         client
           .findFromCacheOrRefetch[Definition](
             List(
-              ElasticsearchRequest(
+              ElasticsearchSearchRequest(
                 "definitions",
                 Map(),
                 () =>

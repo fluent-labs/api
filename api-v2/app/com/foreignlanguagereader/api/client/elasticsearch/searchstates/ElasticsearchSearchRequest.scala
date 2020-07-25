@@ -18,7 +18,7 @@ import scala.concurrent.Future
   * @param maxFetchAttempts If we don't have any results, how many times should we search for this? Highly source dependent.
   * @tparam T A case class with Reads[T] and Writes[T] defined.
   */
-case class ElasticsearchRequest[T](
+case class ElasticsearchSearchRequest[T](
   index: String,
   fields: Map[String, String],
   fetcher: () => Future[CircuitBreakerResult[Option[Seq[T]]]],

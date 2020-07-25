@@ -44,8 +44,8 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
   implicit val attemptsHitReader: HitReader[LookupAttempt] =
     mock[HitReader[LookupAttempt]]
 
-  val responseBase: ElasticsearchResponse[Definition] =
-    ElasticsearchResponse[Definition](
+  val responseBase: ElasticsearchSearchResponse[Definition] =
+    ElasticsearchSearchResponse[Definition](
       index = index,
       fields = fields,
       fetcher = () =>

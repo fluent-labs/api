@@ -11,7 +11,7 @@ case class ChineseDefinitionDTO(subdefinitions: List[String],
                                 tag: Option[PartOfSpeech],
                                 examples: Option[List[String]],
                                 simplified: Option[String],
-                                traditional: Option[String],
+                                traditional: Option[Seq[String]],
                                 pronunciation: ChinesePronunciation,
                                 hsk: HSKLevel)
     extends DefinitionDTO

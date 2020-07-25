@@ -22,7 +22,7 @@ class ElasticsearchRequestTest extends AnyFunSpec {
         matchQuery("fields.field2", "value2"),
         matchQuery("fields.field3", "value 3")
       )
-    val request = ElasticsearchRequest[Definition](
+    val request = ElasticsearchSearchRequest[Definition](
       index,
       Map("field1" -> "value1", "field2" -> "value2", "field3" -> "value3"),
       () => Future.successful(CircuitBreakerAttempt(None)),

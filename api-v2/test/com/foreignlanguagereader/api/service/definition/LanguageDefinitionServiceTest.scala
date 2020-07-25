@@ -5,7 +5,7 @@ import com.foreignlanguagereader.api.client.elasticsearch.{
   ElasticsearchClient,
   LookupAttempt
 }
-import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchRequest
+import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchSearchRequest
 import com.foreignlanguagereader.api.contentsource.definition.WiktionaryDefinitionEntry
 import com.foreignlanguagereader.api.contentsource.definition.cedict.CEDICTDefinitionEntry
 import com.foreignlanguagereader.api.domain.Language
@@ -56,7 +56,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .findFromCacheOrRefetch(
-            any(classOf[Seq[ElasticsearchRequest[Definition]]])
+            any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
           )(
             any(classOf[Indexable[Definition]]),
             any(classOf[HitReader[Definition]]),
@@ -81,7 +81,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .findFromCacheOrRefetch(
-            any(classOf[Seq[ElasticsearchRequest[Definition]]])
+            any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
           )(
             any(classOf[Indexable[Definition]]),
             any(classOf[HitReader[Definition]]),
@@ -101,7 +101,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .findFromCacheOrRefetch(
-            any(classOf[Seq[ElasticsearchRequest[Definition]]])
+            any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
           )(
             any(classOf[Indexable[Definition]]),
             any(classOf[HitReader[Definition]]),
@@ -123,7 +123,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .findFromCacheOrRefetch(
-            any(classOf[Seq[ElasticsearchRequest[Definition]]])
+            any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
           )(
             any(classOf[Indexable[Definition]]),
             any(classOf[HitReader[Definition]]),
@@ -193,7 +193,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[Seq[ElasticsearchRequest[Definition]]])
+              any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
             )(
               any(classOf[Indexable[Definition]]),
               any(classOf[HitReader[Definition]]),

@@ -33,7 +33,7 @@ import scala.reflect.ClassTag
   * @param ec Automatically taken from the implicit val near the caller. This is the thread pool to block on when fetching.
   * @tparam T A case class with Reads[T] and Writes[T] defined.
   */
-case class ElasticsearchResponse[T: Indexable](
+case class ElasticsearchSearchResponse[T: Indexable](
   index: String,
   fields: Map[String, String],
   fetcher: () => Future[CircuitBreakerResult[Option[Seq[T]]]],
@@ -59,54 +59,62 @@ case class ElasticsearchResponse[T: Indexable](
         (None, 0, None)
     }
 
-  lazy val getResultOrFetchFromSource: Future[ElasticsearchResult[T]] =
+  // Were we able to connect to elasticsearch?
+  // Necessary downstream to prevent us from resaving to elasticsearch.
+  val queried: Boolean = response.isDefined
+
+  lazy val getResultOrFetchFromSource: Future[ElasticsearchSearchResult[T]] =
     elasticsearchResult match {
       case Some(es) =>
         Future.successful(
-          ElasticsearchResult(
+          ElasticsearchSearchResult(
             index = index,
             fields = fields,
             result = Some(es),
             fetchCount = fetchCount,
             lookupId = lookupId,
-            refetched = false
+            refetched = false,
+            queried = queried
           )
         )
       case None if fetchCount < maxFetchAttempts => fetchFromSource
       case None =>
         Future.successful(
-          ElasticsearchResult(
+          ElasticsearchSearchResult(
             index = index,
             fields = fields,
             result = None,
             fetchCount = fetchCount,
             lookupId = lookupId,
-            refetched = false
+            refetched = false,
+            queried = queried
           )
         )
     }
 
-  lazy val fetchFromSource: Future[ElasticsearchResult[T]] = {
+  lazy val fetchFromSource: Future[ElasticsearchSearchResult[T]] = {
     logger.info(s"Refetching from source for query on $index")
     fetcher()
       .map {
         case CircuitBreakerAttempt(result) =>
-          ElasticsearchResult(
+          ElasticsearchSearchResult(
             index = index,
             fields = fields,
             result = result,
             fetchCount = fetchCount + 1,
             lookupId = lookupId,
-            refetched = true
+            refetched = true,
+            queried = queried
           )
         case CircuitBreakerNonAttempt() =>
-          ElasticsearchResult(
+          ElasticsearchSearchResult(
             index = index,
             fields = fields,
             result = None,
             fetchCount = fetchCount,
             lookupId = lookupId,
-            refetched = false
+            refetched = false,
+            queried = queried
           )
       }
       .recover {
@@ -115,13 +123,14 @@ case class ElasticsearchResponse[T: Indexable](
             s"Failed to get result from elasticsearch on index $index due to error ${e.getMessage}",
             e
           )
-          ElasticsearchResult(
+          ElasticsearchSearchResult(
             index = index,
             fields = fields,
             result = None,
             fetchCount = fetchCount + 1,
             lookupId = lookupId,
-            refetched = true
+            refetched = true,
+            queried = queried
           )
 
       }
@@ -157,20 +166,20 @@ case class ElasticsearchResponse[T: Indexable](
   }
 }
 
-object ElasticsearchResponse {
+object ElasticsearchSearchResponse {
   def fromResult[T: Indexable](
-    request: ElasticsearchRequest[T],
+    request: ElasticsearchSearchRequest[T],
     result: CircuitBreakerResult[Option[MultiSearchResponse]]
   )(implicit hitReader: HitReader[T],
     attemptsHitReader: HitReader[LookupAttempt],
     tag: ClassTag[T],
-    ec: ExecutionContext): ElasticsearchResponse[T] = {
+    ec: ExecutionContext): ElasticsearchSearchResponse[T] = {
     val r = result match {
       case CircuitBreakerAttempt(x)   => x
       case CircuitBreakerNonAttempt() => None
     }
 
-    ElasticsearchResponse(
+    ElasticsearchSearchResponse(
       request.index,
       request.fields,
       request.fetcher,

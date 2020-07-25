@@ -9,7 +9,16 @@ lazy val root = (project in file("."))
 scalaVersion := "2.13.2"
 
 // Give deprecation and feature warnings on compile
-scalacOptions ++= Seq("-deprecation", "-feature")
+scalacOptions ++= Seq(
+  "-encoding",
+  "utf8",
+  "-deprecation",
+  "-feature",
+  "-unchecked",
+  "-Xfatal-warnings",
+  "-Wdead-code",
+  "-Wvalue-discard"
+)
 
 // Dependency injection
 libraryDependencies += guice

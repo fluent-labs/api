@@ -36,14 +36,14 @@ case class ChineseDefinition(override val subdefinitions: List[String],
     ChineseDefinitionService.getPronunciation(inputPinyin)
   val ipa: String = pronunciation.ipa
 
-  val (simplified: Option[String], traditional: Option[String]) =
+  val (simplified: Option[String], traditional: Option[Seq[String]]) =
     (inputSimplified, inputTraditional) match {
-      case (Some(s), Some(t))                => (Some(s), Some(t))
-      case (Some(s), None) if isTraditional  => (Some(s), Some(token))
-      case (None, Some(t)) if !isTraditional => (Some(token), Some(t))
+      case (Some(s), Some(t))                => (Some(s), Some(List(t)))
+      case (Some(s), None) if isTraditional  => (Some(s), Some(List(token)))
+      case (None, Some(t)) if !isTraditional => (Some(token), Some(List(t)))
       case _ =>
         if (isTraditional)
-          (ChineseDefinitionService.toSimplified(token), Some(token))
+          (ChineseDefinitionService.toSimplified(token), Some(List(token)))
         else (Some(token), ChineseDefinitionService.toTraditional(token))
     }
 

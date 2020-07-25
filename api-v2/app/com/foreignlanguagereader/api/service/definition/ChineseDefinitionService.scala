@@ -146,7 +146,7 @@ class ChineseDefinitionService @Inject()(
           examples = w.examples,
           inputPinyin = cedict.pronunciation.pinyin,
           inputSimplified = cedict.simplified,
-          inputTraditional = cedict.traditional,
+          inputTraditional = cedict.traditional.map(_(0)), // CEDICT has only one traditional option
           definitionLanguage = Language.ENGLISH,
           source = DefinitionSource.MULTIPLE,
           token = word
@@ -171,7 +171,7 @@ class ChineseDefinitionService @Inject()(
         examples = examples,
         inputPinyin = cedict.pronunciation.pinyin,
         inputSimplified = cedict.simplified,
-        inputTraditional = cedict.traditional,
+        inputTraditional = cedict.traditional.map(_(0)), // CEDICT has only one traditional option
         definitionLanguage = Language.ENGLISH,
         source = DefinitionSource.MULTIPLE,
         token = word

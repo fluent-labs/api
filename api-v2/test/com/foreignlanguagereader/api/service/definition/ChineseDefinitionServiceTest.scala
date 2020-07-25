@@ -5,7 +5,7 @@ import com.foreignlanguagereader.api.client.elasticsearch.{
   ElasticsearchClient,
   LookupAttempt
 }
-import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchRequest
+import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchSearchRequest
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.definition.{
   ChineseDefinition,
@@ -90,7 +90,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .findFromCacheOrRefetch[Definition](
-            any(classOf[Seq[ElasticsearchRequest[Definition]]])
+            any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
           )(
             any(classOf[Indexable[Definition]]),
             any(classOf[HitReader[Definition]]),
@@ -122,7 +122,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[Seq[ElasticsearchRequest[Definition]]])
+              any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
             )(
               any(classOf[Indexable[Definition]]),
               any(classOf[HitReader[Definition]]),
@@ -149,7 +149,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[Seq[ElasticsearchRequest[Definition]]])
+              any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
             )(
               any(classOf[Indexable[Definition]]),
               any(classOf[HitReader[Definition]]),
@@ -174,7 +174,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[Seq[ElasticsearchRequest[Definition]]])
+              any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
             )(
               any(classOf[Indexable[Definition]]),
               any(classOf[HitReader[Definition]]),
@@ -195,9 +195,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         chineseDefinitionService
           .getDefinitions(Language.ENGLISH, "你好")
           .map {
-            case result: Some[Seq[ChineseDefinition]] =>
-              assert(result.isDefined)
-              val definitions = result.get
+            case Some(definitions) =>
               assert(definitions.size == 1)
               val combined = definitions(0)
               assert(
@@ -209,12 +207,18 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
                   (dummyWiktionaryDefinition.examples ++ dummyWiktionaryDefinitionTwo.examples).flatten
                 )
               )
-              assert(combined.pronunciation.pinyin == "ni hao")
-              assert(combined.simplified == dummyCedictDefinition.simplified)
-              assert(combined.traditional == dummyCedictDefinition.traditional)
+              combined match {
+                case c: ChineseDefinition =>
+                  assert(c.pronunciation.pinyin == "ni hao")
+                  assert(c.simplified == dummyCedictDefinition.simplified)
+                  assert(c.traditional == dummyCedictDefinition.traditional)
+                case other =>
+                  fail(s"We aren't returning Chinese definitions, got $other")
+              }
               assert(combined.definitionLanguage == Language.ENGLISH)
               assert(combined.source == DefinitionSource.MULTIPLE)
               assert(combined.token == dummyCedictDefinition.token)
+            case None => fail("No definitions returned")
           }
       }
 
@@ -224,7 +228,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[Seq[ElasticsearchRequest[Definition]]])
+              any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
             )(
               any(classOf[Indexable[Definition]]),
               any(classOf[HitReader[Definition]]),
@@ -245,26 +249,21 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         chineseDefinitionService
           .getDefinitions(Language.ENGLISH, "你好")
           .map {
-            case result: Some[Seq[ChineseDefinition]] =>
-              assert(result.isDefined)
-              val definitions = result.get
+            case Some(definitions) =>
               assert(definitions.size == 2)
               val combinedOne = definitions(0)
               val combinedTwo = definitions(1)
 
-              print(combinedOne)
-              print(combinedTwo)
-
               // Cedict sourced data should be the same for all
-              assert(definitions.forall(_.pronunciation.pinyin == "ni hao"))
-              assert(
-                definitions
-                  .forall(_.simplified == dummyCedictDefinition.simplified)
-              )
-              assert(
-                definitions
-                  .forall(_.traditional == dummyCedictDefinition.traditional)
-              )
+              List(combinedOne, combinedTwo) map {
+                case c: ChineseDefinition =>
+                  assert(c.pronunciation.pinyin == "ni hao")
+                  assert(c.simplified == dummyCedictDefinition.simplified)
+                  assert(c.traditional == dummyCedictDefinition.traditional)
+                case other =>
+                  fail(s"We aren't returning Chinese definitions, got $other")
+              }
+
               assert(definitions.forall(_.token == dummyCedictDefinition.token))
 
               // Generated data should be the same for all
@@ -285,6 +284,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
               assert(
                 combinedTwo.examples == dummyWiktionaryDefinitionTwo.examples
               )
+            case None => fail("No definitions returned")
           }
       }
     }

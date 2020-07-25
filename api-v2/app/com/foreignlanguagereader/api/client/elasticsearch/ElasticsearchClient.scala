@@ -1,5 +1,7 @@
 package com.foreignlanguagereader.api.client.elasticsearch
 
+import java.util.concurrent.{ConcurrentLinkedQueue, TimeUnit}
+
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerAttempt,
@@ -8,24 +10,23 @@ import com.foreignlanguagereader.api.client.common.{
   Circuitbreaker
 }
 import com.foreignlanguagereader.api.client.elasticsearch.searchstates.{
-  ElasticsearchRequest,
-  ElasticsearchResponse
+  ElasticsearchCacheRequest,
+  ElasticsearchSearchRequest,
+  ElasticsearchSearchResponse
 }
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s._
-import com.sksamuel.elastic4s.requests.bulk.BulkCompatibleRequest
-import com.sksamuel.elastic4s.requests.indexes.IndexRequest
 import com.sksamuel.elastic4s.requests.searches.{
   MultiSearchRequest,
   MultiSearchResponse
 }
-import com.sksamuel.elastic4s.requests.update.UpdateRequest
-import java.util.concurrent.ConcurrentLinkedQueue
 import javax.inject.{Inject, Singleton}
 import play.api.{Configuration, Logger}
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.jdk.CollectionConverters._
+import scala.language.postfixOps
 import scala.reflect.ClassTag
 import scala.util.{Failure, Success, Try}
 
@@ -38,15 +39,16 @@ class ElasticsearchClient @Inject()(config: Configuration,
   implicit val ec: ExecutionContext =
     system.dispatchers.lookup("elasticsearch-context")
 
-  val attemptsIndex = "attempts"
-  val maxConcurrentInserts = 5
-
   // Holds inserts that weren't performed due to the circuit breaker being closed
   // Mutability is a risk but a decent tradeoff because the cost of losing an insert or two is low
   // But setting up actors makes this much more complicated and is not worth it IMO
   private[this] val insertionQueue
-    : ConcurrentLinkedQueue[Either[IndexRequest, UpdateRequest]] =
+    : ConcurrentLinkedQueue[ElasticsearchCacheRequest] =
     new ConcurrentLinkedQueue()
+
+  // Read only way to check state
+  // Only use this for testing
+  def getQueue: Seq[ElasticsearchCacheRequest] = insertionQueue.asScala.toSeq
 
   /**
     *
@@ -61,7 +63,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
     * @return
     */
   def findFromCacheOrRefetch[T: Indexable](
-    requests: Seq[ElasticsearchRequest[T]]
+    requests: Seq[ElasticsearchSearchRequest[T]]
   )(implicit hitReader: HitReader[T],
     attemptsHitReader: HitReader[LookupAttempt],
     tag: ClassTag[T]): Future[Seq[Option[Seq[T]]]] = {
@@ -75,7 +77,8 @@ class ElasticsearchClient @Inject()(config: Configuration,
               executeWithOption[MultiSearchRequest, MultiSearchResponse](
                 request.query
               ).map(
-                  result => ElasticsearchResponse.fromResult[T](request, result)
+                  result =>
+                    ElasticsearchSearchResponse.fromResult[T](request, result)
                 )
                 // This is where fetchers are called to get results if they aren't in elasticsearch
                 // There is also logic to remember what has been fetched from external sources
@@ -89,86 +92,72 @@ class ElasticsearchClient @Inject()(config: Configuration,
         // Asychronously save results back to elasticsearch
         // toIndex only exists when results were fetched from the fetchers
         val toSave = results.flatMap(_.toIndex).flatten
-        logger.info(s"Saving results back to elasticsearch: $toSave")
-        Future.apply(saveToCacheInBatches(toSave))
+
+        if (toSave.nonEmpty) {
+          insertionQueue.addAll(toSave.asJava)
+
+          // Spin up a thread to work on the queue
+          // And return to user without waiting for it to finish
+          val future = Future.apply(startInserting())
+          logger.info(
+            s"Saving results back to elasticsearch using future $future: $toSave"
+          )
+        }
 
         results.map(_.result)
       })
   }
 
-  // Saves documents in batches, and retries each item in the batch in case of a batch failure.
-  // Why? If there is one bad document, it'll fail the batch, but the rest of the requests may be fine.
-  private[this] def saveToCacheInBatches(
-    requests: Seq[Either[IndexRequest, UpdateRequest]]
-  ): Unit = {
-    requests
-      .grouped(maxConcurrentInserts)
-      .foreach(batch => {
-        val queries: Seq[BulkCompatibleRequest] = batch.map {
-          case Left(index)   => index
-          case Right(update) => update
-        }
-        execute(bulk(queries)) map {
-          case Success(CircuitBreakerAttempt(s)) =>
-            logger
-              .info(s"Successfully saved batch to elasticsearch: ${s.items}")
-            batch.foreach(request => saveToCache(request))
-          case Success(CircuitBreakerNonAttempt()) =>
-            logger
-              .info(
-                "Elasticsearch connection is unhealthy, retrying batch insert when it is healthy."
-              )
-            insertionQueue.addAll(batch asJava)
-          case Failure(e) =>
-            logger.warn(
-              s"Failed to persist batch to elasticsearch, retrying individually: $requests",
-              e
-            )
-            batch.foreach(request => saveToCache(request))
-        }
-      })
-  }
-
-  // Useful for retrying batches to see if there are good requests in the batch
-  private[this] def saveToCache(
-    request: Either[IndexRequest, UpdateRequest]
-  ): Unit =
-    (request match {
-      // This works around a limitation in the client library
-      // Since there is no parent type for the different requests
-      case Left(index)   => execute(index)
-      case Right(update) => execute(update)
-    }).map {
-      case Success(CircuitBreakerAttempt(s)) =>
-        logger
-          .info(s"Successfully saved to elasticsearch: $s")
-      case Success(CircuitBreakerNonAttempt()) =>
-        logger
-          .info(
-            "Elasticsearch connection is unhealthy, retrying inserts when it is healthy."
-          )
-        insertionQueue.add(request)
-      case Failure(e) =>
-        logger.warn(s"Failed to persist to elasticsearch: $request", e)
-    }
-
-  breaker.onClose(() => {
-    logger.info("Retrying inserts because elasticsearch is healthy again.")
-    retryInserts()
-  })
-
   // The breaker guard is pretty important, or else we just infinitely retry insertions
   // That will quickly consume the thread pool.
   @scala.annotation.tailrec
-  private[this] def retryInserts(): Unit = if (breaker.isOpen) {
+  final def startInserting(): Unit = if (breaker.isOpen) {
     // We could check if the queue is empty but that opens us up to race conditions.
     // Removing and null checking is atomic, and the queue is thread safe, so we are protected.
     insertionQueue.poll() match {
-      case null                                      => logger.info("Finished retrying inserts.") // scalastyle:off
-      case item: Either[IndexRequest, UpdateRequest] => saveToCache(item)
+      case null => logger.info("Finished inserting") // scalastyle:off
+      case item: ElasticsearchCacheRequest =>
+        save(item)
+        startInserting()
     }
-    retryInserts()
   }
+
+  def save(request: ElasticsearchCacheRequest): Unit = {
+    logger.info(s"Saving to elasticsearch: $request")
+    val future =
+      execute(bulk(request.requests)).map {
+        case Success(CircuitBreakerAttempt(_)) =>
+          logger
+            .info(s"Successfully saved to elasticsearch: $request")
+        case Success(CircuitBreakerNonAttempt()) =>
+          logger
+            .info(
+              "Elasticsearch connection is unhealthy, retrying insert when it is healthy."
+            )
+          insertionQueue.add(request)
+        case Failure(e) =>
+          logger.warn(
+            s"Failed to persist request to elasticsearch: $request, ${e.getMessage}",
+            e
+          )
+          request.retries match {
+            case Some(retries) =>
+              logger.info(s"Retrying request individually: $request")
+              insertionQueue.addAll(retries asJava)
+            case None =>
+              logger.warn(
+                s"Not retrying request because this is our second attempt: $request"
+              )
+          }
+      }
+
+    // We want to iterate through one by one
+    // Not set off hundreds of inserts concurrently
+    // The circuit breaker will time this out before await does.
+    val _ = Await.result(future, timeout + Duration(30, TimeUnit.SECONDS))
+  }
+
+  // Common wrappers for all requests below here
 
   // Wraps all elasticsearch requests with error handling
   private[this] def execute[T, U](request: T)(
@@ -201,6 +190,13 @@ class ElasticsearchClient @Inject()(config: Configuration,
       )
       CircuitBreakerAttempt(None)
   }
+
+  // Circuit breaker stuff below here
+
+  breaker.onClose({
+    logger.info("Retrying inserts because elasticsearch is healthy again.")
+    val _ = Future.apply(startInserting())
+  })
 
   /**
     * This makes the circuitbreaker know when elasticsearch requests are failing

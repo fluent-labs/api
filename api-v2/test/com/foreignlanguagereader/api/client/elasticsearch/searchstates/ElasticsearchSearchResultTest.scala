@@ -13,20 +13,21 @@ import com.sksamuel.elastic4s.ElasticDsl.{indexInto, updateById}
 import com.sksamuel.elastic4s.playjson._
 import org.scalatest.funspec.AnyFunSpec
 
-class ElasticsearchResultTest extends AnyFunSpec {
+class ElasticsearchSearchResultTest extends AnyFunSpec {
   val index: String = "definition"
   val fields: Map[String, String] =
     Map("field1" -> "value1", "field2" -> "value2", "field3" -> "value3")
   describe("an elasticsearch result") {
     describe("where nothing was refetched") {
       it("does not persist anything to elasticsearch") {
-        val result = ElasticsearchResult[Definition](
+        val result = ElasticsearchSearchResult[Definition](
           index = index,
           fields = fields,
           result = None,
           fetchCount = 5,
           lookupId = None,
-          refetched = false
+          refetched = false,
+          queried = true
         )
 
         assert(result.cacheQueries.isEmpty)
@@ -36,22 +37,26 @@ class ElasticsearchResultTest extends AnyFunSpec {
     }
 
     describe("where refetching gave no result") {
-      val result = ElasticsearchResult[Definition](
+      val result = ElasticsearchSearchResult[Definition](
         index = index,
         fields = fields,
         result = None,
         fetchCount = 5,
         lookupId = None,
-        refetched = true
+        refetched = true,
+        queried = true
       )
       val attemptsQuery =
-        Left(indexInto("attempts").doc(LookupAttempt(index, fields, 5)))
+        indexInto("attempts").doc(LookupAttempt(index, fields, 5))
       it("correctly saves fetch attempts to elasticsearch") {
         assert(result.updateAttemptsQuery.contains(attemptsQuery))
       }
       it("does not cache anything") {
         assert(result.cacheQueries.isEmpty)
-        assert(result.toIndex.contains(List(attemptsQuery)))
+        assert(
+          result.toIndex
+            .contains(List(ElasticsearchCacheRequest(List(attemptsQuery))))
+        )
       }
     }
 
@@ -78,26 +83,32 @@ class ElasticsearchResultTest extends AnyFunSpec {
     )
 
     describe("on a previously untried query") {
-      val result = ElasticsearchResult[Definition](
+      val result = ElasticsearchSearchResult[Definition](
         index = index,
         fields = fields,
         result = Some(List(dummyChineseDefinition, dummyGenericDefinition)),
         fetchCount = 1,
         lookupId = None,
-        refetched = true
+        refetched = true,
+        queried = true
       )
       val attemptsQuery =
-        Left(indexInto("attempts").doc(LookupAttempt(index, fields, 1)))
+        indexInto("attempts").doc(LookupAttempt(index, fields, 1))
       val indexQuery = List(
-        Left(indexInto(index).doc(dummyChineseDefinition)),
-        Left(indexInto(index).doc(dummyGenericDefinition))
+        indexInto(index).doc(dummyChineseDefinition),
+        indexInto(index).doc(dummyGenericDefinition)
       )
       it("creates a new fetch attempt in elasticsearch") {
         assert(result.updateAttemptsQuery.contains(attemptsQuery))
       }
       it("caches search results to elasticsearch") {
         assert(result.cacheQueries.contains(indexQuery))
-        assert(result.toIndex.contains(attemptsQuery :: indexQuery))
+        assert(
+          result.toIndex
+            .contains(
+              List(ElasticsearchCacheRequest(attemptsQuery :: indexQuery))
+            )
+        )
       }
     }
 
@@ -105,29 +116,34 @@ class ElasticsearchResultTest extends AnyFunSpec {
       "on a query which previously failed but contained results this time"
     ) {
       val attemptsId = "2423423"
-      val result = ElasticsearchResult[Definition](
+      val result = ElasticsearchSearchResult[Definition](
         index = index,
         fields = fields,
         result = Some(List(dummyChineseDefinition, dummyGenericDefinition)),
         fetchCount = 2,
         lookupId = Some(attemptsId),
-        refetched = true
+        refetched = true,
+        queried = true
       )
       val attemptsQuery =
-        Right(
-          updateById("attempts", attemptsId)
-            .doc(LookupAttempt(index = index, fields = fields, count = 2))
-        )
+        updateById("attempts", attemptsId)
+          .doc(LookupAttempt(index = index, fields = fields, count = 2))
+
       val indexQuery = List(
-        Left(indexInto(index).doc(dummyChineseDefinition)),
-        Left(indexInto(index).doc(dummyGenericDefinition))
+        indexInto(index).doc(dummyChineseDefinition),
+        indexInto(index).doc(dummyGenericDefinition)
       )
       it("updates the previous fetch attempt in elasticsearch") {
         assert(result.updateAttemptsQuery.contains(attemptsQuery))
       }
       it("caches search results to elasticsearch") {
         assert(result.cacheQueries.contains(indexQuery))
-        assert(result.toIndex.contains(attemptsQuery :: indexQuery))
+        assert(
+          result.toIndex
+            .contains(
+              List(ElasticsearchCacheRequest(attemptsQuery :: indexQuery))
+            )
+        )
       }
     }
   }

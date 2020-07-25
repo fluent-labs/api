@@ -6,7 +6,7 @@ import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerResult
 }
 import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
-import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchRequest
+import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchSearchRequest
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
@@ -148,7 +148,7 @@ trait LanguageDefinitionService {
     source: DefinitionSource,
     definitionLanguage: Language,
     word: String
-  ): ElasticsearchRequest[Definition] = {
+  ): ElasticsearchSearchRequest[Definition] = {
     val fetcher: () => Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
       definitionFetchers.get(source, definitionLanguage) match {
         case Some(fetcher) =>
@@ -162,7 +162,7 @@ trait LanguageDefinitionService {
             Future.successful(CircuitBreakerNonAttempt())
       }
 
-    ElasticsearchRequest(
+    ElasticsearchSearchRequest(
       definitionsIndex,
       Map(
         "wordLanguage" -> wordLanguage.toString,
