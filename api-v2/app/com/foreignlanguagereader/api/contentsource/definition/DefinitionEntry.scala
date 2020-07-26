@@ -24,16 +24,20 @@ trait DefinitionEntry {
   val token: String
 
   def toDefinition(partOfSpeech: PartOfSpeech): Definition = {
+    val part = tag match {
+      case Some(t) => t
+      case None    => partOfSpeech
+    }
     wordLanguage match {
       case Language.CHINESE =>
-        DefinitionEntry.buildChineseDefinition(this, partOfSpeech)
+        DefinitionEntry.buildChineseDefinition(this, part)
       case Language.CHINESE_TRADITIONAL =>
-        DefinitionEntry.buildChineseDefinition(this, partOfSpeech)
+        DefinitionEntry.buildChineseDefinition(this, part)
       case _ =>
         Definition(
           subdefinitions = subdefinitions,
           ipa = pronunciation,
-          tag = partOfSpeech,
+          tag = part,
           examples = examples,
           wordLanguage = wordLanguage,
           definitionLanguage = definitionLanguage,
