@@ -21,7 +21,7 @@
         }
       ]
     },
-    "partOfSpeech": "noun",
+    "partOfSpeechRaw": "noun",
     "definitions": [
       {
         "senseSequence": [
@@ -68,7 +68,7 @@
     "headwordInfo": {
       "headword": "animal"
     },
-    "partOfSpeech": "adjective",
+    "partOfSpeechRaw": "adjective",
     "definitions": [
       {
         "senseSequence": [
@@ -123,7 +123,7 @@
     "headwordInfo": {
       "headword": "animal"
     },
-    "partOfSpeech": "masculine noun",
+    "partOfSpeechRaw": "masculine noun",
     "definitions": [
       {
         "senseSequence": [
@@ -158,7 +158,7 @@
     "headwordInfo": {
       "headword": "animal"
     },
-    "partOfSpeech": "masculine or feminine noun",
+    "partOfSpeechRaw": "masculine or feminine noun",
     "definitions": [
       {
         "senseSequence": [

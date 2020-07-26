@@ -36,7 +36,7 @@
         }
       ]
     },
-    "partOfSpeech": "noun",
+    "partOfSpeechRaw": "noun",
     "definitions": [
       {
         "senseSequence": [
@@ -223,7 +223,7 @@
         }
       ]
     },
-    "partOfSpeech": "adjective",
+    "partOfSpeechRaw": "adjective",
     "definitions": [
       {
         "senseSequence": [
@@ -301,7 +301,7 @@
     "headwordInfo": {
       "headword": "guardián"
     },
-    "partOfSpeech": "noun",
+    "partOfSpeechRaw": "noun",
     "inflections": [
       {
         "inflection": "guardianes",

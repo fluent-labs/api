@@ -7,6 +7,7 @@ import com.foreignlanguagereader.api.domain.definition.HskLevel.HSKLevel
 import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.api.dto.v1.definition.ChineseDefinitionDTO
 import com.foreignlanguagereader.api.service.definition.ChineseDefinitionService
+import com.github.houbb.opencc4j.util.ZhConverterUtil
 import play.api.libs.json._
 import sangria.macros.derive.{
   ObjectTypeDescription,
@@ -17,22 +18,39 @@ import sangria.schema.{EnumType, ObjectType}
 
 case class ChineseDefinition(override val subdefinitions: List[String],
                              override val tag: Option[PartOfSpeech],
-                             override val examples: List[String],
+                             override val examples: Option[List[String]],
                              private val inputPinyin: String = "",
-                             simplified: String = "",
-                             traditional: String = "",
+                             private val inputSimplified: Option[String],
+                             private val inputTraditional: Option[String],
                              // These fields are needed for elasticsearch lookup
                              // But do not need to be presented to the user.
                              override val definitionLanguage: Language,
                              override val source: DefinitionSource,
                              override val token: String)
     extends Definition {
-  val wordLanguage: Language = Language.CHINESE
+  private[this] val isTraditional = ZhConverterUtil.isTraditional(token)
+  val wordLanguage: Language =
+    if (isTraditional) Language.CHINESE_TRADITIONAL else Language.CHINESE
 
   val pronunciation: ChinesePronunciation =
     ChineseDefinitionService.getPronunciation(inputPinyin)
+  val ipa: String = pronunciation.ipa
 
-  val hsk: HSKLevel = ChineseDefinitionService.getHSK(simplified)
+  val (simplified: Option[String], traditional: Option[Seq[String]]) =
+    (inputSimplified, inputTraditional) match {
+      case (Some(s), Some(t))                => (Some(s), Some(List(t)))
+      case (Some(s), None) if isTraditional  => (Some(s), Some(List(token)))
+      case (None, Some(t)) if !isTraditional => (Some(token), Some(List(t)))
+      case _ =>
+        if (isTraditional)
+          (ChineseDefinitionService.toSimplified(token), Some(List(token)))
+        else (Some(token), ChineseDefinitionService.toTraditional(token))
+    }
+
+  val hsk: HSKLevel = simplified match {
+    case Some(s) => ChineseDefinitionService.getHSK(s)
+    case None    => HskLevel.NONE
+  }
 
   lazy val toDTO: ChineseDefinitionDTO =
     ChineseDefinitionDTO(
@@ -44,6 +62,10 @@ case class ChineseDefinition(override val subdefinitions: List[String],
       pronunciation,
       hsk
     )
+}
+object ChineseDefinition {
+  implicit val format: Format[ChineseDefinition] =
+    Json.format[ChineseDefinition]
 }
 
 case class ChinesePronunciation(pinyin: String = "",

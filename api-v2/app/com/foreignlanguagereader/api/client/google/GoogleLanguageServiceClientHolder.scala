@@ -6,12 +6,15 @@ import com.google.cloud.language.v1.{
   LanguageServiceClient,
   Token
 }
+import javax.inject.Singleton
+
 import scala.jdk.CollectionConverters._
 
 /**
   * Holder for the google cloud client.
   * Allows us to swap this out for testing
   */
+@Singleton
 class GoogleLanguageServiceClientHolder {
   private[this] val gcloud: LanguageServiceClient =
     LanguageServiceClient.create()

@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.contentsource.definition.webster.common
 
+import com.foreignlanguagereader.api.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
@@ -20,23 +21,23 @@ object WebsterDefiningText {
     .read[Seq[Seq[JsValue]]](JsonSequenceHelper.jsValueHelper.readsSeqSeq)
     .map(intermediate => {
       val lookup: Map[String, Seq[JsValue]] =
-        NestedArrayHelper.buildLookupMap(intermediate)
+        WebsterNestedArrayHelper.buildLookupMap(intermediate)
 
       val text: Seq[String] =
-        NestedArrayHelper.getOrNone[String](lookup.get("text")) match {
+        WebsterNestedArrayHelper.getOrNone[String](lookup.get("text")) match {
           case Some(t) => t
           case None    => List()
         }
       val bnw: Option[Seq[WebsterBiographicalNameWrap]] =
-        NestedArrayHelper
+        WebsterNestedArrayHelper
           .getOrNone[WebsterBiographicalNameWrap](lookup.get("bnw"))
       val ca: Option[Seq[WebsterCalledAlso]] =
-        NestedArrayHelper.getOrNone[WebsterCalledAlso](lookup.get("ca"))
+        WebsterNestedArrayHelper.getOrNone[WebsterCalledAlso](lookup.get("ca"))
 
-      val snote: Option[Seq[WebsterSupplementalNote]] = NestedArrayHelper
+      val snote: Option[Seq[WebsterSupplementalNote]] = WebsterNestedArrayHelper
         .getOrNone[WebsterSupplementalNote](lookup.get("snote"))
 
-      val vis: Option[Seq[WebsterVerbalIllustration]] = NestedArrayHelper
+      val vis: Option[Seq[WebsterVerbalIllustration]] = WebsterNestedArrayHelper
         .getOrNone[Seq[WebsterVerbalIllustration]](lookup.get("vis"))(
           WebsterVerbalIllustration.helper.readsSeq
         ) match {
@@ -122,16 +123,16 @@ object WebsterSupplementalNote {
   implicit val reads: Reads[WebsterSupplementalNote] = JsPath
     .read[Seq[Seq[JsValue]]](JsonSequenceHelper.jsValueHelper.readsSeqSeq)
     .map(intermediate => {
-      val lookup = NestedArrayHelper.buildLookupMap(intermediate)
+      val lookup = WebsterNestedArrayHelper.buildLookupMap(intermediate)
 
       val text =
-        NestedArrayHelper.getOrNone[String](lookup.get("t")) match {
+        WebsterNestedArrayHelper.getOrNone[String](lookup.get("t")) match {
           case Some(t) => t
           case None    => List("")
         }
 
       val example: Option[Seq[WebsterVerbalIllustration]] = {
-        val nested = NestedArrayHelper
+        val nested = WebsterNestedArrayHelper
           .getOrNone[Seq[WebsterVerbalIllustration]](lookup.get("vis"))(
             WebsterVerbalIllustration.helper.readsSeq
           )

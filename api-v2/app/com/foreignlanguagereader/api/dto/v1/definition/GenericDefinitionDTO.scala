@@ -7,7 +7,7 @@ import sangria.schema.ObjectType
 
 case class GenericDefinitionDTO(subdefinitions: List[String],
                                 tag: Option[PartOfSpeech],
-                                examples: List[String])
+                                examples: Option[List[String]])
     extends DefinitionDTO
 object GenericDefinitionDTO {
   implicit val format: Format[GenericDefinitionDTO] = Json.format

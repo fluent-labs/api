@@ -39,7 +39,8 @@
             "audio": "test0001",
             "language": "en",
             "country": "us"
-          }
+          },
+          "ipa":"ˈtɛst"
         }
       ]
     },
@@ -302,7 +303,12 @@
       "offensive": false
     },
     "headwordInfo": {
-      "headword": "test"
+      "headword": "test",
+      "alternatePronunciations":[
+        {
+          "ipa":"ˈtɛst"
+        }
+      ]
     },
     "partOfSpeech": "verb",
     "inflections": [

@@ -25,7 +25,7 @@
         }
       ]
     },
-    "partOfSpeech": "noun",
+    "partOfSpeechRaw": "noun",
     "definitions": [
       {
         "senseSequence": [
@@ -60,7 +60,7 @@
     "headwordInfo": {
       "headword": "vale"
     },
-    "partOfSpeech": "masculine noun",
+    "partOfSpeechRaw": "masculine noun",
     "definitions": [
       {
         "senseSequence": [
@@ -115,7 +115,7 @@
         }
       ]
     },
-    "partOfSpeech": "masculine noun",
+    "partOfSpeechRaw": "masculine noun",
     "definitions": [
       {
         "senseSequence": [
@@ -188,7 +188,7 @@
         }
       ]
     },
-    "partOfSpeech": "transitive verb",
+    "partOfSpeechRaw": "transitive verb",
     "definitions": [
       {
         "senseSequence": [

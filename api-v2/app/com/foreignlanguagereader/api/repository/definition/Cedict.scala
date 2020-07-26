@@ -11,53 +11,42 @@ object Cedict {
 
   private[this] val CEDICTPath = "/resources/definition/chinese/cedict_ts.u8"
 
-  val definitions: Map[String, CEDICTDefinitionEntry] =
+  val definitions: Map[String, List[CEDICTDefinitionEntry]] =
     Using(
       Source.fromInputStream(
         this.getClass
           .getResourceAsStream(CEDICTPath)
       )
     ) { cedict =>
-      parseCedictFile(cedict).map(entry => entry.traditional -> entry).toMap
+      parseCedictFile(cedict).groupBy(_.traditional)
     } match {
       case Success(d) =>
-        logger.info("Successfully loaded CEDICT")
+        val entries = d.values.map(_.size).sum
+        val duplicates = d.values.count(_.size > 1)
+        logger.info(
+          s"Successfully loaded CEDICT with $entries entries and $duplicates words with multiple entries"
+        )
         d
       case Failure(e) =>
         throw new IllegalStateException("Failed to load CEDICT", e)
     }
 
-  def getDefinition(token: String): Option[CEDICTDefinitionEntry] =
-    definitions.get(token)
+  def getDefinition(token: String): Option[List[CEDICTDefinitionEntry]] =
+    // If it's already traditional then we can just do the lookup
+    if (definitions.keySet.contains(token)) definitions.get(token)
+    else {
+      // If not we need to get all traditional characters for the simplified one, and give all the definitions.
+      val d = simplifiedToTraditionalMapping
+        .getOrElse(token, List())
+        .flatMap(trad => definitions.get(trad))
+        .flatten
+      if (d.isEmpty) None else Some(d)
+    }
 
-  private[this] val simplifiedToTraditionalMapping: Map[String, String] =
-    definitions.values.map(entry => entry.simplified -> entry.traditional).toMap
-  private[this] val simplified: Set[String] =
-    definitions.values.map(_.simplified).toSet
-  private[this] val traditional: Set[String] =
-    definitions.values.map(_.traditional).toSet
-
-  /**
-    * Converts a given token into traditional Chinese
-    * @param token The token to normalize
-    * @return The token as traditional
-    */
-  def convertToTraditional(token: String): String = token match {
-    case t if traditional.contains(t) =>
-      logger.info(
-        s"Token $token was already traditional, no normalization needed."
-      )
-      t
-    case s if simplified.contains(s) =>
-      val t = simplifiedToTraditionalMapping.getOrElse(s, token)
-      logger.info(
-        s"Token $token normalized from simplified $s to traditional $t."
-      )
-      t
-    case _ =>
-      logger.warn(s"Unknown token $token, unable to normalize.")
-      token
-  }
+  private[this] val simplifiedToTraditionalMapping: Map[String, List[String]] =
+    definitions.map {
+      case (traditional, entries) => traditional -> entries.map(_.simplified)
+    }
 
   private[this] def parseCedictFile(
     cedict: BufferedSource

@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.contentsource.definition.webster.common
 
+import com.foreignlanguagereader.api.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
@@ -11,7 +12,7 @@ object WebsterDefinition {
                           verbDivider: Option[String]): WebsterDefinition = {
     val senseSequence: Option[Seq[Seq[WebsterSense]]] = sseq match {
       case Some(seq) =>
-        NestedArrayHelper
+        WebsterNestedArrayHelper
         // Gives us a Seq[Map[String, Seq[WebsterSense]]] although we haven't parsed the senses yet
           .buildLookupMapFromNested(seq)
           // We only care about the senses in this array, other types can be safely ignored.

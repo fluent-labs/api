@@ -1,10 +1,12 @@
 package com.foreignlanguagereader.api.service.definition
 
-import com.foreignlanguagereader.api.client.{
-  ElasticsearchClient,
-  LanguageServiceClient
+import com.foreignlanguagereader.api.client.LanguageServiceClient
+import com.foreignlanguagereader.api.client.common.{
+  CircuitBreakerNonAttempt,
+  CircuitBreakerResult
 }
-import com.foreignlanguagereader.api.contentsource.definition.DefinitionEntry
+import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
+import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchSearchRequest
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
@@ -12,6 +14,7 @@ import com.foreignlanguagereader.api.domain.definition.{
   Definition,
   DefinitionSource
 }
+import com.sksamuel.elastic4s.playjson._
 import play.api.Logger
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -43,140 +46,132 @@ trait LanguageDefinitionService {
   val elasticsearch: ElasticsearchClient
   val languageServiceClient: LanguageServiceClient
   val wordLanguage: Language
-  val sources: Set[DefinitionSource]
-  val fetchableSources: Set[DefinitionSource]
+  val sources: List[DefinitionSource]
 
   // These are strongly recommended to implement, but have sane defaults
 
   // Pre-request hook for normalizing user requests. Suggested for lemmatization
   // Eg: run, runs, running all become run so you don't keep re-teaching the same word
-  def preprocessTokenForRequest(token: String): String = token
+  def preprocessTokenForRequest(token: String): Seq[String] = List(token)
 
   // Functions that can fetch definitions from web sources should be registered here.
   val definitionFetchers
     : Map[(DefinitionSource, Language), (Language, String) => Future[
-      Option[Seq[DefinitionEntry]]
+      CircuitBreakerResult[Option[Seq[Definition]]]
     ]] = Map(
     (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
   )
+  val maxFetchAttempts = 5
 
   // Define logic to combine definition sources here. If there is only one source, this just returns it.
-  def enrichDefinitions(definitionLanguage: Language,
-                        word: String,
-                        definitions: Seq[DefinitionEntry]): Seq[Definition] =
-    definitions.map(e => e.toDefinition)
+  def enrichDefinitions(
+    definitionLanguage: Language,
+    word: String,
+    definitions: Map[DefinitionSource, Option[Seq[Definition]]]
+  ): Seq[Definition] =
+    definitions.iterator
+      .flatMap {
+        case (_, result) => result
+      }
+      .flatten
+      .toList
 
   // This is the main method that consumers will call
   def getDefinitions(definitionLanguage: Language,
-                     word: String): Future[Option[Seq[Definition]]] = {
-    findOrFetchDefinitions(definitionLanguage, preprocessTokenForRequest(word)) map {
-      case Some(definitions) =>
-        Some(enrichDefinitions(definitionLanguage, word, definitions))
-      case None =>
+                     word: String): Future[Option[Seq[Definition]]] =
+    Future
+      .sequence(
+        preprocessTokenForRequest(word)
+          .map(token => fetchDefinitions(sources, definitionLanguage, token))
+      )
+      .map(
+        results =>
+          results.reduce((a, b) => {
+            // Each possible token gives a Map[DefinitionSource, Option[Seq[Definition]]]
+            // So this just adds them up in the obvious way
+            sources
+              .map(source => {
+                // The option here refers to if the source returned results
+                // Not whether the key is in the map
+                val sourceA = a.getOrElse(source, None)
+                val sourceB = b.getOrElse(source, None)
+                (sourceA, sourceB) match {
+                  case (Some(as), Some(bs)) => source -> Some(as ++ bs)
+                  case (Some(as), None)     => source -> Some(as)
+                  case (None, Some(bs))     => source -> Some(bs)
+                  case _                    => source -> None
+                }
+              })
+              .toMap[DefinitionSource, Option[Seq[Definition]]]
+          })
+      ) map {
+      case r if r.forall {
+            // (source, Option[Seq[results]]
+            case (_, None) => true
+            case _         => false
+          } =>
         logger.info(
           s"No definitions found for $wordLanguage $word in $definitionLanguage"
         )
         None
+      case definitions =>
+        Some(enrichDefinitions(definitionLanguage, word, definitions))
     }
-  }
 
   // Below here is trait behavior, implementers need not read further
 
-  // Handles fetching definitions from elasticsearch, and getting sources that are missing
-  private[this] def findOrFetchDefinitions(
-    definitionLanguage: Language,
-    word: String
-  ): Future[Option[Seq[DefinitionEntry]]] = {
-    elasticsearch.getDefinition(wordLanguage, definitionLanguage, word) match {
-      case Some(allSources) if missingRefetchableSources(allSources).isEmpty =>
-        logger.info(
-          s"Using elasticsearch definitions for $word in $wordLanguage"
-        )
-        Future.successful(Some(allSources))
-      case Some(someSources) =>
-        val missing = missingRefetchableSources(someSources)
-        logger.info(
-          s"Refreshing definitions for $word in $wordLanguage from $sources"
-        )
-        fetchDefinitions(missing, definitionLanguage, word) map {
-          case Some(refetched) =>
-            elasticsearch.saveDefinitions(refetched)
-            Some(someSources ++ refetched)
-          case None => Some(someSources)
-        }
-      // Is this just a special case of Some(d) where there are missing sources?
-      case None =>
-        logger.info(
-          s"Refreshing definitions for $word in $wordLanguage using all sources"
-        )
-        fetchDefinitions(fetchableSources, definitionLanguage, word).map {
-          case Some(d) =>
-            elasticsearch.saveDefinitions(d)
-            Some(d)
-          case None => None
-        }
-    }
-  }
-
-  // Which sources can be refreshed which we don't have data for?
-  private def missingRefetchableSources(
-    definitions: Seq[DefinitionEntry]
-  ): Set[DefinitionSource] =
-    fetchableSources.filterNot(source => definitions.exists(_.source == source))
-
-  // Checks registered definition fetchers and uses them
-  private[this] def fetchDefinition(
-    source: DefinitionSource,
-    definitionLanguage: Language,
-    word: String
-  ): Future[Option[Seq[DefinitionEntry]]] = {
-    definitionFetchers.get(source, definitionLanguage) match {
-      case Some(fetcher) =>
-        fetcher(definitionLanguage, word).recover {
-          case e: Exception =>
-            logger.error(
-              s"Failed to fetch definition from $source for $wordLanguage $word in $definitionLanguage: ${e.getMessage}",
-              e
-            )
-            None
-        }
-      case None =>
-        logger.error(
-          s"Failed to search in $wordLanguage for $word because $source is not implemented for definitions in $definitionLanguage"
-        )
-        Future.successful(None)
-    }
-  }
+  val definitionsIndex = "definitions"
 
   // Out of the box, this calls language service for Wiktionary definitions. All languages should use this.
   def languageServiceFetcher
-    : (Language, String) => Future[Option[Seq[DefinitionEntry]]] =
+    : (Language,
+       String) => Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
     (_, word: String) => languageServiceClient.getDefinition(wordLanguage, word)
 
-  // Convenience method to request multiple sources in parallel
   private[this] def fetchDefinitions(
-    sources: Set[DefinitionSource],
+    sources: List[DefinitionSource],
     definitionLanguage: Language,
     word: String
-  ): Future[Option[Seq[DefinitionEntry]]] =
-    // Fire off all the results
-    Future
-      .sequence(
-        sources.map(source => fetchDefinition(source, definitionLanguage, word))
+  ): Future[Map[DefinitionSource, Option[Seq[Definition]]]] = {
+    elasticsearch
+      .findFromCacheOrRefetch[Definition](
+        sources
+          .map(
+            source => makeDefinitionRequest(source, definitionLanguage, word)
+          )
       )
-      // Wait until completion
-      .map(
-        sources =>
-          // Remove all empty results
-          sources.flatten match {
-            // No results found
-            case empty if empty.isEmpty => None
-            // Combine all the results together
-            case s =>
-              s.reduce(_ ++ _) match {
-                case e if e.isEmpty => None
-                case d              => Some(d)
-              }
-        }
-      )
+      .map(results => sources.zip(results).toMap)
+  }
+
+  // Definition domain to elasticsearch domain
+  private[this] def makeDefinitionRequest(
+    source: DefinitionSource,
+    definitionLanguage: Language,
+    word: String
+  ): ElasticsearchSearchRequest[Definition] = {
+    val fetcher: () => Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
+      definitionFetchers.get(source, definitionLanguage) match {
+        case Some(fetcher) =>
+          () =>
+            fetcher(definitionLanguage, word)
+        case None =>
+          logger.error(
+            s"Failed to search in $wordLanguage for $word because $source is not implemented for definitions in $definitionLanguage"
+          )
+          () =>
+            Future.successful(CircuitBreakerNonAttempt())
+      }
+
+    ElasticsearchSearchRequest(
+      definitionsIndex,
+      Map(
+        "wordLanguage" -> wordLanguage.toString,
+        "definitionLanguage" -> definitionLanguage.toString,
+        "token" -> word,
+        "source" -> source.toString
+      ),
+      fetcher,
+      maxFetchAttempts
+    )
+  }
 }

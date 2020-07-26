@@ -25,10 +25,11 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         .toString()
 
       val tag = Some(PartOfSpeech.NOUN)
+      val ipa = "ˈænəm{it}ə{/it}l"
       val token = "animal"
       val subdefinitions =
         List("{bc}animal ", "{sx|brute||} {bc}{a_link|bruto} ", ", ", "  ")
-      val examples = List()
+      val examples = None
 
       it("can be read from the webster payload") {
         assert(webster.size == 4)
@@ -47,6 +48,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
 
         val compareAgainst = Definition(
           subdefinitions,
+          ipa,
           tag,
           examples,
           wordLanguage,
@@ -84,7 +86,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
           )
         )
         assert(pop.tag.contains(PartOfSpeech.NOUN))
-        assert(pop.examples == List("ponerle peros a"))
+        assert(pop.examples.contains(List("ponerle peros a")))
       }
 
       it("can be written out to json") {
@@ -122,7 +124,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
           )
         )
         assert(perro.tag.contains(PartOfSpeech.NOUN))
-        assert(perro.examples == List())
+        assert(perro.examples.isEmpty)
       }
 
       it("can be written out to json") {
@@ -157,12 +159,14 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         )
         assert(pop.tag.contains(PartOfSpeech.VERB))
         assert(
-          pop.examples == List(
-            "he popped into the house",
-            "a menu pops up",
-            "my eyes popped out of my head",
-            "he popped it into his mouth",
-            "she popped her head out the window"
+          pop.examples.contains(
+            List(
+              "he popped into the house",
+              "a menu pops up",
+              "my eyes popped out of my head",
+              "he popped it into his mouth",
+              "she popped her head out the window"
+            )
           )
         )
       }
@@ -190,7 +194,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
           perro.subdefinitions == List("{bc}{a_link|reason}, {a_link|cause} ")
         )
         assert(perro.tag.contains(PartOfSpeech.NOUN))
-        assert(perro.examples == List("no explicó el porqué"))
+        assert(perro.examples.contains(List("no explicó el porqué")))
       }
 
       it("can be written out to json") {
@@ -219,7 +223,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
           )
         )
         assert(perro.tag.contains(PartOfSpeech.NOUN))
-        assert(perro.examples == List())
+        assert(perro.examples.isEmpty)
       }
 
       it("can be written out to json") {

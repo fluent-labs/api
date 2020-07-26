@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.client.google
 
+import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.word.GrammaticalGender
 import com.foreignlanguagereader.api.domain.word.{PartOfSpeech, _}
@@ -11,6 +12,7 @@ import com.google.cloud.language.v1.PartOfSpeech.{
   Tag,
   Tense
 }
+import com.typesafe.config.ConfigFactory
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
 import org.scalatest.funspec.AsyncFunSpec
@@ -22,7 +24,8 @@ class GoogleCloudClientTest extends AsyncFunSpec with MockitoSugar {
 
   val client = new GoogleCloudClient(
     holderMock,
-    scala.concurrent.ExecutionContext.Implicits.global
+    scala.concurrent.ExecutionContext.Implicits.global,
+    ActorSystem("testActorSystem", ConfigFactory.load())
   )
 
   describe("A google cloud language client") {

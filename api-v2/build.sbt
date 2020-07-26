@@ -9,7 +9,16 @@ lazy val root = (project in file("."))
 scalaVersion := "2.13.2"
 
 // Give deprecation and feature warnings on compile
-scalacOptions ++= Seq("-deprecation", "-feature")
+scalacOptions ++= Seq(
+  "-encoding",
+  "utf8",
+  "-deprecation",
+  "-feature",
+  "-unchecked",
+  "-Xfatal-warnings",
+  "-Wdead-code",
+  "-Wvalue-discard"
+)
 
 // Dependency injection
 libraryDependencies += guice
@@ -25,12 +34,15 @@ libraryDependencies += ws
 
 libraryDependencies += "com.google.cloud" % "google-cloud-language" % "1.100.0"
 
-val elastic4sVersion = "7.6.1"
+val elastic4sVersion = "7.8.0"
 libraryDependencies ++= Seq(
   "com.sksamuel.elastic4s" %% "elastic4s-client-esjava" % elastic4sVersion,
-  "com.sksamuel.elastic4s" %% "elastic4s-testkit" % elastic4sVersion % "test"
+  "com.sksamuel.elastic4s" %% "elastic4s-testkit" % elastic4sVersion % "test",
+  "com.sksamuel.elastic4s" % "elastic4s-json-play_2.13" % elastic4sVersion
 )
-libraryDependencies += "com.sksamuel.elastic4s" % "elastic4s-json-play_2.13" % elastic4sVersion
+
+// Chinese language processing untilities.
+libraryDependencies += "com.github.houbb" % "opencc4j" % "1.6.0"
 
 libraryDependencies += "org.sangria-graphql" %% "sangria" % "2.0.0"
 libraryDependencies += "org.sangria-graphql" %% "sangria-play-json" % "2.0.1"

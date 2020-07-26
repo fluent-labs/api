@@ -9,9 +9,9 @@ import sangria.schema.ObjectType
 
 case class ChineseDefinitionDTO(subdefinitions: List[String],
                                 tag: Option[PartOfSpeech],
-                                examples: List[String],
-                                simplified: String = "",
-                                traditional: String = "",
+                                examples: Option[List[String]],
+                                simplified: Option[String],
+                                traditional: Option[Seq[String]],
                                 pronunciation: ChinesePronunciation,
                                 hsk: HSKLevel)
     extends DefinitionDTO

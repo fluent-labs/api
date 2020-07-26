@@ -23,7 +23,7 @@
         }
       ]
     },
-    "partOfSpeech": "masculine noun",
+    "partOfSpeechRaw": "masculine noun",
     "definitions": [
       {
         "senseSequence": [
@@ -82,7 +82,7 @@
         }
       ]
     },
-    "partOfSpeech": "conjunction",
+    "partOfSpeechRaw": "conjunction",
     "definitions": [
       {
         "senseSequence": [
