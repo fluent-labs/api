@@ -11,7 +11,7 @@ import play.api.libs.json.{Format, Json}
 
 case class GenericDefinition(subdefinitions: List[String],
                              ipa: String,
-                             tag: Option[PartOfSpeech],
+                             tag: PartOfSpeech,
                              examples: Option[List[String]],
                              // These fields are needed for elasticsearch lookup
                              // But do not need to be presented to the user.

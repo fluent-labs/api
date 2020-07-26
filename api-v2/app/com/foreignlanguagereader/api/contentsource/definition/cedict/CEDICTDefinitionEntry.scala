@@ -27,17 +27,18 @@ case class CEDICTDefinitionEntry(override val subdefinitions: List[String],
   override val source: DefinitionSource = DefinitionSource.CEDICT
 
   // We clearly do have simplified and traditional values so let's use them.
-  override lazy val toDefinition: Definition = ChineseDefinition(
-    subdefinitions = subdefinitions,
-    tag = tag,
-    examples = examples,
-    inputPinyin = pinyin,
-    inputSimplified = Some(simplified),
-    inputTraditional = Some(traditional),
-    definitionLanguage = definitionLanguage,
-    source = source,
-    token = token
-  )
+  override def toDefinition(partOfSpeech: PartOfSpeech): Definition =
+    ChineseDefinition(
+      subdefinitions = subdefinitions,
+      tag = partOfSpeech,
+      examples = examples,
+      inputPinyin = pinyin,
+      inputSimplified = Some(simplified),
+      inputTraditional = Some(traditional),
+      definitionLanguage = definitionLanguage,
+      source = source,
+      token = token
+    )
 }
 
 object CEDICTDefinitionEntry {

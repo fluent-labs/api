@@ -37,7 +37,7 @@ class SpanishDefinitionService @Inject()(
     (language: Language, word: Word) =>
       language match {
         case Language.ENGLISH =>
-          websterClient.getSpanishDefinition(word.processedToken)
+          websterClient.getSpanishDefinition(word)
         case _ => Future.successful(CircuitBreakerNonAttempt())
     }
 

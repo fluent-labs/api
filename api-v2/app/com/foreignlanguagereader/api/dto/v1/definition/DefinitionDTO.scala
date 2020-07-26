@@ -7,7 +7,7 @@ import sangria.schema.UnionType
 trait DefinitionDTO {
   val id: String
   val subdefinitions: List[String]
-  val tag: Option[PartOfSpeech]
+  val tag: PartOfSpeech
   val examples: Option[List[String]]
 }
 object DefinitionDTO {
@@ -33,7 +33,7 @@ object DefinitionDTO {
   // Constructor that defaults to generic
   def apply(id: String,
             subdefinitions: List[String],
-            tag: Option[PartOfSpeech],
+            tag: PartOfSpeech,
             examples: Option[List[String]]): DefinitionDTO =
     GenericDefinitionDTO(
       id = id,

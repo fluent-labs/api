@@ -27,7 +27,7 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
   val fetchedDefinition = GenericDefinition(
     List("refetched"),
     "ipa",
-    Some(PartOfSpeech.NOUN),
+    PartOfSpeech.NOUN,
     Some(List("this was refetched")),
     Language.ENGLISH,
     Language.ENGLISH,

@@ -23,16 +23,17 @@ trait DefinitionEntry {
   val source: DefinitionSource
   val token: String
 
-  lazy val toDefinition: Definition = {
+  def toDefinition(partOfSpeech: PartOfSpeech): Definition = {
     wordLanguage match {
-      case Language.CHINESE => DefinitionEntry.buildChineseDefinition(this)
+      case Language.CHINESE =>
+        DefinitionEntry.buildChineseDefinition(this, partOfSpeech)
       case Language.CHINESE_TRADITIONAL =>
-        DefinitionEntry.buildChineseDefinition(this)
+        DefinitionEntry.buildChineseDefinition(this, partOfSpeech)
       case _ =>
         Definition(
           subdefinitions = subdefinitions,
           ipa = pronunciation,
-          tag = tag,
+          tag = partOfSpeech,
           examples = examples,
           wordLanguage = wordLanguage,
           definitionLanguage = definitionLanguage,
@@ -73,13 +74,11 @@ object DefinitionEntry {
   implicit val readsSeq: Reads[Seq[DefinitionEntry]] =
     Reads.seq(formatDefinitionEntry)
 
-  def convertToSeqOfDefinitions(d: Seq[DefinitionEntry]): Seq[Definition] =
-    d.map(e => e.toDefinition)
-
-  def buildChineseDefinition(entry: DefinitionEntry): ChineseDefinition =
+  def buildChineseDefinition(entry: DefinitionEntry,
+                             partOfSpeech: PartOfSpeech): ChineseDefinition =
     ChineseDefinition(
       subdefinitions = entry.subdefinitions,
-      tag = entry.tag,
+      tag = partOfSpeech,
       examples = entry.examples,
       inputPinyin = entry.pronunciation,
       inputSimplified = None,

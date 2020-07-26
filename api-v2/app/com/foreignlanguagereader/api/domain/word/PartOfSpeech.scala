@@ -33,6 +33,7 @@ object PartOfSpeech extends Enumeration {
   val VERB: Value = Value("Verb")
   val OTHER: Value = Value("Other")
   val AFFIX: Value = Value("Affix")
+  val UNKNOWN: Value = Value("Unknown")
 
   implicit val reads: Reads[PartOfSpeech] = Reads.enumNameReads(PartOfSpeech)
   implicit val writes: Writes[PartOfSpeech] = Writes.enumNameWrites

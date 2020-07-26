@@ -47,7 +47,7 @@ class ChineseDefinitionService @Inject()(
       Cedict.getDefinition(word) match {
         case Some(entries) =>
           Future.successful(
-            CircuitBreakerAttempt(Some(entries.map(_.toDefinition)))
+            CircuitBreakerAttempt(Some(entries.map(_.toDefinition(word.tag))))
           )
         case None => Future.successful(CircuitBreakerNonAttempt())
     }

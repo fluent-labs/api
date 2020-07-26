@@ -17,7 +17,7 @@ import sangria.macros.derive.{
 import sangria.schema.{EnumType, ObjectType}
 
 case class ChineseDefinition(override val subdefinitions: List[String],
-                             override val tag: Option[PartOfSpeech],
+                             override val tag: PartOfSpeech,
                              override val examples: Option[List[String]],
                              private val inputPinyin: String = "",
                              private val inputSimplified: Option[String],

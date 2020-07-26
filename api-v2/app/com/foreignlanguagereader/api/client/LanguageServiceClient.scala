@@ -11,6 +11,7 @@ import com.foreignlanguagereader.api.client.common.{
 import com.foreignlanguagereader.api.contentsource.definition.DefinitionEntry
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.Definition
+import com.foreignlanguagereader.api.domain.word.Word
 import javax.inject.Inject
 import play.api.libs.json.Reads
 import play.api.libs.ws.WSClient
@@ -45,14 +46,15 @@ class LanguageServiceClient @Inject()(config: Configuration,
 
   def getDefinition(
     wordLanguage: Language,
-    word: String
+    word: Word
   ): Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
-    get(s"$languageServiceBaseUrl/v1/definition/$wordLanguage/$word")
-      .map(
-        results =>
-          results.transform {
-            case Some(r) => Some(r.map(_.toDefinition))
-            case None    => None
-        }
-      )
+    get(
+      s"$languageServiceBaseUrl/v1/definition/$wordLanguage/${word.processedToken}"
+    ).map(
+      results =>
+        results.transform {
+          case Some(r) => Some(r.map(_.toDefinition(word.tag)))
+          case None    => None
+      }
+    )
 }

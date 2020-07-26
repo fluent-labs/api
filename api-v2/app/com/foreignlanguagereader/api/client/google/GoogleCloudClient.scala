@@ -114,22 +114,22 @@ class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
       )
       .toSet
 
-  def googlePartOfSpeechToDomainPartOfSpeech(tag: Tag): Option[PartOfSpeech] =
+  def googlePartOfSpeechToDomainPartOfSpeech(tag: Tag): PartOfSpeech =
     tag match {
-      case Tag.ADJ   => Some(PartOfSpeech.ADJECTIVE)
-      case Tag.ADP   => Some(PartOfSpeech.ADPOSITION)
-      case Tag.ADV   => Some(PartOfSpeech.ADVERB)
-      case Tag.CONJ  => Some(PartOfSpeech.CONJUNCTION)
-      case Tag.DET   => Some(PartOfSpeech.DETERMINER)
-      case Tag.NOUN  => Some(PartOfSpeech.NOUN)
-      case Tag.NUM   => Some(PartOfSpeech.NUMBER)
-      case Tag.PRON  => Some(PartOfSpeech.PRONOUN)
-      case Tag.PRT   => Some(PartOfSpeech.PARTICLE)
-      case Tag.PUNCT => Some(PartOfSpeech.PUNCTUATION)
-      case Tag.VERB  => Some(PartOfSpeech.VERB)
-      case Tag.X     => Some(PartOfSpeech.OTHER)
-      case Tag.AFFIX => Some(PartOfSpeech.AFFIX)
-      case _         => None
+      case Tag.ADJ   => PartOfSpeech.ADJECTIVE
+      case Tag.ADP   => PartOfSpeech.ADPOSITION
+      case Tag.ADV   => PartOfSpeech.ADVERB
+      case Tag.CONJ  => PartOfSpeech.CONJUNCTION
+      case Tag.DET   => PartOfSpeech.DETERMINER
+      case Tag.NOUN  => PartOfSpeech.NOUN
+      case Tag.NUM   => PartOfSpeech.NUMBER
+      case Tag.PRON  => PartOfSpeech.PRONOUN
+      case Tag.PRT   => PartOfSpeech.PARTICLE
+      case Tag.PUNCT => PartOfSpeech.PUNCTUATION
+      case Tag.VERB  => PartOfSpeech.VERB
+      case Tag.X     => PartOfSpeech.OTHER
+      case Tag.AFFIX => PartOfSpeech.AFFIX
+      case _         => PartOfSpeech.UNKNOWN
     }
 
   def googleGenderToDomainGender(gender: Gender): Option[GrammaticalGender] =

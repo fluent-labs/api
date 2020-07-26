@@ -9,7 +9,7 @@ import com.foreignlanguagereader.api.dto.v1.document.WordDTO
 
 case class Word(language: Language,
                 token: String,
-                tag: Option[PartOfSpeech],
+                tag: PartOfSpeech,
                 lemma: String,
                 definitions: Option[Seq[Definition]],
                 gender: Option[GrammaticalGender],
@@ -29,7 +29,7 @@ object Word {
   def fromToken(token: String, language: Language) = Word(
     token = token,
     language = language,
-    tag = None,
+    tag = PartOfSpeech.UNKNOWN,
     lemma = token,
     definitions = None,
     gender = None,

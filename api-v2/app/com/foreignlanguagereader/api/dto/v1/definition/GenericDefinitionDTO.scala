@@ -7,7 +7,7 @@ import sangria.schema.ObjectType
 
 case class GenericDefinitionDTO(id: String,
                                 subdefinitions: List[String],
-                                tag: Option[PartOfSpeech],
+                                tag: PartOfSpeech,
                                 examples: Option[List[String]])
     extends DefinitionDTO
 object GenericDefinitionDTO {

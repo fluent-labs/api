@@ -127,8 +127,7 @@ trait LanguageDefinitionService {
   def languageServiceFetcher: (Language, Word) => Future[
     CircuitBreakerResult[Option[Seq[Definition]]]
   ] =
-    (_, word: Word) =>
-      languageServiceClient.getDefinition(wordLanguage, word.processedToken)
+    (_, word: Word) => languageServiceClient.getDefinition(wordLanguage, word)
 
   private[this] def fetchDefinitions(
     sources: List[DefinitionSource],

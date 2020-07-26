@@ -6,7 +6,7 @@ import com.foreignlanguagereader.api.domain.definition.{
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.api.domain.word.Word
+import com.foreignlanguagereader.api.domain.word.{PartOfSpeech, Word}
 import com.foreignlanguagereader.api.service.definition.DefinitionService
 import org.mockito.Mockito._
 import org.scalatest.funspec.AsyncFunSpec
@@ -40,7 +40,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       val testWord = Word(
         language = Language.ENGLISH,
         token = "test",
-        tag = None,
+        tag = PartOfSpeech.VERB,
         lemma = "test",
         definitions = None,
         gender = None,
@@ -52,7 +52,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       val phraseWord = Word(
         language = Language.ENGLISH,
         token = "phrase",
-        tag = None,
+        tag = PartOfSpeech.NOUN,
         lemma = "phrase",
         definitions = None,
         gender = None,
@@ -69,7 +69,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       val testDefinition = Definition(
         subdefinitions = List("test"),
         ipa = "",
-        tag = None,
+        tag = PartOfSpeech.NOUN,
         examples = None,
         wordLanguage = Language.ENGLISH,
         definitionLanguage = Language.SPANISH,
@@ -84,7 +84,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       val phraseDefinition = Definition(
         subdefinitions = List("phrase"),
         ipa = "",
-        tag = None,
+        tag = PartOfSpeech.VERB,
         examples = None,
         wordLanguage = Language.ENGLISH,
         definitionLanguage = Language.SPANISH,

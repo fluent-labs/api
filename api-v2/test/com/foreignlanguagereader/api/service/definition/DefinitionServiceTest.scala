@@ -31,7 +31,7 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
   val dummyChineseDefinition = ChineseDefinition(
     subdefinitions = List("definition 1", "definition 2"),
-    tag = Some(PartOfSpeech.NOUN),
+    tag = PartOfSpeech.NOUN,
     examples = Some(List("example 1", "example 2")),
     inputPinyin = "ni3 hao3",
     inputSimplified = Some("你好"),
@@ -43,7 +43,7 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   val dummyGenericDefinition = GenericDefinition(
     subdefinitions = List("definition 1", "definition 2"),
     ipa = "",
-    tag = Some(PartOfSpeech.NOUN),
+    tag = PartOfSpeech.NOUN,
     examples = Some(List("example 1", "example 2")),
     definitionLanguage = Language.ENGLISH,
     wordLanguage = Language.ENGLISH,

@@ -8,7 +8,7 @@ import org.scalatest.funspec.AnyFunSpec
 class ChineseDefinitionTest extends AnyFunSpec {
   val example = ChineseDefinition(
     subdefinitions = List("definition 1", "definition 2"),
-    tag = Some(PartOfSpeech.NOUN),
+    tag = PartOfSpeech.NOUN,
     examples = Some(List("example 1", "example 2")),
     inputPinyin = "ni3 hao3",
     inputSimplified = Some("你好"),
