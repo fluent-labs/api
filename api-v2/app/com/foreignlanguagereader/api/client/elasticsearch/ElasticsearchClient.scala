@@ -1,7 +1,5 @@
 package com.foreignlanguagereader.api.client.elasticsearch
 
-import java.util.concurrent.TimeUnit
-
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerAttempt,
@@ -23,8 +21,7 @@ import com.sksamuel.elastic4s.requests.searches.{
 import javax.inject.{Inject, Singleton}
 import play.api.{Configuration, Logger}
 
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
 import scala.util.{Failure, Success, Try}
 
@@ -97,51 +94,46 @@ class ElasticsearchClient @Inject()(config: Configuration,
 
   // The breaker guard is pretty important, or else we just infinitely retry insertions
   // That will quickly consume the thread pool.
-  @scala.annotation.tailrec
-  final def startInserting(): Unit = if (breaker.isOpen) {
-    // We could check if the queue is empty but that opens us up to race conditions.
-    // Removing and checking is atomic, and the queue is thread safe, so we are protected.
-    client.nextInsert() match {
-      case Some(item) =>
-        save(item)
-        startInserting()
-      case None => logger.info("Finished inserting")
-    }
-  }
-
-  def save(request: ElasticsearchCacheRequest): Unit = {
-    logger.info(s"Saving to elasticsearch: $request")
-    val future =
-      execute(bulk(request.requests)).map {
-        case Success(CircuitBreakerAttempt(_)) =>
-          logger
-            .info(s"Successfully saved to elasticsearch: $request")
-        case Success(CircuitBreakerNonAttempt()) =>
-          logger
-            .info(
-              "Elasticsearch connection is unhealthy, retrying insert when it is healthy."
-            )
-          client.addInsertToQueue(request)
-        case Failure(e) =>
-          logger.warn(
-            s"Failed to persist request to elasticsearch: $request, ${e.getMessage}",
-            e
-          )
-          request.retries match {
-            case Some(retries) =>
-              logger.info(s"Retrying request individually: $request")
-              retries.map(save)
-            case None =>
-              logger.warn(
-                s"Not retrying request because this is our second attempt: $request"
-              )
-          }
+  def startInserting(): Future[Unit] =
+    if (breaker.isOpen) {
+      // We could check if the queue is empty but that opens us up to race conditions.
+      // Removing and checking is atomic, and the queue is thread safe, so we are protected.
+      client.nextInsert() match {
+        case Some(item) =>
+          save(item).map(_ => startInserting()).flatten
+        case None =>
+          logger.info("Finished inserting")
+          Future.apply(())
       }
+    } else { Future.apply(()) }
 
-    // We want to iterate through one by one
-    // Not set off hundreds of inserts concurrently
-    // The circuit breaker will time this out before await does.
-    val _ = Await.result(future, timeout + Duration(30, TimeUnit.SECONDS))
+  def save(request: ElasticsearchCacheRequest): Future[Unit] = {
+    logger.info(s"Saving to elasticsearch: $request")
+    execute(bulk(request.requests)).map {
+      case Success(CircuitBreakerAttempt(_)) =>
+        logger
+          .info(s"Successfully saved to elasticsearch: $request")
+      case Success(CircuitBreakerNonAttempt()) =>
+        logger
+          .info(
+            "Elasticsearch connection is unhealthy, retrying insert when it is healthy."
+          )
+        client.addInsertToQueue(request)
+      case Failure(e) =>
+        logger.warn(
+          s"Failed to persist request to elasticsearch: $request, ${e.getMessage}",
+          e
+        )
+        request.retries match {
+          case Some(retries) =>
+            logger.info(s"Retrying request individually: $request")
+            client.addInsertsToQueue(retries)
+          case None =>
+            logger.warn(
+              s"Not retrying request because this is our second attempt: $request"
+            )
+        }
+    }
   }
 
   // Common wrappers for all requests below here

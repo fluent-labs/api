@@ -2,7 +2,10 @@ package com.foreignlanguagereader.api.client.elasticsearch
 
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.client.common.CircuitBreakerAttempt
-import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchSearchRequest
+import com.foreignlanguagereader.api.client.elasticsearch.searchstates.{
+  ElasticsearchCacheRequest,
+  ElasticsearchSearchRequest
+}
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.definition.{
   Definition,
@@ -11,6 +14,7 @@ import com.foreignlanguagereader.api.domain.definition.{
 }
 import com.foreignlanguagereader.api.domain.word.PartOfSpeech
 import com.foreignlanguagereader.api.util.ElasticsearchTestUtil
+import com.sksamuel.elastic4s.ElasticDsl.{bulk, indexInto}
 import com.sksamuel.elastic4s._
 import com.sksamuel.elastic4s.playjson._
 import com.sksamuel.elastic4s.requests.bulk.{BulkRequest, BulkResponse}
@@ -19,7 +23,7 @@ import com.sksamuel.elastic4s.requests.searches.{
   MultiSearchResponse
 }
 import com.typesafe.config.ConfigFactory
-import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{any, eq => mockitoEq}
 import org.mockito.Mockito
 import org.mockito.Mockito._
 import org.scalatest.FutureOutcome
@@ -96,6 +100,9 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
           )
         )
         .map(results => {
+          verify(holder, never())
+            .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
+
           val result = results(0)
           assert(result.contains(List(fetchedDefinition)))
         })
@@ -132,70 +139,14 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
           )
         )
         .map(results => {
+          verify(holder)
+            .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
+
           val result = results(0)
           assert(result.contains(List(fetchedDefinition)))
         })
     }
     describe("gracefully handles failures") {
-      it("retries requests one by one if bulk requests failed") {
-        val response: MultiSearchResponse = ElasticsearchTestUtil
-          .cacheQueryResponseFrom[Definition](
-            Right(List()),
-            Right(attemptsRefreshEligible)
-          )
-        when(
-          holder.execute[MultiSearchRequest, MultiSearchResponse](
-            any(classOf[MultiSearchRequest])
-          )(
-            any(classOf[Handler[MultiSearchRequest, MultiSearchResponse]]),
-            any(classOf[Manifest[MultiSearchResponse]])
-          )
-        ).thenReturn(
-          Future.successful(RequestSuccess(200, None, Map(), response))
-        )
-        when(
-          holder.execute[BulkRequest, BulkResponse](any(classOf[BulkRequest]))(
-            any(classOf[Handler[BulkRequest, BulkResponse]]),
-            any(classOf[Manifest[BulkResponse]])
-          )
-        ).thenReturn(
-          Future.successful(
-            RequestFailure(
-              200,
-              None,
-              Map(),
-              new ElasticError(
-                "",
-                "Please try again",
-                None,
-                None,
-                None,
-                List(),
-                None
-              )
-            )
-          )
-        )
-
-        client
-          .findFromCacheOrRefetch[Definition](
-            List(
-              ElasticsearchSearchRequest(
-                "definitions",
-                Map(),
-                () =>
-                  Future.successful(
-                    CircuitBreakerAttempt(Some(List(fetchedDefinition)))
-                ),
-                5
-              )
-            )
-          )
-          .map(results => {
-            val result = results(0)
-            assert(result.contains(List(fetchedDefinition)))
-          })
-      }
       it("can handle failures when searching from elasticsearch") {
         when(
           holder.execute[MultiSearchRequest, MultiSearchResponse](
@@ -238,8 +189,92 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
             )
           )
           .map(results => {
+            verify(holder, never())
+              .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
+
             val result = results(0)
             assert(result.contains(List(fetchedDefinition)))
+          })
+      }
+    }
+    describe("can save") {
+      val indexRequests = (1 to 5)
+        .map(
+          number =>
+            indexInto("attempts")
+              .doc(
+                LookupAttempt(
+                  index = "test",
+                  fields = Map(
+                    s"Field ${1 * number}" -> s"Value ${1 * number}",
+                    s"Field ${2 * number}" -> s"Value ${2 * number}"
+                  ),
+                  count = number
+                )
+            )
+        )
+      val requests = ElasticsearchCacheRequest.fromRequests(indexRequests)
+      val request = requests(0)
+
+      it("can save correctly") {
+        when(
+          holder.execute[BulkRequest, BulkResponse](any(classOf[BulkRequest]))(
+            any(classOf[Handler[BulkRequest, BulkResponse]]),
+            any(classOf[Manifest[BulkResponse]])
+          )
+        ).thenReturn(
+          Future
+            .successful(
+              RequestSuccess(
+                200,
+                None,
+                Map(),
+                BulkResponse(0, errors = false, List())
+              )
+            )
+        )
+
+        client
+          .save(request)
+          .map(_ => {
+            verify(holder, never())
+              .addInsertsToQueue(request.retries.getOrElse(List()))
+            succeed
+          })
+      }
+      it("retries requests one by one if bulk requests failed") {
+        when(
+          holder.execute[BulkRequest, BulkResponse](
+            mockitoEq[BulkRequest](bulk(request.requests(0)))
+          )(
+            any(classOf[Handler[BulkRequest, BulkResponse]]),
+            any(classOf[Manifest[BulkResponse]])
+          )
+        ).thenReturn(
+          Future.successful(
+            RequestFailure(
+              200,
+              None,
+              Map(),
+              new ElasticError(
+                "",
+                "Please try again",
+                None,
+                None,
+                None,
+                List(),
+                None
+              )
+            )
+          )
+        )
+
+        client
+          .save(request)
+          .map(_ => {
+            verify(holder)
+              .addInsertsToQueue(request.retries.getOrElse(List()))
+            succeed
           })
       }
     }
