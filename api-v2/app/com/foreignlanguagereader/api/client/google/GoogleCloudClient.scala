@@ -108,7 +108,8 @@ class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
             gender = googleGenderToDomainGender(token.getPartOfSpeech.getGender),
             number = googleCountToDomainCount(token.getPartOfSpeech.getNumber),
             proper = isProperNoun(token.getPartOfSpeech.getProper),
-            tense = googleTenseToDomainTense(token.getPartOfSpeech.getTense)
+            tense = googleTenseToDomainTense(token.getPartOfSpeech.getTense),
+            processedToken = token.getText.getContent
         )
       )
       .toSet

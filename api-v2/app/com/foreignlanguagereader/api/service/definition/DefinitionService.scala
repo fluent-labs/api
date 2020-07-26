@@ -3,6 +3,7 @@ package com.foreignlanguagereader.api.service.definition
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.Definition
+import com.foreignlanguagereader.api.domain.word.Word
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 
@@ -27,7 +28,7 @@ class DefinitionService @Inject()(
     */
   def getDefinition(wordLanguage: Language,
                     definitionLanguage: Language,
-                    word: String): Future[Option[Seq[Definition]]] =
+                    word: Word): Future[Option[Seq[Definition]]] =
     wordLanguage match {
       case Language.CHINESE =>
         chineseDefinitionService.getDefinitions(definitionLanguage, word)
@@ -36,33 +37,4 @@ class DefinitionService @Inject()(
       case Language.SPANISH =>
         spanishDefinitionService.getDefinitions(definitionLanguage, word)
     }
-
-  // Convenience method for getting definitions in parallel.
-  // Same interface as above
-  def getDefinitions(
-    wordLanguage: Language,
-    definitionLanguage: Language,
-    words: Seq[String]
-  ): Future[Map[String, Option[Seq[Definition]]]] = {
-    // Start by requesting everything asynchronously.
-    Future
-      .sequence(
-        words.map(word => getDefinition(wordLanguage, definitionLanguage, word))
-      )
-      // Remove empties
-      .map(_.flatten)
-      // Match words to definitions based on tokens
-      .map(_.map(definitions => {
-        val word: Definition = definitions(0)
-        word.token -> Some(definitions)
-      }).toMap)
-      // Include anything that wasn't found as an empty list to not confuse callers
-      .map(definitions => {
-        val foundWords = definitions.keySet
-        val missingWords = words.toSet.diff(foundWords)
-        definitions ++ missingWords
-          .map(word => word -> None)
-          .toMap
-      })
-  }
 }

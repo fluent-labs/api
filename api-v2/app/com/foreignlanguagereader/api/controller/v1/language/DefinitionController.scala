@@ -3,6 +3,7 @@ package com.foreignlanguagereader.api.controller.v1.language
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.Definition
+import com.foreignlanguagereader.api.domain.word.Word
 import com.foreignlanguagereader.api.service.definition.DefinitionService
 import javax.inject._
 import play.api.Logger
@@ -34,7 +35,11 @@ class DefinitionController @Inject()(
                      definitionLanguage: Language,
                      word: String): Future[Result] = {
     definitionService
-      .getDefinition(wordLanguage, definitionLanguage, word)
+      .getDefinition(
+        wordLanguage,
+        definitionLanguage,
+        Word.fromToken(word, wordLanguage)
+      )
       .map {
         case None =>
           NotFound(s"Definition for $word in $wordLanguage not found")

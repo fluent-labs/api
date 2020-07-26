@@ -16,6 +16,7 @@ import com.foreignlanguagereader.api.domain.definition.{
   Definition,
   DefinitionSource
 }
+import com.foreignlanguagereader.api.domain.word.Word
 import javax.inject.Inject
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,18 +37,20 @@ class EnglishDefinitionService @Inject()(
 
   // TODO enhance by searching for all versions of stems
 
-  def websterFetcher
-    : (Language,
-       String) => Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
-    (language: Language, word: String) =>
+  def websterFetcher: (Language, Word) => Future[
+    CircuitBreakerResult[Option[Seq[Definition]]]
+  ] =
+    (language: Language, word: Word) =>
       language match {
-        case Language.ENGLISH => websterClient.getLearnersDefinition(word)
-        case Language.SPANISH => websterClient.getSpanishDefinition(word)
-        case _                => Future.successful(CircuitBreakerNonAttempt())
+        case Language.ENGLISH =>
+          websterClient.getLearnersDefinition(word.processedToken)
+        case Language.SPANISH =>
+          websterClient.getSpanishDefinition(word.processedToken)
+        case _ => Future.successful(CircuitBreakerNonAttempt())
     }
 
   override val definitionFetchers
-    : Map[(DefinitionSource, Language), (Language, String) => Future[
+    : Map[(DefinitionSource, Language), (Language, Word) => Future[
       CircuitBreakerResult[Option[Seq[Definition]]]
     ]] = Map(
     (DefinitionSource.MIRRIAM_WEBSTER_LEARNERS, Language.ENGLISH) -> websterFetcher,

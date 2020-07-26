@@ -12,7 +12,7 @@ import com.foreignlanguagereader.api.domain.definition.{
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.api.domain.word.PartOfSpeech
+import com.foreignlanguagereader.api.domain.word.{PartOfSpeech, Word}
 import com.sksamuel.elastic4s.{HitReader, Indexable}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
@@ -83,6 +83,8 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     token = "你好"
   )
 
+  val niHao: Word = Word.fromToken("你好", Language.CHINESE)
+
   describe("When getting definitions for a single word") {
     it("Does not enhance non-chinese definitions") {
       // This will delegate to the base LanguageDefinitionService implementation
@@ -107,7 +109,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       )
 
       chineseDefinitionService
-        .getDefinitions(Language.CHINESE, "你好")
+        .getDefinitions(Language.CHINESE, niHao)
         .map { result =>
           assert(result.isDefined)
           val definitions = result.get
@@ -134,7 +136,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         )
 
         chineseDefinitionService
-          .getDefinitions(Language.ENGLISH, "你好")
+          .getDefinitions(Language.ENGLISH, niHao)
           .map { result =>
             assert(result.isDefined)
             val definitions = result.get
@@ -161,7 +163,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         )
 
         chineseDefinitionService
-          .getDefinitions(Language.ENGLISH, "你好")
+          .getDefinitions(Language.ENGLISH, niHao)
           .map { result =>
             assert(result.isDefined)
             val definitions = result.get
@@ -193,7 +195,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         )
 
         chineseDefinitionService
-          .getDefinitions(Language.ENGLISH, "你好")
+          .getDefinitions(Language.ENGLISH, niHao)
           .map {
             case Some(definitions) =>
               assert(definitions.size == 1)
@@ -247,7 +249,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         )
 
         chineseDefinitionService
-          .getDefinitions(Language.ENGLISH, "你好")
+          .getDefinitions(Language.ENGLISH, niHao)
           .map {
             case Some(definitions) =>
               assert(definitions.size == 2)

@@ -28,7 +28,7 @@ class DocumentService @Inject()(val googleCloudClient: GoogleCloudClient,
               .map(
                 word =>
                   definitionService
-                    .getDefinition(wordLanguage, definitionLanguage, word.token)
+                    .getDefinition(wordLanguage, definitionLanguage, word)
                     .map(d => {
                       word.copy(definitions = d)
                     })

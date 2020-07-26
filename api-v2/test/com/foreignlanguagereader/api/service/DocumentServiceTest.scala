@@ -46,7 +46,8 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         gender = None,
         number = None,
         proper = None,
-        tense = None
+        tense = None,
+        processedToken = "test"
       )
       val phraseWord = Word(
         language = Language.ENGLISH,
@@ -57,7 +58,8 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         gender = None,
         number = None,
         proper = None,
-        tense = None
+        tense = None,
+        processedToken = "phrase"
       )
       when(
         mockGoogleCloudClient
@@ -76,7 +78,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       )
       when(
         mockDefinitionService
-          .getDefinition(Language.ENGLISH, Language.SPANISH, "test")
+          .getDefinition(Language.ENGLISH, Language.SPANISH, testWord)
       ).thenReturn(Future.successful(Some(List(testDefinition))))
 
       val phraseDefinition = Definition(
@@ -91,7 +93,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       )
       when(
         mockDefinitionService
-          .getDefinition(Language.ENGLISH, Language.SPANISH, "phrase")
+          .getDefinition(Language.ENGLISH, Language.SPANISH, phraseWord)
       ).thenReturn(Future.successful(Some(List(phraseDefinition))))
 
       documentService
