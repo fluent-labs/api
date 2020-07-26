@@ -26,7 +26,7 @@ case class Word(language: Language,
   }
 }
 object Word {
-  def fromToken(token: String, language: Language) = Word(
+  def fromToken(token: String, language: Language): Word = Word(
     token = token,
     language = language,
     tag = PartOfSpeech.UNKNOWN,
