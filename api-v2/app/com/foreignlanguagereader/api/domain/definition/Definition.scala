@@ -22,6 +22,17 @@ trait Definition {
   val source: DefinitionSource
   val token: String
 
+  // We need a way to uniquely identify parts of speech
+  // Some level of collisions are unavoidable but they should be as rare as possible.
+  val id: String
+  def generateId(): String = {
+    val partOfSpeech = tag match {
+      case Some(t) => t
+      case None    => "UNKNOWN"
+    }
+    s"$wordLanguage:$token:$ipa:$partOfSpeech"
+  }
+
   // This always needs to know how to convert itself to a DTO
   val toDTO: DefinitionDTO
 }

@@ -20,8 +20,15 @@ case class GenericDefinition(subdefinitions: List[String],
                              source: DefinitionSource,
                              token: String)
     extends Definition {
+  val id: String = generateId()
+
   override lazy val toDTO: DefinitionDTO =
-    GenericDefinitionDTO(subdefinitions, tag, examples)
+    GenericDefinitionDTO(
+      id = id,
+      subdefinitions = subdefinitions,
+      tag = tag,
+      examples = examples
+    )
 }
 object GenericDefinition {
   implicit val format: Format[GenericDefinition] =

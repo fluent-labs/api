@@ -5,7 +5,8 @@ import play.api.libs.json.{Format, Json}
 import sangria.macros.derive.{ObjectTypeDescription, deriveObjectType}
 import sangria.schema.ObjectType
 
-case class GenericDefinitionDTO(subdefinitions: List[String],
+case class GenericDefinitionDTO(id: String,
+                                subdefinitions: List[String],
                                 tag: Option[PartOfSpeech],
                                 examples: Option[List[String]])
     extends DefinitionDTO
