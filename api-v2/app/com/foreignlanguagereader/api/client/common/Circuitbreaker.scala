@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
 import akka.pattern.{CircuitBreaker, CircuitBreakerOpenException}
+import cats.{Applicative, Functor}
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.Logger
@@ -78,14 +79,35 @@ trait Circuitbreaker {
   }
 }
 
-sealed abstract class CircuitBreakerResult[T] {
-  def transform[U](transformer: T => U): CircuitBreakerResult[U]
-}
-case class CircuitBreakerAttempt[T](result: T) extends CircuitBreakerResult[T] {
-  def transform[U](transformer: T => U): CircuitBreakerAttempt[U] =
-    CircuitBreakerAttempt(transformer(result))
-}
-case class CircuitBreakerNonAttempt[T]() extends CircuitBreakerResult[T] {
-  def transform[U](transformer: T => U): CircuitBreakerNonAttempt[U] =
-    CircuitBreakerNonAttempt()
+sealed trait CircuitBreakerResult[T]
+case class CircuitBreakerAttempt[T](result: T) extends CircuitBreakerResult[T]
+case class CircuitBreakerNonAttempt[T]() extends CircuitBreakerResult[T]
+
+object CircuitBreakerResult {
+  implicit def functor: Functor[CircuitBreakerResult] =
+    new Functor[CircuitBreakerResult] {
+      override def map[A, B](
+        fa: CircuitBreakerResult[A]
+      )(f: A => B): CircuitBreakerResult[B] = fa match {
+        case CircuitBreakerNonAttempt()    => CircuitBreakerNonAttempt()
+        case CircuitBreakerAttempt(result) => CircuitBreakerAttempt(f(result))
+      }
+    }
+
+  implicit def applicative: Applicative[CircuitBreakerResult] =
+    new Applicative[CircuitBreakerResult] {
+      override def pure[A](x: A): CircuitBreakerResult[A] =
+        CircuitBreakerAttempt(x)
+
+      override def ap[A, B](
+        ff: CircuitBreakerResult[A => B]
+      )(fa: CircuitBreakerResult[A]): CircuitBreakerResult[B] = fa match {
+        case CircuitBreakerNonAttempt() => CircuitBreakerNonAttempt()
+        case CircuitBreakerAttempt(result) =>
+          ff match {
+            case CircuitBreakerAttempt(fn)  => CircuitBreakerAttempt(fn(result))
+            case CircuitBreakerNonAttempt() => CircuitBreakerNonAttempt()
+          }
+      }
+    }
 }
