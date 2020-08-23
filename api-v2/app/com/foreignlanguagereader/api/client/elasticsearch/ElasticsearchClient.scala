@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.api.client.elasticsearch
 
 import akka.actor.ActorSystem
+import cats.implicits._
 import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerAttempt,
   CircuitBreakerNonAttempt,
@@ -14,10 +15,6 @@ import com.foreignlanguagereader.api.client.elasticsearch.searchstates.{
 }
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s._
-import com.sksamuel.elastic4s.requests.searches.{
-  MultiSearchRequest,
-  MultiSearchResponse
-}
 import javax.inject.{Inject, Singleton}
 import play.api.{Configuration, Logger}
 
@@ -47,29 +44,24 @@ class ElasticsearchClient @Inject()(config: Configuration,
     * @return
     */
   def findFromCacheOrRefetch[T: Indexable](
-    requests: Seq[ElasticsearchSearchRequest[T]]
+    requests: List[ElasticsearchSearchRequest[T]]
   )(implicit hitReader: HitReader[T],
     attemptsHitReader: HitReader[LookupAttempt],
-    tag: ClassTag[T]): Future[Seq[Option[Seq[T]]]] = {
+    tag: ClassTag[T]): Future[List[Option[List[T]]]] = {
     // Fork and join for getting each request
-    Future
-      .sequence(
-        requests
-          .map(
-            request =>
-              // Checks elasticsearch first. Responses will have ES results or none
-              executeWithOption[MultiSearchRequest, MultiSearchResponse](
-                request.query
-              ).map(
-                  result =>
-                    ElasticsearchSearchResponse.fromResult[T](request, result)
-                )
-                // This is where fetchers are called to get results if they aren't in elasticsearch
-                // There is also logic to remember what has been fetched from external sources
-                // So that we don't try too many times on the same query
-                .map(_.getResultOrFetchFromSource)
-                .flatten
-          )
+    requests
+      .traverse(
+        request =>
+          executeWithOption(request.query)
+            .map(
+              result => ElasticsearchSearchResponse.fromResult(request, result)
+            )
+            // This is where fetchers are called to get results if they aren't in elasticsearch
+            // There is also logic to remember what has been fetched from external sources
+            // So that we don't try too many times on the same query
+            .map(_.getResultOrFetchFromSource)
+            // Future of a future can just wait until both complete
+            .flatten
       )
       // Block here until we have finished with all of the requests
       .map(results => {
@@ -154,7 +146,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
     manifest: Manifest[U]
   ): Future[CircuitBreakerResult[Option[U]]] = execute(request).map {
     case Success(CircuitBreakerAttempt(value)) =>
-      CircuitBreakerAttempt(Some(value))
+      value.some.pure[CircuitBreakerResult]
     case Success(CircuitBreakerNonAttempt()) =>
       CircuitBreakerNonAttempt()
     case Failure(e) =>
