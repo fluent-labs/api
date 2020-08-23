@@ -1,5 +1,9 @@
 package com.foreignlanguagereader.api.service
 
+import cats._
+import cats.data._
+import cats.implicits._
+
 import com.foreignlanguagereader.api.client.google.GoogleCloudClient
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.word.Word
@@ -29,12 +33,10 @@ class DocumentService @Inject()(val googleCloudClient: GoogleCloudClient,
                 word =>
                   definitionService
                     .getDefinition(wordLanguage, definitionLanguage, word)
-                    .map(d => {
-                      word.copy(definitions = d)
-                    })
+                    .map(d => word.copy(definitions = d))
               )
           )
-          .map(words => Some(words))
+          .map(_.some)
       case None => Future.successful(None)
     }).flatten // Nested futures, blocks until they are all complete.
 }

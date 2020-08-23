@@ -57,6 +57,7 @@ trait WebsterDefinitionEntryBase {
     if (e.isEmpty) None else Some(e.toList)
   }
 
+  // TODO - find out how frequent this is.
   val pronunciation: String = {
     val prons: Option[Seq[String]] = headwordInfo.pronunciations match {
       case Some(p) =>
