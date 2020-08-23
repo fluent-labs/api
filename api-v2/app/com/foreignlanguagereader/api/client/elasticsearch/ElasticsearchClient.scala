@@ -144,18 +144,14 @@ class ElasticsearchClient @Inject()(config: Configuration,
   private[this] def executeWithOption[T, U](request: T)(
     implicit handler: Handler[T, U],
     manifest: Manifest[U]
-  ): Future[CircuitBreakerResult[Option[U]]] = execute(request).map {
-    case Success(CircuitBreakerAttempt(value)) =>
-      value.some.pure[CircuitBreakerResult]
-    case Success(CircuitBreakerNonAttempt()) =>
-      CircuitBreakerNonAttempt()
-    case Failure(e) =>
-      logger.error(
-        s"Error executing elasticearch query: $request due to error: ${e.getMessage}",
-        e
-      )
-      CircuitBreakerAttempt(None)
-  }
+  ): Future[CircuitBreakerResult[Option[U]]] =
+    withBreakerOption(
+      s"Error executing elasticearch query: $request due to error",
+      client.execute(request) map {
+        case RequestSuccess(_, _, _, result) => result
+        case RequestFailure(_, _, _, error)  => throw error.asException
+      }
+    )
 
   // Circuit breaker stuff below here
 

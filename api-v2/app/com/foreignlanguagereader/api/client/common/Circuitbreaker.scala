@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit
 import akka.actor.ActorSystem
 import akka.pattern.{CircuitBreaker, CircuitBreakerOpenException}
 import cats.{Applicative, Functor}
+import cats.implicits._
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.Logger
@@ -60,7 +61,7 @@ trait Circuitbreaker {
   private[this] def wrapWithAttemptInformation[T](
     t: Try[T],
   ): Try[CircuitBreakerResult[T]] = t match {
-    case Success(s) => Success(CircuitBreakerAttempt[T](s))
+    case Success(s) => Success(s.pure[CircuitBreakerResult])
     case Failure(e) =>
       e match {
         case _: CircuitBreakerOpenException =>
@@ -77,6 +78,27 @@ trait Circuitbreaker {
     case Success(result)    => isSuccess(result)
     case Failure(exception) => isFailure(exception)
   }
+
+  def withBreakerOption[T](
+    logIfError: String,
+    body: => Future[T]
+  ): Future[CircuitBreakerResult[Option[T]]] =
+    withBreakerOption(logIfError, defaultIsFailure, defaultIsSuccess[T], body)
+
+  def withBreakerOption[T](
+    logIfError: String,
+    isFailure: Throwable => Boolean,
+    isSuccess: T => Boolean,
+    body: => Future[T]
+  ): Future[CircuitBreakerResult[Option[T]]] =
+    withBreaker(isFailure, isSuccess, body) map {
+      case Success(CircuitBreakerAttempt(a)) =>
+        a.some.pure[CircuitBreakerResult]
+      case Success(CircuitBreakerNonAttempt()) => CircuitBreakerNonAttempt()
+      case Failure(e) =>
+        logger.error(s"Circuit breaker request failed: $logIfError", e)
+        CircuitBreakerAttempt(None)
+    }
 }
 
 sealed trait CircuitBreakerResult[T]

@@ -20,7 +20,7 @@ class DocumentService @Inject()(val googleCloudClient: GoogleCloudClient,
   def getWordsForDocument(wordLanguage: Language,
                           definitionLanguage: Language,
                           document: String): Future[Option[List[Word]]] =
-    (googleCloudClient.getWordsForDocument(wordLanguage, document) map {
+    googleCloudClient.getWordsForDocument(wordLanguage, document) flatMap {
       case Some(words) =>
         // Requests go out at the same time, and then we block until they are all done.
         words.toList
@@ -32,5 +32,5 @@ class DocumentService @Inject()(val googleCloudClient: GoogleCloudClient,
           )
           .map(_.some)
       case None => Future.successful(None)
-    }).flatten // Nested futures, blocks until they are all complete.
+    }
 }

@@ -78,7 +78,7 @@ trait LanguageDefinitionService {
     preprocessWordForRequest(word)
     // Trigger all requests asynchronously and block for all to complete
       .traverse(token => fetchDefinitions(sources, definitionLanguage, token))
-      // Merge all definitions
+      // Merge definitions for each lookup term
       .map(_.combineAll)
       // Remove empty sources
       .map(
