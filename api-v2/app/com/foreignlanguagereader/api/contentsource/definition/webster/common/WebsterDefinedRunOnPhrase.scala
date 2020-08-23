@@ -14,17 +14,17 @@ case class WebsterDefinedRunOnPhrase(
   variations: Option[Seq[WebsterVariant]]
 )
 object WebsterDefinedRunOnPhrase {
-  implicit val readsString: Reads[Seq[String]] = Reads.seq[String]
+  implicit val readsString: Reads[List[String]] = Reads.list[String]
   implicit val reads: Reads[WebsterDefinedRunOnPhrase] = (
     (JsPath \ "drp").read[String] and (JsPath \ "def")
-      .read[Seq[WebsterDefinition]](WebsterDefinition.helper.readsSeq) and (JsPath \ "lbs")
-      .readNullable[Seq[String]] and (JsPath \ "prs")
-      .readNullable[Seq[WebsterPronunciation]](
-        WebsterPronunciation.helper.readsSeq
+      .read[List[WebsterDefinition]](WebsterDefinition.helper.readsList) and (JsPath \ "lbs")
+      .readNullable[List[String]] and (JsPath \ "prs")
+      .readNullable[List[WebsterPronunciation]](
+        WebsterPronunciation.helper.readsList
       ) and (JsPath \ "psl")
       .readNullable[String] and (JsPath \ "sls")
-      .readNullable[Seq[String]] and (JsPath \ "vrs")
-      .readNullable[Seq[WebsterVariant]](WebsterVariant.helper.readsSeq)
+      .readNullable[List[String]] and (JsPath \ "vrs")
+      .readNullable[List[WebsterVariant]](WebsterVariant.helper.readsList)
   )(WebsterDefinedRunOnPhrase.apply _)
   implicit val writes: Writes[WebsterDefinedRunOnPhrase] =
     Json.writes[WebsterDefinedRunOnPhrase]

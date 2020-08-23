@@ -15,9 +15,9 @@ class WebsterLearnersDefinitionEntryTest extends AnyFunSpec {
   describe("A learners definition entry") {
     describe("for 'example'") {
       val webster = ContentFileLoader
-        .loadJsonResourceFile[Seq[WebsterLearnersDefinitionEntry]](
+        .loadJsonResourceFile[List[WebsterLearnersDefinitionEntry]](
           "/webster/learners/websterExample.json"
-        )(WebsterLearnersDefinitionEntry.helper.readsSeq)
+        )(WebsterLearnersDefinitionEntry.helper.readsList)
       val output = ContentFileLoader
         .loadJsonResourceFile[JsValue]("/webster/learners/domainExample.json")
         .toString()
@@ -85,9 +85,9 @@ class WebsterLearnersDefinitionEntryTest extends AnyFunSpec {
 
     describe("for 'pop") {
       val webster = ContentFileLoader
-        .loadJsonResourceFile[Seq[WebsterLearnersDefinitionEntry]](
+        .loadJsonResourceFile[List[WebsterLearnersDefinitionEntry]](
           "/webster/learners/websterPop.json"
-        )(WebsterLearnersDefinitionEntry.helper.readsSeq)
+        )(WebsterLearnersDefinitionEntry.helper.readsList)
       val output = ContentFileLoader
         .loadJsonResourceFile[JsValue]("/webster/learners/domainPop.json")
         .toString()
@@ -154,9 +154,9 @@ class WebsterLearnersDefinitionEntryTest extends AnyFunSpec {
 
     describe("for 'test'") {
       val webster = ContentFileLoader
-        .loadJsonResourceFile[Seq[WebsterLearnersDefinitionEntry]](
+        .loadJsonResourceFile[List[WebsterLearnersDefinitionEntry]](
           "/webster/learners/websterTest.json"
-        )(WebsterLearnersDefinitionEntry.helper.readsSeq)
+        )(WebsterLearnersDefinitionEntry.helper.readsList)
       val output = ContentFileLoader
         .loadJsonResourceFile[JsValue]("/webster/learners/domainTest.json")
         .toString()

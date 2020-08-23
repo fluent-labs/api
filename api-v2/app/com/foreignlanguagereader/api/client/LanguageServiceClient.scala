@@ -3,6 +3,7 @@ package com.foreignlanguagereader.api.client
 import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
+import cats.implicits._
 import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerResult,
   Circuitbreaker,
@@ -41,20 +42,19 @@ class LanguageServiceClient @Inject()(config: Configuration,
   val languageServiceBaseUrl: String =
     config.get[String]("language-service.url")
 
-  implicit val readsDefinitionEntry: Reads[Seq[DefinitionEntry]] =
-    DefinitionEntry.readsSeq
+  implicit val readsDefinitionEntry: Reads[List[DefinitionEntry]] =
+    DefinitionEntry.readsList
 
   def getDefinition(
     wordLanguage: Language,
     word: Word
-  ): Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
+  ): Future[CircuitBreakerResult[Option[List[Definition]]]] =
     get(
       s"$languageServiceBaseUrl/v1/definition/$wordLanguage/${word.processedToken}"
-    ).map(
-      results =>
-        results.transform {
-          case Some(r) => Some(r.map(_.toDefinition(word.tag)))
-          case None    => None
+    ).map(results => {
+      results.map {
+        case Some(r) => r.map(_.toDefinition(word.tag)).some
+        case None    => None
       }
-    )
+    })
 }

@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.service.definition
 
+import cats.implicits._
 import com.foreignlanguagereader.api.client.LanguageServiceClient
 import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerAttempt,
@@ -41,20 +42,20 @@ class ChineseDefinitionService @Inject()(
     List(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
 
   def cedictFetcher: (Language, Word) => Future[
-    CircuitBreakerResult[Option[Seq[Definition]]]
+    CircuitBreakerResult[Option[List[Definition]]]
   ] =
     (_, word: Word) =>
       Cedict.getDefinition(word) match {
         case Some(entries) =>
           Future.successful(
-            CircuitBreakerAttempt(Some(entries.map(_.toDefinition(word.tag))))
+            CircuitBreakerAttempt(entries.map(_.toDefinition(word.tag)).some)
           )
         case None => Future.successful(CircuitBreakerNonAttempt())
     }
 
   override val definitionFetchers
     : Map[(DefinitionSource, Language), (Language, Word) => Future[
-      CircuitBreakerResult[Option[Seq[Definition]]]
+      CircuitBreakerResult[Option[List[Definition]]]
     ]] = Map(
     (DefinitionSource.CEDICT, Language.ENGLISH) -> cedictFetcher,
     (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
@@ -63,7 +64,7 @@ class ChineseDefinitionService @Inject()(
   // Convert everything to traditional
   // We need one lookup token for elasticsearch.
   // And traditional is more specific
-  override def preprocessWordForRequest(word: Word): Seq[Word] =
+  override def preprocessWordForRequest(word: Word): List[Word] =
     if (ZhConverterUtil.isSimple(word.token)) {
       ChineseDefinitionService.toTraditional(word.token) match {
         case Some(s) =>
@@ -75,8 +76,8 @@ class ChineseDefinitionService @Inject()(
   override def enrichDefinitions(
     definitionLanguage: Language,
     word: Word,
-    definitions: Map[DefinitionSource, Option[Seq[Definition]]]
-  ): Seq[Definition] = {
+    definitions: Map[DefinitionSource, List[Definition]]
+  ): List[Definition] = {
     definitionLanguage match {
       case Language.ENGLISH => enrichEnglishDefinitions(word, definitions)
       case _                => super.enrichDefinitions(definitionLanguage, word, definitions)
@@ -85,10 +86,10 @@ class ChineseDefinitionService @Inject()(
 
   private[this] def enrichEnglishDefinitions(
     word: Word,
-    definitions: Map[DefinitionSource, Option[Seq[Definition]]]
-  ): Seq[Definition] = {
-    val cedict = definitions.getOrElse(DefinitionSource.CEDICT, None)
-    val wiktionary = definitions.getOrElse(DefinitionSource.WIKTIONARY, None)
+    definitions: Map[DefinitionSource, List[Definition]]
+  ): List[Definition] = {
+    val cedict = definitions.get(DefinitionSource.CEDICT)
+    val wiktionary = definitions.get(DefinitionSource.WIKTIONARY)
     logger.info(
       s"Enhancing results for $word using cedict with ${cedict.size} cedict results and ${wiktionary.size} wiktionary results"
     )
@@ -121,8 +122,8 @@ class ChineseDefinitionService @Inject()(
   private[this] def mergeCedictAndWiktionary(
     word: Word,
     cedict: ChineseDefinition,
-    wiktionary: Seq[ChineseDefinition]
-  ): Seq[ChineseDefinition] = {
+    wiktionary: List[ChineseDefinition]
+  ): List[ChineseDefinition] = {
     cedict match {
       case empty if empty.subdefinitions.isEmpty =>
         // If CEDICT doesn't have subdefinitions, then we should return wiktionary data
@@ -138,8 +139,8 @@ class ChineseDefinitionService @Inject()(
   private[this] def addCedictDataToWiktionaryResults(
     word: Word,
     cedict: ChineseDefinition,
-    wiktionary: Seq[ChineseDefinition]
-  ): Seq[ChineseDefinition] = {
+    wiktionary: List[ChineseDefinition]
+  ): List[ChineseDefinition] = {
     wiktionary.map(
       w =>
         ChineseDefinition(
@@ -159,14 +160,14 @@ class ChineseDefinitionService @Inject()(
   private[this] def addWiktionaryDataToCedictResults(
     word: Word,
     cedict: ChineseDefinition,
-    wiktionary: Seq[ChineseDefinition]
-  ): Seq[ChineseDefinition] = {
+    wiktionary: List[ChineseDefinition]
+  ): List[ChineseDefinition] = {
     val examples = {
       val e = wiktionary.flatMap(_.examples).flatten.toList
       if (e.isEmpty) None else Some(e)
     }
 
-    Seq(
+    List(
       ChineseDefinition(
         subdefinitions = cedict.subdefinitions,
         tag = wiktionary(0).tag,
@@ -265,12 +266,12 @@ object ChineseDefinitionService {
     * @param simplified The simplified character
     * @return
     */
-  def toTraditional(simplified: String): Option[Seq[String]] = {
+  def toTraditional(simplified: String): Option[List[String]] = {
     Try(simplified.toCharArray.map(ZhConverterUtil.toTraditional).map {
       // Java library will return null on errors - we want to box these with option
       // Otherwise Success(null) throws an exception that has escaped the Try()
       case null => None // scalastyle:off
-      case s    => Some(s)
+      case s    => s.some
     }) match {
       case Success(values) if values.forall(_.isDefined) =>
         // Unbox the options, bring things back to scala types
@@ -309,7 +310,7 @@ object ChineseDefinitionService {
     // If the input is too large there is a chance of blowing the stack
     // That should only happen on highly unusual input and is not worth dealing with
     Try(generator(results)) match {
-      case Success(s) => Some(s.map(_.mkString))
+      case Success(s) => s.map(_.mkString).some
       case Failure(e) =>
         logger.error(
           s"Failed to interpret results from converting simplified characters to traditional for results $results",
@@ -324,7 +325,7 @@ object ChineseDefinitionService {
       val s"[$simplified]" = ZhConverterUtil.toSimple(traditional)
       simplified
     }) match {
-      case Success(simplified) => Some(simplified)
+      case Success(simplified) => simplified.some
       case Failure(e) =>
         logger.error(s"Failed to convert $traditional to simplified", e)
         None

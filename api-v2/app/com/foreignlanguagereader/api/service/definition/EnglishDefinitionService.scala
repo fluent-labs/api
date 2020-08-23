@@ -38,7 +38,7 @@ class EnglishDefinitionService @Inject()(
   // TODO enhance by searching for all versions of stems
 
   def websterFetcher: (Language, Word) => Future[
-    CircuitBreakerResult[Option[Seq[Definition]]]
+    CircuitBreakerResult[Option[List[Definition]]]
   ] =
     (language: Language, word: Word) =>
       language match {
@@ -51,7 +51,7 @@ class EnglishDefinitionService @Inject()(
 
   override val definitionFetchers
     : Map[(DefinitionSource, Language), (Language, Word) => Future[
-      CircuitBreakerResult[Option[Seq[Definition]]]
+      CircuitBreakerResult[Option[List[Definition]]]
     ]] = Map(
     (DefinitionSource.MIRRIAM_WEBSTER_LEARNERS, Language.ENGLISH) -> websterFetcher,
     (DefinitionSource.MIRRIAM_WEBSTER_SPANISH, Language.SPANISH) -> websterFetcher,
