@@ -5,8 +5,9 @@ import play.api.libs.json.{Format, JsError, JsResult, JsValue}
 import sangria.schema.UnionType
 
 trait DefinitionDTO {
+  val id: String
   val subdefinitions: List[String]
-  val tag: Option[PartOfSpeech]
+  val tag: PartOfSpeech
   val examples: Option[List[String]]
 }
 object DefinitionDTO {
@@ -30,8 +31,14 @@ object DefinitionDTO {
   )
 
   // Constructor that defaults to generic
-  def apply(subdefinitions: List[String],
-            tag: Option[PartOfSpeech],
+  def apply(id: String,
+            subdefinitions: List[String],
+            tag: PartOfSpeech,
             examples: Option[List[String]]): DefinitionDTO =
-    GenericDefinitionDTO(subdefinitions, tag, examples)
+    GenericDefinitionDTO(
+      id = id,
+      subdefinitions = subdefinitions,
+      tag = tag,
+      examples = examples
+    )
 }

@@ -8,7 +8,7 @@ import org.scalatest.funspec.AnyFunSpec
 class ChineseDefinitionTest extends AnyFunSpec {
   val example = ChineseDefinition(
     subdefinitions = List("definition 1", "definition 2"),
-    tag = Some(PartOfSpeech.NOUN),
+    tag = PartOfSpeech.NOUN,
     examples = Some(List("example 1", "example 2")),
     inputPinyin = "ni3 hao3",
     inputSimplified = Some("你好"),
@@ -19,6 +19,10 @@ class ChineseDefinitionTest extends AnyFunSpec {
   )
 
   describe("A Chinese definition") {
+    it("can properly generate an id") {
+      assert(example.id == "CHINESE:你好:[ni] [xɑʊ̯]:Noun")
+    }
+
     describe("when getting pronunciation") {
       it("can determine pronunciation from pinyin") {
         assert(example.pronunciation.pinyin == "ni hao")
@@ -85,6 +89,7 @@ class ChineseDefinitionTest extends AnyFunSpec {
 
     it("can convert itself to a DTO") {
       val compareAgainst = ChineseDefinitionDTO(
+        example.id,
         example.subdefinitions,
         example.tag,
         example.examples,

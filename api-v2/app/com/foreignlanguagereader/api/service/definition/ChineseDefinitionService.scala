@@ -12,6 +12,7 @@ import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.api.domain.definition.HskLevel.HSKLevel
 import com.foreignlanguagereader.api.domain.definition._
+import com.foreignlanguagereader.api.domain.word.Word
 import com.foreignlanguagereader.api.repository.definition.Cedict
 import com.foreignlanguagereader.api.util.ContentFileLoader
 import com.github.houbb.opencc4j.util.ZhConverterUtil
@@ -39,20 +40,20 @@ class ChineseDefinitionService @Inject()(
   override val sources: List[DefinitionSource] =
     List(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
 
-  def cedictFetcher
-    : (Language,
-       String) => Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
-    (_, word: String) =>
+  def cedictFetcher: (Language, Word) => Future[
+    CircuitBreakerResult[Option[Seq[Definition]]]
+  ] =
+    (_, word: Word) =>
       Cedict.getDefinition(word) match {
         case Some(entries) =>
           Future.successful(
-            CircuitBreakerAttempt(Some(entries.map(_.toDefinition)))
+            CircuitBreakerAttempt(Some(entries.map(_.toDefinition(word.tag))))
           )
         case None => Future.successful(CircuitBreakerNonAttempt())
     }
 
   override val definitionFetchers
-    : Map[(DefinitionSource, Language), (Language, String) => Future[
+    : Map[(DefinitionSource, Language), (Language, Word) => Future[
       CircuitBreakerResult[Option[Seq[Definition]]]
     ]] = Map(
     (DefinitionSource.CEDICT, Language.ENGLISH) -> cedictFetcher,
@@ -62,17 +63,18 @@ class ChineseDefinitionService @Inject()(
   // Convert everything to traditional
   // We need one lookup token for elasticsearch.
   // And traditional is more specific
-  override def preprocessTokenForRequest(token: String): Seq[String] =
-    if (ZhConverterUtil.isSimple(token)) {
-      ChineseDefinitionService.toTraditional(token) match {
-        case Some(s) => s
-        case None    => List(token)
+  override def preprocessWordForRequest(word: Word): Seq[Word] =
+    if (ZhConverterUtil.isSimple(word.token)) {
+      ChineseDefinitionService.toTraditional(word.token) match {
+        case Some(s) =>
+          s.map(simplified => word.copy(processedToken = simplified))
+        case None => List(word)
       }
-    } else List(token)
+    } else List(word)
 
   override def enrichDefinitions(
     definitionLanguage: Language,
-    word: String,
+    word: Word,
     definitions: Map[DefinitionSource, Option[Seq[Definition]]]
   ): Seq[Definition] = {
     definitionLanguage match {
@@ -82,7 +84,7 @@ class ChineseDefinitionService @Inject()(
   }
 
   private[this] def enrichEnglishDefinitions(
-    word: String,
+    word: Word,
     definitions: Map[DefinitionSource, Option[Seq[Definition]]]
   ): Seq[Definition] = {
     val cedict = definitions.getOrElse(DefinitionSource.CEDICT, None)
@@ -117,7 +119,7 @@ class ChineseDefinitionService @Inject()(
   }
 
   private[this] def mergeCedictAndWiktionary(
-    word: String,
+    word: Word,
     cedict: ChineseDefinition,
     wiktionary: Seq[ChineseDefinition]
   ): Seq[ChineseDefinition] = {
@@ -134,7 +136,7 @@ class ChineseDefinitionService @Inject()(
   }
 
   private[this] def addCedictDataToWiktionaryResults(
-    word: String,
+    word: Word,
     cedict: ChineseDefinition,
     wiktionary: Seq[ChineseDefinition]
   ): Seq[ChineseDefinition] = {
@@ -149,13 +151,13 @@ class ChineseDefinitionService @Inject()(
           inputTraditional = cedict.traditional.map(_(0)), // CEDICT has only one traditional option
           definitionLanguage = Language.ENGLISH,
           source = DefinitionSource.MULTIPLE,
-          token = word
+          token = word.processedToken
       )
     )
   }
 
   private[this] def addWiktionaryDataToCedictResults(
-    word: String,
+    word: Word,
     cedict: ChineseDefinition,
     wiktionary: Seq[ChineseDefinition]
   ): Seq[ChineseDefinition] = {
@@ -174,7 +176,7 @@ class ChineseDefinitionService @Inject()(
         inputTraditional = cedict.traditional.map(_(0)), // CEDICT has only one traditional option
         definitionLanguage = Language.ENGLISH,
         source = DefinitionSource.MULTIPLE,
-        token = word
+        token = word.processedToken
       )
     )
   }

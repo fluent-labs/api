@@ -14,6 +14,7 @@ import com.foreignlanguagereader.api.domain.definition.{
   Definition,
   DefinitionSource
 }
+import com.foreignlanguagereader.api.domain.word.Word
 import com.sksamuel.elastic4s.playjson._
 import play.api.Logger
 
@@ -52,11 +53,11 @@ trait LanguageDefinitionService {
 
   // Pre-request hook for normalizing user requests. Suggested for lemmatization
   // Eg: run, runs, running all become run so you don't keep re-teaching the same word
-  def preprocessTokenForRequest(token: String): Seq[String] = List(token)
+  def preprocessWordForRequest(word: Word): Seq[Word] = List(word)
 
   // Functions that can fetch definitions from web sources should be registered here.
   val definitionFetchers
-    : Map[(DefinitionSource, Language), (Language, String) => Future[
+    : Map[(DefinitionSource, Language), (Language, Word) => Future[
       CircuitBreakerResult[Option[Seq[Definition]]]
     ]] = Map(
     (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
@@ -66,7 +67,7 @@ trait LanguageDefinitionService {
   // Define logic to combine definition sources here. If there is only one source, this just returns it.
   def enrichDefinitions(
     definitionLanguage: Language,
-    word: String,
+    word: Word,
     definitions: Map[DefinitionSource, Option[Seq[Definition]]]
   ): Seq[Definition] =
     definitions.iterator
@@ -78,10 +79,10 @@ trait LanguageDefinitionService {
 
   // This is the main method that consumers will call
   def getDefinitions(definitionLanguage: Language,
-                     word: String): Future[Option[Seq[Definition]]] =
+                     word: Word): Future[Option[Seq[Definition]]] =
     Future
       .sequence(
-        preprocessTokenForRequest(word)
+        preprocessWordForRequest(word)
           .map(token => fetchDefinitions(sources, definitionLanguage, token))
       )
       .map(
@@ -123,15 +124,15 @@ trait LanguageDefinitionService {
   val definitionsIndex = "definitions"
 
   // Out of the box, this calls language service for Wiktionary definitions. All languages should use this.
-  def languageServiceFetcher
-    : (Language,
-       String) => Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
-    (_, word: String) => languageServiceClient.getDefinition(wordLanguage, word)
+  def languageServiceFetcher: (Language, Word) => Future[
+    CircuitBreakerResult[Option[Seq[Definition]]]
+  ] =
+    (_, word: Word) => languageServiceClient.getDefinition(wordLanguage, word)
 
   private[this] def fetchDefinitions(
     sources: List[DefinitionSource],
     definitionLanguage: Language,
-    word: String
+    word: Word
   ): Future[Map[DefinitionSource, Option[Seq[Definition]]]] = {
     elasticsearch
       .findFromCacheOrRefetch[Definition](
@@ -147,7 +148,7 @@ trait LanguageDefinitionService {
   private[this] def makeDefinitionRequest(
     source: DefinitionSource,
     definitionLanguage: Language,
-    word: String
+    word: Word
   ): ElasticsearchSearchRequest[Definition] = {
     val fetcher: () => Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
       definitionFetchers.get(source, definitionLanguage) match {
@@ -167,7 +168,7 @@ trait LanguageDefinitionService {
       Map(
         "wordLanguage" -> wordLanguage.toString,
         "definitionLanguage" -> definitionLanguage.toString,
-        "token" -> word,
+        "token" -> word.processedToken,
         "source" -> source.toString
       ),
       fetcher,

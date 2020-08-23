@@ -13,6 +13,7 @@ import com.foreignlanguagereader.api.contentsource.definition.webster.{
   WebsterSpanishDefinitionEntry
 }
 import com.foreignlanguagereader.api.domain.definition.Definition
+import com.foreignlanguagereader.api.domain.word.Word
 import javax.inject.Inject
 import play.api.libs.json.Reads
 import play.api.libs.ws.WSClient
@@ -46,27 +47,27 @@ class MirriamWebsterClient @Inject()(config: Configuration,
   // TODO filter garbage
 
   def getLearnersDefinition(
-    word: String
+    word: Word
   ): Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
     get[Seq[WebsterLearnersDefinitionEntry]](
-      s"https://www.dictionaryapi.com/api/v3/references/learners/json/$word?key=$learnersApiKey"
+      s"https://www.dictionaryapi.com/api/v3/references/learners/json/${word.processedToken}?key=$learnersApiKey"
     ).map(
       results =>
         results.transform {
-          case Some(r) => Some(r.map(_.toDefinition))
+          case Some(r) => Some(r.map(_.toDefinition(word.tag)))
           case None    => None
       }
     )
 
   def getSpanishDefinition(
-    word: String
+    word: Word
   ): Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
     get[Seq[WebsterSpanishDefinitionEntry]](
-      s"https://www.dictionaryapi.com/api/v3/references/spanish/json/$word?key=$spanishApiKey"
+      s"https://www.dictionaryapi.com/api/v3/references/spanish/json/${word.processedToken}?key=$spanishApiKey"
     ).map(
       results =>
         results.transform {
-          case Some(r) => Some(r.map(_.toDefinition))
+          case Some(r) => Some(r.map(_.toDefinition(word.tag)))
           case None    => None
       }
     )

@@ -11,7 +11,7 @@ import play.api.libs.json.{Format, Json}
 
 case class GenericDefinition(subdefinitions: List[String],
                              ipa: String,
-                             tag: Option[PartOfSpeech],
+                             tag: PartOfSpeech,
                              examples: Option[List[String]],
                              // These fields are needed for elasticsearch lookup
                              // But do not need to be presented to the user.
@@ -20,8 +20,15 @@ case class GenericDefinition(subdefinitions: List[String],
                              source: DefinitionSource,
                              token: String)
     extends Definition {
+  val id: String = generateId()
+
   override lazy val toDTO: DefinitionDTO =
-    GenericDefinitionDTO(subdefinitions, tag, examples)
+    GenericDefinitionDTO(
+      id = id,
+      subdefinitions = subdefinitions,
+      tag = tag,
+      examples = examples
+    )
 }
 object GenericDefinition {
   implicit val format: Format[GenericDefinition] =

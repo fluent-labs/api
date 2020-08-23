@@ -76,72 +76,72 @@ class GoogleCloudClientTest extends AsyncFunSpec with MockitoSugar {
         assert(
           client
             .googlePartOfSpeechToDomainPartOfSpeech(Tag.ADJ)
-            .contains(PartOfSpeech.ADJECTIVE)
+            == PartOfSpeech.ADJECTIVE
         )
         assert(
           client
             .googlePartOfSpeechToDomainPartOfSpeech(Tag.ADP)
-            .contains(PartOfSpeech.ADPOSITION)
+            == PartOfSpeech.ADPOSITION
         )
         assert(
           client
             .googlePartOfSpeechToDomainPartOfSpeech(Tag.ADV)
-            .contains(PartOfSpeech.ADVERB)
+            == PartOfSpeech.ADVERB
         )
         assert(
           client
             .googlePartOfSpeechToDomainPartOfSpeech(Tag.CONJ)
-            .contains(PartOfSpeech.CONJUNCTION)
+            == PartOfSpeech.CONJUNCTION
         )
         assert(
           client
             .googlePartOfSpeechToDomainPartOfSpeech(Tag.DET)
-            .contains(PartOfSpeech.DETERMINER)
+            == PartOfSpeech.DETERMINER
         )
         assert(
           client
             .googlePartOfSpeechToDomainPartOfSpeech(Tag.NOUN)
-            .contains(PartOfSpeech.NOUN)
+            == PartOfSpeech.NOUN
         )
         assert(
           client
             .googlePartOfSpeechToDomainPartOfSpeech(Tag.NUM)
-            .contains(PartOfSpeech.NUMBER)
+            == PartOfSpeech.NUMBER
         )
         assert(
           client
             .googlePartOfSpeechToDomainPartOfSpeech(Tag.PRON)
-            .contains(PartOfSpeech.PRONOUN)
+            == PartOfSpeech.PRONOUN
         )
         assert(
           client
             .googlePartOfSpeechToDomainPartOfSpeech(Tag.PRT)
-            .contains(PartOfSpeech.PARTICLE)
+            == PartOfSpeech.PARTICLE
         )
         assert(
           client
             .googlePartOfSpeechToDomainPartOfSpeech(Tag.PUNCT)
-            .contains(PartOfSpeech.PUNCTUATION)
+            == PartOfSpeech.PUNCTUATION
         )
         assert(
           client
             .googlePartOfSpeechToDomainPartOfSpeech(Tag.VERB)
-            .contains(PartOfSpeech.VERB)
+            == PartOfSpeech.VERB
         )
         assert(
           client
             .googlePartOfSpeechToDomainPartOfSpeech(Tag.X)
-            .contains(PartOfSpeech.OTHER)
+            == PartOfSpeech.OTHER
         )
         assert(
           client
             .googlePartOfSpeechToDomainPartOfSpeech(Tag.AFFIX)
-            .contains(PartOfSpeech.AFFIX)
+            == PartOfSpeech.AFFIX
         )
         assert(
           client
             .googlePartOfSpeechToDomainPartOfSpeech(Tag.UNKNOWN)
-            .isEmpty
+            == PartOfSpeech.UNKNOWN
         )
       }
 

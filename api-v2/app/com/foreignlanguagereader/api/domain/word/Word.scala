@@ -9,13 +9,14 @@ import com.foreignlanguagereader.api.dto.v1.document.WordDTO
 
 case class Word(language: Language,
                 token: String,
-                tag: Option[PartOfSpeech],
+                tag: PartOfSpeech,
                 lemma: String,
                 definitions: Option[Seq[Definition]],
                 gender: Option[GrammaticalGender],
                 number: Option[Count],
                 proper: Option[Boolean],
-                tense: Option[WordTense]) {
+                tense: Option[WordTense],
+                processedToken: String) {
   lazy val toDTO: WordDTO = {
     val defs = definitions match {
       case Some(d) => Some(d.map(_.toDTO))
@@ -23,4 +24,18 @@ case class Word(language: Language,
     }
     WordDTO(token, tag.toString, lemma, defs)
   }
+}
+object Word {
+  def fromToken(token: String, language: Language): Word = Word(
+    token = token,
+    language = language,
+    tag = PartOfSpeech.UNKNOWN,
+    lemma = token,
+    definitions = None,
+    gender = None,
+    number = None,
+    proper = None,
+    tense = None,
+    processedToken = token
+  )
 }

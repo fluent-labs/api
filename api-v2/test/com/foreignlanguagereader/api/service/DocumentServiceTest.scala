@@ -6,7 +6,7 @@ import com.foreignlanguagereader.api.domain.definition.{
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.api.domain.word.Word
+import com.foreignlanguagereader.api.domain.word.{PartOfSpeech, Word}
 import com.foreignlanguagereader.api.service.definition.DefinitionService
 import org.mockito.Mockito._
 import org.scalatest.funspec.AsyncFunSpec
@@ -40,24 +40,26 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       val testWord = Word(
         language = Language.ENGLISH,
         token = "test",
-        tag = None,
+        tag = PartOfSpeech.VERB,
         lemma = "test",
         definitions = None,
         gender = None,
         number = None,
         proper = None,
-        tense = None
+        tense = None,
+        processedToken = "test"
       )
       val phraseWord = Word(
         language = Language.ENGLISH,
         token = "phrase",
-        tag = None,
+        tag = PartOfSpeech.NOUN,
         lemma = "phrase",
         definitions = None,
         gender = None,
         number = None,
         proper = None,
-        tense = None
+        tense = None,
+        processedToken = "phrase"
       )
       when(
         mockGoogleCloudClient
@@ -67,7 +69,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       val testDefinition = Definition(
         subdefinitions = List("test"),
         ipa = "",
-        tag = None,
+        tag = PartOfSpeech.NOUN,
         examples = None,
         wordLanguage = Language.ENGLISH,
         definitionLanguage = Language.SPANISH,
@@ -76,13 +78,13 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       )
       when(
         mockDefinitionService
-          .getDefinition(Language.ENGLISH, Language.SPANISH, "test")
+          .getDefinition(Language.ENGLISH, Language.SPANISH, testWord)
       ).thenReturn(Future.successful(Some(List(testDefinition))))
 
       val phraseDefinition = Definition(
         subdefinitions = List("phrase"),
         ipa = "",
-        tag = None,
+        tag = PartOfSpeech.VERB,
         examples = None,
         wordLanguage = Language.ENGLISH,
         definitionLanguage = Language.SPANISH,
@@ -91,7 +93,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       )
       when(
         mockDefinitionService
-          .getDefinition(Language.ENGLISH, Language.SPANISH, "phrase")
+          .getDefinition(Language.ENGLISH, Language.SPANISH, phraseWord)
       ).thenReturn(Future.successful(Some(List(phraseDefinition))))
 
       documentService

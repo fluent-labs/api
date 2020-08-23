@@ -24,7 +24,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         .loadJsonResourceFile[JsValue]("/webster/spanish/domainAnimal.json")
         .toString()
 
-      val tag = Some(PartOfSpeech.NOUN)
+      val tag = PartOfSpeech.NOUN
       val ipa = "ˈænəm{it}ə{/it}l"
       val token = "animal"
       val subdefinitions =
@@ -37,7 +37,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         val example = webster(0)
         assert(example.token == token)
         assert(example.subdefinitions == subdefinitions)
-        assert(example.tag == tag)
+        assert(example.tag.contains(tag))
         assert(example.examples == examples)
       }
 
@@ -57,7 +57,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
           token
         )
 
-        assert(webster(0).toDefinition == compareAgainst)
+        assert(webster(0).toDefinition(PartOfSpeech.NOUN) == compareAgainst)
       }
 
       it("can be written out to json") {

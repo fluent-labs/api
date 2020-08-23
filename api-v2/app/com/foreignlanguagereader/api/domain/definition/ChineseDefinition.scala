@@ -17,7 +17,7 @@ import sangria.macros.derive.{
 import sangria.schema.{EnumType, ObjectType}
 
 case class ChineseDefinition(override val subdefinitions: List[String],
-                             override val tag: Option[PartOfSpeech],
+                             override val tag: PartOfSpeech,
                              override val examples: Option[List[String]],
                              private val inputPinyin: String = "",
                              private val inputSimplified: Option[String],
@@ -35,6 +35,7 @@ case class ChineseDefinition(override val subdefinitions: List[String],
   val pronunciation: ChinesePronunciation =
     ChineseDefinitionService.getPronunciation(inputPinyin)
   val ipa: String = pronunciation.ipa
+  val id: String = generateId()
 
   val (simplified: Option[String], traditional: Option[Seq[String]]) =
     (inputSimplified, inputTraditional) match {
@@ -54,13 +55,14 @@ case class ChineseDefinition(override val subdefinitions: List[String],
 
   lazy val toDTO: ChineseDefinitionDTO =
     ChineseDefinitionDTO(
-      subdefinitions,
-      tag,
-      examples,
-      simplified,
-      traditional,
-      pronunciation,
-      hsk
+      id = id,
+      subdefinitions = subdefinitions,
+      tag = tag,
+      examples = examples,
+      simplified = simplified,
+      traditional = traditional,
+      pronunciation = pronunciation,
+      hsk = hsk
     )
 }
 object ChineseDefinition {

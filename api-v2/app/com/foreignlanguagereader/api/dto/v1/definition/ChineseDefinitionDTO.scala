@@ -7,8 +7,9 @@ import play.api.libs.json.{Format, Json}
 import sangria.macros.derive.{ObjectTypeDescription, deriveObjectType}
 import sangria.schema.ObjectType
 
-case class ChineseDefinitionDTO(subdefinitions: List[String],
-                                tag: Option[PartOfSpeech],
+case class ChineseDefinitionDTO(id: String,
+                                subdefinitions: List[String],
+                                tag: PartOfSpeech,
                                 examples: Option[List[String]],
                                 simplified: Option[String],
                                 traditional: Option[Seq[String]],

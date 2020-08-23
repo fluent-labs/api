@@ -3,6 +3,7 @@ package com.foreignlanguagereader.api.controller.v1.graphql
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.definition.Definition
+import com.foreignlanguagereader.api.domain.word.Word
 import com.foreignlanguagereader.api.service.definition.{
   ChineseDefinitionService,
   DefinitionService,
@@ -43,15 +44,25 @@ class MockDefinitionService
     with MockitoSugar {
   val mock: DefinitionService = {
     val m = Mockito.mock(classOf[DefinitionService])
-    when(m.getDefinition(Language.ENGLISH, Language.ENGLISH, "test"))
-      .thenReturn(Future.successful(None))
-    when(m.getDefinition(Language.CHINESE, Language.ENGLISH, "你好"))
-      .thenReturn(Future.successful(None))
+    when(
+      m.getDefinition(
+        Language.ENGLISH,
+        Language.ENGLISH,
+        Word.fromToken("test", Language.ENGLISH)
+      )
+    ).thenReturn(Future.successful(None))
+    when(
+      m.getDefinition(
+        Language.CHINESE,
+        Language.ENGLISH,
+        Word.fromToken("你好", Language.CHINESE)
+      )
+    ).thenReturn(Future.successful(None))
     m
   }
   override def getDefinition(wordLanguage: Language,
                              definitionLanguage: Language,
-                             word: String): Future[Option[Seq[Definition]]] =
+                             word: Word): Future[Option[Seq[Definition]]] =
     mock.getDefinition(wordLanguage, definitionLanguage, word)
 }
 

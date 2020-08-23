@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.api.repository.definition
 
 import com.foreignlanguagereader.api.contentsource.definition.cedict.CEDICTDefinitionEntry
+import com.foreignlanguagereader.api.domain.word.Word
 import play.api.Logger
 
 import scala.io.{BufferedSource, Source}
@@ -31,13 +32,14 @@ object Cedict {
         throw new IllegalStateException("Failed to load CEDICT", e)
     }
 
-  def getDefinition(token: String): Option[List[CEDICTDefinitionEntry]] =
+  def getDefinition(word: Word): Option[List[CEDICTDefinitionEntry]] =
     // If it's already traditional then we can just do the lookup
-    if (definitions.keySet.contains(token)) definitions.get(token)
+    if (definitions.keySet.contains(word.processedToken))
+      definitions.get(word.processedToken)
     else {
       // If not we need to get all traditional characters for the simplified one, and give all the definitions.
       val d = simplifiedToTraditionalMapping
-        .getOrElse(token, List())
+        .getOrElse(word.processedToken, List())
         .flatMap(trad => definitions.get(trad))
         .flatten
       if (d.isEmpty) None else Some(d)

@@ -13,7 +13,7 @@ import play.api.libs.json._
 trait Definition {
   val subdefinitions: List[String]
   val ipa: String
-  val tag: Option[PartOfSpeech]
+  val tag: PartOfSpeech
   val examples: Option[List[String]]
   // These fields are needed for elasticsearch lookup
   // But do not need to be presented to the user.
@@ -22,6 +22,11 @@ trait Definition {
   val source: DefinitionSource
   val token: String
 
+  // We need a way to uniquely identify parts of speech
+  // Some level of collisions are unavoidable but they should be as rare as possible.
+  val id: String
+  def generateId(): String = s"$wordLanguage:$token:$ipa:$tag"
+
   // This always needs to know how to convert itself to a DTO
   val toDTO: DefinitionDTO
 }
@@ -29,7 +34,7 @@ trait Definition {
 object Definition {
   def apply(subdefinitions: List[String],
             ipa: String,
-            tag: Option[PartOfSpeech],
+            tag: PartOfSpeech,
             examples: Option[List[String]],
             wordLanguage: Language,
             definitionLanguage: Language,
