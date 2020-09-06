@@ -1,29 +1,9 @@
-import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import com.databricks.spark.xml._
+import org.apache.spark.sql.expressions.UserDefinedFunction
+import org.apache.spark.sql.functions._
+import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
 class Wiktionary(implicit spark: SparkSession) {
-  import spark.implicits._
-
-  val simpleWiktionaryBucket =
-    "s3a://foreign-language-reader-definitions/wiktionary/simple/"
-  val ignoredTitles: Set[String] =
-    Set("MediaWiki", "Template", "Wiktionary", "User", "Category")
-
-  def loadWiktionaryDump(path: String): DataFrame =
-    spark.read
-      .option("rowTag", "page")
-      .xml(path)
-      .filter(row => filterMetaArticles(row))
-      .select("revision.text", "title")
-
-  def loadSimple(filename: String): DataFrame =
-    loadWiktionaryDump(simpleWiktionaryBucket + filename)
-
-  def filterMetaArticles(row: Row): Boolean = {
-    val title = row.getAs[String]("title")
-    ignoredTitles.forall(prefix => title.startsWith(prefix))
-  }
-
   val cat =
     """{{BE850}}
     |{{BNC1000HW}}
@@ -80,4 +60,48 @@ class Wiktionary(implicit spark: SparkSession) {
     |{{commonscat|cats}}
     |
     |[[Category:Mammals]]""".stripMargin
+}
+
+object Wiktionary {
+  val ignoredTitles: Set[String] =
+    Set(
+      "MediaWiki:",
+      "MediaWiki talk:",
+      "Template:",
+      "Template talk:",
+      "Wiktionary:",
+      "Wiktionary talk:",
+      "User:",
+      "User talk:",
+      "Category:",
+      "Category talk:",
+      "Help:",
+      "File:",
+      "File talk:",
+      "Appendix:",
+      "Module:",
+      "Module talk:",
+      "Talk:"
+    )
+
+  val simpleWiktionaryBucket = "/"
+
+  def loadWiktionaryDump(
+    path: String
+  )(implicit spark: SparkSession): DataFrame =
+    spark.read
+      .option("rowTag", "page")
+      .xml(path)
+      .filter(row => filterMetaArticles(row))
+      .select("revision.text._VALUE", "title")
+      .withColumnRenamed("_VALUE", "text")
+
+  def loadSimple(filename: String)(implicit spark: SparkSession): DataFrame =
+    loadWiktionaryDump(simpleWiktionaryBucket + filename)
+
+  def filterMetaArticles(row: Row): Boolean = {
+    val title = row.getAs[String]("title")
+    ignoredTitles.forall(prefix => !title.startsWith(prefix))
+  }
+
 }
