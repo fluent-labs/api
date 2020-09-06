@@ -1,5 +1,3 @@
-import com.databricks.spark.xml._
-import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object Application extends App {
@@ -14,9 +12,5 @@ object Application extends App {
       "simplewiktionary-20200301-pages-meta-current.xml"
     )
 
-  val sections = Wiktionary.getSections(wiktionary)
-  sections.show(5)
-
-  val distinct = sections.select(explode(col("sections"))).distinct()
-  distinct.show(500)
+  wiktionary.write.json("wiktionary")
 }
