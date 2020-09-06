@@ -1,4 +1,5 @@
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions._
 
 object Application extends App {
 
@@ -9,5 +10,16 @@ object Application extends App {
 
   val simpleWiktionary =
     Wiktionary.loadSimple("simplewiktionary-20200301-pages-meta-current.xml")
-  simpleWiktionary.write.json("simple")
+
+  SimpleWiktionary.sectionNames
+    .map(_.toLowerCase)
+    .foreach(sectionName => {
+      simpleWiktionary
+        .select(sectionName, "text")
+        .where(s"$sectionName not like ''")
+        .limit(500)
+        .coalesce(1)
+        .write
+        .json(sectionName)
+    })
 }
