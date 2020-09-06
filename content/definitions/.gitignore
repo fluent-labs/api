@@ -1,3 +1,8 @@
 target/*
 project/target/*
 project/project/target/*
+
+# Spark written files
+part-0000*
+_SUCCESS
+*.crc

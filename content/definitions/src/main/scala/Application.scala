@@ -1,4 +1,4 @@
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.SparkSession
 
 object Application extends App {
 
@@ -7,10 +7,7 @@ object Application extends App {
     .appName("WiktionaryParse")
     .getOrCreate()
 
-  val wiktionary: DataFrame =
-    Wiktionary.loadWiktionaryDump(
-      "simplewiktionary-20200301-pages-meta-current.xml"
-    )
-
-  wiktionary.write.json("wiktionary")
+  val simpleWiktionary =
+    Wiktionary.loadSimple("simplewiktionary-20200301-pages-meta-current.xml")
+  simpleWiktionary.write.json("simple")
 }

@@ -1,7 +1,7 @@
 import com.databricks.spark.xml._
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.{DataFrame, Row, SparkSession}
+import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
 
 class Wiktionary(implicit spark: SparkSession) {}
 object Wiktionary {
@@ -26,81 +26,51 @@ object Wiktionary {
       "Talk:"
     )
 
-  val sectionNames = List(
-    "Examples",
-    "Noun",
-    "Expression",
-    "Homophones",
-    "Prefix",
-    "Synonyms",
-    "Symbol",
-    "Initialism",
-    "Abbreviation",
-    "Suffix",
-    "Contraction",
-    "Notes",
-    "Conjunction",
-    "Antonym",
-    "Phrases",
-    "Antonyms",
-    "Gallery",
-    "References",
-    "Adverb",
-    "Determiner",
-    "Usage",
-    "Synonym",
-    "Acronym",
-    "Interjection",
-    "Determinative",
-    "Preposition",
-    "Adjective",
-    "Etymology",
-    "Pronoun",
-    "Phrase",
-    "Verb",
-    "Numerals",
-    "Pronunciation"
-  )
-
   val simpleWiktionaryBucket = "/"
 
   def loadWiktionaryDump(
     path: String
   )(implicit spark: SparkSession): DataFrame = {
-    val loaded = spark.read
+    spark.read
       .option("rowTag", "page")
       .xml(path)
       .filter(row => filterMetaArticles(row))
       .select("revision.text._VALUE", "title")
       .withColumnRenamed("_VALUE", "text")
-
-    extractSections(loaded, sectionNames).drop("text")
   }
 
-  def loadSimple(filename: String)(implicit spark: SparkSession): DataFrame =
-    loadWiktionaryDump(simpleWiktionaryBucket + filename)
+  def loadSimple(
+    path: String
+  )(implicit spark: SparkSession): Dataset[SimpleWiktionary] = {
+    import spark.implicits._
+    extractSections(loadWiktionaryDump(path), SimpleWiktionary.sectionNames)
+      .drop("text")
+      .as[SimpleWiktionary]
+  }
 
   def filterMetaArticles(row: Row): Boolean = {
     val title = row.getAs[String]("title")
     ignoredTitles.forall(prefix => !title.startsWith(prefix))
   }
 
-  def getSections(data: DataFrame): DataFrame = {
-    data.withColumn("sections", getSections(col("text")))
-  }
-  val getSections: UserDefinedFunction = udf(
-    (text: String) =>
-      text.linesIterator
-        .filter(line => line.matches("=+ [A-Za-z0-9]+ =+.*"))
-        .map(_.replaceAll("=+", ""))
-        .toArray
-  )
-
   val oneOrMoreEqualsSign = "=+"
   val optionalWhiteSpace = " *"
   val anythingButEqualsSign = "[^=]*"
+  val sectionNameRegex
+    : String = oneOrMoreEqualsSign + optionalWhiteSpace + anythingButEqualsSign + optionalWhiteSpace + oneOrMoreEqualsSign + ".*"
   def sectionRegex(sectionName: String): String =
     oneOrMoreEqualsSign + optionalWhiteSpace + sectionName + optionalWhiteSpace + oneOrMoreEqualsSign + s"($anythingButEqualsSign)" // Capture group
+
+  def getSections(data: DataFrame): DataFrame = {
+    data.select(explode(findSections(col("text")))).distinct().coalesce(1)
+  }
+  val findSections: UserDefinedFunction = udf(
+    (text: String) =>
+      text.linesIterator
+        .filter(line => line.matches(sectionNameRegex))
+        .map(_.replaceAll("=+", ""))
+        .toArray
+  )
 
   def extractSection(data: DataFrame, name: String): DataFrame =
     data.withColumn(
