@@ -104,4 +104,15 @@ object Wiktionary {
     ignoredTitles.forall(prefix => !title.startsWith(prefix))
   }
 
+  def getSections(data: DataFrame): DataFrame = {
+    data.withColumn("sections", getSections(col("text")))
+  }
+  val getSections: UserDefinedFunction = udf(
+    (text: String) =>
+      text.linesIterator
+        .filter(line => line.matches("=+ [A-Za-z0-9]+ =+.*"))
+        .map(_.replaceAll("=+", ""))
+        .toArray
+  )
+
 }
