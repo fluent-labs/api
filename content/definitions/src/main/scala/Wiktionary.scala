@@ -52,12 +52,13 @@ object Wiktionary {
     ignoredTitles.forall(prefix => !title.startsWith(prefix))
   }
 
+  val caseInsensitiveFlag = "(?i)"
+  val periodMatchesNewlineFlag = "(?s)"
   val oneOrMoreEqualsSign = "=+"
   val doubleEqualsSign = "=="
   val optionalWhiteSpace = " *"
   val anythingButEqualsSign = "[^=]*"
   val lazyMatchAnything = "(.*?)"
-  val periodMatchesNewlineFlag = "(?s)"
   val spaceOrNewline = "[ |\n]+"
   val nextSection = s"(?>== *[A-Za-z0-9]+ *==$spaceOrNewline)"
   val nextSectionOrEndOfFile = s"(?>$nextSection|\\Z)+"
@@ -68,7 +69,7 @@ object Wiktionary {
   // Subtle but '== Test ==' will match '=== Test ===' at this point: '="== Test =="='
 
   def sectionRegex(sectionName: String): String =
-    periodMatchesNewlineFlag + doubleEqualsSign + optionalWhiteSpace + sectionName + optionalWhiteSpace + doubleEqualsSign + lazyMatchAnything + nextSectionOrEndOfFile
+    periodMatchesNewlineFlag + caseInsensitiveFlag + doubleEqualsSign + optionalWhiteSpace + sectionName + optionalWhiteSpace + doubleEqualsSign + lazyMatchAnything + nextSectionOrEndOfFile
 
   def getHeadings(data: DataFrame, equalsCount: Integer): DataFrame = {
     data

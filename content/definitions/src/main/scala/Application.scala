@@ -11,24 +11,27 @@ object Application extends App {
   val wiktionaryRaw = Wiktionary
     .loadWiktionaryDump("simplewiktionary-20200301-pages-meta-current.xml")
 
-  Wiktionary
-    .extractSection(wiktionaryRaw, "Noun")
-    .where("noun not like ''")
-    .write
-    .json("nouns")
+  val wiktionaryWithSections =
+    Wiktionary.extractSections(wiktionaryRaw, SimpleWiktionary.sectionNames)
+
+//  Wiktionary
+//    .extractSection(wiktionaryRaw, "Noun")
+//    .where("noun not like ''")
+//    .write
+//    .json("nouns")
 
 //  val simpleWiktionary =
 //    Wiktionary.loadSimple("simplewiktionary-20200301-pages-meta-current.xml")
 
-//  SimpleWiktionary.sectionNames
-//    .map(_.toLowerCase)
-//    .foreach(sectionName => {
-//      simpleWiktionary
-//        .select(sectionName, "text")
-//        .where(s"$sectionName not like ''")
-//        .limit(500)
-//        .coalesce(1)
-//        .write
-//        .json(sectionName)
-//    })
+  SimpleWiktionary.sectionNames
+    .map(_.toLowerCase)
+    .foreach(sectionName => {
+      wiktionaryWithSections
+        .select(sectionName)
+        .where(col(sectionName) =!= "")
+        .limit(500)
+        .coalesce(1)
+        .write
+        .json(sectionName)
+    })
 }
