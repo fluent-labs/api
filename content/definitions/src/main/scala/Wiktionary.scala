@@ -53,28 +53,42 @@ object Wiktionary {
   }
 
   val oneOrMoreEqualsSign = "=+"
+  val doubleEqualsSign = "=="
   val optionalWhiteSpace = " *"
   val anythingButEqualsSign = "[^=]*"
-  val sectionNameRegex
-    : String = oneOrMoreEqualsSign + optionalWhiteSpace + anythingButEqualsSign + optionalWhiteSpace + oneOrMoreEqualsSign + ".*"
-  def sectionRegex(sectionName: String): String =
-    oneOrMoreEqualsSign + optionalWhiteSpace + sectionName + optionalWhiteSpace + oneOrMoreEqualsSign + s"($anythingButEqualsSign)" // Capture group
+  val lazyMatchAnything = "(.*?)"
+  val periodMatchesNewlineFlag = "(?s)"
+  val spaceOrNewline = "[ |\n]+"
+  val nextSection = s"(?>== *[A-Za-z0-9]+ *==$spaceOrNewline)"
+  val nextSectionOrEndOfFile = s"(?>$nextSection|\\Z)+"
 
-  def getSections(data: DataFrame): DataFrame = {
-    data.select(explode(findSections(col("text")))).distinct().coalesce(1)
+  def headingRegex(equalsCount: Int): String =
+    "=".repeat(equalsCount) + optionalWhiteSpace + anythingButEqualsSign + optionalWhiteSpace + "="
+      .repeat(equalsCount) + anythingButEqualsSign // Needed or else outer equals will be ignored
+  // Subtle but '== Test ==' will match '=== Test ===' at this point: '="== Test =="='
+
+  def sectionRegex(sectionName: String): String =
+    periodMatchesNewlineFlag + doubleEqualsSign + optionalWhiteSpace + sectionName + optionalWhiteSpace + doubleEqualsSign + lazyMatchAnything + nextSectionOrEndOfFile
+
+  def getHeadings(data: DataFrame, equalsCount: Integer): DataFrame = {
+    data
+      .select(explode(findHeadings(equalsCount)(col("text"))))
+      .distinct()
+      .coalesce(1)
   }
-  val findSections: UserDefinedFunction = udf(
-    (text: String) =>
-      text.linesIterator
-        .filter(line => line.matches(sectionNameRegex))
-        .map(_.replaceAll("=+", ""))
-        .toArray
-  )
+  def findHeadings: Int => UserDefinedFunction =
+    (equalsCount: Int) =>
+      udf(
+        (text: String) =>
+          text.linesIterator
+            .filter(line => line.matches(headingRegex(equalsCount)))
+            .toArray
+    )
 
   def extractSection(data: DataFrame, name: String): DataFrame =
     data.withColumn(
       name.toLowerCase(),
-      regexp_extract(col("text"), sectionRegex(name), 0)
+      regexp_extract(col("text"), sectionRegex(name), 1)
     )
 
   def extractSections(data: DataFrame, sections: List[String]): DataFrame = {

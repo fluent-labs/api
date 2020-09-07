@@ -8,18 +8,27 @@ object Application extends App {
     .appName("WiktionaryParse")
     .getOrCreate()
 
-  val simpleWiktionary =
-    Wiktionary.loadSimple("simplewiktionary-20200301-pages-meta-current.xml")
+  val wiktionaryRaw = Wiktionary
+    .loadWiktionaryDump("simplewiktionary-20200301-pages-meta-current.xml")
 
-  SimpleWiktionary.sectionNames
-    .map(_.toLowerCase)
-    .foreach(sectionName => {
-      simpleWiktionary
-        .select(sectionName, "text")
-        .where(s"$sectionName not like ''")
-        .limit(500)
-        .coalesce(1)
-        .write
-        .json(sectionName)
-    })
+  Wiktionary
+    .extractSection(wiktionaryRaw, "Noun")
+    .where("noun not like ''")
+    .write
+    .json("nouns")
+
+//  val simpleWiktionary =
+//    Wiktionary.loadSimple("simplewiktionary-20200301-pages-meta-current.xml")
+
+//  SimpleWiktionary.sectionNames
+//    .map(_.toLowerCase)
+//    .foreach(sectionName => {
+//      simpleWiktionary
+//        .select(sectionName, "text")
+//        .where(s"$sectionName not like ''")
+//        .limit(500)
+//        .coalesce(1)
+//        .write
+//        .json(sectionName)
+//    })
 }
