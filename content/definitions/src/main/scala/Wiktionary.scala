@@ -1,7 +1,7 @@
 import com.databricks.spark.xml._
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.{DataFrame, Row, SparkSession}
+import org.apache.spark.sql.{Column, DataFrame, Row, SparkSession}
 
 object Wiktionary {
   val metaArticleTitles: Set[String] =
@@ -100,4 +100,15 @@ object Wiktionary {
       name.toLowerCase(),
       regexp_extract(col("text"), subSectionRegex(name), 1)
     )
+
+  // Defined in SPARK-24884 but not released yet
+  val regexp_extract_all: UserDefinedFunction = udf(
+    (input: String, regex: String, captureGroupIndex: Int) => {
+      regex.r
+        .findAllIn(input)
+        .matchData
+        .map(m => m.group(captureGroupIndex))
+        .toArray
+    }
+  )
 }
