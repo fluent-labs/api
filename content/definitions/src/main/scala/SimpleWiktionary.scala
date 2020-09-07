@@ -1,4 +1,4 @@
-import Wiktionary.{extractSections, loadWiktionaryDump}
+import Wiktionary.{extractSections, loadWiktionaryDump, regexp_extract_all}
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{Column, DataFrame, Dataset, SparkSession}
@@ -6,9 +6,9 @@ import org.apache.spark.sql.{Column, DataFrame, Dataset, SparkSession}
 case class SimpleWiktionaryDefinition(token: String,
                                       definition: String,
                                       tag: String,
-                                      ipa: String) {
-//  val subdefinitions: List[String]
-  val examples: Option[List[String]] = None
+                                      ipa: String,
+                                      subdefinitions: Array[String],
+                                      examples: Array[String]) {
   val definitionLanguage = "ENGLISH"
   val wordLanguage = "ENGLISH"
   val source = "WIKTIONARY_SIMPLE_ENGLISH"
@@ -102,9 +102,18 @@ object SimpleWiktionary {
   val rightBracket = "\\}"
   val slash = "\\/"
   val anythingButSlash = "([^\\/]+)"
+  val optionalSpace = " *"
+  val newline = "\\n"
+
   // It looks like this: {{IPA|/whatWeWant/}}
   val ipaRegex
     : String = leftBracket + leftBracket + "IPA" + pipe + slash + anythingButSlash + slash + rightBracket + rightBracket
+
+  val subdefinitionMarker = "#"
+  val examplesMarker = "#:"
+  val subdefinitionsRegex
+    : String = subdefinitionMarker + optionalSpace + "([^\\n:]*)" + newline
+  val examplesRegex: String = examplesMarker + optionalSpace + "([^\\n]*)"
 
   def loadSimple(
     path: String
@@ -112,6 +121,14 @@ object SimpleWiktionary {
     import spark.implicits._
     splitWordsByPartOfSpeech(loadWiktionaryDump(path))
       .withColumn("ipa", regexp_extract(col("text"), ipaRegex, 1))
+      .withColumn(
+        "subdefinitions",
+        regexp_extract_all(subdefinitionsRegex, 1)(col("definition"))
+      )
+      .withColumn(
+        "examples",
+        regexp_extract_all(examplesRegex, 1)(col("definition"))
+      )
       .as[SimpleWiktionaryDefinition]
   }
 
