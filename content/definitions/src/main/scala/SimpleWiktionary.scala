@@ -16,6 +16,10 @@ case class SimpleWiktionaryDefinition(
                                       ipa: String,
                                       subdefinitions: Array[String],
                                       examples: Array[String],
+                                      // Constants
+                                      definitionLanguage: String,
+                                      wordLanguage: String,
+                                      source: String,
                                       // Nice extras
                                       antonyms: Array[String],
                                       homonyms: Array[String],
@@ -25,11 +29,7 @@ case class SimpleWiktionaryDefinition(
                                       pronunciation: Array[String],
                                       related: Array[String],
                                       synonyms: Array[String],
-                                      usage: Array[String]) {
-  val definitionLanguage = "ENGLISH"
-  val wordLanguage = "ENGLISH"
-  val source = "WIKTIONARY_SIMPLE_ENGLISH"
-}
+                                      usage: Array[String])
 
 object SimpleWiktionary {
   val metaSections = List("pronunciation", "usage", "usage notes")
@@ -149,6 +149,9 @@ object SimpleWiktionary {
 
     addOptionalSections(splitDefinitions)
       .drop("text")
+      .withColumn("definitionLanguage", lit("ENGLISH"))
+      .withColumn("wordLanguage", lit("ENGLISH"))
+      .withColumn("source", lit("WIKTIONARY_SIMPLE_ENGLISH"))
       .as[SimpleWiktionaryDefinition]
   }
 
