@@ -3,7 +3,6 @@ import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
-class Wiktionary(implicit spark: SparkSession) {}
 object Wiktionary {
   val metaArticleTitles: Set[String] =
     Set(
@@ -71,6 +70,7 @@ object Wiktionary {
       .select(explode(findHeadings(equalsCount)(col("text"))))
       .distinct()
       .coalesce(1)
+      .sort(col("col"))
   }
   def findHeadings: Int => UserDefinedFunction =
     (equalsCount: Int) =>
@@ -78,6 +78,10 @@ object Wiktionary {
         (text: String) =>
           text.linesIterator
             .filter(line => line.matches(headingRegex(equalsCount)))
+            .map(
+              line =>
+                line.replaceAll("=".repeat(equalsCount), "").trim().toLowerCase
+            )
             .toArray
     )
 

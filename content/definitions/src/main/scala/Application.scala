@@ -1,5 +1,4 @@
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions._
 
 object Application extends App {
 
@@ -11,21 +10,14 @@ object Application extends App {
   val wiktionaryRaw = Wiktionary
     .loadWiktionaryDump("simplewiktionary-20200301-pages-meta-current.xml")
 
-  val wiktionaryWithSections =
-    Wiktionary.extractSections(wiktionaryRaw, SimpleWiktionary.partsOfSpeech)
-
-//  Wiktionary
-//    .extractSection(wiktionaryRaw, "Noun")
-//    .where("noun not like ''")
-//    .write
-//    .json("nouns")
+  val wiktionaryWithSections: Unit =
+    Wiktionary.getHeadings(wiktionaryRaw, 3).write.csv("triplesections")
 
   val simpleWiktionary =
     SimpleWiktionary.loadSimple(
       "simplewiktionary-20200301-pages-meta-current.xml"
     )
-  simpleWiktionary
-    .printSchema()
+  simpleWiktionary.printSchema()
   simpleWiktionary.show(50)
   simpleWiktionary.limit(500).write.json("combined")
 
