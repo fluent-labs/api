@@ -92,7 +92,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .findFromCacheOrRefetch[Definition](
-            any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
+            any(classOf[List[ElasticsearchSearchRequest[Definition]]])
           )(
             any(classOf[Indexable[Definition]]),
             any(classOf[HitReader[Definition]]),
@@ -124,7 +124,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
+              any(classOf[List[ElasticsearchSearchRequest[Definition]]])
             )(
               any(classOf[Indexable[Definition]]),
               any(classOf[HitReader[Definition]]),
@@ -151,7 +151,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
+              any(classOf[List[ElasticsearchSearchRequest[Definition]]])
             )(
               any(classOf[Indexable[Definition]]),
               any(classOf[HitReader[Definition]]),
@@ -176,7 +176,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
+              any(classOf[List[ElasticsearchSearchRequest[Definition]]])
             )(
               any(classOf[Indexable[Definition]]),
               any(classOf[HitReader[Definition]]),
@@ -230,7 +230,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
+              any(classOf[List[ElasticsearchSearchRequest[Definition]]])
             )(
               any(classOf[Indexable[Definition]]),
               any(classOf[HitReader[Definition]]),

@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.service.definition
 
+import cats.implicits._
 import com.foreignlanguagereader.api.client.LanguageServiceClient
 import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerNonAttempt,
@@ -53,12 +54,12 @@ trait LanguageDefinitionService {
 
   // Pre-request hook for normalizing user requests. Suggested for lemmatization
   // Eg: run, runs, running all become run so you don't keep re-teaching the same word
-  def preprocessWordForRequest(word: Word): Seq[Word] = List(word)
+  def preprocessWordForRequest(word: Word): List[Word] = List(word)
 
   // Functions that can fetch definitions from web sources should be registered here.
   val definitionFetchers
     : Map[(DefinitionSource, Language), (Language, Word) => Future[
-      CircuitBreakerResult[Option[Seq[Definition]]]
+      CircuitBreakerResult[Option[List[Definition]]]
     ]] = Map(
     (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
   )
@@ -68,56 +69,34 @@ trait LanguageDefinitionService {
   def enrichDefinitions(
     definitionLanguage: Language,
     word: Word,
-    definitions: Map[DefinitionSource, Option[Seq[Definition]]]
-  ): Seq[Definition] =
-    definitions.iterator
-      .flatMap {
-        case (_, result) => result
-      }
-      .flatten
-      .toList
+    definitions: Map[DefinitionSource, List[Definition]]
+  ): List[Definition] = definitions.values.flatten.toList
 
   // This is the main method that consumers will call
   def getDefinitions(definitionLanguage: Language,
-                     word: Word): Future[Option[Seq[Definition]]] =
-    Future
-      .sequence(
-        preprocessWordForRequest(word)
-          .map(token => fetchDefinitions(sources, definitionLanguage, token))
-      )
+                     word: Word): Future[Option[List[Definition]]] = {
+    preprocessWordForRequest(word)
+    // Trigger all requests asynchronously and block for all to complete
+      .traverse(token => fetchDefinitions(sources, definitionLanguage, token))
+      // Merge definitions for each lookup term
+      .map(_.combineAll)
+      // Remove empty sources
       .map(
-        results =>
-          results.reduce((a, b) => {
-            // Each possible token gives a Map[DefinitionSource, Option[Seq[Definition]]]
-            // So this just adds them up in the obvious way
-            sources
-              .map(source => {
-                // The option here refers to if the source returned results
-                // Not whether the key is in the map
-                val sourceA = a.getOrElse(source, None)
-                val sourceB = b.getOrElse(source, None)
-                (sourceA, sourceB) match {
-                  case (Some(as), Some(bs)) => source -> Some(as ++ bs)
-                  case (Some(as), None)     => source -> Some(as)
-                  case (None, Some(bs))     => source -> Some(bs)
-                  case _                    => source -> None
-                }
-              })
-              .toMap[DefinitionSource, Option[Seq[Definition]]]
-          })
-      ) map {
-      case r if r.forall {
-            // (source, Option[Seq[results]]
-            case (_, None) => true
-            case _         => false
-          } =>
-        logger.info(
-          s"No definitions found for $wordLanguage $word in $definitionLanguage"
-        )
-        None
-      case definitions =>
-        Some(enrichDefinitions(definitionLanguage, word, definitions))
-    }
+        p =>
+          p.collect {
+            case (k, Some(v)) => k -> v
+        }
+      )
+      .map {
+        case r if r.isEmpty =>
+          logger.info(
+            s"No definitions found for $wordLanguage $word in $definitionLanguage"
+          )
+          None
+        case definitions =>
+          enrichDefinitions(definitionLanguage, word, definitions).some
+      }
+  }
 
   // Below here is trait behavior, implementers need not read further
 
@@ -125,7 +104,7 @@ trait LanguageDefinitionService {
 
   // Out of the box, this calls language service for Wiktionary definitions. All languages should use this.
   def languageServiceFetcher: (Language, Word) => Future[
-    CircuitBreakerResult[Option[Seq[Definition]]]
+    CircuitBreakerResult[Option[List[Definition]]]
   ] =
     (_, word: Word) => languageServiceClient.getDefinition(wordLanguage, word)
 
@@ -133,7 +112,7 @@ trait LanguageDefinitionService {
     sources: List[DefinitionSource],
     definitionLanguage: Language,
     word: Word
-  ): Future[Map[DefinitionSource, Option[Seq[Definition]]]] = {
+  ): Future[Map[DefinitionSource, Option[List[Definition]]]] = {
     elasticsearch
       .findFromCacheOrRefetch[Definition](
         sources
@@ -150,7 +129,7 @@ trait LanguageDefinitionService {
     definitionLanguage: Language,
     word: Word
   ): ElasticsearchSearchRequest[Definition] = {
-    val fetcher: () => Future[CircuitBreakerResult[Option[Seq[Definition]]]] =
+    val fetcher: () => Future[CircuitBreakerResult[Option[List[Definition]]]] =
       definitionFetchers.get(source, definitionLanguage) match {
         case Some(fetcher) =>
           () =>
@@ -160,7 +139,7 @@ trait LanguageDefinitionService {
             s"Failed to search in $wordLanguage for $word because $source is not implemented for definitions in $definitionLanguage"
           )
           () =>
-            Future.successful(CircuitBreakerNonAttempt())
+            CircuitBreakerNonAttempt[Option[List[Definition]]]().pure[Future]
       }
 
     ElasticsearchSearchRequest(

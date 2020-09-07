@@ -49,6 +49,8 @@ libraryDependencies += "org.sangria-graphql" %% "sangria-play-json" % "2.0.1"
 // Adds additional packages into conf/routes
 // play.sbt.routes.RoutesKeys.routesImport += "com.foreignlanguagereader.binders._"
 
+libraryDependencies += "org.typelevel" %% "cats-core" % "2.1.1"
+
 // Code coverage settings
 coverageEnabled := true
 coverageMinimum := 70

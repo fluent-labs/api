@@ -18,32 +18,34 @@ object WebsterDefiningText {
     * See NestedArrayHelper for details
     */
   implicit val reads: Reads[WebsterDefiningText] = JsPath
-    .read[Seq[Seq[JsValue]]](JsonSequenceHelper.jsValueHelper.readsSeqSeq)
+    .read[List[List[JsValue]]](JsonSequenceHelper.jsValueHelper.readsListList)
     .map(intermediate => {
-      val lookup: Map[String, Seq[JsValue]] =
+      val lookup: Map[String, List[JsValue]] =
         WebsterNestedArrayHelper.buildLookupMap(intermediate)
 
-      val text: Seq[String] =
+      val text: List[String] =
         WebsterNestedArrayHelper.getOrNone[String](lookup.get("text")) match {
           case Some(t) => t
           case None    => List()
         }
-      val bnw: Option[Seq[WebsterBiographicalNameWrap]] =
+      val bnw: Option[List[WebsterBiographicalNameWrap]] =
         WebsterNestedArrayHelper
           .getOrNone[WebsterBiographicalNameWrap](lookup.get("bnw"))
-      val ca: Option[Seq[WebsterCalledAlso]] =
+      val ca: Option[List[WebsterCalledAlso]] =
         WebsterNestedArrayHelper.getOrNone[WebsterCalledAlso](lookup.get("ca"))
 
-      val snote: Option[Seq[WebsterSupplementalNote]] = WebsterNestedArrayHelper
-        .getOrNone[WebsterSupplementalNote](lookup.get("snote"))
+      val snote: Option[List[WebsterSupplementalNote]] =
+        WebsterNestedArrayHelper
+          .getOrNone[WebsterSupplementalNote](lookup.get("snote"))
 
-      val vis: Option[Seq[WebsterVerbalIllustration]] = WebsterNestedArrayHelper
-        .getOrNone[Seq[WebsterVerbalIllustration]](lookup.get("vis"))(
-          WebsterVerbalIllustration.helper.readsSeq
-        ) match {
-        case Some(x) => Some(x.flatten)
-        case None    => None
-      }
+      val vis: Option[List[WebsterVerbalIllustration]] =
+        WebsterNestedArrayHelper
+          .getOrNone[List[WebsterVerbalIllustration]](lookup.get("vis"))(
+            WebsterVerbalIllustration.helper.readsList
+          ) match {
+          case Some(x) => Some(x.flatten)
+          case None    => None
+        }
 
       WebsterDefiningText(text, bnw, ca, snote, vis)
     })
@@ -66,8 +68,8 @@ object WebsterBiographicalNameWrap {
     (JsPath \ "pname").readNullable[String] and
       (JsPath \ "sname").readNullable[String] and
       (JsPath \ "altname").readNullable[String] and
-      (JsPath \ "prs").readNullable[Seq[WebsterPronunciation]](
-        WebsterPronunciation.helper.readsSeq
+      (JsPath \ "prs").readNullable[List[WebsterPronunciation]](
+        WebsterPronunciation.helper.readsList
       )
   )(WebsterBiographicalNameWrap.apply _)
   implicit val writes: Writes[WebsterBiographicalNameWrap] =
@@ -84,8 +86,8 @@ object WebsterCalledAlso {
   implicit val reads: Reads[WebsterCalledAlso] =
     ((JsPath \ "intro").readNullable[String] and
       (JsPath \ "cats")
-        .readNullable[Seq[WebsterCalledAlsoTarget]](
-          WebsterCalledAlsoTarget.helper.readsSeq
+        .readNullable[List[WebsterCalledAlsoTarget]](
+          WebsterCalledAlsoTarget.helper.readsList
         ))(WebsterCalledAlso.apply _)
   implicit val writes: Writes[WebsterCalledAlso] =
     Json.writes[WebsterCalledAlso]
@@ -103,8 +105,8 @@ object WebsterCalledAlsoTarget {
     (JsPath \ "cat").readNullable[String] and
       (JsPath \ "catref").readNullable[String] and
       (JsPath \ "pn").readNullable[String] and
-      (JsPath \ "prs").readNullable[Seq[WebsterPronunciation]](
-        WebsterPronunciation.helper.readsSeq
+      (JsPath \ "prs").readNullable[List[WebsterPronunciation]](
+        WebsterPronunciation.helper.readsList
       ) and
       (JsPath \ "psl").readNullable[String]
   )(WebsterCalledAlsoTarget.apply _)
@@ -121,7 +123,7 @@ case class WebsterSupplementalNote(
 // Note: This class can also contain run ins (ri). It's not really useful for this application so I have dropped it.
 object WebsterSupplementalNote {
   implicit val reads: Reads[WebsterSupplementalNote] = JsPath
-    .read[Seq[Seq[JsValue]]](JsonSequenceHelper.jsValueHelper.readsSeqSeq)
+    .read[List[List[JsValue]]](JsonSequenceHelper.jsValueHelper.readsListList)
     .map(intermediate => {
       val lookup = WebsterNestedArrayHelper.buildLookupMap(intermediate)
 
@@ -131,10 +133,10 @@ object WebsterSupplementalNote {
           case None    => List("")
         }
 
-      val example: Option[Seq[WebsterVerbalIllustration]] = {
+      val example: Option[List[WebsterVerbalIllustration]] = {
         val nested = WebsterNestedArrayHelper
-          .getOrNone[Seq[WebsterVerbalIllustration]](lookup.get("vis"))(
-            WebsterVerbalIllustration.helper.readsSeq
+          .getOrNone[List[WebsterVerbalIllustration]](lookup.get("vis"))(
+            WebsterVerbalIllustration.helper.readsList
           )
         nested match {
           case Some(x) => Some(x.flatten)

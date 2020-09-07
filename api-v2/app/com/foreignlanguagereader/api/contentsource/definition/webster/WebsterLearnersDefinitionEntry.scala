@@ -38,13 +38,15 @@ object WebsterLearnersDefinitionEntry {
       (JsPath \ "hwi").read[WebsterHeadwordInfo] and
       (JsPath \ "fl").readNullable[WebsterPartOfSpeech] and
       (JsPath \ "ins")
-        .readNullable[Seq[WebsterInflection]](WebsterInflection.helper.readsSeq) and
+        .readNullable[List[WebsterInflection]](
+          WebsterInflection.helper.readsList
+        ) and
       (JsPath \ "def")
-        .read[Seq[WebsterDefinition]](WebsterDefinition.helper.readsSeq) and
-      (JsPath \ "dros").readNullable[Seq[WebsterDefinedRunOnPhrase]](
-        WebsterDefinedRunOnPhrase.helper.readsSeq
+        .read[List[WebsterDefinition]](WebsterDefinition.helper.readsList) and
+      (JsPath \ "dros").readNullable[List[WebsterDefinedRunOnPhrase]](
+        WebsterDefinedRunOnPhrase.helper.readsList
       ) and
-      (JsPath \ "shortdef").read[Seq[String]](Reads.seq[String])
+      (JsPath \ "shortdef").read[List[String]](Reads.list[String])
   )(WebsterLearnersDefinitionEntry.apply _)
   implicit val writes: Writes[WebsterLearnersDefinitionEntry] =
     Json.writes[WebsterLearnersDefinitionEntry]

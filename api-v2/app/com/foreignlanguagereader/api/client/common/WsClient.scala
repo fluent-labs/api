@@ -6,7 +6,6 @@ import play.api.libs.ws.WSClient
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
-import scala.util.{Failure, Success}
 
 /**
   * Common behavior for rest clients that we implement using WS
@@ -23,7 +22,10 @@ trait WsClient extends Circuitbreaker {
     isFailure: Throwable => Boolean = _ => true
   )(implicit reads: Reads[T]): Future[CircuitBreakerResult[Option[T]]] = {
     logger.info(s"Calling url $url")
-    withBreaker(
+    val typeName = implicitly[ClassTag[T]].runtimeClass.getSimpleName
+
+    withBreakerOption(
+      s"Failed to get $typeName from $url",
       isFailure,
       defaultIsSuccess[T],
       ws.url(url)
@@ -40,17 +42,6 @@ trait WsClient extends Circuitbreaker {
             logger.error(error)
             throw new IllegalArgumentException(error)
         }
-    ).map {
-      // We are converting errors into Options here
-      case Success(CircuitBreakerAttempt(value)) =>
-        CircuitBreakerAttempt(Some(value))
-      case Success(CircuitBreakerNonAttempt()) =>
-        CircuitBreakerNonAttempt()
-      case Failure(e) =>
-        val typeName = implicitly[ClassTag[T]].runtimeClass.getSimpleName
-        logger
-          .error(s"Failed to get $typeName from $url: ${e.getMessage}", e)
-        CircuitBreakerAttempt(None)
-    }
+    )
   }
 }

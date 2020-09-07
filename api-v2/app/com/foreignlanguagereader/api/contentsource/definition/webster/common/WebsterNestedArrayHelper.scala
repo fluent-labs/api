@@ -10,7 +10,7 @@ import play.api.libs.json._
   * Build a lookup map, and then classes can pull them out.
   */
 object WebsterNestedArrayHelper {
-  def buildLookupMap(input: Seq[Seq[JsValue]]): Map[String, Seq[JsValue]] =
+  def buildLookupMap(input: List[List[JsValue]]): Map[String, List[JsValue]] =
     input
       .map(row => {
         val typeString = row(0).validate[String] match {
@@ -25,14 +25,14 @@ object WebsterNestedArrayHelper {
       }
 
   def buildLookupMapFromNested(
-    input: Seq[Seq[Seq[JsValue]]]
-  ): Seq[Map[String, Seq[JsValue]]] = input.map(buildLookupMap)
+    input: List[List[List[JsValue]]]
+  ): List[Map[String, List[JsValue]]] = input.map(buildLookupMap)
 
   // Helper method to handle pulling optional sequences out of the json.
   def getOrNone[T](
-    input: Option[Seq[JsValue]]
-  )(implicit r: Reads[T]): Option[Seq[T]] = {
-    implicit val readsSeq: Reads[Seq[T]] = Reads.seq(r)
+    input: Option[List[JsValue]]
+  )(implicit r: Reads[T]): Option[List[T]] = {
+    implicit val readsList: Reads[List[T]] = Reads.list(r)
     input match {
       case Some(x) =>
         val validated = x.flatMap(

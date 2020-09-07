@@ -59,7 +59,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .findFromCacheOrRefetch(
-            any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
+            any(classOf[List[ElasticsearchSearchRequest[Definition]]])
           )(
             any(classOf[Indexable[Definition]]),
             any(classOf[HitReader[Definition]]),
@@ -93,7 +93,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .findFromCacheOrRefetch(
-            any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
+            any(classOf[List[ElasticsearchSearchRequest[Definition]]])
           )(
             any(classOf[Indexable[Definition]]),
             any(classOf[HitReader[Definition]]),
@@ -113,7 +113,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .findFromCacheOrRefetch(
-            any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
+            any(classOf[List[ElasticsearchSearchRequest[Definition]]])
           )(
             any(classOf[Indexable[Definition]]),
             any(classOf[HitReader[Definition]]),
@@ -139,7 +139,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .findFromCacheOrRefetch(
-            any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
+            any(classOf[List[ElasticsearchSearchRequest[Definition]]])
           )(
             any(classOf[Indexable[Definition]]),
             any(classOf[HitReader[Definition]]),
@@ -183,15 +183,13 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         override def enrichDefinitions(
           definitionLanguage: Language,
           word: Word,
-          definitions: Map[DefinitionSource, Option[Seq[Definition]]]
-        ): Seq[Definition] = {
-          val stub: Map[DefinitionSource, Option[Seq[Definition]]] = Map(
-            DefinitionSource.CEDICT -> Some(
-              List(dummyCEDICTDefinition.toDefinition(PartOfSpeech.NOUN))
-            ),
-            DefinitionSource.WIKTIONARY -> Some(
+          definitions: Map[DefinitionSource, List[Definition]]
+        ): List[Definition] = {
+          val stub: Map[DefinitionSource, List[Definition]] = Map(
+            DefinitionSource.CEDICT ->
+              List(dummyCEDICTDefinition.toDefinition(PartOfSpeech.NOUN)),
+            DefinitionSource.WIKTIONARY ->
               List(dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN))
-            )
           )
           (definitionLanguage, word, definitions) match {
             case (Language.ENGLISH, token, stub) =>
@@ -209,7 +207,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[Seq[ElasticsearchSearchRequest[Definition]]])
+              any(classOf[List[ElasticsearchSearchRequest[Definition]]])
             )(
               any(classOf[Indexable[Definition]]),
               any(classOf[HitReader[Definition]]),

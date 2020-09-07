@@ -14,7 +14,7 @@ class WebsterVariantTest extends AnyFunSpec {
     it("can be read from JSON") {
       val variants = Json
         .parse(webster)
-        .validate[Seq[WebsterVariant]](WebsterVariant.helper.readsSeq)
+        .validate[List[WebsterVariant]](WebsterVariant.helper.readsList)
         .get
       assert(variants.size == 5)
       assert(variants(1).variant == "ka*ba*la")
@@ -24,7 +24,7 @@ class WebsterVariantTest extends AnyFunSpec {
     it("can be written back out to JSON") {
       val input = Json
         .parse(webster)
-        .validate[Seq[WebsterVariant]](WebsterVariant.helper.readsSeq)
+        .validate[List[WebsterVariant]](WebsterVariant.helper.readsList)
         .get
       val output = Json.toJson(input).toString()
       assert(output == domain)

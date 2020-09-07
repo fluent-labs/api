@@ -1,9 +1,9 @@
 package com.foreignlanguagereader.api.client.google
 
 import akka.actor.ActorSystem
+import cats.implicits._
 import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerAttempt,
-  CircuitBreakerNonAttempt,
   Circuitbreaker
 }
 import com.foreignlanguagereader.api.domain.Language
@@ -31,7 +31,6 @@ import javax.inject.Inject
 import play.api.Logger
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success}
 
 class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
                                   implicit val ec: ExecutionContext,
@@ -55,27 +54,20 @@ class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
       .setEncodingType(EncodingType.UTF16)
       .build
 
-    withBreaker(Future { gcloud.getTokens(request) }) map {
-      case Success(CircuitBreakerAttempt(t)) =>
-        t match {
-          case List() =>
-            logger.info(
-              s"No tokens found in language=$language for document=$document"
-            )
-            None
-          case tokens =>
-            logger.info(
-              s"Found tokens in language=$language for document=$document"
-            )
-            Some(convertTokensToWord(language, tokens))
-        }
-      case Success(CircuitBreakerNonAttempt()) => None
-      case Failure(e) =>
-        logger.error(
-          s"Failed to get tokens from google cloud: ${e.getMessage}",
-          e
+    withBreakerOption(s"Failed to get tokens from google cloud", Future {
+      gcloud.getTokens(request)
+    }) map {
+      case CircuitBreakerAttempt(Some(List())) =>
+        logger.info(
+          s"No tokens found in language=$language for document=$document"
         )
         None
+      case CircuitBreakerAttempt(Some(tokens)) =>
+        logger.info(
+          s"Found tokens in language=$language for document=$document"
+        )
+        convertTokensToWord(language, tokens).some
+      case _ => None
     }
   }
 

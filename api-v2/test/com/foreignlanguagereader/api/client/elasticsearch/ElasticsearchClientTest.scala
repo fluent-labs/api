@@ -213,6 +213,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
                 )
             )
         )
+        .toList
       val requests = ElasticsearchCacheRequest.fromRequests(indexRequests)
       val request = requests(0)
 

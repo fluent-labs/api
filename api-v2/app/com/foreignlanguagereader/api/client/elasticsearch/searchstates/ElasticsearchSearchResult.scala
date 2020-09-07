@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.client.elasticsearch.searchstates
 
+import cats.implicits._
 import com.foreignlanguagereader.api.client.elasticsearch.LookupAttempt
 import com.sksamuel.elastic4s.ElasticDsl.{indexInto, updateById}
 import com.sksamuel.elastic4s.Indexable
@@ -22,7 +23,7 @@ import com.sksamuel.elastic4s.requests.bulk.BulkCompatibleRequest
   */
 case class ElasticsearchSearchResult[T: Indexable](index: String,
                                                    fields: Map[String, String],
-                                                   result: Option[Seq[T]],
+                                                   result: Option[List[T]],
                                                    fetchCount: Int,
                                                    lookupId: Option[String],
                                                    refetched: Boolean,
@@ -32,7 +33,7 @@ case class ElasticsearchSearchResult[T: Indexable](index: String,
   val cacheQueries: Option[List[BulkCompatibleRequest]] =
     result match {
       case Some(values) =>
-        Some(values.map(v => indexInto(index).doc(v)).toList)
+        values.map(v => indexInto(index).doc(v)).some
       case None => None
     }
 
@@ -40,39 +41,30 @@ case class ElasticsearchSearchResult[T: Indexable](index: String,
     if (refetched) {
       lookupId match {
         case Some(id) =>
-          Some(
-            updateById(attemptsIndex, id)
-              .doc(
-                LookupAttempt(
-                  index = index,
-                  fields = fields,
-                  count = fetchCount
-                )
-              )
-          )
+          updateById(attemptsIndex, id)
+            .doc(
+              LookupAttempt(index = index, fields = fields, count = fetchCount)
+            )
+            .some
         case None =>
-          Some(
-            indexInto(attemptsIndex)
-              .doc(
-                LookupAttempt(
-                  index = index,
-                  fields = fields,
-                  count = fetchCount
-                )
-              )
-          )
+          indexInto(attemptsIndex)
+            .doc(
+              LookupAttempt(index = index, fields = fields, count = fetchCount)
+            )
+            .some
+
       }
     } else None
 
-  val toIndex: Option[Seq[ElasticsearchCacheRequest]] =
+  val toIndex: Option[List[ElasticsearchCacheRequest]] =
     // If we don't know the status of what's in elasticsearch then we should not try to update it.
     // Nothing like failures resetting attempt counts to zero
     if (queried) {
       (cacheQueries, updateAttemptsQuery) match {
         case (Some(cache), Some(attempts)) =>
-          Some(ElasticsearchCacheRequest.fromRequests(attempts :: cache))
+          ElasticsearchCacheRequest.fromRequests(attempts :: cache).some
         case (None, Some(attempts)) =>
-          Some(ElasticsearchCacheRequest.fromRequests(List(attempts)))
+          ElasticsearchCacheRequest.fromRequests(List(attempts)).some
         case _ => None
       }
     } else None

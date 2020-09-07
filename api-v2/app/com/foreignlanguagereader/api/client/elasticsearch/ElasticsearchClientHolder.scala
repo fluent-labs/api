@@ -45,4 +45,6 @@ class ElasticsearchClientHolder @Inject()(config: Configuration) {
       case null                            => None // scalastyle:off
       case item: ElasticsearchCacheRequest => Some(item)
     }
+
+  def hasMore: Boolean = !insertionQueue.isEmpty
 }

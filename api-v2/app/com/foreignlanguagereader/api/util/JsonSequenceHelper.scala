@@ -13,13 +13,14 @@ import play.api.libs.json.{JsValue, Reads, Writes}
   */
 class JsonSequenceHelper[T](implicit val reads: Reads[T],
                             implicit val writes: Writes[T]) {
-  implicit val readsSeq: Reads[Seq[T]] = Reads.seq(reads)
-  implicit val readsSeqSeq: Reads[Seq[Seq[T]]] = Reads.seq(readsSeq)
-  implicit val readsSeqSeqSeq: Reads[Seq[Seq[Seq[T]]]] = Reads.seq(readsSeqSeq)
-  implicit val writesSeq: Writes[Seq[T]] = Writes.seq(writes)
-  implicit val writesSeqSeq: Writes[Seq[Seq[T]]] = Writes.seq(writesSeq)
-  implicit val writesSeqSeqSeq: Writes[Seq[Seq[Seq[T]]]] =
-    Writes.seq(writesSeqSeq)
+  implicit val readsList: Reads[List[T]] = Reads.list(reads)
+  implicit val readsListList: Reads[List[List[T]]] = Reads.list(readsList)
+  implicit val readsListListList: Reads[List[List[List[T]]]] =
+    Reads.list(readsListList)
+  implicit val writesList: Writes[List[T]] = Writes.list(writes)
+  implicit val writesListList: Writes[List[List[T]]] = Writes.list(writesList)
+  implicit val writesListListList: Writes[List[List[List[T]]]] =
+    Writes.list(writesListList)
 }
 object JsonSequenceHelper {
   val jsValueHelper = new JsonSequenceHelper[JsValue]
