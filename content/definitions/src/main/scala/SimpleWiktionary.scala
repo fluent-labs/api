@@ -1,39 +1,21 @@
-case class SimpleWiktionary(text: String,
-                            examples: String,
-                            noun: String,
-                            expression: String,
-                            homophones: String,
-                            prefix: String,
-                            synonyms: String,
-                            symbol: String,
-                            initialism: String,
-                            abbreviation: String,
-                            suffix: String,
-                            contraction: String,
-                            notes: String,
-                            conjunction: String,
-                            antonym: String,
-                            phrases: String,
-                            antonyms: String,
-                            gallery: String,
-                            adverb: String,
-                            determiner: String,
-                            usage: String,
-                            synonym: String,
-                            acronym: String,
-                            interjection: String,
-                            determinative: String,
-                            preposition: String,
-                            adjective: String,
-                            etymology: String,
-                            pronoun: String,
-                            phrase: String,
-                            verb: String,
-                            numerals: String,
-                            pronunciation: String)
+import Wiktionary.{extractSections, loadWiktionaryDump}
+import org.apache.spark.sql.expressions.UserDefinedFunction
+import org.apache.spark.sql.functions._
+import org.apache.spark.sql.{Column, Dataset, SparkSession}
+
+case class SimpleWiktionaryDefinition(token: String,
+                                      definition: String,
+                                      tag: String) {
+//  val subdefinitions: List[String]
+//  val ipa: String
+//  val examples: Option[List[String]]
+  val definitionLanguage = "ENGLISH"
+  val wordLanguage = "ENGLISH"
+  val source = "WIKTIONARY_SIMPLE_ENGLISH"
+}
 
 object SimpleWiktionary {
-  val partsOfSpeech: List[String] = List(
+  val partsOfSpeech: Array[String] = Array(
     "abbreviation",
     "acronym",
     "adjective",
@@ -99,4 +81,28 @@ object SimpleWiktionary {
     case "verb 1"                   => "Verb"
     case "verb 2"                   => "Verb"
   }
+
+  val partOfSpeechCols: Column =
+    array(partsOfSpeech.head, partsOfSpeech.tail: _*)
+
+  def loadSimple(
+    path: String
+  )(implicit spark: SparkSession): Dataset[SimpleWiktionaryDefinition] = {
+    import spark.implicits._
+    val sectioned =
+      extractSections(loadWiktionaryDump(path), SimpleWiktionary.partsOfSpeech)
+    sectioned
+      .select(col("token"), posexplode(partOfSpeechCols))
+      .filter("col not like ''")
+      .drop(partOfSpeechCols)
+      .withColumnRenamed("col", "definition")
+      .withColumn("tag", mapPartOfSpeech(col("pos")))
+      .drop("pos")
+      .as[SimpleWiktionaryDefinition]
+  }
+
+  val mapPartOfSpeech: UserDefinedFunction = udf(
+    (index: Integer) =>
+      mapWiktionaryPartOfSpeechToDomainPartOfSpeech(partsOfSpeech(index))
+  )
 }

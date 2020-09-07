@@ -20,18 +20,24 @@ object Application extends App {
 //    .write
 //    .json("nouns")
 
-//  val simpleWiktionary =
-//    Wiktionary.loadSimple("simplewiktionary-20200301-pages-meta-current.xml")
+  val simpleWiktionary =
+    SimpleWiktionary.loadSimple(
+      "simplewiktionary-20200301-pages-meta-current.xml"
+    )
+  simpleWiktionary
+    .printSchema()
+  simpleWiktionary.show(50)
+  simpleWiktionary.limit(500).write.json("combined")
 
-  SimpleWiktionary.partsOfSpeech
-    .map(_.toLowerCase)
-    .foreach(sectionName => {
-      wiktionaryWithSections
-        .select(sectionName)
-        .where(col(sectionName) =!= "")
-        .limit(500)
-        .coalesce(1)
-        .write
-        .json(sectionName)
-    })
+//  SimpleWiktionary.partsOfSpeech
+//    .map(_.toLowerCase)
+//    .foreach(sectionName => {
+//      wiktionaryWithSections
+//        .select(sectionName)
+//        .where(col(sectionName) =!= "")
+//        .limit(500)
+//        .coalesce(1)
+//        .write
+//        .json(sectionName)
+//    })
 }

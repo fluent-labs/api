@@ -1,7 +1,7 @@
 import com.databricks.spark.xml._
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
+import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
 class Wiktionary(implicit spark: SparkSession) {}
 object Wiktionary {
@@ -35,20 +35,12 @@ object Wiktionary {
       .option("rowTag", "page")
       .xml(path)
       .filter(row => filterMetaArticles(row))
-      .select("revision.text._VALUE", "title")
+      .select("revision.text._VALUE", "token")
       .withColumnRenamed("_VALUE", "text")
   }
 
-  def loadSimple(
-    path: String
-  )(implicit spark: SparkSession): Dataset[SimpleWiktionary] = {
-    import spark.implicits._
-    extractSections(loadWiktionaryDump(path), SimpleWiktionary.partsOfSpeech)
-      .as[SimpleWiktionary]
-  }
-
   def filterMetaArticles(row: Row): Boolean = {
-    val title = row.getAs[String]("title")
+    val title = row.getAs[String]("token")
     ignoredTitles.forall(prefix => !title.startsWith(prefix))
   }
 
@@ -92,7 +84,7 @@ object Wiktionary {
       regexp_extract(col("text"), sectionRegex(name), 1)
     )
 
-  def extractSections(data: DataFrame, sections: List[String]): DataFrame = {
+  def extractSections(data: DataFrame, sections: Array[String]): DataFrame = {
     sections.foldLeft(data)((data, section) => extractSection(data, section))
   }
 }

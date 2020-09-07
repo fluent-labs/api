@@ -12,6 +12,7 @@ object DefinitionSource extends Enumeration {
   val MIRRIAM_WEBSTER_LEARNERS: Value = Value("MIRRIAM_WEBSTER_LEARNERS")
   val MIRRIAM_WEBSTER_SPANISH: Value = Value("MIRRIAM_WEBSTER_SPANISH")
   val WIKTIONARY: Value = Value("WIKTIONARY")
+  val WIKTIONARY_SIMPLE_ENGLISH: Value = Value("WIKTIONARY_SIMPLE_ENGLISH")
   val MULTIPLE: Value = Value("MULTIPLE")
 
   def fromString(source: String): Option[DefinitionSource] =
