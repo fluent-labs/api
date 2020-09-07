@@ -1,4 +1,5 @@
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions._
 
 object Application extends App {
 
@@ -7,29 +8,38 @@ object Application extends App {
     .appName("WiktionaryParse")
     .getOrCreate()
 
-  val wiktionaryRaw = Wiktionary
-    .loadWiktionaryDump("simplewiktionary-20200301-pages-meta-current.xml")
+//  exploreSections(
+//    "simplewiktionary-20200301-pages-meta-current.xml",
+//    explorationSubsections
+//  )
 
-  val wiktionaryWithSections: Unit =
-    Wiktionary.getHeadings(wiktionaryRaw, 3).write.csv("triplesections")
+  // Use this when you want to know what kind of sections a backup has. Good for getting the rough structure of the dump
+  def findSections(backupFilePath: String,
+                   sectionCount: Int,
+                   outputFileName: String): Unit = {
+    val wiktionaryRaw = Wiktionary
+      .loadWiktionaryDump(backupFilePath)
+    Wiktionary
+      .getHeadings(wiktionaryRaw, sectionCount)
+      .write
+      .csv(outputFileName)
+  }
 
-  val simpleWiktionary =
-    SimpleWiktionary.loadSimple(
-      "simplewiktionary-20200301-pages-meta-current.xml"
-    )
-  simpleWiktionary.printSchema()
-  simpleWiktionary.show(50)
-  simpleWiktionary.limit(500).write.json("combined")
-
-//  SimpleWiktionary.partsOfSpeech
-//    .map(_.toLowerCase)
-//    .foreach(sectionName => {
-//      wiktionaryWithSections
-//        .select(sectionName)
-//        .where(col(sectionName) =!= "")
-//        .limit(500)
-//        .coalesce(1)
-//        .write
-//        .json(sectionName)
-//    })
+  // Use this when you want to see what is in each section you found up above
+  // eg: is it common? Do I care about what's in it?
+  def exploreSections(backupFilePath: String,
+                      sectionNames: List[String]): Unit = {
+    val wiktionaryRaw = Wiktionary
+      .loadWiktionaryDump(backupFilePath)
+    sectionNames.foreach(sectionName => {
+      Wiktionary
+        .extractSubSection(wiktionaryRaw, sectionName)
+        .select("text", sectionName)
+        .where(col(sectionName) =!= "")
+        .limit(500)
+        .coalesce(1)
+        .write
+        .json(sectionName)
+    })
+  }
 }

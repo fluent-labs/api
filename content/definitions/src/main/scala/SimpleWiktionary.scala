@@ -1,7 +1,7 @@
 import Wiktionary.{extractSections, loadWiktionaryDump}
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.{Column, Dataset, SparkSession}
+import org.apache.spark.sql.{Column, DataFrame, Dataset, SparkSession}
 
 case class SimpleWiktionaryDefinition(token: String,
                                       definition: String,
@@ -15,75 +15,87 @@ case class SimpleWiktionaryDefinition(token: String,
 }
 
 object SimpleWiktionary {
-  val partsOfSpeech: Array[String] = Array(
-    "abbreviation",
-    "acronym",
-    "adjective",
-    "adjective 1",
-    "adverb",
-    "auxiliary verb",
-    "compound determinative",
-    "conjunction",
-    "contraction",
-    "demonstrative determiner",
-    "determinative",
-    "determiner",
-    "expression",
-    "initialism", // basically acronym
-    "interjection",
-    "noun",
-    "noun 1",
-    "noun 2",
-    "noun 3",
-    "prefix",
-    "preposition",
-    "pronoun",
-    "proper noun",
-    "suffix",
-    "symbol",
-    "verb",
-    "verb 1",
-    "verb 2"
-  )
-
   val metaSections = List("pronunciation", "usage", "usage notes")
 
   // Parts of speech set here: http://www.lrec-conf.org/proceedings/lrec2012/pdf/274_Paper.pdf
-  def mapWiktionaryPartOfSpeechToDomainPartOfSpeech(
-    partOfSpeech: String
-  ): String = partOfSpeech match {
-    case "abbreviation"             => "Noun"
-    case "acronym"                  => "Noun"
-    case "adjective"                => "Adjective"
-    case "adjective 1"              => "Adjective"
-    case "adverb"                   => "Adverb"
-    case "auxiliary verb"           => "Verb"
-    case "compound determinative"   => "Determiner"
-    case "conjunction"              => "Conjunction"
-    case "contraction"              => "Unknown"
-    case "demonstrative determiner" => "Determiner"
-    case "determinative"            => "Determiner"
-    case "determiner"               => "Determiner"
-    case "expression"               => "Other"
-    case "initialism"               => "Noun"
-    case "interjection"             => "Particle"
-    case "noun"                     => "Noun"
-    case "noun 1"                   => "Noun"
-    case "noun 2"                   => "Noun"
-    case "noun 3"                   => "Noun"
-    case "prefix"                   => "Affix"
-    case "preposition"              => "Adposition"
-    case "pronoun"                  => "Pronoun"
-    case "proper noun"              => "Noun"
-    case "suffix"                   => "Affix"
-    case "symbol"                   => "Other"
-    case "verb"                     => "Verb"
-    case "verb 1"                   => "Verb"
-    case "verb 2"                   => "Verb"
-  }
+  val partOfSpeechMapping: Map[String, String] = Map(
+    "abbreviation" -> "Noun",
+    "acronym" -> "Noun",
+    "adjective" -> "Adjective",
+    "adjective 1" -> "Adjective",
+    "adverb" -> "Adverb",
+    "auxiliary verb" -> "Verb",
+    "compound determinative" -> "Determiner",
+    "conjunction" -> "Conjunction",
+    "contraction" -> "Unknown",
+    "demonstrative determiner" -> "Determiner",
+    "determinative" -> "Determiner",
+    "determiner" -> "Determiner",
+    "expression" -> "Other",
+    "initialism" -> "Noun", // basically acronym
+    "interjection" -> "Particle",
+    "noun" -> "Noun",
+    "noun 1" -> "Noun",
+    "noun 2" -> "Noun",
+    "noun 3" -> "Noun",
+    "prefix" -> "Affix",
+    "preposition" -> "Adposition",
+    "pronoun" -> "Pronoun",
+    "proper noun" -> "Noun",
+    "suffix" -> "Affix",
+    "symbol" -> "Other",
+    "verb" -> "Verb",
+    "verb 1" -> "Verb",
+    "verb 2" -> "Verb"
+  )
+
+  val partsOfSpeech: Array[String] = partOfSpeechMapping.keySet.toArray
+
+  val subsectionMap: Map[String, String] = Map(
+    "abbreviation" -> "other spellings",
+    "alternate spellings" -> "other spellings",
+    "alternative forms" -> "other spellings",
+    "alternative spellings" -> "other spellings",
+    "antonym" -> "antonyms",
+    "antonyms" -> "antonyms",
+    "homonyms" -> "homonyms",
+    "homophone" -> "homophones",
+    "homophones" -> "homophones",
+    "note" -> "notes",
+    "notes" -> "notes",
+    "notes of usage" -> "notes",
+    "other spelling" -> "other spellings",
+    "other spellings" -> "other spellings",
+    "pronounciation" -> "pronunciation",
+    "pronunciation" -> "pronunciation",
+    "pronunciation 2" -> "pronunciation",
+    "related" -> "related",
+    "related old words" -> "related",
+    "related phrases" -> "related",
+    "related terms" -> "related",
+    "related word" -> "related",
+    "related word and phrases" -> "related",
+    "related words" -> "related",
+    "related words and expressions" -> "related",
+    "related words and phrases" -> "related",
+    "related words and terms" -> "related",
+    "related words or phrases" -> "related",
+    "related words/phrases" -> "related",
+    "see also" -> "related",
+    "synonym" -> "synonyms",
+    "synonyms" -> "synonyms",
+    "usage" -> "usage",
+    "usage note" -> "usage",
+    "usage notes" -> "usage",
+    "verb usage" -> "usage"
+  )
 
   val partOfSpeechCols: Column =
     array(partsOfSpeech.head, partsOfSpeech.tail: _*)
+
+  def mapWiktionaryPartOfSpeechToDomainPartOfSpeech(
+    partOfSpeech: String
+  ): String = partOfSpeechMapping.getOrElse(partOfSpeech, "Unknown")
 
   val leftBracket = "\\{"
   val pipe = "\\|"
@@ -98,13 +110,7 @@ object SimpleWiktionary {
     path: String
   )(implicit spark: SparkSession): Dataset[SimpleWiktionaryDefinition] = {
     import spark.implicits._
-    extractSections(loadWiktionaryDump(path), SimpleWiktionary.partsOfSpeech)
-      .select(col("token"), col("text"), posexplode(partOfSpeechCols))
-      .filter("col not like ''")
-      .drop(partOfSpeechCols)
-      .withColumnRenamed("col", "definition")
-      .withColumn("tag", mapPartOfSpeech(col("pos")))
-      .drop("pos")
+    splitWordsByPartOfSpeech(loadWiktionaryDump(path))
       .withColumn("ipa", regexp_extract(col("text"), ipaRegex, 1))
       .as[SimpleWiktionaryDefinition]
   }
@@ -113,4 +119,13 @@ object SimpleWiktionary {
     (index: Integer) =>
       mapWiktionaryPartOfSpeechToDomainPartOfSpeech(partsOfSpeech(index))
   )
+
+  def splitWordsByPartOfSpeech(data: DataFrame): DataFrame =
+    extractSections(data, SimpleWiktionary.partsOfSpeech)
+      .select(col("token"), col("text"), posexplode(partOfSpeechCols))
+      .filter("col not like ''")
+      .drop(partOfSpeechCols)
+      .withColumnRenamed("col", "definition")
+      .withColumn("tag", mapPartOfSpeech(col("pos")))
+      .drop("pos")
 }
