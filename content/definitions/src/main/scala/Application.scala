@@ -2,16 +2,16 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 
 object Application extends App {
+  val SIMPLE_WIKTIONARY_PATH =
+    "simplewiktionary-20200301-pages-meta-current.xml"
 
   implicit val spark: SparkSession = SparkSession.builder
     .master("local[*]")
     .appName("WiktionaryParse")
     .getOrCreate()
 
-//  exploreSections(
-//    "simplewiktionary-20200301-pages-meta-current.xml",
-//    explorationSubsections
-//  )
+  val simpleWiktionary = SimpleWiktionary.loadSimple(SIMPLE_WIKTIONARY_PATH)
+  simpleWiktionary.limit(500).coalesce(1).write.json("simple")
 
   // Use this when you want to know what kind of sections a backup has. Good for getting the rough structure of the dump
   def findSections(backupFilePath: String,
