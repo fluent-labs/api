@@ -5,10 +5,10 @@ import org.apache.spark.sql.{Column, Dataset, SparkSession}
 
 case class SimpleWiktionaryDefinition(token: String,
                                       definition: String,
-                                      tag: String) {
+                                      tag: String,
+                                      ipa: String) {
 //  val subdefinitions: List[String]
-//  val ipa: String
-//  val examples: Option[List[String]]
+  val examples: Option[List[String]] = None
   val definitionLanguage = "ENGLISH"
   val wordLanguage = "ENGLISH"
   val source = "WIKTIONARY_SIMPLE_ENGLISH"
@@ -85,19 +85,27 @@ object SimpleWiktionary {
   val partOfSpeechCols: Column =
     array(partsOfSpeech.head, partsOfSpeech.tail: _*)
 
+  val leftBracket = "\\{"
+  val pipe = "\\|"
+  val rightBracket = "\\}"
+  val slash = "\\/"
+  val anythingButSlash = "([^\\/]+)"
+  // It looks like this: {{IPA|/whatWeWant/}}
+  val ipaRegex
+    : String = leftBracket + leftBracket + "IPA" + pipe + slash + anythingButSlash + slash + rightBracket + rightBracket
+
   def loadSimple(
     path: String
   )(implicit spark: SparkSession): Dataset[SimpleWiktionaryDefinition] = {
     import spark.implicits._
-    val sectioned =
-      extractSections(loadWiktionaryDump(path), SimpleWiktionary.partsOfSpeech)
-    sectioned
-      .select(col("token"), posexplode(partOfSpeechCols))
+    extractSections(loadWiktionaryDump(path), SimpleWiktionary.partsOfSpeech)
+      .select(col("token"), col("text"), posexplode(partOfSpeechCols))
       .filter("col not like ''")
       .drop(partOfSpeechCols)
       .withColumnRenamed("col", "definition")
       .withColumn("tag", mapPartOfSpeech(col("pos")))
       .drop("pos")
+      .withColumn("ipa", regexp_extract(col("text"), ipaRegex, 1))
       .as[SimpleWiktionaryDefinition]
   }
 

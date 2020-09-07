@@ -5,7 +5,7 @@ import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
 class Wiktionary(implicit spark: SparkSession) {}
 object Wiktionary {
-  val ignoredTitles: Set[String] =
+  val metaArticleTitles: Set[String] =
     Set(
       "MediaWiki:",
       "MediaWiki talk:",
@@ -26,28 +26,28 @@ object Wiktionary {
       "Talk:"
     )
 
-  val simpleWiktionaryBucket = "/"
-
   def loadWiktionaryDump(
     path: String
   )(implicit spark: SparkSession): DataFrame = {
     spark.read
       .option("rowTag", "page")
       .xml(path)
-      .filter(row => filterMetaArticles(row))
-      .select("revision.text._VALUE", "token")
+      .select("revision.text._VALUE", "title")
+      .withColumnRenamed("title", "token")
       .withColumnRenamed("_VALUE", "text")
+      .filter(row => filterMetaArticles(row))
   }
 
   def filterMetaArticles(row: Row): Boolean = {
     val title = row.getAs[String]("token")
-    ignoredTitles.forall(prefix => !title.startsWith(prefix))
+    metaArticleTitles.forall(prefix => !title.startsWith(prefix))
   }
 
   val caseInsensitiveFlag = "(?i)"
   val periodMatchesNewlineFlag = "(?s)"
   val oneOrMoreEqualsSign = "=+"
   val doubleEqualsSign = "=="
+  val tripleEqualsSign = "==="
   val optionalWhiteSpace = " *"
   val anythingButEqualsSign = "[^=]*"
   val lazyMatchAnything = "(.*?)"
@@ -62,6 +62,9 @@ object Wiktionary {
 
   def sectionRegex(sectionName: String): String =
     periodMatchesNewlineFlag + caseInsensitiveFlag + doubleEqualsSign + optionalWhiteSpace + sectionName + optionalWhiteSpace + doubleEqualsSign + lazyMatchAnything + nextSectionOrEndOfFile
+
+  def subSectionRegex(sectionName: String): String =
+    periodMatchesNewlineFlag + caseInsensitiveFlag + tripleEqualsSign + optionalWhiteSpace + sectionName + optionalWhiteSpace + tripleEqualsSign + lazyMatchAnything + nextSectionOrEndOfFile
 
   def getHeadings(data: DataFrame, equalsCount: Integer): DataFrame = {
     data
@@ -87,4 +90,10 @@ object Wiktionary {
   def extractSections(data: DataFrame, sections: Array[String]): DataFrame = {
     sections.foldLeft(data)((data, section) => extractSection(data, section))
   }
+
+  def extractSubSection(data: DataFrame, name: String): DataFrame =
+    data.withColumn(
+      name.toLowerCase(),
+      regexp_extract(col("text"), subSectionRegex(name), 1)
+    )
 }
