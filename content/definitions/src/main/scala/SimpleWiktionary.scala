@@ -43,7 +43,6 @@ object SimpleWiktionary {
     "compound determinative",
     "conjunction",
     "contraction",
-    "coordinator",
     "demonstrative determiner",
     "determinative",
     "determiner",
@@ -58,7 +57,6 @@ object SimpleWiktionary {
     "preposition",
     "pronoun",
     "proper noun",
-    "subordinator",
     "suffix",
     "symbol",
     "verb",
@@ -67,4 +65,38 @@ object SimpleWiktionary {
   )
 
   val metaSections = List("pronunciation", "usage", "usage notes")
+
+  // Parts of speech set here: http://www.lrec-conf.org/proceedings/lrec2012/pdf/274_Paper.pdf
+  def mapWiktionaryPartOfSpeechToDomainPartOfSpeech(
+    partOfSpeech: String
+  ): String = partOfSpeech match {
+    case "abbreviation"             => "Noun"
+    case "acronym"                  => "Noun"
+    case "adjective"                => "Adjective"
+    case "adjective 1"              => "Adjective"
+    case "adverb"                   => "Adverb"
+    case "auxiliary verb"           => "Verb"
+    case "compound determinative"   => "Determiner"
+    case "conjunction"              => "Conjunction"
+    case "contraction"              => "Unknown"
+    case "demonstrative determiner" => "Determiner"
+    case "determinative"            => "Determiner"
+    case "determiner"               => "Determiner"
+    case "expression"               => "Other"
+    case "initialism"               => "Noun"
+    case "interjection"             => "Particle"
+    case "noun"                     => "Noun"
+    case "noun 1"                   => "Noun"
+    case "noun 2"                   => "Noun"
+    case "noun 3"                   => "Noun"
+    case "prefix"                   => "Affix"
+    case "preposition"              => "Adposition"
+    case "pronoun"                  => "Pronoun"
+    case "proper noun"              => "Noun"
+    case "suffix"                   => "Affix"
+    case "symbol"                   => "Other"
+    case "verb"                     => "Verb"
+    case "verb 1"                   => "Verb"
+    case "verb 2"                   => "Verb"
+  }
 }
