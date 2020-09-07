@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.client.elasticsearch.searchstates
 
+import cats.implicits._
 import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerAttempt,
   CircuitBreakerNonAttempt,
@@ -36,7 +37,7 @@ import scala.reflect.ClassTag
 case class ElasticsearchSearchResponse[T: Indexable](
   index: String,
   fields: Map[String, String],
-  fetcher: () => Future[CircuitBreakerResult[Option[Seq[T]]]],
+  fetcher: () => Future[CircuitBreakerResult[Option[List[T]]]],
   maxFetchAttempts: Int,
   response: Option[MultiSearchResponse]
 )(implicit hitReader: HitReader[T],
@@ -46,7 +47,7 @@ case class ElasticsearchSearchResponse[T: Indexable](
   val logger: Logger = Logger(this.getClass)
 
   val (
-    elasticsearchResult: Option[Seq[T]],
+    elasticsearchResult: Option[List[T]],
     fetchCount: Int,
     lookupId: Option[String]
   ) =
@@ -138,7 +139,7 @@ case class ElasticsearchSearchResponse[T: Indexable](
 
   private[this] def parseResults(
     results: Either[ElasticError, SearchResponse]
-  ): Option[Seq[T]] = results match {
+  ): Option[List[T]] = results match {
     case Left(error) =>
       logger.error(
         s"Failed to get result from elasticsearch on index $index due to error ${error.reason}",
@@ -147,7 +148,7 @@ case class ElasticsearchSearchResponse[T: Indexable](
       None
     case Right(response) =>
       val results = response.hits.hits.map(_.to[T])
-      if (results.nonEmpty) Some(results.toIndexedSeq) else None
+      if (results.nonEmpty) results.toList.some else None
   }
 
   private[this] def parseAttempts(

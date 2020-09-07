@@ -26,16 +26,17 @@ case class Word(language: Language,
   }
 }
 object Word {
-  def fromToken(token: String, language: Language): Word = Word(
-    token = token,
-    language = language,
-    tag = PartOfSpeech.UNKNOWN,
-    lemma = token,
-    definitions = None,
-    gender = None,
-    number = None,
-    proper = None,
-    tense = None,
-    processedToken = token
-  )
+  def fromToken(token: String, language: Language): Word =
+    Word(
+      token = token,
+      language = language,
+      tag = PartOfSpeech.UNKNOWN,
+      lemma = token,
+      definitions = None,
+      gender = None,
+      number = None,
+      proper = None,
+      tense = None,
+      processedToken = token
+    )
 }

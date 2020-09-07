@@ -17,9 +17,9 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
       "for a word that is the same in both english and spanish: 'animal'"
     ) {
       val webster = ContentFileLoader
-        .loadJsonResourceFile[Seq[WebsterSpanishDefinitionEntry]](
+        .loadJsonResourceFile[List[WebsterSpanishDefinitionEntry]](
           "/webster/spanish/websterAnimal.json"
-        )(WebsterSpanishDefinitionEntry.helper.readsSeq)
+        )(WebsterSpanishDefinitionEntry.helper.readsList)
       val output = ContentFileLoader
         .loadJsonResourceFile[JsValue]("/webster/spanish/domainAnimal.json")
         .toString()
@@ -67,9 +67,9 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
 
     describe("for 'pero'") {
       val webster = ContentFileLoader
-        .loadJsonResourceFile[Seq[WebsterSpanishDefinitionEntry]](
+        .loadJsonResourceFile[List[WebsterSpanishDefinitionEntry]](
           "/webster/spanish/websterPero.json"
-        )(WebsterSpanishDefinitionEntry.helper.readsSeq)
+        )(WebsterSpanishDefinitionEntry.helper.readsList)
       val output = ContentFileLoader
         .loadJsonResourceFile[JsValue]("/webster/spanish/domainPero.json")
         .toString()
@@ -96,9 +96,9 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
 
     describe("for 'perro'") {
       val webster = ContentFileLoader
-        .loadJsonResourceFile[Seq[WebsterSpanishDefinitionEntry]](
+        .loadJsonResourceFile[List[WebsterSpanishDefinitionEntry]](
           "/webster/spanish/websterPerro.json"
-        )(WebsterSpanishDefinitionEntry.helper.readsSeq)
+        )(WebsterSpanishDefinitionEntry.helper.readsList)
       val output = ContentFileLoader
         .loadJsonResourceFile[JsValue]("/webster/spanish/domainPerro.json")
         .toString()
@@ -134,9 +134,9 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
 
     describe("for 'pop'") {
       val webster = ContentFileLoader
-        .loadJsonResourceFile[Seq[WebsterSpanishDefinitionEntry]](
+        .loadJsonResourceFile[List[WebsterSpanishDefinitionEntry]](
           "/webster/spanish/websterPop.json"
-        )(WebsterSpanishDefinitionEntry.helper.readsSeq)
+        )(WebsterSpanishDefinitionEntry.helper.readsList)
       val output = ContentFileLoader
         .loadJsonResourceFile[JsValue]("/webster/spanish/domainPop.json")
         .toString()
@@ -178,9 +178,9 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
 
     describe("for 'porque'") {
       val webster = ContentFileLoader
-        .loadJsonResourceFile[Seq[WebsterSpanishDefinitionEntry]](
+        .loadJsonResourceFile[List[WebsterSpanishDefinitionEntry]](
           "/webster/spanish/websterPorque.json"
-        )(WebsterSpanishDefinitionEntry.helper.readsSeq)
+        )(WebsterSpanishDefinitionEntry.helper.readsList)
       val output = ContentFileLoader
         .loadJsonResourceFile[JsValue]("/webster/spanish/domainPorque.json")
         .toString()
@@ -204,9 +204,9 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
 
     describe("for 'vale'") {
       val webster = ContentFileLoader
-        .loadJsonResourceFile[Seq[WebsterSpanishDefinitionEntry]](
+        .loadJsonResourceFile[List[WebsterSpanishDefinitionEntry]](
           "/webster/spanish/websterVale.json"
-        )(WebsterSpanishDefinitionEntry.helper.readsSeq)
+        )(WebsterSpanishDefinitionEntry.helper.readsList)
       val output = ContentFileLoader
         .loadJsonResourceFile[JsValue]("/webster/spanish/domainVale.json")
         .toString()

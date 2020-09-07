@@ -2,8 +2,6 @@ package com.foreignlanguagereader.api.client.babelnet
 
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.client.common.{
-  CircuitBreakerAttempt,
-  CircuitBreakerNonAttempt,
   CircuitBreakerResult,
   Circuitbreaker
 }
@@ -15,7 +13,6 @@ import javax.inject.Inject
 import play.api.Logger
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success, Try}
 
 class BabelnetClient @Inject()(babelnet: BabelnetClientHolder,
                                implicit val ec: ExecutionContext,
@@ -38,20 +35,11 @@ class BabelnetClient @Inject()(babelnet: BabelnetClientHolder,
       .from(lang)
       .build
 
-    withBreaker(Future {
-      babelnet.getSenses(query)
-    }) map {
-      case Success(CircuitBreakerAttempt(List())) =>
-        CircuitBreakerAttempt(None)
-      case Success(CircuitBreakerAttempt(senses)) =>
-        CircuitBreakerAttempt(Some(senses))
-      case Success(CircuitBreakerNonAttempt()) => CircuitBreakerNonAttempt()
-      case Failure(e) =>
-        logger.error(
-          s"Failed to get senses from babelnet in $language for word $lemma",
-          e
-        )
-        CircuitBreakerAttempt(None)
-    }
+    withBreakerOption(
+      s"Failed to get senses for language: $language, lemma: $lemma",
+      Future {
+        babelnet.getSenses(query)
+      }
+    )
   }
 }

@@ -14,7 +14,7 @@ class WebsterInflectionTest extends AnyFunSpec {
     it("can be read from JSON") {
       val inflection = Json
         .parse(webster)
-        .validate[Seq[WebsterInflection]](WebsterInflection.helper.readsSeq)
+        .validate[List[WebsterInflection]](WebsterInflection.helper.readsList)
         .get
       assert(inflection.size == 4)
       assert(inflection(0).inflection.get == "tas*seled")
@@ -23,7 +23,7 @@ class WebsterInflectionTest extends AnyFunSpec {
     it("can be written back out to JSON") {
       val input = Json
         .parse(webster)
-        .validate[Seq[WebsterInflection]](WebsterInflection.helper.readsSeq)
+        .validate[List[WebsterInflection]](WebsterInflection.helper.readsList)
         .get
       val output = Json.toJson(input).toString()
       assert(output == domain)

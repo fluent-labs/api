@@ -75,8 +75,8 @@ object DefinitionEntry {
           WiktionaryDefinitionEntry.format.writes(w)
       }
     }
-  implicit val readsSeq: Reads[Seq[DefinitionEntry]] =
-    Reads.seq(formatDefinitionEntry)
+  implicit val readsList: Reads[List[DefinitionEntry]] =
+    Reads.list(formatDefinitionEntry)
 
   def buildChineseDefinition(entry: DefinitionEntry,
                              partOfSpeech: PartOfSpeech): ChineseDefinition =

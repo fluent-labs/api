@@ -6,14 +6,14 @@ import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
 case class WebsterVariant(variant: String,
                           variantLabel: Option[String],
-                          pronunciations: Option[Seq[WebsterPronunciation]])
+                          pronunciations: Option[List[WebsterPronunciation]])
 object WebsterVariant {
   implicit val reads: Reads[WebsterVariant] = ((JsPath \ "va")
     .read[String] and
     (JsPath \ "vl").readNullable[String] and
     (JsPath \ "prs")
-      .readNullable[Seq[WebsterPronunciation]](
-        WebsterPronunciation.helper.readsSeq
+      .readNullable[List[WebsterPronunciation]](
+        WebsterPronunciation.helper.readsList
       ))(WebsterVariant.apply _)
   implicit val writes: Writes[WebsterVariant] = Json.writes[WebsterVariant]
   implicit val helper: JsonSequenceHelper[WebsterVariant] =

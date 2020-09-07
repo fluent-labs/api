@@ -22,6 +22,7 @@ class ElasticsearchCacheRequestTest extends AnyFunSpec {
               )
           )
       )
+      .toList
     val requests = ElasticsearchCacheRequest.fromRequests(indexRequests)
 
     it("can batch requests") {

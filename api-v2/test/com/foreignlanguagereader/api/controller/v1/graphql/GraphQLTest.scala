@@ -62,7 +62,7 @@ class MockDefinitionService
   }
   override def getDefinition(wordLanguage: Language,
                              definitionLanguage: Language,
-                             word: Word): Future[Option[Seq[Definition]]] =
+                             word: Word): Future[Option[List[Definition]]] =
     mock.getDefinition(wordLanguage, definitionLanguage, word)
 }
 
