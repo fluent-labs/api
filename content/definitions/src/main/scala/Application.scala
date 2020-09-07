@@ -12,7 +12,7 @@ object Application extends App {
     .loadWiktionaryDump("simplewiktionary-20200301-pages-meta-current.xml")
 
   val wiktionaryWithSections =
-    Wiktionary.extractSections(wiktionaryRaw, SimpleWiktionary.sectionNames)
+    Wiktionary.extractSections(wiktionaryRaw, SimpleWiktionary.partsOfSpeech)
 
 //  Wiktionary
 //    .extractSection(wiktionaryRaw, "Noun")
@@ -23,7 +23,7 @@ object Application extends App {
 //  val simpleWiktionary =
 //    Wiktionary.loadSimple("simplewiktionary-20200301-pages-meta-current.xml")
 
-  SimpleWiktionary.sectionNames
+  SimpleWiktionary.partsOfSpeech
     .map(_.toLowerCase)
     .foreach(sectionName => {
       wiktionaryWithSections

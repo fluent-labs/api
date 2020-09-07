@@ -43,7 +43,7 @@ object Wiktionary {
     path: String
   )(implicit spark: SparkSession): Dataset[SimpleWiktionary] = {
     import spark.implicits._
-    extractSections(loadWiktionaryDump(path), SimpleWiktionary.sectionNames)
+    extractSections(loadWiktionaryDump(path), SimpleWiktionary.partsOfSpeech)
       .as[SimpleWiktionary]
   }
 

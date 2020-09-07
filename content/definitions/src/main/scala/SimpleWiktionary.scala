@@ -33,57 +33,38 @@ case class SimpleWiktionary(text: String,
                             pronunciation: String)
 
 object SimpleWiktionary {
-  val sectionNames: List[String] = List(
+  val partsOfSpeech: List[String] = List(
     "abbreviation",
     "acronym",
     "adjective",
     "adjective 1",
     "adverb",
-    "alternative forms",
-    "anagrams",
-    "antonyms",
     "auxiliary verb",
     "compound determinative",
     "conjunction",
     "contraction",
     "coordinator",
     "demonstrative determiner",
-    "derived terms",
-    "derived words",
     "determinative",
     "determiner",
-    "english",
-    "etymology",
     "expression",
-    "gallery",
-    "initialism",
+    "initialism", // basically acronym
     "interjection",
-    "notes",
     "noun",
     "noun 1",
     "noun 2",
     "noun 3",
-    "number",
-    "numerals",
-    "other forms",
-    "other spellings",
-    "other websites",
-    "phrase",
     "prefix",
     "preposition",
     "pronoun",
-    "pronunciation",
     "proper noun",
     "subordinator",
     "suffix",
     "symbol",
-    "synonyms",
-    "usage",
-    "usage notes",
     "verb",
     "verb 1",
-    "verb 2",
-    "verb phrase subordinator"
+    "verb 2"
   )
 
+  val metaSections = List("pronunciation", "usage", "usage notes")
 }
