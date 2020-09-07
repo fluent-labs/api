@@ -95,11 +95,15 @@ object Wiktionary {
     sections.foldLeft(data)((data, section) => extractSection(data, section))
   }
 
-  def extractSubSection(data: DataFrame, name: String): DataFrame =
+  def extractSubsection(data: DataFrame, name: String): DataFrame =
     data.withColumn(
       name.toLowerCase(),
       regexp_extract(col("text"), subSectionRegex(name), 1)
     )
+  def extractSubsections(data: DataFrame,
+                         sections: Array[String]): DataFrame = {
+    sections.foldLeft(data)((data, section) => extractSection(data, section))
+  }
 
   // Defined in SPARK-24884 but not released yet
   val regexp_extract_all: (String, Int) => UserDefinedFunction =

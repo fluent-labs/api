@@ -1,14 +1,31 @@
-import Wiktionary.{extractSections, loadWiktionaryDump, regexp_extract_all}
+import Wiktionary.{
+  extractSections,
+  extractSubsections,
+  loadWiktionaryDump,
+  regexp_extract_all
+}
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{Column, DataFrame, Dataset, SparkSession}
 
-case class SimpleWiktionaryDefinition(token: String,
+case class SimpleWiktionaryDefinition(
+                                      // Required fields
+                                      token: String,
                                       definition: String,
                                       tag: String,
                                       ipa: String,
                                       subdefinitions: Array[String],
-                                      examples: Array[String]) {
+                                      examples: Array[String],
+                                      // Nice extras
+                                      antonyms: Array[String],
+                                      homonyms: Array[String],
+                                      homophones: Array[String],
+                                      notes: Array[String],
+                                      otherSpellings: Array[String],
+                                      pronunciation: Array[String],
+                                      related: Array[String],
+                                      synonyms: Array[String],
+                                      usage: Array[String]) {
   val definitionLanguage = "ENGLISH"
   val wordLanguage = "ENGLISH"
   val source = "WIKTIONARY_SIMPLE_ENGLISH"
@@ -52,10 +69,10 @@ object SimpleWiktionary {
   val partsOfSpeech: Array[String] = partOfSpeechMapping.keySet.toArray
 
   val subsectionMap: Map[String, String] = Map(
-    "abbreviation" -> "other spellings",
-    "alternate spellings" -> "other spellings",
-    "alternative forms" -> "other spellings",
-    "alternative spellings" -> "other spellings",
+    "abbreviation" -> "otherSpellings",
+    "alternate spellings" -> "otherSpellings",
+    "alternative forms" -> "otherSpellings",
+    "alternative spellings" -> "otherSpellings",
     "antonym" -> "antonyms",
     "antonyms" -> "antonyms",
     "homonyms" -> "homonyms",
@@ -64,8 +81,8 @@ object SimpleWiktionary {
     "note" -> "notes",
     "notes" -> "notes",
     "notes of usage" -> "notes",
-    "other spelling" -> "other spellings",
-    "other spellings" -> "other spellings",
+    "other spelling" -> "otherSpellings",
+    "other spellings" -> "otherSpellings",
     "pronounciation" -> "pronunciation",
     "pronunciation" -> "pronunciation",
     "pronunciation 2" -> "pronunciation",
@@ -119,7 +136,7 @@ object SimpleWiktionary {
     path: String
   )(implicit spark: SparkSession): Dataset[SimpleWiktionaryDefinition] = {
     import spark.implicits._
-    splitWordsByPartOfSpeech(loadWiktionaryDump(path))
+    val splitDefinitions = splitWordsByPartOfSpeech(loadWiktionaryDump(path))
       .withColumn("ipa", regexp_extract(col("text"), ipaRegex, 1))
       .withColumn(
         "subdefinitions",
@@ -129,6 +146,9 @@ object SimpleWiktionary {
         "examples",
         regexp_extract_all(examplesRegex, 1)(col("definition"))
       )
+
+    addOptionalSections(splitDefinitions)
+      .drop("text")
       .as[SimpleWiktionaryDefinition]
   }
 
@@ -145,4 +165,33 @@ object SimpleWiktionary {
       .withColumnRenamed("col", "definition")
       .withColumn("tag", mapPartOfSpeech(col("pos")))
       .drop("pos")
+
+  val subsectionsInverted: Map[String, Set[String]] = subsectionMap
+    .groupBy(_._2)
+    .mapValues(_.keySet)
+
+  val subsectionsToDrop: Map[String, Set[String]] = subsectionsInverted.map {
+    case (subsectionName, subsectionSet) =>
+      // We don't want to lose the subsection we combined things to
+      subsectionName -> subsectionSet.filter(!_.equals(subsectionName))
+  }
+
+  val subsectionsToCombine: Map[String, Column] =
+    subsectionsInverted
+      .mapValues(
+        subsections => array(subsections.head, subsections.tail.toArray: _*)
+      )
+
+  def addOptionalSections(data: DataFrame): DataFrame = {
+    val extracted = extractSubsections(data, subsectionMap.keySet.toArray)
+    subsectionsToCombine.foldLeft(extracted)((acc, subsection) => {
+      val subsectionName = subsection._1
+      val subsectionColumns = subsection._2
+      val columnsToDrop: Array[String] =
+        subsectionsToDrop.getOrElse(subsectionName, Set()).toArray
+      acc
+        .withColumn(subsectionName, array_remove(subsectionColumns, ""))
+        .drop(columnsToDrop: _*)
+    })
+  }
 }

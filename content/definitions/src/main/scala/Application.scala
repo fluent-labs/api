@@ -33,7 +33,7 @@ object Application extends App {
       .loadWiktionaryDump(backupFilePath)
     sectionNames.foreach(sectionName => {
       Wiktionary
-        .extractSubSection(wiktionaryRaw, sectionName)
+        .extractSubsection(wiktionaryRaw, sectionName)
         .select("text", sectionName)
         .where(col(sectionName) =!= "")
         .limit(500)
