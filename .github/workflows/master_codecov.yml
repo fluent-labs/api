@@ -7,7 +7,7 @@ on:
 
 jobs:
   api:
-    name: API V2 Code coverage
+    name: API V2 code coverage
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -25,3 +25,23 @@ jobs:
       uses: codecov/codecov-action@v1
       with:
         flags: unittest,api
+
+  definitions:
+    name: Definitions code coverage
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Move build files to root of build worker
+      run: mv content/definitions/* .
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: '11.0.3'
+    - name: Run tests
+      run: sbt coverage test
+    - name: Generate coverage
+      run: sbt coverageReport
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        flags: unittest,definitions
