@@ -1,7 +1,7 @@
 import com.databricks.spark.xml._
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.{Column, DataFrame, Row, SparkSession}
+import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
 object Wiktionary {
   val metaArticleTitles: Set[String] =
