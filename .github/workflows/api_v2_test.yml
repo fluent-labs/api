@@ -33,6 +33,6 @@ jobs:
     - name: Enforce coverage
       run: sbt coverageReport
     - name: Upload coverage to Codecov
-        uses: ./
-        with:
-          flags: unittest,api
+      uses: codecov/codecov-action@v1
+      with:
+        flags: unittest,api
