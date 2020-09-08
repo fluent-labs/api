@@ -135,8 +135,14 @@ object SimpleWiktionary {
   def loadSimple(
     path: String
   )(implicit spark: SparkSession): Dataset[SimpleWiktionaryDefinition] = {
+    parseSimple(loadWiktionaryDump(path))
+  }
+
+  def parseSimple(
+    data: Dataset[WiktionaryRawEntry]
+  )(implicit spark: SparkSession): Dataset[SimpleWiktionaryDefinition] = {
     import spark.implicits._
-    val splitDefinitions = splitWordsByPartOfSpeech(loadWiktionaryDump(path))
+    val splitDefinitions = splitWordsByPartOfSpeech(data)
       .withColumn("ipa", regexp_extract(col("text"), ipaRegex, 1))
       .withColumn(
         "subdefinitions",
