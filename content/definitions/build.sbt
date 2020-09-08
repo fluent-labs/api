@@ -16,4 +16,4 @@ libraryDependencies ++= Seq(
 // Code coverage settings
 coverageEnabled := true
 coverageMinimum := 70
-coverageFailOnMinimum := true
+coverageFailOnMinimum := false
