@@ -160,7 +160,7 @@ object SimpleWiktionary {
       mapWiktionaryPartOfSpeechToDomainPartOfSpeech(partsOfSpeech(index))
   )
 
-  def splitWordsByPartOfSpeech(data: DataFrame): DataFrame =
+  def splitWordsByPartOfSpeech(data: Dataset[WiktionaryRawEntry]): DataFrame =
     extractSections(data, SimpleWiktionary.partsOfSpeech)
       .select(col("token"), col("text"), posexplode(partOfSpeechCols))
       .filter("col not like ''")

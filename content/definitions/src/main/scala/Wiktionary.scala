@@ -1,7 +1,9 @@
 import com.databricks.spark.xml._
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.{DataFrame, Row, SparkSession}
+import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
+
+case class WiktionaryRawEntry(id: Long, token: String, text: String)
 
 object Wiktionary {
   val metaArticleTitles: Set[String] =
@@ -27,14 +29,17 @@ object Wiktionary {
 
   def loadWiktionaryDump(
     path: String
-  )(implicit spark: SparkSession): DataFrame = {
+  )(implicit spark: SparkSession): Dataset[WiktionaryRawEntry] = {
+    import spark.implicits._
+
     spark.read
       .option("rowTag", "page")
       .xml(path)
-      .select("revision.text._VALUE", "title")
+      .select("revision.text._VALUE", "title", "id")
       .withColumnRenamed("title", "token")
       .withColumnRenamed("_VALUE", "text")
       .filter(row => filterMetaArticles(row))
+      .as[WiktionaryRawEntry]
   }
 
   def filterMetaArticles(row: Row): Boolean = {
@@ -65,7 +70,8 @@ object Wiktionary {
   def subSectionRegex(sectionName: String): String =
     periodMatchesNewlineFlag + caseInsensitiveFlag + tripleEqualsSign + optionalWhiteSpace + sectionName + optionalWhiteSpace + tripleEqualsSign + lazyMatchAnything + nextSectionOrEndOfFile
 
-  def getHeadings(data: DataFrame, equalsCount: Integer): DataFrame = {
+  def getHeadings(data: Dataset[WiktionaryRawEntry],
+                  equalsCount: Integer): DataFrame = {
     data
       .select(explode(findHeadings(equalsCount)(col("text"))))
       .distinct()
@@ -91,8 +97,10 @@ object Wiktionary {
       regexp_extract(col("text"), sectionRegex(name), 1)
     )
 
-  def extractSections(data: DataFrame, sections: Array[String]): DataFrame = {
-    sections.foldLeft(data)((data, section) => extractSection(data, section))
+  def extractSections(data: Dataset[WiktionaryRawEntry],
+                      sections: Array[String]): DataFrame = {
+    sections
+      .foldLeft(data.toDF())((data, section) => extractSection(data, section))
   }
 
   def extractSubsection(data: DataFrame, name: String): DataFrame =

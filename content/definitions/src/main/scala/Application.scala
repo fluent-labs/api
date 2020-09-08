@@ -29,11 +29,13 @@ object Application extends App {
   // eg: is it common? Do I care about what's in it?
   def exploreSections(backupFilePath: String,
                       sectionNames: List[String]): Unit = {
-    val wiktionaryRaw = Wiktionary
-      .loadWiktionaryDump(backupFilePath)
-    sectionNames.foreach(sectionName => {
+    val wiktionary = Wiktionary.extractSections(
       Wiktionary
-        .extractSubsection(wiktionaryRaw, sectionName)
+        .loadWiktionaryDump(backupFilePath),
+      sectionNames.toArray
+    )
+    sectionNames.foreach(sectionName => {
+      wiktionary
         .select("text", sectionName)
         .where(col(sectionName) =!= "")
         .limit(500)
