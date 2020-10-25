@@ -30,8 +30,8 @@ class DocumentController @Inject()(
               documentRequest.text
             )
             .map {
-              case Some(words) => Ok(Json.toJson(words.map(_.toDTO)))
-              case None        => NoContent
+              case List() => NoContent
+              case words  => Ok(Json.toJson(words.map(_.toDTO)))
             }
             .recover(error => {
               val message =
