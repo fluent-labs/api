@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.api.client.google
 
 import akka.actor.ActorSystem
+import com.foreignlanguagereader.api.client.common.CircuitBreakerAttempt
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.word.GrammaticalGender
 import com.foreignlanguagereader.api.domain.word.{PartOfSpeech, _}
@@ -29,31 +30,6 @@ class GoogleCloudClientTest extends AsyncFunSpec with MockitoSugar {
   )
 
   describe("A google cloud language client") {
-    describe("When getting tokens") {
-      // No happy path test unfortunately.
-      // Google has done a really good job making sure I can't create their domain objects.
-      // It might be possible to use reflection to create some return values
-      // But the return on effort is pretty low.
-
-      it("can handle if no tokens are returned") {
-        when(holderMock.getTokens(any[AnalyzeSyntaxRequest]))
-          .thenReturn(List())
-
-        client
-          .getWordsForDocument(Language.ENGLISH, "")
-          .map(result => assert(result.isEmpty))
-      }
-
-      it("returns none if an exception is thrown") {
-        when(holderMock.getTokens(any[AnalyzeSyntaxRequest]))
-          .thenThrow(new IllegalArgumentException("Uh oh"))
-
-        client
-          .getWordsForDocument(Language.ENGLISH, "")
-          .map(result => assert(result.isEmpty))
-      }
-    }
-
     describe("when converting between google and domain types") {
       it("can correctly convert languages") {
         assert(
