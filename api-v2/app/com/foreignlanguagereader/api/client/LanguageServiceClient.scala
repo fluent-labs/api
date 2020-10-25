@@ -48,13 +48,8 @@ class LanguageServiceClient @Inject()(config: Configuration,
   def getDefinition(
     wordLanguage: Language,
     word: Word
-  ): Future[CircuitBreakerResult[Option[List[Definition]]]] =
+  ): Future[CircuitBreakerResult[List[Definition]]] =
     get(
       s"$languageServiceBaseUrl/v1/definition/$wordLanguage/${word.processedToken}"
-    ).map(results => {
-      results.map {
-        case Some(r) => r.map(_.toDefinition(word.tag)).some
-        case None    => None
-      }
-    })
+    ).map(_.map(_.map(_.toDefinition(word.tag))))
 }
