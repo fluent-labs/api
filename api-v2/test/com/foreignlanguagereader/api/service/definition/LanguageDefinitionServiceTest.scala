@@ -70,9 +70,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         Future
           .successful(
             List(
-              Some(
-                List(dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN))
-              )
+              List(dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN))
             )
           )
       )
@@ -98,7 +96,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
             any(classOf[HitReader[LookupAttempt]]),
             any(classOf[ClassTag[Definition]])
           )
-      ).thenReturn(Future.successful(List(None)))
+      ).thenReturn(Future.successful(List(List())))
 
       defaultDefinitionService
         .getDefinitions(Language.ENGLISH, test)
@@ -118,7 +116,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
             any(classOf[HitReader[LookupAttempt]]),
             any(classOf[ClassTag[Definition]])
           )
-      ).thenReturn(Future.successful(List(None)))
+      ).thenReturn(Future.successful(List(List())))
       when(
         languageServiceClientMock.getDefinition(
           Language.ENGLISH,
@@ -144,7 +142,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
             any(classOf[HitReader[LookupAttempt]]),
             any(classOf[ClassTag[Definition]])
           )
-      ).thenReturn(Future.successful(List(None)))
+      ).thenReturn(Future.successful(List(List())))
 
       defaultDefinitionService
         .getDefinitions(Language.CHINESE, test)
@@ -215,10 +213,8 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         ).thenReturn(
           Future.successful(
             List(
-              Some(List(dummyCEDICTDefinition.toDefinition(PartOfSpeech.NOUN))),
-              Some(
-                List(dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN))
-              )
+              List(dummyCEDICTDefinition.toDefinition(PartOfSpeech.NOUN)),
+              List(dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN))
             )
           )
         )

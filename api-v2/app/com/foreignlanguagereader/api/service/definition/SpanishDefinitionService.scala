@@ -31,9 +31,8 @@ class SpanishDefinitionService @Inject()(
   override val sources: List[DefinitionSource] =
     List(DefinitionSource.MIRRIAM_WEBSTER_SPANISH, DefinitionSource.WIKTIONARY)
 
-  def websterFetcher: (Language, Word) => Future[
-    CircuitBreakerResult[Option[List[Definition]]]
-  ] =
+  def websterFetcher
+    : (Language, Word) => Future[CircuitBreakerResult[List[Definition]]] =
     (language: Language, word: Word) =>
       language match {
         case Language.ENGLISH =>
@@ -43,7 +42,7 @@ class SpanishDefinitionService @Inject()(
 
   override val definitionFetchers
     : Map[(DefinitionSource, Language), (Language, Word) => Future[
-      CircuitBreakerResult[Option[List[Definition]]]
+      CircuitBreakerResult[List[Definition]]
     ]] = Map(
     (DefinitionSource.MIRRIAM_WEBSTER_SPANISH, Language.ENGLISH) -> websterFetcher,
     (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher

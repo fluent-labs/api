@@ -101,10 +101,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           )
       ).thenReturn(
         Future.successful(
-          List(
-            Some(List(dummyCedictDefinition)),
-            Some(List(dummyWiktionaryDefinition))
-          )
+          List(List(dummyCedictDefinition), List(dummyWiktionaryDefinition))
         )
       )
 
@@ -130,7 +127,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
               any(classOf[ClassTag[Definition]])
             )
         ).thenReturn(
-          Future.successful(List(Some(List(dummyCedictDefinition)), None))
+          Future.successful(List(List(dummyCedictDefinition), List()))
         )
 
         chineseDefinitionService
@@ -155,7 +152,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
               any(classOf[ClassTag[Definition]])
             )
         ).thenReturn(
-          Future.successful(List(None, Some(List(dummyWiktionaryDefinition))))
+          Future.successful(List(List(), List(dummyWiktionaryDefinition)))
         )
 
         chineseDefinitionService
@@ -180,10 +177,8 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         ).thenReturn(
           Future.successful(
             List(
-              Some(List(dummyCedictDefinition)),
-              Some(
-                List(dummyWiktionaryDefinition, dummyWiktionaryDefinitionTwo)
-              )
+              List(dummyCedictDefinition),
+              List(dummyWiktionaryDefinition, dummyWiktionaryDefinitionTwo)
             )
           )
         )
@@ -232,10 +227,8 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         ).thenReturn(
           Future.successful(
             List(
-              Some(List(dummyCedictDefinition.copy(subdefinitions = List()))),
-              Some(
-                List(dummyWiktionaryDefinition, dummyWiktionaryDefinitionTwo)
-              )
+              List(dummyCedictDefinition.copy(subdefinitions = List())),
+              List(dummyWiktionaryDefinition, dummyWiktionaryDefinitionTwo)
             )
           )
         )

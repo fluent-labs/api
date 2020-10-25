@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.service
 
+import com.foreignlanguagereader.api.client.common.CircuitBreakerAttempt
 import com.foreignlanguagereader.api.client.google.GoogleCloudClient
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.definition.{
@@ -29,7 +30,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         mockGoogleCloudClient
           .getWordsForDocument(Language.ENGLISH, "some words")
-      ).thenReturn(Future.successful(None))
+      ).thenReturn(Future.successful(CircuitBreakerAttempt(Set())))
 
       documentService
         .getWordsForDocument(Language.ENGLISH, Language.ENGLISH, "some words")
@@ -64,7 +65,9 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         mockGoogleCloudClient
           .getWordsForDocument(Language.ENGLISH, "test phrase")
-      ).thenReturn(Future.successful(Some(Set(testWord, phraseWord))))
+      ).thenReturn(
+        Future.successful(CircuitBreakerAttempt(Set(testWord, phraseWord)))
+      )
 
       val testDefinition = Definition(
         subdefinitions = List("test"),
@@ -99,9 +102,9 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       documentService
         .getWordsForDocument(Language.ENGLISH, Language.SPANISH, "test phrase")
         .map(result => {
-          assert(result.isDefined)
-          val test = result.get(0)
-          val phrase = result.get(1)
+          assert(result.size == 2)
+          val test = result(0)
+          val phrase = result(1)
 
           assert(test == testWord.copy(definitions = List(testDefinition)))
           assert(

@@ -41,21 +41,20 @@ class ChineseDefinitionService @Inject()(
   override val sources: List[DefinitionSource] =
     List(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
 
-  def cedictFetcher: (Language, Word) => Future[
-    CircuitBreakerResult[Option[List[Definition]]]
-  ] =
+  def cedictFetcher
+    : (Language, Word) => Future[CircuitBreakerResult[List[Definition]]] =
     (_, word: Word) =>
       Cedict.getDefinition(word) match {
         case Some(entries) =>
           Future.successful(
-            CircuitBreakerAttempt(entries.map(_.toDefinition(word.tag)).some)
+            CircuitBreakerAttempt(entries.map(_.toDefinition(word.tag)))
           )
         case None => Future.successful(CircuitBreakerNonAttempt())
     }
 
   override val definitionFetchers
     : Map[(DefinitionSource, Language), (Language, Word) => Future[
-      CircuitBreakerResult[Option[List[Definition]]]
+      CircuitBreakerResult[List[Definition]]
     ]] = Map(
     (DefinitionSource.CEDICT, Language.ENGLISH) -> cedictFetcher,
     (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
@@ -163,7 +162,7 @@ class ChineseDefinitionService @Inject()(
     wiktionary: List[ChineseDefinition]
   ): List[ChineseDefinition] = {
     val examples = {
-      val e = wiktionary.flatMap(_.examples).flatten.toList
+      val e = wiktionary.flatMap(_.examples).flatten
       if (e.isEmpty) None else Some(e)
     }
 

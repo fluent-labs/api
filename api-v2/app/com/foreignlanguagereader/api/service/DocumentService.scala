@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.api.service
 
 import cats.implicits._
+import com.foreignlanguagereader.api.client.common.CircuitBreakerAttempt
 import com.foreignlanguagereader.api.client.google.GoogleCloudClient
 import com.foreignlanguagereader.api.domain.Language.Language
 import com.foreignlanguagereader.api.domain.word.Word
@@ -19,9 +20,9 @@ class DocumentService @Inject()(val googleCloudClient: GoogleCloudClient,
    */
   def getWordsForDocument(wordLanguage: Language,
                           definitionLanguage: Language,
-                          document: String): Future[Option[List[Word]]] =
+                          document: String): Future[List[Word]] =
     googleCloudClient.getWordsForDocument(wordLanguage, document) flatMap {
-      case Some(words) =>
+      case CircuitBreakerAttempt(words) =>
         // Requests go out at the same time, and then we block until they are all done.
         words.toList
           .traverse(
@@ -30,7 +31,6 @@ class DocumentService @Inject()(val googleCloudClient: GoogleCloudClient,
                 .getDefinition(wordLanguage, definitionLanguage, word)
                 .map(d => word.copy(definitions = d))
           )
-          .map(_.some)
-      case None => Future.successful(None)
+      case _ => Future.successful(List())
     }
 }
