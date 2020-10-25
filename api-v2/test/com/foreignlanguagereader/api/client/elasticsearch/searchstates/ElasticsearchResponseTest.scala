@@ -48,10 +48,10 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
     ElasticsearchSearchResponse[Definition](
       index = index,
       fields = fields,
-      fetcher = () =>
-        Future.successful(CircuitBreakerAttempt(Some(List(fetchedDefinition)))),
+      fetcher =
+        () => Future.successful(CircuitBreakerAttempt(List(fetchedDefinition))),
       maxFetchAttempts = 5,
-      response = None
+      response = CircuitBreakerNonAttempt()
     )
 
   describe("an elasticsearch response") {
@@ -61,7 +61,7 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
         Right(attemptsRefreshEligible)
       )
 
-      val response = responseBase.copy(response = Some(es))
+      val response = responseBase.copy(response = CircuitBreakerAttempt(es))
 
       it("contains the response") {
         assert(response.elasticsearchResult.contains(Seq(fetchedDefinition)))
@@ -79,19 +79,21 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
         Right(attemptsRefreshEligible)
       )
       it("updates the fetch count if the fetcher fetched") {
-        val response = responseBase.copy(response = Some(es))
+        val response = responseBase.copy(response = CircuitBreakerAttempt(es))
         assert(response.elasticsearchResult.isEmpty)
 
         response.getResultOrFetchFromSource.map(result => {
           assert(result.refetched)
-          assert(result.result.contains(List(fetchedDefinition)))
+          assert(result.result.contains(fetchedDefinition))
         })
       }
       it("updates the fetch count if the fetcher failed") {
-        val fetcher
-          : () => Future[CircuitBreakerResult[Option[List[Definition]]]] =
+        val fetcher: () => Future[CircuitBreakerResult[List[Definition]]] =
           () => Future.failed(new IllegalArgumentException("Oh no"))
-        val response = responseBase.copy(response = Some(es), fetcher = fetcher)
+        val response = responseBase.copy(
+          response = CircuitBreakerAttempt(es),
+          fetcher = fetcher
+        )
         assert(response.elasticsearchResult.isEmpty)
 
         response.getResultOrFetchFromSource.map(result => {
@@ -101,11 +103,9 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
       }
       it("does not update the fetch count if the fetcher did not fetch") {
         val response = responseBase.copy(
-          response = Some(es),
+          response = CircuitBreakerAttempt(es),
           fetcher = () =>
-            Future.successful(
-              CircuitBreakerNonAttempt[Option[List[Definition]]]()
-          )
+            Future.successful(CircuitBreakerNonAttempt[List[Definition]]())
         )
         assert(response.elasticsearchResult.isEmpty)
 
@@ -122,7 +122,7 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
           Right(attemptsRefreshIneligible)
         )
 
-        val response = responseBase.copy(response = Some(es))
+        val response = responseBase.copy(response = CircuitBreakerAttempt(es))
         assert(response.elasticsearchResult.isEmpty)
 
         response.getResultOrFetchFromSource.map(result => {
@@ -137,7 +137,7 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
           Right(List()),
           Left(new IllegalArgumentException("oh no"))
         )
-        val response = responseBase.copy(response = Some(es))
+        val response = responseBase.copy(response = CircuitBreakerAttempt(es))
         assert(response.elasticsearchResult.isEmpty)
 
         response.getResultOrFetchFromSource.map(result => {
@@ -150,7 +150,7 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
           Left(new IllegalArgumentException("oh no")),
           Right(attemptsRefreshEligible)
         )
-        val response = responseBase.copy(response = Some(es))
+        val response = responseBase.copy(response = CircuitBreakerAttempt(es))
         assert(response.elasticsearchResult.isEmpty)
       }
 

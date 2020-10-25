@@ -104,7 +104,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
             .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
 
           val result = results(0)
-          assert(result.contains(List(fetchedDefinition)))
+          assert(result.contains(fetchedDefinition))
         })
     }
     it("can handle cache misses") {
@@ -131,9 +131,8 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
               "definitions",
               Map(),
               () =>
-                Future.successful(
-                  CircuitBreakerAttempt(Some(List(fetchedDefinition)))
-              ),
+                Future
+                  .successful(CircuitBreakerAttempt(List(fetchedDefinition))),
               5
             )
           )
@@ -143,7 +142,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
             .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
 
           val result = results(0)
-          assert(result.contains(List(fetchedDefinition)))
+          assert(result.contains(fetchedDefinition))
         })
     }
     describe("gracefully handles failures") {
@@ -181,9 +180,8 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
                 "definitions",
                 Map(),
                 () =>
-                  Future.successful(
-                    CircuitBreakerAttempt(Some(List(fetchedDefinition)))
-                ),
+                  Future
+                    .successful(CircuitBreakerAttempt(List(fetchedDefinition))),
                 5
               )
             )
@@ -193,7 +191,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
               .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
 
             val result = results(0)
-            assert(result.contains(List(fetchedDefinition)))
+            assert(result.contains(fetchedDefinition))
           })
       }
     }

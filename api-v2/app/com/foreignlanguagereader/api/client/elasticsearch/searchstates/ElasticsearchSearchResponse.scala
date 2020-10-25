@@ -3,6 +3,7 @@ package com.foreignlanguagereader.api.client.elasticsearch.searchstates
 import cats.implicits._
 import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerAttempt,
+  CircuitBreakerFailedAttempt,
   CircuitBreakerNonAttempt,
   CircuitBreakerResult
 }
@@ -37,9 +38,9 @@ import scala.reflect.ClassTag
 case class ElasticsearchSearchResponse[T: Indexable](
   index: String,
   fields: Map[String, String],
-  fetcher: () => Future[CircuitBreakerResult[Option[List[T]]]],
+  fetcher: () => Future[CircuitBreakerResult[List[T]]],
   maxFetchAttempts: Int,
-  response: Option[MultiSearchResponse]
+  response: CircuitBreakerResult[MultiSearchResponse]
 )(implicit hitReader: HitReader[T],
   attemptsHitReader: HitReader[LookupAttempt],
   tag: ClassTag[T],
@@ -49,20 +50,20 @@ case class ElasticsearchSearchResponse[T: Indexable](
   val (
     elasticsearchResult: Option[List[T]],
     fetchCount: Int,
-    lookupId: Option[String]
+    lookupId: Option[String],
+    queried: Boolean
   ) =
     response match {
-      case Some(r) =>
+      case CircuitBreakerAttempt(r) =>
         val result = parseResults(r.items(0).response)
         val (attempts, id) = parseAttempts(r.items(1).response)
-        (result, attempts, id)
-      case None =>
-        (None, 0, None)
+        (result, attempts, id, true)
+      case _ =>
+        (None, 0, None, false)
     }
 
   // Were we able to connect to elasticsearch?
   // Necessary downstream to prevent us from resaving to elasticsearch.
-  val queried: Boolean = response.isDefined
 
   lazy val getResultOrFetchFromSource: Future[ElasticsearchSearchResult[T]] =
     elasticsearchResult match {
@@ -71,7 +72,7 @@ case class ElasticsearchSearchResponse[T: Indexable](
           ElasticsearchSearchResult(
             index = index,
             fields = fields,
-            result = Some(es),
+            result = es,
             fetchCount = fetchCount,
             lookupId = lookupId,
             refetched = false,
@@ -84,7 +85,7 @@ case class ElasticsearchSearchResponse[T: Indexable](
           ElasticsearchSearchResult(
             index = index,
             fields = fields,
-            result = None,
+            result = List(),
             fetchCount = fetchCount,
             lookupId = lookupId,
             refetched = false,
@@ -111,10 +112,24 @@ case class ElasticsearchSearchResponse[T: Indexable](
           ElasticsearchSearchResult(
             index = index,
             fields = fields,
-            result = None,
+            result = List(),
             fetchCount = fetchCount,
             lookupId = lookupId,
             refetched = false,
+            queried = queried
+          )
+        case CircuitBreakerFailedAttempt(e) =>
+          logger.error(
+            s"Failed to call fetcher on index=$index fields=$fields due to error ${e.getMessage}",
+            e
+          )
+          ElasticsearchSearchResult(
+            index = index,
+            fields = fields,
+            result = List(),
+            fetchCount = fetchCount + 1,
+            lookupId = lookupId,
+            refetched = true,
             queried = queried
           )
       }
@@ -127,7 +142,7 @@ case class ElasticsearchSearchResponse[T: Indexable](
           ElasticsearchSearchResult(
             index = index,
             fields = fields,
-            result = None,
+            result = List(),
             fetchCount = fetchCount + 1,
             lookupId = lookupId,
             refetched = true,
@@ -170,22 +185,18 @@ case class ElasticsearchSearchResponse[T: Indexable](
 object ElasticsearchSearchResponse {
   def fromResult[T: Indexable](
     request: ElasticsearchSearchRequest[T],
-    result: CircuitBreakerResult[Option[MultiSearchResponse]]
+    result: CircuitBreakerResult[MultiSearchResponse]
   )(implicit hitReader: HitReader[T],
     attemptsHitReader: HitReader[LookupAttempt],
     tag: ClassTag[T],
     ec: ExecutionContext): ElasticsearchSearchResponse[T] = {
-    val r = result match {
-      case CircuitBreakerAttempt(x) => x
-      case _                        => None
-    }
 
     ElasticsearchSearchResponse(
       request.index,
       request.fields,
       request.fetcher,
       request.maxFetchAttempts,
-      r
+      result
     )
   }
 }

@@ -25,7 +25,7 @@ class ElasticsearchRequestTest extends AnyFunSpec {
     val request = ElasticsearchSearchRequest[Definition](
       index,
       Map("field1" -> "value1", "field2" -> "value2", "field3" -> "value3"),
-      () => Future.successful(CircuitBreakerAttempt(None)),
+      () => Future.successful(CircuitBreakerAttempt(List())),
       maxFetchAttempts = 5
     )
 

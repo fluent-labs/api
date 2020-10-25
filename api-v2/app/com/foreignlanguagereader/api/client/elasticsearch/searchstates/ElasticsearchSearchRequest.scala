@@ -21,7 +21,7 @@ import scala.concurrent.Future
 case class ElasticsearchSearchRequest[T](
   index: String,
   fields: Map[String, String],
-  fetcher: () => Future[CircuitBreakerResult[Option[List[T]]]],
+  fetcher: () => Future[CircuitBreakerResult[List[T]]],
   maxFetchAttempts: Int
 ) {
   val attemptsIndex = "attempts"
