@@ -96,7 +96,7 @@ class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
               token.getPartOfSpeech.getTag
             ),
             lemma = token.getLemma,
-            definitions = None,
+            definitions = List(),
             gender = googleGenderToDomainGender(token.getPartOfSpeech.getGender),
             number = googleCountToDomainCount(token.getPartOfSpeech.getNumber),
             proper = isProperNoun(token.getPartOfSpeech.getProper),

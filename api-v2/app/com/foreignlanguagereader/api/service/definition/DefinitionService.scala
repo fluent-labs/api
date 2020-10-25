@@ -28,7 +28,7 @@ class DefinitionService @Inject()(
     */
   def getDefinition(wordLanguage: Language,
                     definitionLanguage: Language,
-                    word: Word): Future[Option[List[Definition]]] =
+                    word: Word): Future[List[Definition]] =
     wordLanguage match {
       case Language.CHINESE =>
         chineseDefinitionService.getDefinitions(definitionLanguage, word)

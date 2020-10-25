@@ -31,10 +31,7 @@ class DefinitionQuery @Inject()(implicit val ec: ExecutionContext) {
           definitionLanguage,
           Word.fromToken(token, wordLanguage)
         )
-        .map {
-          case Some(definitions) => definitions.map(_.toDTO).toList
-          case None              => List()
-        }
+        .map(definitions => definitions.map(_.toDTO))
     }
   )
 

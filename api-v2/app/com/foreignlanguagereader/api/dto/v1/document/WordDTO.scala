@@ -6,7 +6,7 @@ import play.api.libs.json.{Format, Json, Reads}
 case class WordDTO(token: String,
                    tag: String,
                    lemma: String,
-                   definitions: Option[Seq[DefinitionDTO]])
+                   definitions: Seq[DefinitionDTO])
 
 object WordDTO {
   implicit val format: Format[WordDTO] = Json.format

@@ -110,9 +110,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
       chineseDefinitionService
         .getDefinitions(Language.CHINESE, niHao)
-        .map { result =>
-          assert(result.isDefined)
-          val definitions = result.get
+        .map { definitions =>
           assert(definitions.size == 2)
           assert(definitions.exists(_.eq(dummyCedictDefinition)))
           assert(definitions.exists(_.eq(dummyWiktionaryDefinition)))
@@ -137,9 +135,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
         chineseDefinitionService
           .getDefinitions(Language.ENGLISH, niHao)
-          .map { result =>
-            assert(result.isDefined)
-            val definitions = result.get
+          .map { definitions =>
             assert(definitions.size == 1)
             assert(definitions.exists(_.eq(dummyCedictDefinition)))
           }
@@ -164,9 +160,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
         chineseDefinitionService
           .getDefinitions(Language.ENGLISH, niHao)
-          .map { result =>
-            assert(result.isDefined)
-            val definitions = result.get
+          .map { definitions =>
             assert(definitions.size == 1)
             assert(definitions.exists(_.eq(dummyWiktionaryDefinition)))
           }
@@ -196,31 +190,29 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
         chineseDefinitionService
           .getDefinitions(Language.ENGLISH, niHao)
-          .map {
-            case Some(definitions) =>
-              assert(definitions.size == 1)
-              val combined = definitions(0)
-              assert(
-                combined.subdefinitions == dummyCedictDefinition.subdefinitions
+          .map { definitions =>
+            assert(definitions.size == 1)
+            val combined = definitions(0)
+            assert(
+              combined.subdefinitions == dummyCedictDefinition.subdefinitions
+            )
+            assert(combined.tag == dummyWiktionaryDefinition.tag)
+            assert(
+              combined.examples.contains(
+                (dummyWiktionaryDefinition.examples ++ dummyWiktionaryDefinitionTwo.examples).flatten
               )
-              assert(combined.tag == dummyWiktionaryDefinition.tag)
-              assert(
-                combined.examples.contains(
-                  (dummyWiktionaryDefinition.examples ++ dummyWiktionaryDefinitionTwo.examples).flatten
-                )
-              )
-              combined match {
-                case c: ChineseDefinition =>
-                  assert(c.pronunciation.pinyin == "ni hao")
-                  assert(c.simplified == dummyCedictDefinition.simplified)
-                  assert(c.traditional == dummyCedictDefinition.traditional)
-                case other =>
-                  fail(s"We aren't returning Chinese definitions, got $other")
-              }
-              assert(combined.definitionLanguage == Language.ENGLISH)
-              assert(combined.source == DefinitionSource.MULTIPLE)
-              assert(combined.token == dummyCedictDefinition.token)
-            case None => fail("No definitions returned")
+            )
+            combined match {
+              case c: ChineseDefinition =>
+                assert(c.pronunciation.pinyin == "ni hao")
+                assert(c.simplified == dummyCedictDefinition.simplified)
+                assert(c.traditional == dummyCedictDefinition.traditional)
+              case other =>
+                fail(s"We aren't returning Chinese definitions, got $other")
+            }
+            assert(combined.definitionLanguage == Language.ENGLISH)
+            assert(combined.source == DefinitionSource.MULTIPLE)
+            assert(combined.token == dummyCedictDefinition.token)
           }
       }
 
@@ -250,43 +242,39 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
         chineseDefinitionService
           .getDefinitions(Language.ENGLISH, niHao)
-          .map {
-            case Some(definitions) =>
-              assert(definitions.size == 2)
-              val combinedOne = definitions(0)
-              val combinedTwo = definitions(1)
+          .map { definitions =>
+            assert(definitions.size == 2)
+            val combinedOne = definitions(0)
+            val combinedTwo = definitions(1)
 
-              // Cedict sourced data should be the same for all
-              List(combinedOne, combinedTwo) map {
-                case c: ChineseDefinition =>
-                  assert(c.pronunciation.pinyin == "ni hao")
-                  assert(c.simplified == dummyCedictDefinition.simplified)
-                  assert(c.traditional == dummyCedictDefinition.traditional)
-                case other =>
-                  fail(s"We aren't returning Chinese definitions, got $other")
-              }
+            // Cedict sourced data should be the same for all
+            List(combinedOne, combinedTwo) map {
+              case c: ChineseDefinition =>
+                assert(c.pronunciation.pinyin == "ni hao")
+                assert(c.simplified == dummyCedictDefinition.simplified)
+                assert(c.traditional == dummyCedictDefinition.traditional)
+              case other =>
+                fail(s"We aren't returning Chinese definitions, got $other")
+            }
 
-              assert(definitions.forall(_.token == dummyCedictDefinition.token))
+            assert(definitions.forall(_.token == dummyCedictDefinition.token))
 
-              // Generated data should be the same for all
-              assert(
-                definitions.forall(_.definitionLanguage == Language.ENGLISH)
-              )
-              assert(definitions.forall(_.source == DefinitionSource.MULTIPLE))
+            // Generated data should be the same for all
+            assert(definitions.forall(_.definitionLanguage == Language.ENGLISH))
+            assert(definitions.forall(_.source == DefinitionSource.MULTIPLE))
 
-              assert(
-                combinedOne.subdefinitions == dummyWiktionaryDefinition.subdefinitions
-              )
-              assert(combinedOne.tag == dummyWiktionaryDefinition.tag)
-              assert(combinedOne.examples == dummyWiktionaryDefinition.examples)
-              assert(
-                combinedTwo.subdefinitions == dummyWiktionaryDefinitionTwo.subdefinitions
-              )
-              assert(combinedTwo.tag == dummyWiktionaryDefinitionTwo.tag)
-              assert(
-                combinedTwo.examples == dummyWiktionaryDefinitionTwo.examples
-              )
-            case None => fail("No definitions returned")
+            assert(
+              combinedOne.subdefinitions == dummyWiktionaryDefinition.subdefinitions
+            )
+            assert(combinedOne.tag == dummyWiktionaryDefinition.tag)
+            assert(combinedOne.examples == dummyWiktionaryDefinition.examples)
+            assert(
+              combinedTwo.subdefinitions == dummyWiktionaryDefinitionTwo.subdefinitions
+            )
+            assert(combinedTwo.tag == dummyWiktionaryDefinitionTwo.tag)
+            assert(
+              combinedTwo.examples == dummyWiktionaryDefinitionTwo.examples
+            )
           }
       }
     }

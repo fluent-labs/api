@@ -50,19 +50,19 @@ class MockDefinitionService
         Language.ENGLISH,
         Word.fromToken("test", Language.ENGLISH)
       )
-    ).thenReturn(Future.successful(None))
+    ).thenReturn(Future.successful(List()))
     when(
       m.getDefinition(
         Language.CHINESE,
         Language.ENGLISH,
         Word.fromToken("你好", Language.CHINESE)
       )
-    ).thenReturn(Future.successful(None))
+    ).thenReturn(Future.successful(List()))
     m
   }
   override def getDefinition(wordLanguage: Language,
                              definitionLanguage: Language,
-                             word: Word): Future[Option[List[Definition]]] =
+                             word: Word): Future[List[Definition]] =
     mock.getDefinition(wordLanguage, definitionLanguage, word)
 }
 

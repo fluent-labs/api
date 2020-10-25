@@ -78,9 +78,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       )
       defaultDefinitionService
         .getDefinitions(Language.ENGLISH, test)
-        .map { response =>
-          assert(response.isDefined)
-          val results = response.get
+        .map { results =>
           assert(results.length == 1)
           assert(
             results(0) == dummyWiktionaryDefinition
@@ -227,9 +225,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
         customizedEnricher
           .getDefinitions(Language.ENGLISH, token)
-          .map { response =>
-            assert(response.isDefined)
-            val results = response.get
+          .map { results =>
             assert(results.length == 2)
             assert(
               results.contains(

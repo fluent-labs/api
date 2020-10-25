@@ -42,7 +42,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         token = "test",
         tag = PartOfSpeech.VERB,
         lemma = "test",
-        definitions = None,
+        definitions = List(),
         gender = None,
         number = None,
         proper = None,
@@ -54,7 +54,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         token = "phrase",
         tag = PartOfSpeech.NOUN,
         lemma = "phrase",
-        definitions = None,
+        definitions = List(),
         gender = None,
         number = None,
         proper = None,
@@ -79,7 +79,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         mockDefinitionService
           .getDefinition(Language.ENGLISH, Language.SPANISH, testWord)
-      ).thenReturn(Future.successful(Some(List(testDefinition))))
+      ).thenReturn(Future.successful(List(testDefinition)))
 
       val phraseDefinition = Definition(
         subdefinitions = List("phrase"),
@@ -94,7 +94,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         mockDefinitionService
           .getDefinition(Language.ENGLISH, Language.SPANISH, phraseWord)
-      ).thenReturn(Future.successful(Some(List(phraseDefinition))))
+      ).thenReturn(Future.successful(List(phraseDefinition)))
 
       documentService
         .getWordsForDocument(Language.ENGLISH, Language.SPANISH, "test phrase")
@@ -103,12 +103,10 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
           val test = result.get(0)
           val phrase = result.get(1)
 
-          assert(
-            test == testWord.copy(definitions = Some(List(testDefinition)))
-          )
+          assert(test == testWord.copy(definitions = List(testDefinition)))
           assert(
             phrase == phraseWord
-              .copy(definitions = Some(List(phraseDefinition)))
+              .copy(definitions = List(phraseDefinition))
           )
         })
     }

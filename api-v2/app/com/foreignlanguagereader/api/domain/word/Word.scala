@@ -11,17 +11,14 @@ case class Word(language: Language,
                 token: String,
                 tag: PartOfSpeech,
                 lemma: String,
-                definitions: Option[Seq[Definition]],
+                definitions: Seq[Definition],
                 gender: Option[GrammaticalGender],
                 number: Option[Count],
                 proper: Option[Boolean],
                 tense: Option[WordTense],
                 processedToken: String) {
   lazy val toDTO: WordDTO = {
-    val defs = definitions match {
-      case Some(d) => Some(d.map(_.toDTO))
-      case None    => None
-    }
+    val defs = definitions.map(_.toDTO)
     WordDTO(token, tag.toString, lemma, defs)
   }
 }
@@ -32,7 +29,7 @@ object Word {
       language = language,
       tag = PartOfSpeech.UNKNOWN,
       lemma = token,
-      definitions = None,
+      definitions = List(),
       gender = None,
       number = None,
       proper = None,

@@ -74,7 +74,7 @@ trait LanguageDefinitionService {
 
   // This is the main method that consumers will call
   def getDefinitions(definitionLanguage: Language,
-                     word: Word): Future[Option[List[Definition]]] = {
+                     word: Word): Future[List[Definition]] = {
     preprocessWordForRequest(word)
     // Trigger all requests asynchronously and block for all to complete
       .traverse(token => fetchDefinitions(sources, definitionLanguage, token))
@@ -87,15 +87,9 @@ trait LanguageDefinitionService {
             case (k, Some(v)) => k -> v
         }
       )
-      .map {
-        case r if r.isEmpty =>
-          logger.info(
-            s"No definitions found for $wordLanguage $word in $definitionLanguage"
-          )
-          None
-        case definitions =>
-          enrichDefinitions(definitionLanguage, word, definitions).some
-      }
+      .map(
+        definitions => enrichDefinitions(definitionLanguage, word, definitions)
+      )
   }
 
   // Below here is trait behavior, implementers need not read further
