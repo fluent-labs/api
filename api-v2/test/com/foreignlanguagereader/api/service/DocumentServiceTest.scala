@@ -1,7 +1,11 @@
 package com.foreignlanguagereader.api.service
 
 import cats.data.Nested
-import com.foreignlanguagereader.api.client.common.CircuitBreakerAttempt
+import com.foreignlanguagereader.api.client.common.{
+  CircuitBreakerAttempt,
+  CircuitBreakerFailedAttempt,
+  CircuitBreakerNonAttempt
+}
 import com.foreignlanguagereader.api.client.google.GoogleCloudClient
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.definition.{
@@ -36,6 +40,38 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       documentService
         .getWordsForDocument(Language.ENGLISH, Language.ENGLISH, "some words")
         .map(result => assert(result.isEmpty))
+    }
+
+    it("reacts correctly to the circuit breaker being closed") {
+      when(
+        mockGoogleCloudClient
+          .getWordsForDocument(Language.ENGLISH, "some words")
+      ).thenReturn(Nested(Future.successful(CircuitBreakerNonAttempt())))
+
+      documentService
+        .getWordsForDocument(Language.ENGLISH, Language.ENGLISH, "some words")
+        .map(result => assert(result.isEmpty))
+    }
+
+    it("throws errors from google cloud") {
+      when(
+        mockGoogleCloudClient
+          .getWordsForDocument(Language.ENGLISH, "some words")
+      ).thenReturn(
+        Nested(
+          Future.apply(
+            CircuitBreakerFailedAttempt(new IllegalArgumentException("Uh oh"))
+          )
+        )
+      )
+      documentService
+        .getWordsForDocument(Language.ENGLISH, Language.ENGLISH, "some words")
+        .map(_ => assert(false, "This should have failed"))
+        .recover {
+          case err: IllegalArgumentException =>
+            assert(err.getMessage == "Uh oh")
+          case _ => assert(false, "This is the wrong exception")
+        }
     }
 
     it("can get words for a document") {
