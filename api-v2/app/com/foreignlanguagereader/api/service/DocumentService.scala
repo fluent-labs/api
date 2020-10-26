@@ -32,6 +32,11 @@ class DocumentService @Inject()(val googleCloudClient: GoogleCloudClient,
       .getWordsForDocument(wordLanguage, document)
       .value
       .flatMap {
+        case CircuitBreakerAttempt(w) if w.isEmpty =>
+          logger.warn(
+            s"No tokens found in language=$language for document=$document"
+          )
+          Future.successful(List())
         case CircuitBreakerAttempt(words) =>
           words.toList
             .traverse(

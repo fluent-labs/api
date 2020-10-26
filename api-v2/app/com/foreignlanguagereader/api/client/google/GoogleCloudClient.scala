@@ -60,18 +60,6 @@ class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
     withBreaker(s"Failed to get tokens from google cloud", Future {
       gcloud.getTokens(request)
     }).map(tokens => convertTokensToWord(language, tokens))
-      .map {
-        case t if t.isEmpty =>
-          logger.info(
-            s"No tokens found in language=$language for document=$document"
-          )
-          Set[Word]()
-        case t =>
-          logger.info(
-            s"Found tokens in language=$language for document=$document"
-          )
-          t
-      }
   }
 
   /*
