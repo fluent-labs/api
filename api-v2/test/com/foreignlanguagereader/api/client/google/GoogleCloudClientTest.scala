@@ -3,8 +3,11 @@ package com.foreignlanguagereader.api.client.google
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.client.common.CircuitBreakerAttempt
 import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.word.GrammaticalGender
-import com.foreignlanguagereader.api.domain.word.{PartOfSpeech, _}
+import com.foreignlanguagereader.api.domain.word.{
+  GrammaticalGender,
+  PartOfSpeech,
+  _
+}
 import com.google.cloud.language.v1.AnalyzeSyntaxRequest
 import com.google.cloud.language.v1.PartOfSpeech.{
   Gender,
@@ -30,6 +33,21 @@ class GoogleCloudClientTest extends AsyncFunSpec with MockitoSugar {
   )
 
   describe("A google cloud language client") {
+    describe("when querying google cloud") {
+      it("can handle the happy path") {
+        when(holderMock.getTokens(any(classOf[AnalyzeSyntaxRequest])))
+          .thenReturn(List())
+
+        client
+          .getWordsForDocument(Language.ENGLISH, "test document")
+          .value
+          .map {
+            case CircuitBreakerAttempt(result) => assert(result.isEmpty)
+            case _                             => fail("This isn't the happy path")
+          }
+      }
+    }
+
     describe("when converting between google and domain types") {
       it("can correctly convert languages") {
         assert(
