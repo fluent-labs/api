@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.client.common
 
+import cats.data.Nested
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Reads}
 import play.api.libs.ws.WSClient
@@ -20,7 +21,7 @@ trait WsClient extends Circuitbreaker {
   def get[T: ClassTag](
     url: String,
     isFailure: Throwable => Boolean = _ => true
-  )(implicit reads: Reads[T]): Future[CircuitBreakerResult[T]] = {
+  )(implicit reads: Reads[T]): Nested[Future, CircuitBreakerResult, T] = {
     logger.info(s"Calling url $url")
     val typeName = implicitly[ClassTag[T]].runtimeClass.getSimpleName
     withBreaker(

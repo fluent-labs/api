@@ -1,6 +1,8 @@
 package com.foreignlanguagereader.api.service.definition
 
+import cats.data.Nested
 import com.foreignlanguagereader.api.client.LanguageServiceClient
+import com.foreignlanguagereader.api.client.common.CircuitBreakerResult
 import com.foreignlanguagereader.api.client.elasticsearch.{
   ElasticsearchClient,
   LookupAttempt
@@ -122,7 +124,13 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           Language.ENGLISH,
           Word.fromToken("test", Language.ENGLISH)
         )
-      ).thenReturn(Future.failed(new IllegalStateException("Uh oh")))
+      ).thenReturn(
+        Nested(
+          Future.failed[CircuitBreakerResult[List[Definition]]](
+            new IllegalStateException("Uh oh")
+          )
+        )
+      )
 
       defaultDefinitionService
         .getDefinitions(Language.ENGLISH, test)

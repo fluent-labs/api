@@ -3,6 +3,7 @@ package com.foreignlanguagereader.api.client
 import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
+import cats.data.Nested
 import cats.implicits._
 import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerResult,
@@ -48,8 +49,8 @@ class LanguageServiceClient @Inject()(config: Configuration,
   def getDefinition(
     wordLanguage: Language,
     word: Word
-  ): Future[CircuitBreakerResult[List[Definition]]] =
+  ): Nested[Future, CircuitBreakerResult, List[Definition]] =
     get(
       s"$languageServiceBaseUrl/v1/definition/$wordLanguage/${word.processedToken}"
-    ).map(_.map(_.map(_.toDefinition(word.tag))))
+    ).map(a => a.map(_.toDefinition(word.tag)))
 }

@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.api.client.google
 
 import akka.actor.ActorSystem
+import cats.data.Nested
 import cats.implicits._
 import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerResult,
@@ -41,7 +42,7 @@ class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
   def getWordsForDocument(
     language: Language,
     document: String
-  ): Future[CircuitBreakerResult[Set[Word]]] = {
+  ): Nested[Future, CircuitBreakerResult, Set[Word]] = {
     logger.info(s"Getting tokens in $language from Google cloud: $document")
 
     val doc =
@@ -59,22 +60,19 @@ class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
     withBreaker(s"Failed to get tokens from google cloud", Future {
       gcloud.getTokens(request)
     }).map(
-      result =>
-        result.map(
-          tokens =>
-            convertTokensToWord(language, tokens) match {
-              case t if t.isEmpty =>
-                logger.info(
-                  s"No tokens found in language=$language for document=$document"
-                )
-                Set[Word]()
-              case t =>
-                logger.info(
-                  s"Found tokens in language=$language for document=$document"
-                )
-                t
-          }
-      )
+      tokens =>
+        convertTokensToWord(language, tokens) match {
+          case t if t.isEmpty =>
+            logger.info(
+              s"No tokens found in language=$language for document=$document"
+            )
+            Set[Word]()
+          case t =>
+            logger.info(
+              s"Found tokens in language=$language for document=$document"
+            )
+            t
+      }
     )
   }
 

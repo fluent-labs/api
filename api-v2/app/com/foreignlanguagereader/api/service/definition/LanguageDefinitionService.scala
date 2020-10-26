@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.service.definition
 
+import cats.data.Nested
 import cats.implicits._
 import com.foreignlanguagereader.api.client.LanguageServiceClient
 import com.foreignlanguagereader.api.client.common.{
@@ -58,11 +59,12 @@ trait LanguageDefinitionService {
 
   // Functions that can fetch definitions from web sources should be registered here.
   val definitionFetchers
-    : Map[(DefinitionSource, Language), (Language, Word) => Future[
-      CircuitBreakerResult[List[Definition]]
-    ]] = Map(
-    (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
-  )
+    : Map[(DefinitionSource, Language),
+          (Language,
+           Word) => Nested[Future, CircuitBreakerResult, List[Definition]]] =
+    Map(
+      (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
+    )
   val maxFetchAttempts = 5
 
   // Define logic to combine definition sources here. If there is only one source, this just returns it.
@@ -97,8 +99,10 @@ trait LanguageDefinitionService {
   val definitionsIndex = "definitions"
 
   // Out of the box, this calls language service for Wiktionary definitions. All languages should use this.
-  def languageServiceFetcher
-    : (Language, Word) => Future[CircuitBreakerResult[List[Definition]]] =
+  def languageServiceFetcher: (
+    Language,
+    Word
+  ) => Nested[Future, CircuitBreakerResult, List[Definition]] =
     (_, word: Word) => languageServiceClient.getDefinition(wordLanguage, word)
 
   private[this] def fetchDefinitions(
@@ -126,7 +130,7 @@ trait LanguageDefinitionService {
       definitionFetchers.get(source, definitionLanguage) match {
         case Some(fetcher) =>
           () =>
-            fetcher(definitionLanguage, word)
+            fetcher(definitionLanguage, word).value
         case None =>
           logger.error(
             s"Failed to search in $wordLanguage for $word because $source is not implemented for definitions in $definitionLanguage"

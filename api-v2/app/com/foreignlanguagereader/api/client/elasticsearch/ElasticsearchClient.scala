@@ -1,14 +1,9 @@
 package com.foreignlanguagereader.api.client.elasticsearch
 
 import akka.actor.ActorSystem
+import cats.data.Nested
 import cats.implicits._
-import com.foreignlanguagereader.api.client.common.{
-  CircuitBreakerAttempt,
-  CircuitBreakerFailedAttempt,
-  CircuitBreakerNonAttempt,
-  CircuitBreakerResult,
-  Circuitbreaker
-}
+import com.foreignlanguagereader.api.client.common._
 import com.foreignlanguagereader.api.client.elasticsearch.searchstates.{
   ElasticsearchCacheRequest,
   ElasticsearchSearchRequest,
@@ -52,7 +47,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
     requests
       .traverse(
         request =>
-          execute(request.query)
+          execute(request.query).value
             .map(
               result => ElasticsearchSearchResponse.fromResult(request, result)
             )
@@ -99,7 +94,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
 
   def save(request: ElasticsearchCacheRequest): Future[Unit] = {
     logger.info(s"Saving to elasticsearch: $request")
-    execute(bulk(request.requests)).map {
+    execute(bulk(request.requests)).value.map {
       case CircuitBreakerAttempt(_) =>
         logger
           .info(s"Successfully saved to elasticsearch: $request")
@@ -132,7 +127,7 @@ class ElasticsearchClient @Inject()(config: Configuration,
   private[this] def execute[T, U](request: T)(
     implicit handler: Handler[T, U],
     manifest: Manifest[U]
-  ): Future[CircuitBreakerResult[U]] =
+  ): Nested[Future, CircuitBreakerResult, U] =
     withBreaker(
       s"Error executing elasticearch query: $request due to error",
       client.execute(request) map {

@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.api.client.babelnet
 
 import akka.actor.ActorSystem
+import cats.data.Nested
 import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerResult,
   Circuitbreaker
@@ -23,7 +24,7 @@ class BabelnetClient @Inject()(babelnet: BabelnetClientHolder,
   def getSenses(
     language: Language,
     lemma: String
-  ): Future[CircuitBreakerResult[List[BabelSense]]] = {
+  ): Nested[Future, CircuitBreakerResult, List[BabelSense]] = {
     val lang = language match {
       case Language.CHINESE             => BabelLanguage.ZH
       case Language.CHINESE_TRADITIONAL => BabelLanguage.ZH

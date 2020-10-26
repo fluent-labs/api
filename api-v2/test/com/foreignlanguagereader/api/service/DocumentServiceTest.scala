@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.service
 
+import cats.data.Nested
 import com.foreignlanguagereader.api.client.common.CircuitBreakerAttempt
 import com.foreignlanguagereader.api.client.google.GoogleCloudClient
 import com.foreignlanguagereader.api.domain.Language
@@ -30,7 +31,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         mockGoogleCloudClient
           .getWordsForDocument(Language.ENGLISH, "some words")
-      ).thenReturn(Future.successful(CircuitBreakerAttempt(Set())))
+      ).thenReturn(Nested(Future.successful(CircuitBreakerAttempt(Set()))))
 
       documentService
         .getWordsForDocument(Language.ENGLISH, Language.ENGLISH, "some words")
@@ -66,7 +67,9 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         mockGoogleCloudClient
           .getWordsForDocument(Language.ENGLISH, "test phrase")
       ).thenReturn(
-        Future.successful(CircuitBreakerAttempt(Set(testWord, phraseWord)))
+        Nested(
+          Future.successful(CircuitBreakerAttempt(Set(testWord, phraseWord)))
+        )
       )
 
       val testDefinition = Definition(

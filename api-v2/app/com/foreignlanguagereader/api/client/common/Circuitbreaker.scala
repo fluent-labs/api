@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit
 import akka.actor.ActorSystem
 import akka.pattern.{CircuitBreaker, CircuitBreakerOpenException}
 import cats.Functor
+import cats.data.Nested
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.Logger
@@ -45,27 +46,33 @@ trait Circuitbreaker {
     case breaker if breaker.isOpen     => ReadinessStatus.DOWN
   }
 
-  def withBreaker[T](logIfError: String,
-                     body: => Future[T]): Future[CircuitBreakerResult[T]] =
+  def withBreaker[T](
+    logIfError: String,
+    body: => Future[T]
+  ): Nested[Future, CircuitBreakerResult, T] =
     withBreaker(logIfError, defaultIsFailure, defaultIsSuccess[T], body)
 
-  def withBreaker[T](logIfError: String,
-                     isFailure: Throwable => Boolean,
-                     isSuccess: T => Boolean,
-                     body: => Future[T]): Future[CircuitBreakerResult[T]] =
-    breaker
-      .withCircuitBreaker[T](body, makeFailureFunction(isFailure, isSuccess))
-      .map(s => CircuitBreakerAttempt(s))
-      .recover {
-        case c: CircuitBreakerOpenException =>
-          logger.warn(
-            s"Failing fast because circuit breaker is open, ${c.remainingDuration} remaining."
-          )
-          CircuitBreakerNonAttempt()
-        case e =>
-          logger.error(logIfError)
-          CircuitBreakerFailedAttempt(e)
-      }
+  def withBreaker[T](
+    logIfError: String,
+    isFailure: Throwable => Boolean,
+    isSuccess: T => Boolean,
+    body: => Future[T]
+  ): Nested[Future, CircuitBreakerResult, T] =
+    Nested[Future, CircuitBreakerResult, T](
+      breaker
+        .withCircuitBreaker[T](body, makeFailureFunction(isFailure, isSuccess))
+        .map(s => CircuitBreakerAttempt(s))
+        .recover {
+          case c: CircuitBreakerOpenException =>
+            logger.warn(
+              s"Failing fast because circuit breaker is open, ${c.remainingDuration} remaining."
+            )
+            CircuitBreakerNonAttempt()
+          case e =>
+            logger.error(logIfError)
+            CircuitBreakerFailedAttempt(e)
+        }
+    )
 
   private[this] def makeFailureFunction[T](
     isFailure: Throwable => Boolean,

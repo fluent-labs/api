@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.service.definition
 
+import cats.data.Nested
 import cats.implicits._
 import com.foreignlanguagereader.api.client.LanguageServiceClient
 import com.foreignlanguagereader.api.client.common.{
@@ -41,24 +42,28 @@ class ChineseDefinitionService @Inject()(
   override val sources: List[DefinitionSource] =
     List(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
 
-  def cedictFetcher
-    : (Language, Word) => Future[CircuitBreakerResult[List[Definition]]] =
+  def cedictFetcher: (
+    Language,
+    Word
+  ) => Nested[Future, CircuitBreakerResult, List[Definition]] =
     (_, word: Word) =>
       Cedict.getDefinition(word) match {
         case Some(entries) =>
-          Future.successful(
+          Nested(
             CircuitBreakerAttempt(entries.map(_.toDefinition(word.tag)))
+              .pure[Future]
           )
-        case None => Future.successful(CircuitBreakerNonAttempt())
+        case None => Nested(CircuitBreakerNonAttempt().pure[Future])
     }
 
   override val definitionFetchers
-    : Map[(DefinitionSource, Language), (Language, Word) => Future[
-      CircuitBreakerResult[List[Definition]]
-    ]] = Map(
-    (DefinitionSource.CEDICT, Language.ENGLISH) -> cedictFetcher,
-    (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
-  )
+    : Map[(DefinitionSource, Language),
+          (Language,
+           Word) => Nested[Future, CircuitBreakerResult, List[Definition]]] =
+    Map(
+      (DefinitionSource.CEDICT, Language.ENGLISH) -> cedictFetcher,
+      (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
+    )
 
   // Convert everything to traditional
   // We need one lookup token for elasticsearch.
