@@ -28,7 +28,6 @@ import scala.reflect.ClassTag
   * @param fetcher A function to be called if results are not in elasticsearch, which can try to get the results again.
   * @param maxFetchAttempts If we don't have any results, how many times should we search for this? Highly source dependent.
   * @param response The elasticsearch response created by using the query in ElasticsearchRequest
-  * @param indexable$T$0 Automatically generated if Reads[T] is defined
   * @param hitReader Automatically generated if Writes[T] is defined
   * @param attemptsHitReader Automatically generated from lookup attempts
   * @param tag The class of T so that sequences can be initialized. Automatically given.
