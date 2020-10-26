@@ -1,13 +1,9 @@
 package com.foreignlanguagereader.api.client.elasticsearch
 
 import akka.actor.ActorSystem
+import cats.data.Nested
 import cats.implicits._
-import com.foreignlanguagereader.api.client.common.{
-  CircuitBreakerAttempt,
-  CircuitBreakerNonAttempt,
-  CircuitBreakerResult,
-  Circuitbreaker
-}
+import com.foreignlanguagereader.api.client.common._
 import com.foreignlanguagereader.api.client.elasticsearch.searchstates.{
   ElasticsearchCacheRequest,
   ElasticsearchSearchRequest,
@@ -20,7 +16,6 @@ import play.api.{Configuration, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
-import scala.util.{Failure, Success, Try}
 
 @Singleton
 class ElasticsearchClient @Inject()(config: Configuration,
@@ -47,12 +42,12 @@ class ElasticsearchClient @Inject()(config: Configuration,
     requests: List[ElasticsearchSearchRequest[T]]
   )(implicit hitReader: HitReader[T],
     attemptsHitReader: HitReader[LookupAttempt],
-    tag: ClassTag[T]): Future[List[Option[List[T]]]] = {
+    tag: ClassTag[T]): Future[List[List[T]]] = {
     // Fork and join for getting each request
     requests
       .traverse(
         request =>
-          executeWithOption(request.query)
+          execute(request.query).value
             .map(
               result => ElasticsearchSearchResponse.fromResult(request, result)
             )
@@ -99,17 +94,17 @@ class ElasticsearchClient @Inject()(config: Configuration,
 
   def save(request: ElasticsearchCacheRequest): Future[Unit] = {
     logger.info(s"Saving to elasticsearch: $request")
-    execute(bulk(request.requests)).map {
-      case Success(CircuitBreakerAttempt(_)) =>
+    execute(bulk(request.requests)).value.map {
+      case CircuitBreakerAttempt(_) =>
         logger
           .info(s"Successfully saved to elasticsearch: $request")
-      case Success(CircuitBreakerNonAttempt()) =>
+      case CircuitBreakerNonAttempt() =>
         logger
           .info(
             "Elasticsearch connection is unhealthy, retrying insert when it is healthy."
           )
         client.addInsertToQueue(request)
-      case Failure(e) =>
+      case CircuitBreakerFailedAttempt(e) =>
         logger.warn(
           s"Failed to persist request to elasticsearch: $request, ${e.getMessage}",
           e
@@ -132,18 +127,8 @@ class ElasticsearchClient @Inject()(config: Configuration,
   private[this] def execute[T, U](request: T)(
     implicit handler: Handler[T, U],
     manifest: Manifest[U]
-  ): Future[Try[CircuitBreakerResult[U]]] =
-    withBreaker(client.execute(request) map {
-      case RequestSuccess(_, _, _, result) => result
-      case RequestFailure(_, _, _, error)  => throw error.asException
-    })
-
-  // Wrap the result with an option
-  private[this] def executeWithOption[T, U](request: T)(
-    implicit handler: Handler[T, U],
-    manifest: Manifest[U]
-  ): Future[CircuitBreakerResult[Option[U]]] =
-    withBreakerOption(
+  ): Nested[Future, CircuitBreakerResult, U] =
+    withBreaker(
       s"Error executing elasticearch query: $request due to error",
       client.execute(request) map {
         case RequestSuccess(_, _, _, result) => result

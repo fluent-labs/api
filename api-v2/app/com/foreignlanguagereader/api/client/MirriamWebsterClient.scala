@@ -3,6 +3,7 @@ package com.foreignlanguagereader.api.client
 import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
+import cats.data.Nested
 import cats.implicits._
 import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerResult,
@@ -49,27 +50,15 @@ class MirriamWebsterClient @Inject()(config: Configuration,
 
   def getLearnersDefinition(
     word: Word
-  ): Future[CircuitBreakerResult[Option[List[Definition]]]] =
+  ): Nested[Future, CircuitBreakerResult, List[Definition]] =
     get[List[WebsterLearnersDefinitionEntry]](
       s"https://www.dictionaryapi.com/api/v3/references/learners/json/${word.processedToken}?key=$learnersApiKey"
-    ).map(
-      results =>
-        results.map {
-          case Some(r) => Some(r.map(_.toDefinition(word.tag)))
-          case None    => None
-      }
-    )
+    ).map(results => results.map(_.toDefinition(word.tag)))
 
   def getSpanishDefinition(
     word: Word
-  ): Future[CircuitBreakerResult[Option[List[Definition]]]] =
+  ): Nested[Future, CircuitBreakerResult, List[Definition]] =
     get[List[WebsterSpanishDefinitionEntry]](
       s"https://www.dictionaryapi.com/api/v3/references/spanish/json/${word.processedToken}?key=$spanishApiKey"
-    ).map(
-      results =>
-        results.map {
-          case Some(r) => Some(r.map(_.toDefinition(word.tag)))
-          case None    => None
-      }
-    )
+    ).map(results => results.map(_.toDefinition(word.tag)))
 }

@@ -58,13 +58,11 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   describe("When getting definitions for a single word") {
     it("can get definitions in Chinese") {
       when(mockChineseService.getDefinitions(Language.ENGLISH, suoYouDe))
-        .thenReturn(Future.successful(Some(List(dummyChineseDefinition))))
+        .thenReturn(Future.successful(List(dummyChineseDefinition)))
 
       definitionService
         .getDefinition(Language.CHINESE, Language.ENGLISH, suoYouDe)
-        .map { result =>
-          assert(result.isDefined)
-          val response = result.get
+        .map { response =>
           assert(response.size == 1)
           assert(response(0) == dummyChineseDefinition)
         }
@@ -72,13 +70,11 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
     it("can get definitions in English") {
       when(mockEnglishService.getDefinitions(Language.CHINESE, anything))
-        .thenReturn(Future.successful(Some(List(dummyGenericDefinition))))
+        .thenReturn(Future.successful(List(dummyGenericDefinition)))
 
       definitionService
         .getDefinition(Language.ENGLISH, Language.CHINESE, anything)
-        .map { result =>
-          assert(result.isDefined)
-          val response = result.get
+        .map { response =>
           assert(response.size == 1)
           assert(response(0) == dummyGenericDefinition)
         }
@@ -86,13 +82,11 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
     it("can get definitions in Spanish") {
       when(mockSpanishService.getDefinitions(Language.ENGLISH, cualquier))
-        .thenReturn(Future.successful(Some(List(dummyGenericDefinition))))
+        .thenReturn(Future.successful(List(dummyGenericDefinition)))
 
       definitionService
         .getDefinition(Language.SPANISH, Language.ENGLISH, cualquier)
-        .map { result =>
-          assert(result.isDefined)
-          val response = result.get
+        .map { response =>
           assert(response.size == 1)
           assert(response(0) == dummyGenericDefinition)
         }

@@ -41,9 +41,9 @@ class DefinitionController @Inject()(
         Word.fromToken(word, wordLanguage)
       )
       .map {
-        case None =>
+        case List() =>
           NotFound(s"Definition for $word in $wordLanguage not found")
-        case Some(definitions) =>
+        case definitions =>
           Ok(
             Json
               .toJson(Definition.definitionListToDefinitionDTOList(definitions))

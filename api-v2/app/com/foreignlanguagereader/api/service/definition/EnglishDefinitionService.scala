@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.service.definition
 
+import cats.data.Nested
 import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerNonAttempt,
   CircuitBreakerResult
@@ -37,24 +38,26 @@ class EnglishDefinitionService @Inject()(
 
   // TODO enhance by searching for all versions of stems
 
-  def websterFetcher: (Language, Word) => Future[
-    CircuitBreakerResult[Option[List[Definition]]]
-  ] =
+  def websterFetcher: (
+    Language,
+    Word
+  ) => Nested[Future, CircuitBreakerResult, List[Definition]] =
     (language: Language, word: Word) =>
       language match {
         case Language.ENGLISH =>
           websterClient.getLearnersDefinition(word)
         case Language.SPANISH =>
           websterClient.getSpanishDefinition(word)
-        case _ => Future.successful(CircuitBreakerNonAttempt())
+        case _ => Nested(Future.successful(CircuitBreakerNonAttempt()))
     }
 
   override val definitionFetchers
-    : Map[(DefinitionSource, Language), (Language, Word) => Future[
-      CircuitBreakerResult[Option[List[Definition]]]
-    ]] = Map(
-    (DefinitionSource.MIRRIAM_WEBSTER_LEARNERS, Language.ENGLISH) -> websterFetcher,
-    (DefinitionSource.MIRRIAM_WEBSTER_SPANISH, Language.SPANISH) -> websterFetcher,
-    (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
-  )
+    : Map[(DefinitionSource, Language),
+          (Language,
+           Word) => Nested[Future, CircuitBreakerResult, List[Definition]]] =
+    Map(
+      (DefinitionSource.MIRRIAM_WEBSTER_LEARNERS, Language.ENGLISH) -> websterFetcher,
+      (DefinitionSource.MIRRIAM_WEBSTER_SPANISH, Language.SPANISH) -> websterFetcher,
+      (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
+    )
 }

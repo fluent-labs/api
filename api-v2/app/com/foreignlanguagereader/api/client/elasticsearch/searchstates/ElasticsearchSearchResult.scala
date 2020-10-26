@@ -18,12 +18,12 @@ import com.sksamuel.elastic4s.requests.bulk.BulkCompatibleRequest
   * @param result The final result of the query
   * @param fetchCount How many times has fetch been called?
   * @param lookupId What lookup attempt should we update?
-  * @param refetched Did we refetch this data?
+  * @param refetched Did we need to go outside of elasticsearch?
   * @tparam T A case class with Reads[T] and Writes[T] defined.
   */
 case class ElasticsearchSearchResult[T: Indexable](index: String,
                                                    fields: Map[String, String],
-                                                   result: Option[List[T]],
+                                                   result: List[T],
                                                    fetchCount: Int,
                                                    lookupId: Option[String],
                                                    refetched: Boolean,
@@ -32,9 +32,9 @@ case class ElasticsearchSearchResult[T: Indexable](index: String,
 
   val cacheQueries: Option[List[BulkCompatibleRequest]] =
     result match {
-      case Some(values) =>
+      case values if refetched && values.nonEmpty =>
         values.map(v => indexInto(index).doc(v)).some
-      case None => None
+      case _ => None
     }
 
   val updateAttemptsQuery: Option[BulkCompatibleRequest] =

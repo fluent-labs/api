@@ -1,9 +1,10 @@
 package com.foreignlanguagereader.api.client.google
 
 import akka.actor.ActorSystem
+import cats.data.Nested
 import cats.implicits._
 import com.foreignlanguagereader.api.client.common.{
-  CircuitBreakerAttempt,
+  CircuitBreakerResult,
   Circuitbreaker
 }
 import com.foreignlanguagereader.api.domain.Language
@@ -38,8 +39,10 @@ class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
     extends Circuitbreaker {
   override val logger: Logger = Logger(this.getClass)
 
-  def getWordsForDocument(language: Language,
-                          document: String): Future[Option[Set[Word]]] = {
+  def getWordsForDocument(
+    language: Language,
+    document: String
+  ): Nested[Future, CircuitBreakerResult, Set[Word]] = {
     logger.info(s"Getting tokens in $language from Google cloud: $document")
 
     val doc =
@@ -54,21 +57,9 @@ class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
       .setEncodingType(EncodingType.UTF16)
       .build
 
-    withBreakerOption(s"Failed to get tokens from google cloud", Future {
+    withBreaker(s"Failed to get tokens from google cloud", Future {
       gcloud.getTokens(request)
-    }) map {
-      case CircuitBreakerAttempt(Some(List())) =>
-        logger.info(
-          s"No tokens found in language=$language for document=$document"
-        )
-        None
-      case CircuitBreakerAttempt(Some(tokens)) =>
-        logger.info(
-          s"Found tokens in language=$language for document=$document"
-        )
-        convertTokensToWord(language, tokens).some
-      case _ => None
-    }
+    }).map(tokens => convertTokensToWord(language, tokens))
   }
 
   /*
@@ -96,7 +87,7 @@ class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
               token.getPartOfSpeech.getTag
             ),
             lemma = token.getLemma,
-            definitions = None,
+            definitions = List(),
             gender = googleGenderToDomainGender(token.getPartOfSpeech.getGender),
             number = googleCountToDomainCount(token.getPartOfSpeech.getNumber),
             proper = isProperNoun(token.getPartOfSpeech.getProper),

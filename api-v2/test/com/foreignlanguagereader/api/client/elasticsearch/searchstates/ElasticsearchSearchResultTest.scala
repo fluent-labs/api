@@ -23,7 +23,7 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
         val result = ElasticsearchSearchResult[Definition](
           index = index,
           fields = fields,
-          result = None,
+          result = List(),
           fetchCount = 5,
           lookupId = None,
           refetched = false,
@@ -40,7 +40,7 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
       val result = ElasticsearchSearchResult[Definition](
         index = index,
         fields = fields,
-        result = None,
+        result = List(),
         fetchCount = 5,
         lookupId = None,
         refetched = true,
@@ -86,7 +86,7 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
       val result = ElasticsearchSearchResult[Definition](
         index = index,
         fields = fields,
-        result = Some(List(dummyChineseDefinition, dummyGenericDefinition)),
+        result = List(dummyChineseDefinition, dummyGenericDefinition),
         fetchCount = 1,
         lookupId = None,
         refetched = true,
@@ -119,7 +119,7 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
       val result = ElasticsearchSearchResult[Definition](
         index = index,
         fields = fields,
-        result = Some(List(dummyChineseDefinition, dummyGenericDefinition)),
+        result = List(dummyChineseDefinition, dummyGenericDefinition),
         fetchCount = 2,
         lookupId = Some(attemptsId),
         refetched = true,

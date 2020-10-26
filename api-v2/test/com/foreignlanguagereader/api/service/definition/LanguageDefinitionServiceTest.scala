@@ -1,6 +1,8 @@
 package com.foreignlanguagereader.api.service.definition
 
+import cats.data.Nested
 import com.foreignlanguagereader.api.client.LanguageServiceClient
+import com.foreignlanguagereader.api.client.common.CircuitBreakerResult
 import com.foreignlanguagereader.api.client.elasticsearch.{
   ElasticsearchClient,
   LookupAttempt
@@ -70,17 +72,13 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         Future
           .successful(
             List(
-              Some(
-                List(dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN))
-              )
+              List(dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN))
             )
           )
       )
       defaultDefinitionService
         .getDefinitions(Language.ENGLISH, test)
-        .map { response =>
-          assert(response.isDefined)
-          val results = response.get
+        .map { results =>
           assert(results.length == 1)
           assert(
             results(0) == dummyWiktionaryDefinition
@@ -100,7 +98,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
             any(classOf[HitReader[LookupAttempt]]),
             any(classOf[ClassTag[Definition]])
           )
-      ).thenReturn(Future.successful(List(None)))
+      ).thenReturn(Future.successful(List(List())))
 
       defaultDefinitionService
         .getDefinitions(Language.ENGLISH, test)
@@ -120,13 +118,19 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
             any(classOf[HitReader[LookupAttempt]]),
             any(classOf[ClassTag[Definition]])
           )
-      ).thenReturn(Future.successful(List(None)))
+      ).thenReturn(Future.successful(List(List())))
       when(
         languageServiceClientMock.getDefinition(
           Language.ENGLISH,
           Word.fromToken("test", Language.ENGLISH)
         )
-      ).thenReturn(Future.failed(new IllegalStateException("Uh oh")))
+      ).thenReturn(
+        Nested(
+          Future.failed[CircuitBreakerResult[List[Definition]]](
+            new IllegalStateException("Uh oh")
+          )
+        )
+      )
 
       defaultDefinitionService
         .getDefinitions(Language.ENGLISH, test)
@@ -146,7 +150,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
             any(classOf[HitReader[LookupAttempt]]),
             any(classOf[ClassTag[Definition]])
           )
-      ).thenReturn(Future.successful(List(None)))
+      ).thenReturn(Future.successful(List(List())))
 
       defaultDefinitionService
         .getDefinitions(Language.CHINESE, test)
@@ -217,19 +221,15 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         ).thenReturn(
           Future.successful(
             List(
-              Some(List(dummyCEDICTDefinition.toDefinition(PartOfSpeech.NOUN))),
-              Some(
-                List(dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN))
-              )
+              List(dummyCEDICTDefinition.toDefinition(PartOfSpeech.NOUN)),
+              List(dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN))
             )
           )
         )
 
         customizedEnricher
           .getDefinitions(Language.ENGLISH, token)
-          .map { response =>
-            assert(response.isDefined)
-            val results = response.get
+          .map { results =>
             assert(results.length == 2)
             assert(
               results.contains(

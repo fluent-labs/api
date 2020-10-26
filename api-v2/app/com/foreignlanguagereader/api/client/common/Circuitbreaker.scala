@@ -4,14 +4,14 @@ import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
 import akka.pattern.{CircuitBreaker, CircuitBreakerOpenException}
-import cats.{Applicative, Functor}
-import cats.implicits._
+import cats.Functor
+import cats.data.Nested
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus
 import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.Logger
 
-import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration._
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
 trait Circuitbreaker {
@@ -46,30 +46,33 @@ trait Circuitbreaker {
     case breaker if breaker.isOpen     => ReadinessStatus.DOWN
   }
 
-  def withBreaker[T](body: => Future[T]): Future[Try[CircuitBreakerResult[T]]] =
-    withBreaker(defaultIsFailure, defaultIsSuccess[T], body)
+  def withBreaker[T](
+    logIfError: String,
+    body: => Future[T]
+  ): Nested[Future, CircuitBreakerResult, T] =
+    withBreaker(logIfError, defaultIsFailure, defaultIsSuccess[T], body)
 
-  def withBreaker[T](isFailure: Throwable => Boolean,
-                     isSuccess: T => Boolean,
-                     body: => Future[T]): Future[Try[CircuitBreakerResult[T]]] =
-    breaker
-      .withCircuitBreaker[T](body, makeFailureFunction(isFailure, isSuccess))
-      .transform(wrapWithAttemptInformation)
-      .map(s => Success(s))
-      .recover(e => Failure(e))
-
-  private[this] def wrapWithAttemptInformation[T](
-    t: Try[T],
-  ): Try[CircuitBreakerResult[T]] = t match {
-    case Success(s) => Success(s.pure[CircuitBreakerResult])
-    case Failure(e) =>
-      e match {
-        case _: CircuitBreakerOpenException =>
-          logger.warn("Failing fast because circuit breaker is open.")
-          Success(CircuitBreakerNonAttempt[T]())
-        case attempt: Exception => Failure(attempt)
-      }
-  }
+  def withBreaker[T](
+    logIfError: String,
+    isFailure: Throwable => Boolean,
+    isSuccess: T => Boolean,
+    body: => Future[T]
+  ): Nested[Future, CircuitBreakerResult, T] =
+    Nested[Future, CircuitBreakerResult, T](
+      breaker
+        .withCircuitBreaker[T](body, makeFailureFunction(isFailure, isSuccess))
+        .map(s => CircuitBreakerAttempt(s))
+        .recover {
+          case c: CircuitBreakerOpenException =>
+            logger.warn(
+              s"Failing fast because circuit breaker is open, ${c.remainingDuration} remaining."
+            )
+            CircuitBreakerNonAttempt()
+          case e =>
+            logger.error(logIfError)
+            CircuitBreakerFailedAttempt(e)
+        }
+    )
 
   private[this] def makeFailureFunction[T](
     isFailure: Throwable => Boolean,
@@ -78,31 +81,12 @@ trait Circuitbreaker {
     case Success(result)    => isSuccess(result)
     case Failure(exception) => isFailure(exception)
   }
-
-  def withBreakerOption[T](
-    logIfError: String,
-    body: => Future[T]
-  ): Future[CircuitBreakerResult[Option[T]]] =
-    withBreakerOption(logIfError, defaultIsFailure, defaultIsSuccess[T], body)
-
-  def withBreakerOption[T](
-    logIfError: String,
-    isFailure: Throwable => Boolean,
-    isSuccess: T => Boolean,
-    body: => Future[T]
-  ): Future[CircuitBreakerResult[Option[T]]] =
-    withBreaker(isFailure, isSuccess, body) map {
-      case Success(CircuitBreakerAttempt(a)) =>
-        a.some.pure[CircuitBreakerResult]
-      case Success(CircuitBreakerNonAttempt()) => CircuitBreakerNonAttempt()
-      case Failure(e) =>
-        logger.error(s"Circuit breaker request failed: $logIfError", e)
-        CircuitBreakerAttempt(None)
-    }
 }
 
 sealed trait CircuitBreakerResult[T]
 case class CircuitBreakerAttempt[T](result: T) extends CircuitBreakerResult[T]
+case class CircuitBreakerFailedAttempt[T](e: Throwable)
+    extends CircuitBreakerResult[T]
 case class CircuitBreakerNonAttempt[T]() extends CircuitBreakerResult[T]
 
 object CircuitBreakerResult {
@@ -111,25 +95,9 @@ object CircuitBreakerResult {
       override def map[A, B](
         fa: CircuitBreakerResult[A]
       )(f: A => B): CircuitBreakerResult[B] = fa match {
-        case CircuitBreakerNonAttempt()    => CircuitBreakerNonAttempt()
-        case CircuitBreakerAttempt(result) => CircuitBreakerAttempt(f(result))
-      }
-    }
-
-  implicit def applicative: Applicative[CircuitBreakerResult] =
-    new Applicative[CircuitBreakerResult] {
-      override def pure[A](x: A): CircuitBreakerResult[A] =
-        CircuitBreakerAttempt(x)
-
-      override def ap[A, B](
-        ff: CircuitBreakerResult[A => B]
-      )(fa: CircuitBreakerResult[A]): CircuitBreakerResult[B] = fa match {
-        case CircuitBreakerNonAttempt() => CircuitBreakerNonAttempt()
-        case CircuitBreakerAttempt(result) =>
-          ff match {
-            case CircuitBreakerAttempt(fn)  => CircuitBreakerAttempt(fn(result))
-            case CircuitBreakerNonAttempt() => CircuitBreakerNonAttempt()
-          }
+        case CircuitBreakerNonAttempt()     => CircuitBreakerNonAttempt()
+        case CircuitBreakerFailedAttempt(e) => CircuitBreakerFailedAttempt(e)
+        case CircuitBreakerAttempt(result)  => CircuitBreakerAttempt(f(result))
       }
     }
 }

@@ -1,5 +1,11 @@
 package com.foreignlanguagereader.api.service
 
+import cats.data.Nested
+import com.foreignlanguagereader.api.client.common.{
+  CircuitBreakerAttempt,
+  CircuitBreakerFailedAttempt,
+  CircuitBreakerNonAttempt
+}
 import com.foreignlanguagereader.api.client.google.GoogleCloudClient
 import com.foreignlanguagereader.api.domain.Language
 import com.foreignlanguagereader.api.domain.definition.{
@@ -29,11 +35,43 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         mockGoogleCloudClient
           .getWordsForDocument(Language.ENGLISH, "some words")
-      ).thenReturn(Future.successful(None))
+      ).thenReturn(Nested(Future.successful(CircuitBreakerAttempt(Set()))))
 
       documentService
         .getWordsForDocument(Language.ENGLISH, Language.ENGLISH, "some words")
         .map(result => assert(result.isEmpty))
+    }
+
+    it("reacts correctly to the circuit breaker being closed") {
+      when(
+        mockGoogleCloudClient
+          .getWordsForDocument(Language.ENGLISH, "some words")
+      ).thenReturn(Nested(Future.successful(CircuitBreakerNonAttempt())))
+
+      documentService
+        .getWordsForDocument(Language.ENGLISH, Language.ENGLISH, "some words")
+        .map(result => assert(result.isEmpty))
+    }
+
+    it("throws errors from google cloud") {
+      when(
+        mockGoogleCloudClient
+          .getWordsForDocument(Language.ENGLISH, "some words")
+      ).thenReturn(
+        Nested(
+          Future.apply(
+            CircuitBreakerFailedAttempt(new IllegalArgumentException("Uh oh"))
+          )
+        )
+      )
+      documentService
+        .getWordsForDocument(Language.ENGLISH, Language.ENGLISH, "some words")
+        .map(_ => assert(false, "This should have failed"))
+        .recover {
+          case err: IllegalArgumentException =>
+            assert(err.getMessage == "Uh oh")
+          case _ => assert(false, "This is the wrong exception")
+        }
     }
 
     it("can get words for a document") {
@@ -42,7 +80,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         token = "test",
         tag = PartOfSpeech.VERB,
         lemma = "test",
-        definitions = None,
+        definitions = List(),
         gender = None,
         number = None,
         proper = None,
@@ -54,7 +92,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         token = "phrase",
         tag = PartOfSpeech.NOUN,
         lemma = "phrase",
-        definitions = None,
+        definitions = List(),
         gender = None,
         number = None,
         proper = None,
@@ -64,7 +102,11 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         mockGoogleCloudClient
           .getWordsForDocument(Language.ENGLISH, "test phrase")
-      ).thenReturn(Future.successful(Some(Set(testWord, phraseWord))))
+      ).thenReturn(
+        Nested(
+          Future.successful(CircuitBreakerAttempt(Set(testWord, phraseWord)))
+        )
+      )
 
       val testDefinition = Definition(
         subdefinitions = List("test"),
@@ -79,7 +121,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         mockDefinitionService
           .getDefinition(Language.ENGLISH, Language.SPANISH, testWord)
-      ).thenReturn(Future.successful(Some(List(testDefinition))))
+      ).thenReturn(Future.successful(List(testDefinition)))
 
       val phraseDefinition = Definition(
         subdefinitions = List("phrase"),
@@ -94,21 +136,19 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         mockDefinitionService
           .getDefinition(Language.ENGLISH, Language.SPANISH, phraseWord)
-      ).thenReturn(Future.successful(Some(List(phraseDefinition))))
+      ).thenReturn(Future.successful(List(phraseDefinition)))
 
       documentService
         .getWordsForDocument(Language.ENGLISH, Language.SPANISH, "test phrase")
         .map(result => {
-          assert(result.isDefined)
-          val test = result.get(0)
-          val phrase = result.get(1)
+          assert(result.size == 2)
+          val test = result(0)
+          val phrase = result(1)
 
-          assert(
-            test == testWord.copy(definitions = Some(List(testDefinition)))
-          )
+          assert(test == testWord.copy(definitions = List(testDefinition)))
           assert(
             phrase == phraseWord
-              .copy(definitions = Some(List(phraseDefinition)))
+              .copy(definitions = List(phraseDefinition))
           )
         })
     }

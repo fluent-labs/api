@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.client.common
 
+import cats.data.Nested
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Reads}
 import play.api.libs.ws.WSClient
@@ -20,11 +21,10 @@ trait WsClient extends Circuitbreaker {
   def get[T: ClassTag](
     url: String,
     isFailure: Throwable => Boolean = _ => true
-  )(implicit reads: Reads[T]): Future[CircuitBreakerResult[Option[T]]] = {
+  )(implicit reads: Reads[T]): Nested[Future, CircuitBreakerResult, T] = {
     logger.info(s"Calling url $url")
     val typeName = implicitly[ClassTag[T]].runtimeClass.getSimpleName
-
-    withBreakerOption(
+    withBreaker(
       s"Failed to get $typeName from $url",
       isFailure,
       defaultIsSuccess[T],
@@ -37,7 +37,6 @@ trait WsClient extends Circuitbreaker {
         .map {
           case JsSuccess(result, _) => result
           case JsError(errors) =>
-            val typeName = implicitly[ClassTag[T]].runtimeClass.getSimpleName
             val error = s"Failed to parse $typeName from $url: $errors"
             logger.error(error)
             throw new IllegalArgumentException(error)
