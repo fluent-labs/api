@@ -24,7 +24,7 @@ jobs:
       run: sbt dist
     
     - name: Open zip
-      run: unzip foreign-language-reader-api-1.0-SNAPSHOT.zip
+      run: unzip target/universal/foreign-language-reader-api-1.0-SNAPSHOT.zip
 
     - name: Build container
       run: docker build .
