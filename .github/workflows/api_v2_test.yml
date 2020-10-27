@@ -22,9 +22,12 @@ jobs:
     
     - name: Build zip
       run: sbt dist
+    
+    - name: Open zip
+      run: unzip foreign-language-reader-api-1.0-SNAPSHOT.zip
 
-    # - name: Build container
-    #   run: docker build .
+    - name: Build container
+      run: docker build .
 
   test:
     runs-on: ubuntu-latest
