@@ -1,4 +1,7 @@
-FROM openjdk:8-jdk-alpine3.9 as builder
+FROM openjdk:8-jdk-alpine3.9 as base
+WORKDIR /app
+
+FROM base as builder
 ENV SBT_VERSION 1.3.10
 ENV INSTALL_DIR /usr/local
 ENV SBT_HOME /usr/local/sbt
@@ -11,7 +14,6 @@ RUN apk add --no-cache --update bash wget && mkdir -p "$SBT_HOME" && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
 
 # Cache dependencies
-WORKDIR /app
 COPY project project
 COPY build.sbt build.sbt
 RUN sbt compile
@@ -21,10 +23,9 @@ COPY . /app
 RUN sbt dist && \
     unzip /app/target/universal/foreign-language-reader-api-1.0-SNAPSHOT.zip
 
-FROM openjdk:8-jre-alpine3.9 as final
 RUN ls /app && ls /app/target && ls /app/target/universal && ls /app/target/universal/foreign-language-reader-api-1.0-SNAPSHOT
 
-WORKDIR /app
+FROM base as final
 RUN apk add bash
 EXPOSE 8000
 CMD ["/app/bin/foreign-language-reader-api"]
