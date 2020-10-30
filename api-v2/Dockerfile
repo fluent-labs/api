@@ -1,11 +1,11 @@
 FROM openjdk:8-jdk-alpine3.9 as builder
+
 ENV SBT_VERSION 1.3.10
 ENV INSTALL_DIR /usr/local
 ENV SBT_HOME /usr/local/sbt
 ENV PATH ${PATH}:${SBT_HOME}/bin
 
 # Install sbt
-RUN echo "Downloading from https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz"
 RUN apk add --no-cache --update bash wget && mkdir -p "$SBT_HOME" && \
     wget -qO - --no-check-certificate "https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz" |  tar xz -C $INSTALL_DIR && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built

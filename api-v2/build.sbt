@@ -52,6 +52,5 @@ libraryDependencies += "org.sangria-graphql" %% "sangria-play-json" % "2.0.1"
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.1.1"
 
 // Code coverage settings
-coverageEnabled := true
 coverageMinimum := 70
 coverageFailOnMinimum := true
