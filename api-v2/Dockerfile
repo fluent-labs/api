@@ -22,6 +22,8 @@ RUN sbt dist && \
     unzip /app/target/universal/foreign-language-reader-api-1.0-SNAPSHOT.zip
 
 FROM openjdk:8-jre-alpine3.9 as final
+RUN ls /app && ls /app/target && ls /app/target/universal && ls /app/target/universal/foreign-language-reader-api-1.0-SNAPSHOT
+
 WORKDIR /app
 RUN apk add bash
 EXPOSE 8000
