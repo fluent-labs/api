@@ -14,6 +14,9 @@ jobs:
 
     - name: Move build files to root of build worker
       run: mv api-v2/* .
+    
+    - name: Restore cached docker layers
+      uses: satackey/action-docker-layer-caching@v0.0.8
 
     - name: Build container
       run: docker build .
