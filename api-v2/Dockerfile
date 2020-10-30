@@ -18,7 +18,7 @@ RUN sbt compile
 
 # Compile the service
 COPY . /app
-RUN sbt dist && \
+RUN sbt coverageOff dist && \
     unzip /app/target/universal/foreign-language-reader-api-1.0-SNAPSHOT.zip
 
 FROM openjdk:8-jre-alpine3.9 as final
