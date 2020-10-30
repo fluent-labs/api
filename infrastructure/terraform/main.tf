@@ -29,7 +29,15 @@ provider "helm" {
 module "container_registries" {
   source                = "./container_registries"
   push_users            = [aws_iam_user.github.name]
-  kubernetes_namespaces = ["default", "content"]
+  kubernetes_namespaces = ["qa", "prod", "content"]
+}
+
+# Mysql database to store user context.
+module "database" {
+  source       = "./database"
+  cluster_name = var.cluster_name
+  node_count   = 1
+  size         = "db-s-1vcpu-1gb"
 }
 
 # Static content served to users
@@ -48,17 +56,58 @@ module "storybook" {
   deploy_users = [aws_iam_user.github.name]
 }
 
-# Services
+# QA environment
+
+resource "kubernetes_namespace" "qa" {
+  metadata {
+    annotations = {
+      name = "qa"
+    }
+
+    name = "qa"
+  }
+}
+
+module "api_qa" {
+  source        = "./api"
+  cluster_name  = var.cluster_name
+  database_name = module.database.database_name
+  env           = "qa"
+  min_replicas  = 1
+  max_replicas  = 1
+}
+
+module "language_service_qa" {
+  source       = "./language_service"
+  env          = "qa"
+  min_replicas = 1
+  max_replicas = 1
+}
+
+# Production environment
+
+resource "kubernetes_namespace" "prod" {
+  metadata {
+    annotations = {
+      name = "prod"
+    }
+
+    name = "prod"
+  }
+}
 
 module "api" {
-  source       = "./api"
-  cluster_name = var.cluster_name
-  min_replicas = 2
-  max_replicas = 10
+  source        = "./api"
+  cluster_name  = var.cluster_name
+  database_name = module.database.database_name
+  env           = "prod"
+  min_replicas  = 2
+  max_replicas  = 10
 }
 
 module "language_service" {
   source       = "./language_service"
+  env          = "prod"
   min_replicas = 2
   max_replicas = 10
 }
