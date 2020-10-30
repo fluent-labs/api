@@ -1,0 +1,5701 @@
+[
+  {
+    "meta": {
+      "id": "example",
+      "uuid": "49d593b2-2b15-40c2-8d7b-b1e33ea58992",
+      "src": "learners",
+      "section": "alpha",
+      "target": {
+        "tuuid": "0fee002c-2fe3-4b07-84ff-02ff9515cc39",
+        "tsrc": "collegiate"
+      },
+      "highlight": "yes",
+      "stems": [
+        "example",
+        "examples",
+        "for example",
+        "make an example of",
+        "set an example",
+        "lead by example"
+      ],
+      "app-shortdef": {
+        "hw": "example",
+        "fl": "noun",
+        "def": [
+          "{bc} a person or way of behaving that is seen as a model that should be followed",
+          "{bc} someone or something that is mentioned to help explain what you are saying or to show that a general statement is true",
+          "{bc} something or someone chosen from a group in order to show what the whole group is like"
+        ]
+      },
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "ex*am*ple",
+      "prs": [
+        {
+          "ipa": "ɪgˈzæmpəl",
+          "sound": {
+            "audio": "exampl01"
+          }
+        }
+      ]
+    },
+    "fl": "noun",
+    "ins": [
+      {
+        "il": "plural",
+        "ifc": "-am*ples",
+        "if": "ex*am*ples"
+      }
+    ],
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}a person or way of behaving that is seen as a model that should be followed "
+                  ],
+                  [
+                    "wsgram",
+                    "count"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "He was inspired by the {it}example{/it} of his older brother. [=he wanted to do what his older brother did]"
+                      },
+                      {
+                        "t": "You should try to follow her {it}example{/it}. [=try to do as she does]"
+                      },
+                      {
+                        "t": "Let that be an {it}example{/it} to you! [=let that show you what you should or should not do]"
+                      },
+                      {
+                        "t": "He set a good/bad {it}example{/it} for the rest of us."
+                      },
+                      {
+                        "t": "It's up to you to {phrase}set an example{/phrase}. [=to behave in a way that shows other people how to behave]"
+                      }
+                    ]
+                  ],
+                  [
+                    "wsgram",
+                    "noncount"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "She chooses to {phrase}lead by example{/phrase}. [=to lead by behaving in a way that shows others how to behave]"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sen",
+              {
+                "sn": "2",
+                "sgram": "count"
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "a",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}someone or something that is mentioned to help explain what you are saying or to show that a general statement is true "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "She gave/offered several {it}examples{/it} to show that the program is effective."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "b",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}something or someone chosen from a group in order to show what the whole group is like "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "We've chosen three {it}examples{/it} of contemporary architecture for closer study."
+                      },
+                      {
+                        "t": "a classic {it}example{/it} of a Persian rug"
+                      },
+                      {
+                        "t": "a fine/prime {it}example{/it} of the artist's work"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sen",
+              {
+                "sn": "3",
+                "sgram": "count"
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "a",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}a phrase or sentence that shows how a word is used "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "The dictionary includes thousands of {it}examples{/it}."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "b",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}something (such as a problem that a student has to solve) that is used to teach how a rule or process works "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "arithmetic {it}examples{/it}"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "dros": [
+      {
+        "drp": "for example",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "uns",
+                        [
+                          [
+                            [
+                              "text",
+                              "used when you are mentioning a specific person or thing that helps to explain what you are saying or to show that a general statement is true "
+                            ],
+                            [
+                              "vis",
+                              [
+                                {
+                                  "t": "Things are getting better. Last year, {it}for example{/it} [={it}for instance{/it}], the company achieved record sales in Europe."
+                                },
+                                {
+                                  "t": "It was obvious that her memory was failing. {it}For example{/it}, she would often forget where she put her car keys."
+                                },
+                                {
+                                  "t": "A lot of my friends were there—John and Linda, {it}for example{/it}."
+                                }
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "make an example of",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "snote",
+                        [
+                          [
+                            "t",
+                            "If you {it}make an example of{/it} a person who has done something wrong, you punish that person as a way of warning other people not to do the same thing."
+                          ],
+                          [
+                            "vis",
+                            [
+                              {
+                                "t": "Although it was only his first offense, the judge decided to {it}make an example of him{/it} and sentence him to prison."
+                              }
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    "shortdef": [
+      "a person or way of behaving that is seen as a model that should be followed",
+      "someone or something that is mentioned to help explain what you are saying or to show that a general statement is true",
+      "something or someone chosen from a group in order to show what the whole group is like"
+    ]
+  },
+  {
+    "meta": {
+      "id": "textbook:2",
+      "uuid": "db8a83e1-2c43-4c1b-b2f2-95fe69e2c6e2",
+      "src": "learners",
+      "section": "alpha",
+      "target": {
+        "tuuid": "c58e072d-85d1-4311-aa55-cc32768e5d83",
+        "tsrc": "collegiate"
+      },
+      "stems": [
+        "textbook",
+        "case/example",
+        "case",
+        "example"
+      ],
+      "app-shortdef": {
+        "hw": "textbook:2",
+        "fl": "adjective",
+        "def": [
+          "{bc} very typical"
+        ]
+      },
+      "offensive": false
+    },
+    "hom": 2,
+    "hwi": {
+      "hw": "textbook",
+      "altprs": [
+        {
+          "ipa": "ˈtɛkstˌbʊk"
+        }
+      ]
+    },
+    "fl": "adjective",
+    "lbs": [
+      "always used before a noun"
+    ],
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "dt": [
+                  [
+                    "text",
+                    "{bc}very typical "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "The scandal is a {phrase}textbook{/phrase} [={it}classic, perfect{/it}] {phrase}case/example{/phrase} of corporate greed."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "very typical"
+    ]
+  },
+  {
+    "meta": {
+      "id": "follow",
+      "uuid": "e9ecfd65-ff23-46a6-baa7-cc22b372447f",
+      "src": "learners",
+      "section": "alpha",
+      "target": {
+        "tuuid": "17812c7f-0c95-4e5c-9677-67797da131bd",
+        "tsrc": "collegiate"
+      },
+      "highlight": "yes",
+      "stems": [
+        "follow",
+        "follows",
+        "followed",
+        "following",
+        "a hard/tough act to follow",
+        "a hard act to follow",
+        "a tough act to follow",
+        "as follows",
+        "follow around",
+        "follow about",
+        "follow in someone's footsteps",
+        "follow in someones footsteps",
+        "follow someone's lead",
+        "follow someones lead",
+        "follow suit",
+        "follow the path/line of least resistance",
+        "follow the line of least resistance",
+        "follow the path of least resistance",
+        "follow through",
+        "follow up",
+        "follow your nose",
+        "there followed",
+        "follow her example"
+      ],
+      "app-shortdef": {
+        "hw": "follow",
+        "fl": "verb",
+        "def": [
+          "{bc} to go or come after or behind (someone or something)",
+          "{bc} to go after or behind (someone) secretly and watch to find out what happens",
+          "{bc} to come after (something) in time or place or as part of a series"
+        ]
+      },
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "fol*low",
+      "prs": [
+        {
+          "ipa": "ˈfɑːloʊ",
+          "sound": {
+            "audio": "follow01"
+          }
+        }
+      ]
+    },
+    "fl": "verb",
+    "ins": [
+      {
+        "ifc": "-lows",
+        "if": "fol*lows"
+      },
+      {
+        "ifc": "-lowed",
+        "if": "fol*lowed"
+      },
+      {
+        "ifc": "-low*ing",
+        "if": "fol*low*ing"
+      }
+    ],
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1 a",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to go or come after or behind (someone or something) "
+                  ],
+                  [
+                    "wsgram",
+                    "+ obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "She {it}followed{/it} us into the kitchen."
+                      },
+                      {
+                        "t": "The dog {it}followed{/it} the children home."
+                      },
+                      {
+                        "t": "The exit is right this way. Just {it}follow{/it} me."
+                      }
+                    ]
+                  ],
+                  [
+                    "wsgram",
+                    "no obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "The children went home and the dog {it}followed{/it} behind."
+                      },
+                      {
+                        "t": "If one sheep goes through the gate, the rest will {it}follow{/it}."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "b",
+                "sgram": "+ obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to go after or behind (someone) secretly and watch to find out what happens "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "He hired a private detective to {it}follow{/it} his wife everywhere. [=to secretly find out where she went and what she did]"
+                      },
+                      {
+                        "t": "{it}follow{/it} a suspect"
+                      },
+                      {
+                        "t": "I think that someone is {it}following{/it} us. = I think we're being {it}followed{/it}."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2 a",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to come after (something) in time or place or as part of a series "
+                  ],
+                  [
+                    "wsgram",
+                    "+ obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "Spring {it}follows{/it} winter. = Winter {it}is followed{/it} by spring."
+                      },
+                      {
+                        "t": "The number 15 {it}follows{/it} 14."
+                      },
+                      {
+                        "t": "Her accident was {it}followed{/it} by a long period of recovery."
+                      }
+                    ]
+                  ],
+                  [
+                    "wsgram",
+                    "no obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "First came the student speeches, and the presentation of awards {it}followed{/it}."
+                      },
+                      {
+                        "t": "({it}formal){/it} The war ended. {phrase}There followed{/phrase} [={it}then came{/it}; then there was] a long period of rebuilding."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "b",
+                "sgram": "+ obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to have or do something after (something else)"
+                  ],
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "+ {it}with{/it} "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "I {it}followed{/it} my dinner {it}with{/it} a liqueur. [=I had a liqueur after dinner]"
+                            },
+                            {
+                              "t": "The actor {it}followed{/it} his success as Othello {it}with{/it} a triumph as Macbeth."
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "3 a",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to happen after and as a result of (something) "
+                  ],
+                  [
+                    "wsgram",
+                    "+ obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "Rioting {it}followed{/it} the unjust verdict."
+                      }
+                    ]
+                  ],
+                  [
+                    "wsgram",
+                    "no obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "If you work hard, success will/must surely {it}follow{/it}."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "b",
+                "sgram": "no obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to be true or seem to be true because of something "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "From the evidence given, several conclusions {it}follow{/it}. = Several conclusions {it}follow{/it} from the evidence given. [=we can make several conclusions based on the evidence given]"
+                      }
+                    ]
+                  ],
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "often + {it}that{/it} "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "From the evidence given, it {it}follows that{/it} the accused is guilty."
+                            },
+                            {
+                              "t": "Just because he's done some bad things, does/must it {it}follow that{/it} he's a bad person? [=does it mean that he is a bad person?]"
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sen",
+              {
+                "sn": "4",
+                "sgram": "+ obj"
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "a",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to be guided by (something) "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "You should {it}follow{/it} [={it}obey{/it}] your conscience."
+                      },
+                      {
+                        "t": "{it}follow{/it} your instincts"
+                      },
+                      {
+                        "t": "{it}follow{/it} my advice"
+                      },
+                      {
+                        "t": "She must learn to {it}follow{/it} instructions."
+                      },
+                      {
+                        "t": "We must {it}follow{/it} the evidence wherever it leads."
+                      },
+                      {
+                        "t": "You should {phrase}follow her example{/phrase}. = You should {it}follow{/it} the example she set. [=you should do what she did]"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "b",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to do the same thing as (someone) "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "She {it}followed{/it} her father (by going) into medicine. = She {it}followed{/it} her father by becoming a doctor."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "5",
+                "sgram": "+ obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to move forward on (a road, a path, etc.) "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "{it}Follow{/it} that path, and you will come to a log cabin."
+                      },
+                      {
+                        "t": "You should {it}follow{/it} the main highway until you see signs for the stadium."
+                      }
+                    ]
+                  ],
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "often used figuratively "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "His friends all went to college, but he chose to {it}follow{/it} a different path. [=to do something different]"
+                            },
+                            {
+                              "t": "Do recessions {it}follow{/it} a predictable cycle/pattern?"
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "6",
+                "sgram": "+ obj",
+                "sls": [
+                  "of a road, path, etc."
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to be on or next to (something) for a distance "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "The path {it}follows{/it} the river pretty closely."
+                      },
+                      {
+                        "t": "The road {it}follows{/it} the curve of the hill."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sen",
+              {
+                "sn": "7",
+                "sgram": "+ obj"
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "a",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to keep your eyes or attention on (something) "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "{it}Follow{/it} the bouncing ball."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "b",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to give close attention to what happens in (something) "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "He {it}followed{/it} her career with interest."
+                      },
+                      {
+                        "t": "{it}follow{/it} football"
+                      },
+                      {
+                        "t": "The book {it}follows{/it} his political career from its humble beginnings to his election as president."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "c",
+                "sls": [
+                  "British"
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to be a fan of (a team) {bc}{sx|support||} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "He {it}follows{/it} Manchester United."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "8",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to understand the sense or logic of (something or someone) "
+                  ],
+                  [
+                    "wsgram",
+                    "+ obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "I found it hard to {it}follow{/it} the twists and turns of the movie's complicated plot."
+                      },
+                      {
+                        "t": "I'm sorry—I don't {it}follow{/it} your argument/reasoning. = I'm sorry—I don't {it}follow{/it} you. [=I don't understand you]"
+                      }
+                    ]
+                  ],
+                  [
+                    "wsgram",
+                    "no obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "I'm sorry—I don't {it}follow{/it}. [=I don't understand]"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "dros": [
+      {
+        "drp": "a hard/tough act to follow",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}someone or something that has been so successful that it is very difficult for the person or thing coming next to be as good "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "Yesterday's thrilling victory will be {it}a tough act to follow{/it}."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "as follows",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "uns",
+                        [
+                          [
+                            [
+                              "text",
+                              "used to introduce a list, a statement, instructions, etc. "
+                            ],
+                            [
+                              "vis",
+                              [
+                                {
+                                  "t": "The names of the finalists are {it}as follows{/it}: Mary, James, and George."
+                                },
+                                {
+                                  "t": "Proceed {it}as follows{/it}: go straight ahead to Martin Street and then turn left."
+                                }
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "follow around",
+        "vrs": [
+          {
+            "vl": "or British",
+            "va": "follow about"
+          }
+        ],
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sphrasev": {
+                      "phrs": [
+                        {
+                          "pva": "follow (someone) around/about"
+                        }
+                      ]
+                    },
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to go wherever (someone) goes "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "The little boy {it}followed{/it} his mother {it}around{/it} all day."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "follow in someone's footsteps",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|footstep||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "follow someone's lead",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|lead:2||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "follow suit",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "1",
+                    "sls": [
+                      "in card games"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to play a card of the same suit (such as hearts or spades) as the card that was played just before "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "Jane played a spade, and Roger {it}followed suit{/it}."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "2",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to do the same thing that someone else has just done "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "His brother went to medical school, and he {it}followed suit{/it}."
+                          },
+                          {
+                            "t": "After one airline lowers their fares, the other airlines usually {it}follow suit{/it}."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "follow the path/line of least resistance",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|resistance||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "follow through",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "1",
+                    "phrasev": [
+                      {
+                        "pva": "follow through"
+                      },
+                      {
+                        "pvl": "or",
+                        "pva": "follow (something) through"
+                      }
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to complete an activity or process that has been started "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "He always starts the school year off studying and working hard, but he doesn't {it}follow through{/it}. [=he doesn't continue to study and work hard]"
+                          },
+                          {
+                            "t": "He doesn't {it}follow{/it} his good intentions {it}through{/it}. [=although he makes plans to do things, he doesn't actually do them]"
+                          }
+                        ]
+                      ],
+                      [
+                        "uns",
+                        [
+                          [
+                            [
+                              "text",
+                              "often + {it}on{/it} or {it}with{/it} "
+                            ],
+                            [
+                              "vis",
+                              [
+                                {
+                                  "t": "He doesn't {it}follow through on{/it} his good intentions."
+                                },
+                                {
+                                  "t": "We feared they would {it}follow through on/with{/it} their threat. [=we feared that they would do what they threatened to do]"
+                                }
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "2",
+                    "sls": [
+                      "sports"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to keep your arms, legs, etc., moving after you hit or kick a ball {bc}to complete a stroke or swing "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "You should {it}follow through{/it} on your backhand."
+                          },
+                          {
+                            "t": "Don't forget to {it}follow through{/it} when you putt."
+                          }
+                        ]
+                      ],
+                      [
+                        "text",
+                        "{dx}see also {dxt|follow-through||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "follow up",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "1",
+                    "phrasev": [
+                      {
+                        "pva": "follow up (something)"
+                      },
+                      {
+                        "pvl": "or",
+                        "pva": "follow (something) up"
+                      },
+                      {
+                        "pvl": "or",
+                        "pva": "follow up"
+                      }
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to follow (something) with something similar, related, or additional"
+                      ],
+                      [
+                        "uns",
+                        [
+                          [
+                            [
+                              "text",
+                              "+ {it}with{/it} or {it}by{/it} "
+                            ],
+                            [
+                              "vis",
+                              [
+                                {
+                                  "t": "He {it}followed up{/it} his early findings {it}with{/it} another study."
+                                },
+                                {
+                                  "t": "After you submit your job application, you should {it}follow{/it} it {it}up by{/it} making a phone call."
+                                },
+                                {
+                                  "t": "Her first book was a big success, and she {it}followed up with{/it} another best seller."
+                                }
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sen",
+                  {
+                    "sn": "2",
+                    "phrasev": [
+                      {
+                        "pva": "follow up (something)"
+                      },
+                      {
+                        "pvl": "or",
+                        "pva": "follow (something) up"
+                      },
+                      {
+                        "pvl": "or",
+                        "pva": "follow up"
+                      },
+                      {
+                        "pvl": "or chiefly US",
+                        "pva": "follow up on (something)"
+                      }
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "a",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to try to get more information about (something) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "The police {it}followed up (on){/it} the leads."
+                          },
+                          {
+                            "t": "The references in the book were too vague to {it}follow up{/it}."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "b",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to do something in response to (something) {bc}to take appropriate action about (something) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "Police {it}followed up{/it} the complaints with several arrests."
+                          },
+                          {
+                            "t": "He complained several times, but the police never {it}followed up{/it}."
+                          },
+                          {
+                            "t": "He says that the police failed to {it}follow up on{/it} his complaints."
+                          }
+                        ]
+                      ],
+                      [
+                        "text",
+                        "{dx}see also {dxt|follow-up||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "follow your nose",
+        "def": [
+          {
+            "sls": [
+              "informal"
+            ],
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "1",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to go in a straight or obvious course "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "Just {it}follow your nose{/it} until you get there; you can't miss it."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "2",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to proceed without a definite plan {bc}to do what seems right or best without careful planning "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "You don't need my advice—just {it}follow your nose{/it}."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "3",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to go toward the place where a smell is coming from "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "I {it}followed my nose{/it} to the kitchen, where dinner was cooking."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    "shortdef": [
+      "to go or come after or behind (someone or something)",
+      "to go after or behind (someone) secretly and watch to find out what happens",
+      "to come after (something) in time or place or as part of a series"
+    ]
+  },
+  {
+    "meta": {
+      "id": "lead:1",
+      "uuid": "0ad29067-3bc3-4756-90b2-09a2c4220e76",
+      "src": "learners",
+      "section": "alpha",
+      "highlight": "yes",
+      "stems": [
+        "lead",
+        "leaded",
+        "leading",
+        "leads",
+        "led",
+        "lead off",
+        "lead on",
+        "lead someone a merry chase",
+        "lead someone a (merry) dance",
+        "lead someone a dance",
+        "lead someone a merry dance",
+        "lead someone (around) by the nose",
+        "lead someone around by the nose",
+        "lead someone by the nose",
+        "lead someone down/up the garden path",
+        "lead someone down the garden path",
+        "lead someone up the garden path",
+        "lead the way",
+        "lead to",
+        "lead up to",
+        "lead with",
+        "the blind leading the blind",
+        "led off",
+        "leads the/your eye",
+        "leads the eye",
+        "leads your eye",
+        "leading nowhere",
+        "lead by example",
+        "leading the pack/field",
+        "leading the field",
+        "leading the pack",
+        "leads the world",
+        "leading a double life",
+        "led a charmed life",
+        "lead her own life"
+      ],
+      "app-shortdef": {
+        "hw": "lead:1",
+        "fl": "verb",
+        "def": [
+          "{bc} to guide someone to a place especially by going in front",
+          "{bc} to go or be at the front part of (something)",
+          "{bc} to lie or go in a specified direction"
+        ]
+      },
+      "offensive": false
+    },
+    "hom": 1,
+    "hwi": {
+      "hw": "lead",
+      "prs": [
+        {
+          "ipa": "ˈliːd",
+          "sound": {
+            "audio": "lead0001"
+          }
+        }
+      ]
+    },
+    "fl": "verb",
+    "ins": [
+      {
+        "if": "leads"
+      },
+      {
+        "if": "led",
+        "prs": [
+          {
+            "ipa": "ˈlɛd",
+            "sound": {
+              "audio": "lead0002"
+            }
+          }
+        ]
+      },
+      {
+        "if": "lead*ing"
+      }
+    ],
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1 a",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to guide someone to a place especially by going in front "
+                  ],
+                  [
+                    "wsgram",
+                    "no obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "You {it}lead{/it} and we'll follow right behind you."
+                      }
+                    ]
+                  ],
+                  [
+                    "wsgram",
+                    "+ obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "He {it}led{/it} [={it}took{/it}] me into a room in the back of the house."
+                      },
+                      {
+                        "t": "You {it}lead{/it} us and we'll follow right behind you."
+                      }
+                    ]
+                  ],
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "often + {it}to{/it} "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "The teacher {it}led{/it} the child by the hand {it}to{/it} his seat. = The teacher took the child's hand and {it}led{/it} him {it}to{/it} his seat."
+                            },
+                            {
+                              "t": "Our hostess {it}led{/it} us {it}to{/it} the dinner table."
+                            }
+                          ]
+                        ]
+                      ],
+                      [
+                        [
+                          "text",
+                          "often used as {it}(be) led{/it} "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "The passengers {it}were led{/it} onto/aboard the ship by the steward."
+                            },
+                            {
+                              "t": "The prisoner {it}was{/it} {phrase}led off{/phrase} to jail [=was taken to jail] in handcuffs."
+                            }
+                          ]
+                        ]
+                      ],
+                      [
+                        [
+                          "text",
+                          "often used figuratively "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "I gradually {it}led{/it} the interview around/back to the subject of his failed marriage."
+                            },
+                            {
+                              "t": "He says that he will follow the evidence wherever it {it}leads{/it} (him)."
+                            },
+                            {
+                              "t": "This {it}leads{/it} me to my next point, which is that the building needs a new roof."
+                            },
+                            {
+                              "t": "The painting's composition {phrase}leads the/your eye{/phrase} to the figures in the foreground. [=causes you to look at the figures in the foreground]"
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "b",
+                "sgram": "+ obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to go or be at the front part of (something) "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "The veterans will {it}lead{/it} a parade down Main Street."
+                      },
+                      {
+                        "t": "{it}lead{/it} a march"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "sgram": "no obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to lie or go in a specified direction "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "The path {it}leads{/it} uphill."
+                      },
+                      {
+                        "t": "This road doesn't {it}lead{/it} to the village as we thought it did."
+                      },
+                      {
+                        "t": "a set of stairs that {it}leads{/it} down to the basement"
+                      },
+                      {
+                        "t": "There was a path {it}leading{/it} (off) from the meadow into the woods."
+                      }
+                    ]
+                  ],
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "often used figuratively "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "She realized that their relationship would never {it}lead{/it} to marriage."
+                            },
+                            {
+                              "t": "The investigation into the murder was {phrase}leading nowhere{/phrase}. [=the investigation was not solving the crime]"
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "3",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to guide the actions of a person or group {bc}to be in charge of a person, group, activity, etc. "
+                  ],
+                  [
+                    "wsgram",
+                    "no obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "We need to elect someone who can {it}lead{/it}."
+                      },
+                      {
+                        "t": "bosses who {phrase}lead by example{/phrase} [=who show employees how they should act by acting that way themselves]"
+                      }
+                    ]
+                  ],
+                  [
+                    "wsgram",
+                    "+ obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "She {it}leads{/it} her employees by setting a good example for them."
+                      },
+                      {
+                        "t": "She {it}led{/it} a successful boycott of the store."
+                      },
+                      {
+                        "t": "{it}lead{/it} an expedition"
+                      },
+                      {
+                        "t": "A visiting professor will be {it}leading{/it} the seminar."
+                      },
+                      {
+                        "t": "{it}lead{/it} [={it}direct{/it}] an orchestra"
+                      },
+                      {
+                        "t": "She {it}led{/it} the children in a song. [=she sang a song and the children sang with her]"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "4",
+                "sgram": "+ obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to cause (a person, group, etc.) to do something or to follow some course of action "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "Her interest in art {it}led{/it} her into the field of art history."
+                      }
+                    ]
+                  ],
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "usually followed by {it}to{/it} or {it}to + verb{/it} "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "His volunteer work in the hospital {it}led{/it} him {it}to{/it} a career in nursing. = His volunteer work in the hospital {it}led{/it} [={it}inspired{/it}] him {it}to become{/it} a nurse."
+                            },
+                            {
+                              "t": "Her experience with cancer {it}led{/it} her {it}to consider{/it} writing a book on the subject."
+                            },
+                            {
+                              "t": "The evidence {it}leads{/it} me {it}to believe{/it} [=makes me believe] that this disease is curable."
+                            },
+                            {
+                              "t": "We've been {it}led to believe{/it} that the labels on food items disclose all ingredients, but it's becoming clear that this is not the case."
+                            },
+                            {
+                              "t": "I had been {it}led to expect{/it} that someone would meet me at the airport, but no one came."
+                            },
+                            {
+                              "t": "He {it}led me to understand{/it} [=he told me or caused me to think] that the deadline was January 7."
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "5",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to be first, best, or ahead in a race or competition "
+                  ],
+                  [
+                    "wsgram",
+                    "no obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "the team that is currently {it}leading{/it} in the pennant race"
+                      },
+                      {
+                        "t": "At the end of the fourth inning, the Red Sox {it}led{/it} by two runs."
+                      }
+                    ]
+                  ],
+                  [
+                    "wsgram",
+                    "+ obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "{it}lead{/it} a race"
+                      },
+                      {
+                        "t": "They {it}led{/it} their opponents by 20 points at the end of the third quarter."
+                      },
+                      {
+                        "t": "the team that is {it}leading{/it} the league [=the team that is in first place]"
+                      },
+                      {
+                        "t": "a batter who {it}leads{/it} the league in home runs [=who has hit more home runs than any other batter]"
+                      },
+                      {
+                        "t": "a runner who is {phrase}leading the pack/field{/phrase} [=a runner who is ahead of the group of other runners]"
+                      }
+                    ]
+                  ],
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "often used figuratively "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "Their company {phrase}leads the world{/phrase} [=is the most successful company in the world] in developing new technology to assist people with disabilities."
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "6",
+                "sgram": "+ obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to go through (life) in a certain way {bc}to have (a specified kind of life) "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "They chose to {it}lead{/it} [={it}live{/it}] a quiet life."
+                      },
+                      {
+                        "t": "He {it}leads{/it} a peaceful existence."
+                      },
+                      {
+                        "t": "It turned out that he had been {phrase}leading a double life{/phrase}. [=deceiving people about his life, not telling the whole truth about his life]"
+                      },
+                      {
+                        "t": "He has always {phrase}led a charmed life{/phrase}. [=he has always been lucky]"
+                      },
+                      {
+                        "t": "She needs to {phrase}lead her own life{/phrase}. [=she needs to make her own decisions about her life]"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "7",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to begin play in a card game with (a certain card or kind of card) "
+                  ],
+                  [
+                    "wsgram",
+                    "+ obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "{it}lead{/it} trumps"
+                      },
+                      {
+                        "t": "{it}led{/it} a spade"
+                      }
+                    ]
+                  ],
+                  [
+                    "wsgram",
+                    "no obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "{it}lead{/it} with a spade"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "8",
+                "sgram": "no obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to guide a dance partner through the steps of a dance "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "I don't know this dance, so I'd prefer it if you {it}lead{/it}."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "9",
+                "sgram": "+ obj",
+                "sls": [
+                  "law"
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to ask (a witness) a question in a way that suggests what the answer should be {bc}to ask (a witness) a leading question "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "The judge ruled that the lawyer was {it}leading{/it} the witness."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "dros": [
+      {
+        "drp": "lead off",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sphrasev": {
+                      "phrs": [
+                        {
+                          "pva": "lead off"
+                        },
+                        {
+                          "pvl": "or",
+                          "pva": "lead (something) off"
+                        },
+                        {
+                          "pvl": "or",
+                          "pva": "lead off (something)"
+                        }
+                      ]
+                    },
+                    "sn": "1",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to start something (such as an activity or performance) in a specified way "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "She {it}led off{/it} [={it}started, kicked off{/it}] the presentation with a brief overview of the project."
+                          },
+                          {
+                            "t": "She {it}led off{/it} [={it}began{/it}] with a brief overview of the project."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "2",
+                    "sls": [
+                      "baseball"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to be the first batter in an inning "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "He {it}led off{/it} with a walk. [=he was the first batter in his team's half of the inning and he was walked]"
+                          },
+                          {
+                            "t": "He {it}led off{/it} the inning with a home run."
+                          }
+                        ]
+                      ],
+                      [
+                        "text",
+                        "{dx}see also {dxt|leadoff||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "lead on",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sphrasev": {
+                      "phrs": [
+                        {
+                          "pva": "lead (someone) on"
+                        }
+                      ]
+                    },
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to cause (someone) to wrongly continue believing or doing something "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "She was devastated when she found out that he didn't really love her, and had only been {it}leading{/it} her {it}on{/it}. [=he had been leading her to believe that he loved her]"
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "lead someone a merry chase",
+        "rsl": "US",
+        "vrs": [
+          {
+            "vl": "or British",
+            "va": "lead someone a (merry) dance"
+          }
+        ],
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sls": [
+                      "old-fashioned"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to cause a series of troubles or worries for (someone) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "He {it}led me a merry chase{/it} before I finally got him to agree to a meeting."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "lead someone (around) by the nose",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|nose:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "lead someone down/up the garden path",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sls": [
+                      "informal"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to deceive someone {bc}to cause someone to go, think, or proceed wrongly "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "He believes the average consumer is being {it}led down the garden path{/it} by the promises in advertisements."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "lead the way",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to be the first person to go somewhere "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "You {it}lead the way{/it}, and we'll follow."
+                          }
+                        ]
+                      ],
+                      [
+                        "uns",
+                        [
+                          [
+                            [
+                              "text",
+                              "often used figuratively "
+                            ],
+                            [
+                              "vis",
+                              [
+                                {
+                                  "t": "Their company {it}led the way{/it} in developing this technology. [=was the first to have success developing the technology]"
+                                }
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "lead to",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sphrasev": {
+                      "phrs": [
+                        {
+                          "pva": "lead to (something)"
+                        }
+                      ]
+                    },
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to result in (something) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "a course of study {it}leading to{/it} a degree in agriculture"
+                          },
+                          {
+                            "t": "Her investigations ultimately {it}led to{/it} the discovery of the missing documents."
+                          },
+                          {
+                            "t": "His volunteer work in the hospital {it}led to{/it} a career in nursing. = His volunteer work in the hospital {it}led to{/it} him becoming a nurse."
+                          }
+                        ]
+                      ],
+                      [
+                        "text",
+                        "{dx}see also {dxt|lead:1||1a, 4 (above)}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "lead up to",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sphrasev": {
+                      "phrs": [
+                        {
+                          "pva": "lead up to (something)"
+                        }
+                      ]
+                    },
+                    "sn": "1",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to occur in the time that comes before (something) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "Many voters were still undecided in the days {it}leading up to{/it} [={it}approaching{/it}] the election."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "2",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to come before and help to cause (something) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "There was a series of errors {it}leading up to{/it} the accident."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "3",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to come before and help to introduce (something) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "a chapter {it}leading up to{/it} the main topic of the book"
+                          },
+                          {
+                            "t": "I had no idea what he was {it}leading up to{/it} when he started talking about his father."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "lead with",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sphrasev": {
+                      "phrs": [
+                        {
+                          "pva": "lead with (something)"
+                        }
+                      ]
+                    },
+                    "sn": "1",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to begin something (such as a story or speech) with (something specified) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "The newspaper story {it}led{/it} [={it}opened, began{/it}] {it}with{/it} a long report on the funeral."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "2",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to begin a series of punches in boxing with (a punch thrown by a specified hand) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "The champion {it}led with{/it} a left to the body, followed up quickly with a right to the jaw."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "the blind leading the blind",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|blind:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    "shortdef": [
+      "to guide someone to a place especially by going in front —often + to —often used as (be) led —often used figuratively",
+      "to go or be at the front part of (something)",
+      "to lie or go in a specified direction —often used figuratively"
+    ]
+  },
+  {
+    "meta": {
+      "id": "prime:1",
+      "uuid": "7180e4ec-c077-4506-802e-e70de8655459",
+      "src": "learners",
+      "section": "alpha",
+      "target": {
+        "tuuid": "d4e91c7e-ed47-4e87-8d33-f63ed183aaf3",
+        "tsrc": "collegiate"
+      },
+      "stems": [
+        "prime",
+        "primely",
+        "primeness",
+        "primenesses",
+        "prime example",
+        "prime specimen"
+      ],
+      "app-shortdef": {
+        "hw": "prime:1",
+        "fl": "adjective",
+        "def": [
+          "{bc} most important",
+          "{bc} of the highest quality or value",
+          "used to say that someone or something is a very good example of a particular kind of person or thing"
+        ]
+      },
+      "offensive": false
+    },
+    "hom": 1,
+    "hwi": {
+      "hw": "prime",
+      "prs": [
+        {
+          "ipa": "ˈpraɪm",
+          "sound": {
+            "audio": "prime001"
+          }
+        }
+      ]
+    },
+    "fl": "adjective",
+    "lbs": [
+      "always used before a noun"
+    ],
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}most important {bc}{sx|primary||} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "our {it}prime{/it} responsibility"
+                      },
+                      {
+                        "t": "The wine industry is of {it}prime{/it} importance to the California economy."
+                      },
+                      {
+                        "t": "The police have not yet named the {it}prime{/it} suspect in the murder investigation."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}of the highest quality or value {bc}{sx|excellent||} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "{it}prime{/it} beef"
+                      },
+                      {
+                        "t": "The house is expensive because it's in a {it}prime{/it} location."
+                      },
+                      {
+                        "t": "{it}prime{/it} farmland"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "3",
+                "dt": [
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "used to say that someone or something is a very good example of a particular kind of person or thing "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "The melting of ice caps is a {phrase}prime example{/phrase} of the effects of global warming."
+                            },
+                            {
+                              "t": "Orson Welles is a {it}prime example{/it} of the movie director as artist."
+                            },
+                            {
+                              "t": "a {phrase}prime specimen{/phrase} of a racehorse"
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "4",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}most likely or very likely to be chosen for something, to experience something, etc. "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "The mayor has become a {it}prime{/it} target for criticism."
+                      },
+                      {
+                        "t": "Her father was unhealthy and looked like a {it}prime{/it} candidate for a heart attack. [=he looked like someone who was likely to have a heart attack]"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "most important : primary",
+      "of the highest quality or value : excellent",
+      "—used to say that someone or something is a very good example of a particular kind of person or thing"
+    ]
+  },
+  {
+    "meta": {
+      "id": "set:1",
+      "uuid": "84890387-9052-4d8a-842c-f87613f9d936",
+      "src": "learners",
+      "section": "alpha",
+      "target": {
+        "tuuid": "e16897ba-8f09-4260-8698-c925af2147e3",
+        "tsrc": "collegiate"
+      },
+      "highlight": "yes",
+      "stems": [
+        "set",
+        "set about",
+        "set apart",
+        "set aside",
+        "set at",
+        "set eyes on",
+        "set foot in",
+        "set foot on",
+        "set forth",
+        "set forward",
+        "set in motion",
+        "set one straight",
+        "set one's hand to",
+        "set her hand to",
+        "set his hand to",
+        "set their hand to",
+        "set one's heart on",
+        "set her heart on",
+        "set his heart on",
+        "set their heart on",
+        "set one's house in order",
+        "set her house in order",
+        "set his house in order",
+        "set their house in order",
+        "set one's sights on",
+        "set her sights on",
+        "set his sights on",
+        "set their sights on",
+        "set one's teeth on edge",
+        "set her teeth on edge",
+        "set his teeth on edge",
+        "set their teeth on edge",
+        "set sail",
+        "set store by",
+        "set store on",
+        "set the stage",
+        "set to music",
+        "set upon",
+        "sets",
+        "setting",
+        "set against",
+        "set back",
+        "set down",
+        "set foot in/on",
+        "set in",
+        "set in stone",
+        "set (someone or something) loose",
+        "set loose",
+        "set someone loose",
+        "set something loose",
+        "set off",
+        "set on",
+        "set out",
+        "set pen to paper",
+        "set the pace",
+        "set the record straight",
+        "set the scene",
+        "set to",
+        "set up",
+        "set up as (something)",
+        "set up as",
+        "set up as something",
+        "set up in (something)",
+        "set up in",
+        "set up in something",
+        "set up house",
+        "set up shop",
+        "set your heart on",
+        "set your mind to",
+        "set your teeth on edge",
+        "is set against",
+        "set priorities",
+        "sets great store by/on",
+        "sets great store by",
+        "sets great store on",
+        "sets a good/bad example",
+        "sets a bad example",
+        "sets a good example",
+        "set a precedent",
+        "set the tone",
+        "on fire",
+        "set fire to",
+        "set your mind at ease",
+        "set him right/straight",
+        "set him right",
+        "set him straight",
+        "set our own house in order",
+        "in motion",
+        "set the wheels in motion",
+        "set to work",
+        "set up camp",
+        "set up in business"
+      ],
+      "app-shortdef": {
+        "hw": "set:1",
+        "fl": "verb",
+        "def": [
+          "{bc} to put (something) in a place or position",
+          "{bc} to put (something) into the surface of something",
+          "{bc} to attach (something, such as a jewel) to a piece of jewelry or other decoration"
+        ]
+      },
+      "offensive": false
+    },
+    "hom": 1,
+    "hwi": {
+      "hw": "set",
+      "prs": [
+        {
+          "ipa": "ˈsɛt",
+          "sound": {
+            "audio": "set00001"
+          }
+        }
+      ]
+    },
+    "fl": "verb",
+    "ins": [
+      {
+        "if": "sets"
+      },
+      {
+        "if": "set"
+      },
+      {
+        "if": "set*ting"
+      }
+    ],
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sen",
+              {
+                "sn": "1",
+                "lbs": [
+                  "always followed by an adverb or preposition"
+                ],
+                "sgram": "+ obj"
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "a",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to put (something) in a place or position "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "{it}Set{/it} your books (down) on the table."
+                      },
+                      {
+                        "t": "We need to {it}set{/it} some extra chairs around the table."
+                      },
+                      {
+                        "t": "He {it}set{/it} the ladder against the wall and walked away."
+                      },
+                      {
+                        "t": "I remember {it}setting{/it} my bag right here."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "b",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to put (something) into the surface of something "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "They {it}set{/it} the bricks along the walkway."
+                      }
+                    ]
+                  ],
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "often used as {it}(be) set{/it} "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "The posts {it}are set{/it} firmly in the ground."
+                            },
+                            {
+                              "t": "The tiles {it}are set{/it} into the wall."
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "c",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to attach (something, such as a jewel) to a piece of jewelry or other decoration "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "The jeweler can {it}set{/it} the stone several different ways."
+                      }
+                    ]
+                  ],
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "often used as {it}(be) set{/it} "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "Her wedding ring {it}is set{/it} [={it}is inlaid{/it}] with seven diamonds."
+                            },
+                            {
+                              "t": "a diamond {it}set{/it} in a simple gold band"
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "lbs": [
+                  "always followed by an adverb or preposition"
+                ],
+                "sgram": "+ obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to cause the action of (a film, story, etc.) to happen in a certain place or during a certain time"
+                  ],
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "often used as {it}(be) set{/it} "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "The play {it}is set{/it} in Verona, Italy. [=the action of the play takes place in Verona]"
+                            },
+                            {
+                              "t": "The novel {it}is set{/it} in 1943."
+                            },
+                            {
+                              "t": "a novel {it}set{/it} during World War II"
+                            },
+                            {
+                              "t": "The story {phrase}is set against{/phrase} (the backdrop of) the Second World War. [=the story takes place during the Second World War]"
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sen",
+              {
+                "sn": "3",
+                "sgram": "+ obj"
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "a",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to make (something) ready to be used {bc}to put (something) in a position to be used "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "He turned off the car and {it}set{/it} the parking brake."
+                      },
+                      {
+                        "t": "Rangers will {it}set{/it} a trap to catch the bear."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "b",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to put plates, forks, spoons, knives, etc., on a table before serving a meal "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "Would you please {it}set{/it} [=({it}Brit{/it}) {it}lay{/it}] the table?"
+                      },
+                      {
+                        "t": "We {it}set{/it} an extra place at the table for our guest."
+                      },
+                      {
+                        "t": "The table was {it}set{/it} for two. [=it had two place settings]"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "4",
+                "sgram": "+ obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to cause (a clock) to show a particular time "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "We {it}set{/it} the clocks ahead one hour for daylight saving time."
+                      }
+                    ]
+                  ],
+                  [
+                    "text",
+                    "{bc}to cause the controls of (a clock or other device) to be in a particular position "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "The alarm was {it}set{/it} for 7:00 a.m. = The alarm was {it}set{/it} to go off at 7:00 a.m."
+                      },
+                      {
+                        "t": "I {it}set{/it} the timer for/to twenty minutes."
+                      },
+                      {
+                        "t": "{it}Set{/it} the oven to 350 degrees."
+                      },
+                      {
+                        "t": "In the winter, she {it}sets{/it} the thermostat at/to 68 degrees."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "5",
+                "sgram": "+ obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to decide on or choose (something) "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "I {it}set{/it} a goal (for myself) to lose 15 pounds by the end of the year."
+                      },
+                      {
+                        "t": "The company must meet certain conditions {it}set{/it} by the government in order to stay in business."
+                      },
+                      {
+                        "t": "She will be {it}setting{/it} the agenda for this afternoon's meeting."
+                      },
+                      {
+                        "t": "{it}setting{/it} boundaries/limits/rules"
+                      },
+                      {
+                        "t": "NASA has not yet {it}set{/it} [={it}named{/it}] the date for the shuttle launch."
+                      },
+                      {
+                        "t": "He has {phrase}set his sights on{/phrase} becoming [=he has decided to try to become] the next president."
+                      },
+                      {
+                        "t": "We don't have enough time to do everything. We have to {phrase}set priorities{/phrase}. [=to decide which things are most important to do]"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sen",
+              {
+                "sn": "6",
+                "sgram": "+ obj"
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "a",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to give (a particular price or value) to something "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "An antiques appraiser {it}set{/it} the value of the chair at $500."
+                      },
+                      {
+                        "t": "If you {it}set{/it} your prices too high, no one will buy your products."
+                      },
+                      {
+                        "t": "Her bail was {it}set{/it} at $10,000. = The judge {it}set{/it} (her) bail at $10,000. [=the judge decided that she will have to pay $10,000 or stay in jail until her trial]"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "b",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to give (a high value or importance) to something "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "They {it}set{/it} a high value on their privacy. [=they value their privacy very highly]"
+                      },
+                      {
+                        "t": "Our family {phrase}sets great store by/on{/phrase} tradition. [=our family believes that tradition is very important]"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sen",
+              {
+                "sn": "7",
+                "sgram": "+ obj"
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "a",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to cause (something) to be accepted as an example, rule, etc. {bc}to establish (a standard, trend, etc.) for others to follow or try to copy "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "They are improving the safety of their vehicles and {it}setting{/it} a higher standard for other companies (to follow)."
+                      },
+                      {
+                        "t": "His style of directing has {it}set{/it} a new trend in moviemaking. [=other directors are copying his way of making movies]"
+                      },
+                      {
+                        "t": "His behavior {phrase}sets a good/bad example{/phrase} for the rest of the children."
+                      },
+                      {
+                        "t": "The ruling is likely to {phrase}set a precedent{/phrase} for how future cases are decided. [=future cases will be decided based on this case]"
+                      },
+                      {
+                        "t": "Her lighthearted question {phrase}set the tone{/phrase} for the rest of the interview. [=it gave the rest of the interview a light and easy feeling]"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "b",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to establish (a record) as the performance or achievement that is the best of its kind "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "She {it}set{/it} a record for the most sales in the company's history. [=she made more sales for the company than anyone else ever had]"
+                      },
+                      {
+                        "t": "He {it}set{/it} the world record for/in the 100-meter dash."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "8",
+                "sgram": "+ obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to cause (someone or something) to be in a specified condition "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "The slaves were {it}set{/it} free."
+                      },
+                      {
+                        "t": "He made a raft and {it}set{/it} it afloat in the river."
+                      },
+                      {
+                        "t": "They {phrase}set{/phrase} the house {phrase}on fire{/phrase}. = They {phrase}set fire to{/phrase} the house. = (more formally) They {it}set{/it} the house afire/aflame/ablaze. [=they caused the house to begin burning]"
+                      },
+                      {
+                        "t": "I wish I knew how to {phrase}set your mind at ease{/phrase}. [=to help you stop worrying]"
+                      },
+                      {
+                        "t": "She {phrase}set him right/straight{/phrase} about what happened. [=she told him that he was wrong and explained what really happened]"
+                      },
+                      {
+                        "t": "We should {phrase}set our own house in order{/phrase} [=correct the way we do things] before we criticize them."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "9",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to cause (someone or something) to start doing something "
+                  ],
+                  [
+                    "wsgram",
+                    "+ obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "We have no idea what {it}set{/it} [={it}got{/it}] her crying."
+                      }
+                    ]
+                  ],
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "often + {it}to{/it} "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "Her question {it}set{/it} me {it}to{/it} wondering if I had made the right decision."
+                            },
+                            {
+                              "t": "They are ready to {phrase}set{/phrase} the plan {phrase}in motion{/phrase}. [=they are ready to cause the plan to start happening]"
+                            },
+                            {
+                              "t": "The plan has been {it}set in motion{/it}."
+                            },
+                            {
+                              "t": "Sources say that the governor has {phrase}set the wheels in motion{/phrase} for a run for the presidency. [=the governor has started to run for president]"
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "wsgram",
+                    "no obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "He immediately {phrase}set to work{/phrase} [=started working] on the project."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "10",
+                "sgram": "+ obj",
+                "sls": [
+                  "British"
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to give (someone) a particular job {bc}to require someone to do (a task) "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "My boss {it}set{/it} me to organizing the files."
+                      },
+                      {
+                        "t": "She {it}set{/it} [={it}assigned{/it}] her students the task of writing a three-page report."
+                      },
+                      {
+                        "t": "{it}setting{/it} homework for the children"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "11",
+                "sgram": "no obj",
+                "sls": [
+                  "of the sun or moon"
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to move down in the sky and go below the horizon "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "We sat on the beach and watched the sun {it}set{/it}."
+                      }
+                    ]
+                  ],
+                  [
+                    "text",
+                    "{dx}opposite {dxt|rise:1||5}{/dx}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "12",
+                "sgram": "+ obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to put and hold (your jaw, mouth, etc.) firmly into a certain position "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "She crossed her arms, {it}set{/it} her jaw, and refused to answer any questions."
+                      },
+                      {
+                        "t": "He {it}set{/it} his lips firmly."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "13 a",
+                "sgram": "no obj",
+                "sls": [
+                  "of a liquid"
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to become thick or hard "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "The gelatin needs a few hours to {it}set{/it}."
+                      },
+                      {
+                        "t": "My nail polish is still {it}setting{/it}."
+                      },
+                      {
+                        "t": "a quick-{it}setting{/it} cement"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ],
+            [
+              "sense",
+              {
+                "sn": "b",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to become permanent "
+                  ],
+                  [
+                    "wsgram",
+                    "no obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "If you don't wash your shirt right away, the stain will {it}set{/it}. [=you will not be able to remove the stain]"
+                      }
+                    ]
+                  ],
+                  [
+                    "wsgram",
+                    "+ obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "Hot water will {it}set{/it} the stain."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "14",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to put (a broken bone) into its normal position so it can heal "
+                  ],
+                  [
+                    "wsgram",
+                    "+ obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "Doctors {it}set{/it} her broken leg last week."
+                      }
+                    ]
+                  ],
+                  [
+                    "wsgram",
+                    "no obj"
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "The bones will take several weeks to {it}set{/it}. [=grow together]"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "15",
+                "sgram": "+ obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to give a particular style to (someone's hair) by wetting it, putting it in curlers or clips, and drying it "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "She gets her hair {it}set{/it} and styled twice a week."
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "16",
+                "sgram": "+ obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to type or print (a word, sentence, etc.) in a particular form or style "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "a word {it}set{/it} in italics"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "17",
+                "sgram": "+ obj",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to add music to (words) {bc}to create (music) to accompany words"
+                  ],
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "usually + {it}to{/it} "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "She wrote the lyrics, and he {it}set{/it} them {it}to{/it} music."
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "dros": [
+      {
+        "drp": "set about",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sphrasev": {
+                      "phrs": [
+                        {
+                          "pva": "set about (something)"
+                        }
+                      ]
+                    },
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to begin to do (something) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "They {it}set about{/it} (the task of) creating a new Web site."
+                          }
+                        ]
+                      ],
+                      [
+                        "uns",
+                        [
+                          [
+                            [
+                              "text",
+                              "sometimes followed by {it}to + verb{/it} "
+                            ],
+                            [
+                              "vis",
+                              [
+                                {
+                                  "t": "They {it}set about to create{/it} a new Web site."
+                                }
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set against",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sen",
+                  {
+                    "sn": "1",
+                    "phrasev": [
+                      {
+                        "pva": "set (something) against (something)"
+                      }
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "a",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to compare (something) to (something else) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "Let's {it}set{/it} the advantages {it}against{/it} the disadvantages."
+                          }
+                        ]
+                      ],
+                      [
+                        "uns",
+                        [
+                          [
+                            [
+                              "text",
+                              "often used as {it}(be) set against{/it} "
+                            ],
+                            [
+                              "vis",
+                              [
+                                {
+                                  "t": "The challenges of fixing the problem now must {it}be set against{/it} the dangers of waiting until later to act."
+                                },
+                                {
+                                  "t": "The fines were small when {it}set against{/it} the company's huge annual profits."
+                                }
+                              ]
+                            ]
+                          ]
+                        ]
+                      ],
+                      [
+                        "text",
+                        "{dx}see also {dxt|set:1||2 (above)}{/dx}"
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "b",
+                    "sls": [
+                      "British"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to list (something) as an expense in order to reduce (income for which you must pay tax) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "You can {it}set{/it} your mortgage payments {it}against{/it} your rental income."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "2",
+                    "phrasev": [
+                      {
+                        "pva": "set (yourself) against (something or someone)"
+                      }
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to decide that you do not support (something or someone) {bc}to be or become opposed to (something or someone) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "She {it}set herself against{/it} the prevailing beliefs of the time."
+                          },
+                          {
+                            "t": "He has {it}set himself against{/it} (joining) them."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "3",
+                    "phrasev": [
+                      {
+                        "pva": "set (someone) against (someone)"
+                      }
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to cause (someone) to disagree with or oppose (someone) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "The incident {it}set{/it} brother {it}against{/it} sister."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set apart",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "1",
+                    "phrasev": [
+                      {
+                        "pva": "set (someone or something) apart"
+                      }
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to be a quality that makes (someone or something) better than or different from other people or things"
+                      ],
+                      [
+                        "uns",
+                        [
+                          [
+                            [
+                              "text",
+                              "usually + {it}from{/it} "
+                            ],
+                            [
+                              "vis",
+                              [
+                                {
+                                  "t": "What {it}sets{/it} her {it}apart{/it} ({it}from{/it} the other teachers) is her great passion for her work."
+                                },
+                                {
+                                  "t": "His great height {it}set{/it} him {it}apart from{/it} the other men in his family."
+                                }
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "2",
+                    "phrasev": [
+                      {
+                        "pva": "set (something) apart"
+                      }
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to keep or save (something) for a particular purpose"
+                      ],
+                      [
+                        "uns",
+                        [
+                          [
+                            [
+                              "text",
+                              "often used as {it}(be) set apart{/it}"
+                            ]
+                          ],
+                          [
+                            [
+                              "text",
+                              "usually + {it}for{/it} "
+                            ],
+                            [
+                              "vis",
+                              [
+                                {
+                                  "t": "A few acres of the city {it}were set apart for{/it} a park."
+                                }
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set aside",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sphrasev": {
+                      "phrs": [
+                        {
+                          "pva": "set (something) aside"
+                        },
+                        {
+                          "pvl": "or",
+                          "pva": "set aside (something)"
+                        }
+                      ]
+                    },
+                    "sn": "1",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to move (something) to the side because you are not working on it, dealing with it, etc. "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "Mix the dry ingredients in a small bowl and {it}set{/it} the mixture {it}aside{/it}."
+                          }
+                        ]
+                      ],
+                      [
+                        "text",
+                        "{bc}to wait until later to use or deal with (something) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "I've {it}set{/it} your memo {it}aside{/it} for now but I'll read it this afternoon."
+                          },
+                          {
+                            "t": "The committee {it}set aside{/it} discussion of the proposal until their next meeting."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "2",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to keep or save (something) for a particular purpose "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "The hotel {it}set aside{/it} [={it}set apart{/it}] 20 rooms for the guests of the bride and groom."
+                          },
+                          {
+                            "t": "We need to {it}set{/it} some money {it}aside{/it} for our vacation."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "3",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to stop thinking about, talking about, or being affected by (something) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "They decided to {it}set aside{/it} their differences and work together."
+                          },
+                          {
+                            "t": "{it}Setting aside{/it} the fact that the meal was extremely expensive, dinner was very enjoyable."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "4",
+                    "sls": [
+                      "law"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to change or reverse (a legal decision, conviction, etc.) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "The verdict was {it}set aside{/it} [={it}overturned{/it}] by the court."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set back",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "1",
+                    "phrasev": [
+                      {
+                        "pva": "set (something or someone) back"
+                      },
+                      {
+                        "pvl": "or",
+                        "pva": "set back (something or someone)"
+                      }
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to make the progress of (something or someone) slower or more difficult {bc}to cause (something or someone) to go back to an earlier or worse condition "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "A recent lack of funding has {it}set back{/it} research on the disease."
+                          },
+                          {
+                            "t": "If the law is reversed, it will {it}set{/it} us {it}back{/it} 20 years. [=it will undo 20 years of progress]"
+                          },
+                          {
+                            "t": "{it}setting back{/it} progress"
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "2",
+                    "phrasev": [
+                      {
+                        "pva": "set (someone) back"
+                      }
+                    ],
+                    "sls": [
+                      "informal"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}{sx|cost:2||} "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "A new suit will {it}set{/it} you {it}back{/it} at least $200."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set down",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "1",
+                    "phrasev": [
+                      {
+                        "pva": "set down (something)"
+                      }
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to create or establish (a rule, requirement, etc.) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "All participants must follow the guidelines {it}set down{/it} [={it}established{/it}] by the organization."
+                          },
+                          {
+                            "t": "Once she {it}sets down{/it} the rules, there's no changing her mind."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sen",
+                  {
+                    "sn": "2",
+                    "phrasev": [
+                      {
+                        "pva": "set (something) down"
+                      },
+                      {
+                        "pvl": "or",
+                        "pva": "set down (something)"
+                      }
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "a",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to record (something) by writing it down "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "She took out her notebook and started {it}setting down{/it} her thoughts."
+                          },
+                          {
+                            "t": "When an idea for a song comes to me, I {it}set{/it} it {it}down{/it} on paper."
+                          },
+                          {
+                            "t": "{it}setting{/it} an agreement {it}down{/it} in writing"
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "b",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to land (an airplane) on the ground or water "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "We had to {it}set{/it} the plane {it}down{/it} in a field."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "3",
+                    "phrasev": [
+                      {
+                        "pva": "set (someone) down"
+                      }
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to allow (someone) to get off a bus, airplane, etc. "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "I asked the taxi driver to {it}set{/it} me {it}down{/it} [={it}drop me off{/it}, ({it}US{/it}) {it}let me off{/it}] in front of the library."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set eyes on",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|eye:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set foot in/on",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|foot:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set forth",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "1",
+                    "sls": [
+                      "literary"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to begin a journey "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "We will {it}set forth{/it} [={it}set out{/it}] at dawn."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "2",
+                    "phrasev": [
+                      {
+                        "pva": "set forth (something)"
+                      },
+                      {
+                        "pvl": "or",
+                        "pva": "set (something) forth"
+                      }
+                    ],
+                    "sls": [
+                      "formal"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to explain or describe (something) in an organized way "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "The author {it}sets forth{/it} [={it}states{/it}] the book's premise in its first two pages."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set forward",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sphrasev": {
+                      "phrs": [
+                        {
+                          "pva": "set (something) forward"
+                        },
+                        {
+                          "pvl": "or",
+                          "pva": "set forward (something)"
+                        }
+                      ]
+                    },
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to explain or describe (something) so that it can be considered "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "She has {it}set forward{/it} [={it}presented{/it}] an ambitious plan to fix the nation's health-care system."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set in",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to begin to be present, seen, etc."
+                      ],
+                      [
+                        "uns",
+                        [
+                          [
+                            [
+                              "text",
+                              "used of something unpleasant or unwanted that often lasts for a long time "
+                            ],
+                            [
+                              "vis",
+                              [
+                                {
+                                  "t": "The kids should go outside and play before the rain {it}sets in{/it} again."
+                                },
+                                {
+                                  "t": "An infection {it}set in{/it} after the surgery."
+                                },
+                                {
+                                  "t": "Reality was starting to {it}set in{/it}. [=become obvious] We were not going to win."
+                                }
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set in stone",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|stone:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set (someone or something) loose",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {it}let loose{/it} at {dxt|loose:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set off",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "1",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to begin traveling "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "We {it}set off{/it} for home."
+                          },
+                          {
+                            "t": "They {it}set off{/it} in a different direction."
+                          },
+                          {
+                            "t": "In the first chapter, the hero {it}sets off{/it} on a long voyage across the ocean."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "2",
+                    "phrasev": [
+                      {
+                        "pva": "set off (something)"
+                      },
+                      {
+                        "pvl": "also",
+                        "pva": "set (something) off"
+                      }
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to cause (something) to start or happen "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "{it}set off{/it} an explosion"
+                          },
+                          {
+                            "t": "Her comments {it}set off{/it} [={it}touched off{/it}] a chain of events that led to two people losing their jobs."
+                          },
+                          {
+                            "t": "The incident {it}set off{/it} a debate about how public land should be used."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sen",
+                  {
+                    "sn": "3",
+                    "phrasev": [
+                      {
+                        "pva": "set off (something)"
+                      },
+                      {
+                        "pvl": "or",
+                        "pva": "set (something) off"
+                      }
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "a",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to cause (something) to begin making noise "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "The thick smoke {it}set off{/it} the school's fire alarms."
+                          },
+                          {
+                            "t": "Your watch will probably {it}set{/it} the metal detectors {it}off{/it}."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "b",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to cause (fireworks, a bomb, etc.) to explode "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "They were accused of {it}setting off{/it} the bomb that destroyed the building."
+                          },
+                          {
+                            "t": "It was {it}set off{/it} by remote control."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "c",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to make (something) easy to see or notice "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "The blue in your sweater {it}sets off{/it} [={it}accents{/it}] your eyes."
+                          },
+                          {
+                            "t": "Bright yellow police tape {it}set off{/it} the area where the crime occurred."
+                          },
+                          {
+                            "t": "a quote {it}set off{/it} by quotation marks"
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "4",
+                    "phrasev": [
+                      {
+                        "pva": "set (someone) off"
+                      }
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to cause (someone) to suddenly start yelling, crying, laughing, etc. "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "I wonder what {it}set{/it} her {it}off{/it}."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set on",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sphrasev": {
+                      "phrs": [
+                        {
+                          "pva": "set (someone or something) on (someone)"
+                        }
+                      ]
+                    },
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to make (a person or animal) suddenly attack (someone) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "Police dogs were {it}set on{/it} the protesters."
+                          },
+                          {
+                            "t": "She {it}set{/it} her friends {it}on{/it} him."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set out",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "1 a",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to begin traveling in a particular direction "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "We got out of the car and {it}set out{/it} for the nearest gas station."
+                          },
+                          {
+                            "t": "They {it}set out{/it} toward the east."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "b",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to start doing something {bc}to begin an activity or effort with a particular plan or purpose "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "She {it}set out{/it} with the goal of going to the Olympics."
+                          }
+                        ]
+                      ],
+                      [
+                        "uns",
+                        [
+                          [
+                            [
+                              "text",
+                              "often followed by {it}to + verb{/it} "
+                            ],
+                            [
+                              "vis",
+                              [
+                                {
+                                  "t": "She accomplishes whatever she {it}sets out{/it} [={it}intends{/it}] {it}to do{/it}."
+                                },
+                                {
+                                  "t": "I never {it}set out to hurt{/it} you. [=I was not trying to hurt you]"
+                                },
+                                {
+                                  "t": "He {it}set out to become{/it} a lawyer but ended up teaching history instead."
+                                }
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sen",
+                  {
+                    "sn": "2",
+                    "phrasev": [
+                      {
+                        "pva": "set (something) out"
+                      },
+                      {
+                        "pvl": "or",
+                        "pva": "set out (something)"
+                      }
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "a",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to explain or describe (something) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "In the article, the group {it}sets out{/it} the role of parents in a child's education."
+                          },
+                          {
+                            "t": "He {it}set out{/it} the basic argument between the two groups."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "b",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to move and organize (a group of things) so that they can be seen or used "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "We'll need to {it}set{/it} a few extra chairs {it}out{/it} for our guests."
+                          },
+                          {
+                            "t": "They {it}set out{/it} maps and travel brochures for the tourists to take."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set pen to paper",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|pen:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set sail",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|sail:2||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set the pace",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|pace:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set the record straight",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|record:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set the scene",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|scene||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set the stage",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|stage:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set to",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sls": [
+                      "British",
+                      "literary"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to begin doing something in an active and serious way "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "We {it}set to{/it} and soon finished the work."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set up",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "1",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to prepare for something by putting things where they need to be "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "We have one hour left to {it}set up{/it} for the party."
+                          },
+                          {
+                            "t": "We had better start {it}setting up{/it}."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sen",
+                  {
+                    "sn": "2",
+                    "phrasev": [
+                      {
+                        "pva": "set up (something)"
+                      },
+                      {
+                        "pvl": "or",
+                        "pva": "set (something) up"
+                      }
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "a",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to create or establish (something) for a particular purpose "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "A panel needs to be {it}set up{/it} to investigate the issue."
+                          },
+                          {
+                            "t": "She hopes that in a few years she can {it}set up{/it} a private practice of her own."
+                          },
+                          {
+                            "t": "A foundation was {it}set up{/it} for people with the disease."
+                          },
+                          {
+                            "t": "The church {it}set up{/it} a school for the city's homeless children."
+                          },
+                          {
+                            "t": "The hikers {phrase}set up camp{/phrase} [=they prepared an area where they could sleep outside] just before sunset."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "b",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to arrange and plan (an event or activity) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "I'll ask my secretary to {it}set up{/it} a meeting with our clients."
+                          },
+                          {
+                            "t": "Let's {it}set up{/it} a time to get together."
+                          },
+                          {
+                            "t": "He was the one who {it}set up{/it} the bank robbery."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "c",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to put (something) in an upright position "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "They {it}set up{/it} flags along the street for the parade."
+                          },
+                          {
+                            "t": "Help me {it}set{/it} the tent {it}up{/it}."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "d",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to make (a machine, system, etc.) ready to be used "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "They {it}set up{/it} the movie camera next to the door."
+                          },
+                          {
+                            "t": "This computer wasn't {it}set up{/it} to run so many programs at one time."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sen",
+                  {
+                    "sn": "3",
+                    "phrasev": [
+                      {
+                        "pva": "set (someone) up"
+                      },
+                      {
+                        "pvl": "or",
+                        "pva": "set up (someone)"
+                      }
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "a",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to cause (someone) to be in a bad situation or to appear guilty "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "Those aren't his drugs. Someone must have {it}set{/it} him {it}up{/it}! [=framed him; made it look like the drugs were his]"
+                          },
+                          {
+                            "t": "He claimed he was {it}set up{/it} by the police."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "b",
+                    "sls": [
+                      "British"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to help (someone) feel healthy and full of energy "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "She says that daily exercise has {it}set{/it} her {it}up{/it} to face the challenges of getting old."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "c",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to give (someone) a job, a place to live, etc. "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "She {it}set{/it} me {it}up{/it} in a great apartment in the city."
+                          },
+                          {
+                            "t": "He {it}set{/it} his son {it}up{/it} with a job at his company."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "d",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to do something that makes it likely or possible for (someone) to do, get, or experience something "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "The team's excellent defense {it}set{/it} them {it}up{/it} to score the winning touchdown."
+                          }
+                        ]
+                      ],
+                      [
+                        "uns",
+                        [
+                          [
+                            [
+                              "text",
+                              "usually + {it}for{/it} "
+                            ],
+                            [
+                              "vis",
+                              [
+                                {
+                                  "t": "I think you're just {it}setting{/it} yourself {it}up for{/it} a big disappointment. [=you're expecting something that won't happen and you will be disappointed when it doesn't]"
+                                }
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "e",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to cause (someone) to meet someone in order to start a romantic relationship "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "{ldquo}How did you first meet your husband?{rdquo} {ldquo}My best friend {it}set{/it} us {it}up{/it}.{rdquo}"
+                          }
+                        ]
+                      ],
+                      [
+                        "uns",
+                        [
+                          [
+                            [
+                              "text",
+                              "often + {it}with{/it} "
+                            ],
+                            [
+                              "vis",
+                              [
+                                {
+                                  "t": "She wants to {it}set{/it} him {it}up with{/it} her sister."
+                                }
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sen",
+                  {
+                    "sn": "4",
+                    "phrasev": [
+                      {
+                        "pva": "set (yourself) up as (something)"
+                      }
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "a",
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to try to make people believe that you are (something) "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "She has {it}set herself up as{/it} the best alternative to the current administration."
+                          },
+                          {
+                            "t": "He {it}sets himself up as{/it} a defender of the people, but he's really only interested in getting more power."
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  "sense",
+                  {
+                    "sn": "b",
+                    "vrs": [
+                      {
+                        "vl": "also",
+                        "va": "set up as (something)"
+                      },
+                      {
+                        "vl": "or",
+                        "va": "set up in (something)"
+                      }
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to start your own business "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "She {it}set{/it} ({it}herself{/it}) {it}up as{/it} a wedding planner. [=she began working as a wedding planner]"
+                          },
+                          {
+                            "t": "He {phrase}set up in business{/phrase} after finishing college."
+                          }
+                        ]
+                      ],
+                      [
+                        "text",
+                        "{dx}see also {dxt|setup||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set up house",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|house:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set upon",
+        "gram": "phrasal verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sphrasev": {
+                      "phrs": [
+                        {
+                          "pva": "set upon (someone or something)"
+                        }
+                      ]
+                    },
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to attack (someone or something)"
+                      ],
+                      [
+                        "uns",
+                        [
+                          [
+                            [
+                              "text",
+                              "often used as {it}(be) set upon{/it} "
+                            ],
+                            [
+                              "vis",
+                              [
+                                {
+                                  "t": "The protesters {it}were set upon{/it} by police dogs."
+                                }
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set up shop",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|shop:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set your heart on",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|heart||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set your mind to",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|mind:1||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "drp": "set your teeth on edge",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "dt": [
+                      [
+                        "text",
+                        "{dx}see {dxt|tooth||}{/dx}"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    "shortdef": [
+      "to put (something) in a place or position",
+      "to put (something) into the surface of something —often used as (be) set",
+      "to attach (something, such as a jewel) to a piece of jewelry or other decoration —often used as (be) set"
+    ]
+  }
+]

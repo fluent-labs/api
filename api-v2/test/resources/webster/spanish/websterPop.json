@@ -1,0 +1,572 @@
+[
+  {
+    "meta": {
+      "id": "pop:1",
+      "uuid": "97584938-e995-4b1d-bca8-1355cb8ff2a9",
+      "lang": "en",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "pop",
+        "popped",
+        "popping",
+        "pops",
+        "pop the question",
+        "to pop out",
+        "to pop the question"
+      ],
+      "offensive": false
+    },
+    "hom": 1,
+    "hwi": {
+      "hw": "pop",
+      "prs": [
+        {
+          "mw": "ˈpɑp",
+          "sound": {
+            "audio": "pop00001"
+          }
+        }
+      ]
+    },
+    "fl": "verb",
+    "ins": [
+      {
+        "if": "popped"
+      },
+      {
+        "if": "popping"
+      }
+    ],
+    "def": [
+      {
+        "vd": "intransitive verb",
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{sx|burst||} {bc}{a_link|reventarse}, {a_link|estallar}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|saltar} (dícese de un corcho)"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "3",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|ir}, {a_link|venir}, o aparecer abruptamente "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "he popped into the house",
+                        "tr": "se metió en la casa"
+                      },
+                      {
+                        "t": "a menu pops up",
+                        "tr": "aparece un menú"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "4",
+                "vrs": [
+                  {
+                    "va": "to pop out"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{sx|protrude||} {bc}{a_link|salirse}, {a_link|saltarse} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "my eyes popped out of my head",
+                        "tr": "se me saltaban los ojos"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "5",
+                "vrs": [
+                  {
+                    "va": "to pop the question"
+                  }
+                ],
+                "sls": [
+                  "familiar"
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}proponerle matrimonio a alguien"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      },
+      {
+        "vd": "transitive verb",
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{sx|burst||} {bc}{a_link|reventar}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}sacar o meter abruptamente "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "he popped it into his mouth",
+                        "tr": "se lo metió en la boca"
+                      },
+                      {
+                        "t": "she popped her head out the window",
+                        "tr": "sacó la cabeza por la ventana"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "burst : reventarse, estallar",
+      "saltar (dícese de un corcho)",
+      "ir, venir, o aparecer abruptamente"
+    ]
+  },
+  {
+    "meta": {
+      "id": "pop:2",
+      "uuid": "c308ab5f-fabb-498f-a485-4e967058bf56",
+      "lang": "en",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "pop"
+      ],
+      "offensive": false
+    },
+    "hom": 2,
+    "hwi": {
+      "hw": "pop"
+    },
+    "fl": "adjective",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|popular} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "pop music",
+                        "tr": "música popular"
+                      },
+                      {
+                        "t": "pop star",
+                        "tr": "estrella de música popular"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "popular"
+    ]
+  },
+  {
+    "meta": {
+      "id": "pop:3",
+      "uuid": "44461b8a-69db-4901-904c-deccbb152d4f",
+      "lang": "en",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "pop",
+        "pops"
+      ],
+      "offensive": false
+    },
+    "hom": 3,
+    "hwi": {
+      "hw": "pop"
+    },
+    "fl": "noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|estallido} "
+                  ],
+                  [
+                    "gl",
+                    "masculine"
+                  ],
+                  [
+                    "text",
+                    " {a_link|pequeño} (de un globo, etc.)"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{sx|soda||} {bc}{a_link|refresco} "
+                  ],
+                  [
+                    "gl",
+                    "masculine"
+                  ],
+                  [
+                    "text",
+                    ", {a_link|gaseosa} "
+                  ],
+                  [
+                    "gl",
+                    "feminine"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "estallido pequeño (de un globo, etc.)",
+      "soda : refresco, gaseosa"
+    ]
+  },
+  {
+    "meta": {
+      "id": "pop",
+      "uuid": "72d1abfa-fde9-4408-bedf-18d9265b85ff",
+      "lang": "es",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "pop"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "pop",
+      "prs": [
+        {
+          "mw": "ˈpop"
+        }
+      ]
+    },
+    "fl": "adjective & masculine noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "dt": [
+                  [
+                    "text",
+                    "{bc}pop (music)"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "pop (music)"
+    ]
+  },
+  {
+    "meta": {
+      "id": "pop-up",
+      "uuid": "c302ff51-35d2-41f7-88d3-5ae9832588c1",
+      "lang": "en",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "pop-up",
+        "pop-ups"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "pop-up",
+      "prs": [
+        {
+          "mw": "ˈpɑpˌʌp"
+        }
+      ]
+    },
+    "fl": "noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|ventana} "
+                  ],
+                  [
+                    "gl",
+                    "feminine"
+                  ],
+                  [
+                    "text",
+                    " {a_link|emergente} (de una página web)"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "ventana emergente (de una página web)"
+    ]
+  },
+  {
+    "meta": {
+      "id": "soda",
+      "uuid": "f11ae3a8-0c24-4610-8ba2-4b79f6b21a7a",
+      "lang": "en",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "soda",
+        "sodas",
+        "soda water",
+        "soda pop",
+        "ice-cream soda"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "soda",
+      "prs": [
+        {
+          "mw": "ˈsoːdə",
+          "sound": {
+            "audio": "soda0001"
+          }
+        }
+      ]
+    },
+    "fl": "noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "vrs": [
+                  {
+                    "vl": "or",
+                    "va": "soda water"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}soda "
+                  ],
+                  [
+                    "gl",
+                    "feminine"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "vrs": [
+                  {
+                    "vl": "or",
+                    "va": "soda pop"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|gaseosa} "
+                  ],
+                  [
+                    "gl",
+                    "feminine"
+                  ],
+                  [
+                    "text",
+                    "; refresco "
+                  ],
+                  [
+                    "gl",
+                    "masculine"
+                  ],
+                  [
+                    "text",
+                    "; fresco "
+                  ],
+                  [
+                    "gl",
+                    "masculine"
+                  ],
+                  [
+                    "text",
+                    "; soda "
+                  ],
+                  [
+                    "gl",
+                    "feminine Central America, Caribbean region"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "3",
+                "vrs": [
+                  {
+                    "vl": "or",
+                    "va": "ice-cream soda"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|refresco} "
+                  ],
+                  [
+                    "gl",
+                    "masculine"
+                  ],
+                  [
+                    "text",
+                    " con helado"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "soda",
+      "gaseosa; refresco; fresco; soda",
+      "refresco con helado"
+    ]
+  }
+]

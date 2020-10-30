@@ -1,0 +1,421 @@
+[
+  {
+    "meta": {
+      "id": "pop:1",
+      "uuid": "97584938-e995-4b1d-bca8-1355cb8ff2a9",
+      "language": "en",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "pop",
+        "popped",
+        "popping",
+        "pops",
+        "pop the question",
+        "to pop out",
+        "to pop the question"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "pop",
+      "pronunciations": [
+        {
+          "writtenPronunciation": "ˈpɑp",
+          "sound": {
+            "audio": "pop00001",
+            "language": "en",
+            "country": "us"
+          }
+        }
+      ]
+    },
+    "partOfSpeechRaw": "verb",
+    "inflections": [
+      {
+        "inflection": "popped"
+      },
+      {
+        "inflection": "popping"
+      }
+    ],
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{sx|burst||} {bc}{a_link|reventarse}, {a_link|estallar}"
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|saltar} (dícese de un corcho)"
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|ir}, {a_link|venir}, o aparecer abruptamente "
+                ],
+                "examples": [
+                  {
+                    "text": "he popped into the house"
+                  },
+                  {
+                    "text": "a menu pops up"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{sx|protrude||} {bc}{a_link|salirse}, {a_link|saltarse} "
+                ],
+                "examples": [
+                  {
+                    "text": "my eyes popped out of my head"
+                  }
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "to pop out"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}proponerle matrimonio a alguien"
+                ]
+              },
+              "subjectStatusLabels": [
+                "familiar"
+              ],
+              "variations": [
+                {
+                  "variant": "to pop the question"
+                }
+              ]
+            }
+          ]
+        ],
+        "verbDivider": "intransitive verb"
+      },
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{sx|burst||} {bc}{a_link|reventar}"
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}sacar o meter abruptamente "
+                ],
+                "examples": [
+                  {
+                    "text": "he popped it into his mouth"
+                  },
+                  {
+                    "text": "she popped her head out the window"
+                  }
+                ]
+              }
+            }
+          ]
+        ],
+        "verbDivider": "transitive verb"
+      }
+    ],
+    "shortDefinitions": [
+      "burst : reventarse, estallar",
+      "saltar (dícese de un corcho)",
+      "ir, venir, o aparecer abruptamente"
+    ]
+  },
+  {
+    "meta": {
+      "id": "pop:2",
+      "uuid": "c308ab5f-fabb-498f-a485-4e967058bf56",
+      "language": "en",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "pop"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "pop"
+    },
+    "partOfSpeechRaw": "adjective",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|popular} "
+                ],
+                "examples": [
+                  {
+                    "text": "pop music"
+                  },
+                  {
+                    "text": "pop star"
+                  }
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "popular"
+    ]
+  },
+  {
+    "meta": {
+      "id": "pop:3",
+      "uuid": "44461b8a-69db-4901-904c-deccbb152d4f",
+      "language": "en",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "pop",
+        "pops"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "pop"
+    },
+    "partOfSpeechRaw": "noun",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|estallido} ",
+                  " {a_link|pequeño} (de un globo, etc.)"
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{sx|soda||} {bc}{a_link|refresco} ",
+                  ", {a_link|gaseosa} "
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "estallido pequeño (de un globo, etc.)",
+      "soda : refresco, gaseosa"
+    ]
+  },
+  {
+    "meta": {
+      "id": "pop",
+      "uuid": "72d1abfa-fde9-4408-bedf-18d9265b85ff",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "pop"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "pop",
+      "pronunciations": [
+        {
+          "writtenPronunciation": "ˈpop"
+        }
+      ]
+    },
+    "partOfSpeechRaw": "adjective & masculine noun",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}pop (music)"
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "pop (music)"
+    ]
+  },
+  {
+    "meta": {
+      "id": "pop-up",
+      "uuid": "c302ff51-35d2-41f7-88d3-5ae9832588c1",
+      "language": "en",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "pop-up",
+        "pop-ups"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "pop-up",
+      "pronunciations": [
+        {
+          "writtenPronunciation": "ˈpɑpˌʌp"
+        }
+      ]
+    },
+    "partOfSpeechRaw": "noun",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|ventana} ",
+                  " {a_link|emergente} (de una página web)"
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "ventana emergente (de una página web)"
+    ]
+  },
+  {
+    "meta": {
+      "id": "soda",
+      "uuid": "f11ae3a8-0c24-4610-8ba2-4b79f6b21a7a",
+      "language": "en",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "soda",
+        "sodas",
+        "soda water",
+        "soda pop",
+        "ice-cream soda"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "soda",
+      "pronunciations": [
+        {
+          "writtenPronunciation": "ˈsoːdə",
+          "sound": {
+            "audio": "soda0001",
+            "language": "en",
+            "country": "us"
+          }
+        }
+      ]
+    },
+    "partOfSpeechRaw": "noun",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}soda "
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "soda water",
+                  "variantLabel": "or"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|gaseosa} ",
+                  "; refresco ",
+                  "; fresco ",
+                  "; soda "
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "soda pop",
+                  "variantLabel": "or"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|refresco} ",
+                  " con helado"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "ice-cream soda",
+                  "variantLabel": "or"
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "soda",
+      "gaseosa; refresco; fresco; soda",
+      "refresco con helado"
+    ]
+  }
+]

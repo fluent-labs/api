@@ -1,0 +1,743 @@
+[
+  {
+    "meta": {
+      "id": "vale",
+      "uuid": "349c7ab4-6135-4eed-9090-1aad55d4a8c2",
+      "lang": "en",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "vale",
+        "vales"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "vale",
+      "prs": [
+        {
+          "mw": "ˈveɪl",
+          "sound": {
+            "audio": "vale0001"
+          }
+        }
+      ]
+    },
+    "fl": "noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|valle} "
+                  ],
+                  [
+                    "gl",
+                    "masculine"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "valle"
+    ]
+  },
+  {
+    "meta": {
+      "id": "vale",
+      "uuid": "b7277301-a192-4b6d-b0ed-f46cf8728fc1",
+      "lang": "es",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "vale"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "vale"
+    },
+    "fl": "masculine noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|voucher}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{sx|pagaré||} {bc}promissory note, {a_link|IOU}"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "voucher",
+      "pagaré : promissory note, IOU"
+    ]
+  },
+  {
+    "meta": {
+      "id": "comino",
+      "uuid": "1925d2d6-9496-4874-bb9d-31aef8c6264a",
+      "lang": "es",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "comino",
+        "me vale un comino"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "comino",
+      "prs": [
+        {
+          "sound": {
+            "audio": "comin01sp"
+          }
+        }
+      ]
+    },
+    "fl": "masculine noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|cumin}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "vrs": [
+                  {
+                    "va": "me vale un comino"
+                  }
+                ],
+                "sls": [
+                  "familiar"
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}not to matter to someone "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "no me importa un comino",
+                        "tr": "I couldn't care less"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "cumin",
+      "not to matter to someone"
+    ]
+  },
+  {
+    "meta": {
+      "id": "valer",
+      "uuid": "732ebc07-7a06-4fcf-8fe3-397854c65918",
+      "lang": "es",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "valer",
+        "hacerse valer",
+        "más vale",
+        "valerse",
+        "valerse de",
+        "valerse solo",
+        "valerse por sí mismo"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "valer",
+      "prs": [
+        {
+          "sound": {
+            "audio": "valer01sp"
+          }
+        }
+      ]
+    },
+    "fl": "transitive verb",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to {a_link|be worth} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "valen una fortuna",
+                        "tr": "they're worth a fortune"
+                      },
+                      {
+                        "t": "no vale protestar",
+                        "tr": "there's no point in protesting"
+                      },
+                      {
+                        "t": "valer la pena",
+                        "tr": "to be worth the trouble"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to {a_link|cost} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "¿cuánto vale?",
+                        "tr": "how much does it cost?"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "3",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to {a_link|earn}, to {a_link|gain} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "le valió una reprimenda",
+                        "tr": "it earned him a reprimand"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "4",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to {a_link|protect}, to {a_link|aid} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "¡válgame Dios!",
+                        "tr": "God help me!"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "5",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to be equal to"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      },
+      {
+        "vd": "intransitive verb",
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to have value "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "sus consejos no valen para nada",
+                        "tr": "his advice is worthless"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to be valid, to {a_link|count} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "¡eso no vale!",
+                        "tr": "that doesn't count!"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "3",
+                "vrs": [
+                  {
+                    "va": "hacerse valer"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to {a_link|assert oneself}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "4",
+                "vrs": [
+                  {
+                    "va": "más vale"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}it's better "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "más vale que te vayas",
+                        "tr": "you'd better go"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "dros": [
+      {
+        "drp": "valerse",
+        "fl": "reflexive verb",
+        "def": [
+          {
+            "sseq": [
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "1",
+                    "vrs": [
+                      {
+                        "va": "valerse de",
+                        "vac": "~ de"
+                      }
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to {a_link|take advantage of}"
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "2",
+                    "vrs": [
+                      {
+                        "va": "valerse solo"
+                      },
+                      {
+                        "vl": "or",
+                        "va": "valerse por sí mismo"
+                      }
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to look after oneself"
+                      ]
+                    ]
+                  }
+                ]
+              ],
+              [
+                [
+                  "sense",
+                  {
+                    "sn": "3",
+                    "sls": [
+                      "Mexico"
+                    ],
+                    "dt": [
+                      [
+                        "text",
+                        "{bc}to be fair "
+                      ],
+                      [
+                        "vis",
+                        [
+                          {
+                            "t": "no se vale",
+                            "tr": "it's not fair"
+                          }
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    "suppl": {
+      "cjts": [
+        {
+          "cjid": "gppt",
+          "cjfs": [
+            "valiendo",
+            "valido"
+          ]
+        },
+        {
+          "cjid": "pind",
+          "cjfs": [
+            "valgo",
+            "vales",
+            "vale",
+            "valemos",
+            "valéis",
+            "valen"
+          ]
+        },
+        {
+          "cjid": "pret",
+          "cjfs": [
+            "valía",
+            "valías",
+            "valía",
+            "valíamos",
+            "valíais",
+            "valían"
+          ]
+        },
+        {
+          "cjid": "pprf",
+          "cjfs": [
+            "valí",
+            "valiste",
+            "valió",
+            "valimos",
+            "valisteis",
+            "valieron"
+          ]
+        },
+        {
+          "cjid": "futr",
+          "cjfs": [
+            "valdré",
+            "valdrás",
+            "valdrá",
+            "valdremos",
+            "valdréis",
+            "valdrán"
+          ]
+        },
+        {
+          "cjid": "cond",
+          "cjfs": [
+            "valdría",
+            "valdrías",
+            "valdría",
+            "valdríamos",
+            "valdríais",
+            "valdrían"
+          ]
+        },
+        {
+          "cjid": "psub",
+          "cjfs": [
+            "valga",
+            "valgas",
+            "valga",
+            "valgamos",
+            "valgáis",
+            "valgan"
+          ]
+        },
+        {
+          "cjid": "pisb1",
+          "cjfs": [
+            "valiera",
+            "valieras",
+            "valiera",
+            "valiéramos",
+            "valierais",
+            "valieran"
+          ]
+        },
+        {
+          "cjid": "pisb2",
+          "cjfs": [
+            "valiese",
+            "valieses",
+            "valiese",
+            "valiésemos",
+            "valieseis",
+            "valiesen"
+          ]
+        },
+        {
+          "cjid": "fsub",
+          "cjfs": [
+            "valiere",
+            "valieres",
+            "valiere",
+            "valiéremos",
+            "valiereis",
+            "valieren"
+          ]
+        },
+        {
+          "cjid": "ppci",
+          "cjfs": [
+            "he valido",
+            "has valido",
+            "ha valido",
+            "hemos valido",
+            "habéis valido",
+            "han valido"
+          ]
+        },
+        {
+          "cjid": "ppsi",
+          "cjfs": [
+            "había valido",
+            "habías valido",
+            "había valido",
+            "habíamos valido",
+            "habíais valido",
+            "habían valido"
+          ]
+        },
+        {
+          "cjid": "pant",
+          "cjfs": [
+            "hube valido",
+            "hubiste valido",
+            "hubo valido",
+            "hubimos valido",
+            "hubisteis valido",
+            "hubieron valido"
+          ]
+        },
+        {
+          "cjid": "fpin",
+          "cjfs": [
+            "habré valido",
+            "habrás valido",
+            "habrá valido",
+            "habremos valido",
+            "habréis valido",
+            "habrán valido"
+          ]
+        },
+        {
+          "cjid": "cpef",
+          "cjfs": [
+            "habría valido",
+            "habrías valido",
+            "habría valido",
+            "habríamos valido",
+            "habríais valido",
+            "habrían valido"
+          ]
+        },
+        {
+          "cjid": "ppfs",
+          "cjfs": [
+            "haya valido",
+            "hayas valido",
+            "haya valido",
+            "hayamos valido",
+            "hayáis valido",
+            "hayan valido"
+          ]
+        },
+        {
+          "cjid": "ppss1",
+          "cjfs": [
+            "hubiera valido",
+            "hubieras valido",
+            "hubiera valido",
+            "hubiéramos valido",
+            "hubierais valido",
+            "hubieran valido"
+          ]
+        },
+        {
+          "cjid": "ppss2",
+          "cjfs": [
+            "hubiese valido",
+            "hubieses valido",
+            "hubiese valido",
+            "hubiésemos valido",
+            "hubieseis valido",
+            "hubiesen valido"
+          ]
+        },
+        {
+          "cjid": "fpsb",
+          "cjfs": [
+            "hubiere valido",
+            "hubieres valido",
+            "hubiere valido",
+            "hubiéremos valido",
+            "hubiereis valido",
+            "hubieren valido"
+          ]
+        },
+        {
+          "cjid": "impf",
+          "cjfs": [
+            "-",
+            "vale",
+            "valga",
+            "valgamos",
+            "valed",
+            "valgan"
+          ]
+        }
+      ]
+    },
+    "shortdef": [
+      "to be worth",
+      "to cost",
+      "to earn, to gain"
+    ]
+  }
+]

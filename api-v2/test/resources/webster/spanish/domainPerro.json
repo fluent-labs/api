@@ -1,0 +1,355 @@
+[
+  {
+    "meta": {
+      "id": "perro",
+      "uuid": "61204cd4-99ac-4179-aa71-5903fb4bcd97",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "perro",
+        "perra",
+        "perro callejero",
+        "perro caliente",
+        "perro cobrador",
+        "perro faldero",
+        "perro guardián",
+        "perro guía/lazarillo",
+        "perro guía",
+        "perro lazarillo",
+        "perro pastor",
+        "perro policía",
+        "perro rastreador",
+        "perro salchicha"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "perro",
+      "pronunciations": [
+        {
+          "sound": {
+            "audio": "perro01sp",
+            "language": "en",
+            "country": "us"
+          }
+        }
+      ]
+    },
+    "partOfSpeechRaw": "noun",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|dog}, {a_link|bitch} "
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}stray dog"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "perro callejero"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|hot dog}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "perro caliente"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|retriever}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "perro cobrador"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|lapdog}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "perro faldero"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|guard dog}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "perro guardián"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|guide dog}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "perro guía/lazarillo"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|sheepdog}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "perro pastor"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}police dog"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "perro policía"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}tracking dog"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "perro rastreador"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|dachshund}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "perro salchicha"
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "dog, bitch",
+      "stray dog",
+      "hot dog"
+    ]
+  },
+  {
+    "meta": {
+      "id": "corriente:1",
+      "uuid": "08f63eb9-1c13-4d87-96da-1011eccdaa61",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "corriente",
+        "perro corriente"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "corriente",
+      "pronunciations": [
+        {
+          "sound": {
+            "audio": "corri03sp",
+            "language": "en",
+            "country": "us"
+          }
+        }
+      ]
+    },
+    "partOfSpeechRaw": "adjective",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|common}, {a_link|everyday}"
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|current}, {a_link|present}"
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|cheap}, {a_link|trashy}"
+                ]
+              },
+              "subjectStatusLabels": [
+                "Mexico"
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|mutt}"
+                ]
+              },
+              "subjectStatusLabels": [
+                "Mexico"
+              ],
+              "variations": [
+                {
+                  "variant": "perro corriente"
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "common, everyday",
+      "current, present",
+      "cheap, trashy"
+    ]
+  },
+  {
+    "meta": {
+      "id": "guardian",
+      "uuid": "23cea466-8e63-47b0-8532-743651d72dfe",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "guardián",
+        "guardiana",
+        "guardianes",
+        "perro guardián"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "guardián"
+    },
+    "partOfSpeechRaw": "noun",
+    "inflections": [
+      {
+        "inflection": "guardianes",
+        "inflectionLabel": "masculine plural"
+      }
+    ],
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{sx|guarda||} {bc}{a_link|security guard}, {a_link|watchman}"
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|guardian}, {a_link|keeper}"
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|watchdog}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "perro guardián"
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "guarda : security guard, watchman",
+      "guardian, keeper",
+      "watchdog"
+    ]
+  }
+]

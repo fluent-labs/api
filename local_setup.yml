@@ -35,3 +35,10 @@ services:
       AUTH_TOKEN: "simpletoken"
     ports:
     - 8000:8000
+  refresh:
+    build: ./content/definitions/refresh-definitions
+    environment:
+      AUTH_TOKEN: NkGqLA46oMxKNr*!+wG*@{zHE[b[?LB?UB3cC=ZLevGG!4ms(WA7X+wA\u003eXn!YhoW
+      ELASTICSEARCH_URL: localhost
+      ELASTICSEARCH_USERNAME: changeme
+      ELASTICSEARCH_PASSWORD: changeme

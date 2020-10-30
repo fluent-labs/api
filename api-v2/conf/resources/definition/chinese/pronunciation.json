@@ -1,0 +1,2456 @@
+[
+  {
+    "pinyin": "a",
+    "ipa": "[ɑ]",
+    "zhuyin": "ㄚ",
+    "wadeGiles": "a"
+  },
+  {
+    "pinyin": "ai",
+    "ipa": "[aɪ̯]",
+    "zhuyin": "ㄞ",
+    "wadeGiles": "ai"
+  },
+  {
+    "pinyin": "ao",
+    "ipa": "[ɑʊ̯]",
+    "zhuyin": "ㄠ",
+    "wadeGiles": "ao"
+  },
+  {
+    "pinyin": "an",
+    "ipa": "[an]",
+    "zhuyin": "ㄢ",
+    "wadeGiles": "an"
+  },
+  {
+    "pinyin": "ang",
+    "ipa": "[ɑŋ]",
+    "zhuyin": "ㄤ",
+    "wadeGiles": "ang"
+  },
+  {
+    "pinyin": "e",
+    "ipa": "[ɯ̯ʌ]",
+    "zhuyin": "ㄜ",
+    "wadeGiles": "e"
+  },
+  {
+    "pinyin": "ei",
+    "ipa": "[eɪ̯]",
+    "zhuyin": "ㄟ",
+    "wadeGiles": "ei"
+  },
+  {
+    "pinyin": "en",
+    "ipa": "[ən]",
+    "zhuyin": "ㄣ",
+    "wadeGiles": "en"
+  },
+  {
+    "pinyin": "eng",
+    "ipa": "[əŋ]",
+    "zhuyin": "ㄥ",
+    "wadeGiles": "eng"
+  },
+  {
+    "pinyin": "er",
+    "ipa": "[ɑɻ]",
+    "zhuyin": "ㄦ",
+    "wadeGiles": "erh"
+  },
+  {
+    "pinyin": "o",
+    "ipa": "[ɔ]",
+    "zhuyin": "ㄛ",
+    "wadeGiles": "o"
+  },
+  {
+    "pinyin": "ou",
+    "ipa": "[ɤʊ̯]",
+    "zhuyin": "ㄡ",
+    "wadeGiles": "ou"
+  },
+  {
+    "pinyin": "yi",
+    "ipa": "[i]",
+    "zhuyin": "ㄧ",
+    "wadeGiles": "i"
+  },
+  {
+    "pinyin": "ya",
+    "ipa": "[i̯ɑ]",
+    "zhuyin": "ㄧㄚ",
+    "wadeGiles": "ya"
+  },
+  {
+    "pinyin": "yao",
+    "ipa": "[i̯ɑʊ̯]",
+    "zhuyin": "ㄧㄠ",
+    "wadeGiles": "yao"
+  },
+  {
+    "pinyin": "ye",
+    "ipa": "[iɛ]",
+    "zhuyin": "ㄧㄝ",
+    "wadeGiles": "yeh"
+  },
+  {
+    "pinyin": "you",
+    "ipa": "[i̯ɤʊ̯]",
+    "zhuyin": "ㄧㄡ",
+    "wadeGiles": "yu"
+  },
+  {
+    "pinyin": "yan",
+    "ipa": "[iɛn]",
+    "zhuyin": "ㄧㄢ",
+    "wadeGiles": "yan"
+  },
+  {
+    "pinyin": "yang",
+    "ipa": "[i̯ɑŋ]",
+    "zhuyin": "ㄧㄤ",
+    "wadeGiles": "yang"
+  },
+  {
+    "pinyin": "yin",
+    "ipa": "[in]",
+    "zhuyin": "ㄧㄣ",
+    "wadeGiles": "yin"
+  },
+  {
+    "pinyin": "ying",
+    "ipa": "[iŋ]",
+    "zhuyin": "ㄧㄥ",
+    "wadeGiles": "ying"
+  },
+  {
+    "pinyin": "yong",
+    "ipa": "",
+    "zhuyin": "ㄩㄥ",
+    "wadeGiles": "yung"
+  },
+  {
+    "pinyin": "wu",
+    "ipa": "[u]",
+    "zhuyin": "ㄨ",
+    "wadeGiles": "wu"
+  },
+  {
+    "pinyin": "wa",
+    "ipa": "[u̯ɑ]",
+    "zhuyin": "ㄨㄚ",
+    "wadeGiles": "wa"
+  },
+  {
+    "pinyin": "wai",
+    "ipa": "[u̯aɪ̯]",
+    "zhuyin": "ㄨㄞ",
+    "wadeGiles": "wai"
+  },
+  {
+    "pinyin": "wei",
+    "ipa": "[u̯eɪ̯]",
+    "zhuyin": "ㄨㄟ",
+    "wadeGiles": "wei"
+  },
+  {
+    "pinyin": "wo",
+    "ipa": "[u̯ɔ]",
+    "zhuyin": "ㄨㄛ",
+    "wadeGiles": "wo"
+  },
+  {
+    "pinyin": "wan",
+    "ipa": "[u̯an]",
+    "zhuyin": "ㄨㄢ",
+    "wadeGiles": "wan"
+  },
+  {
+    "pinyin": "wang",
+    "ipa": "[u̯ɑŋ]",
+    "zhuyin": "ㄨㄤ",
+    "wadeGiles": "wang"
+  },
+  {
+    "pinyin": "wen",
+    "ipa": "[u̯ən]",
+    "zhuyin": "ㄨㄣ",
+    "wadeGiles": "wen"
+  },
+  {
+    "pinyin": "weng",
+    "ipa": "[u̯əŋ]",
+    "zhuyin": "ㄨㄥ",
+    "wadeGiles": "weng"
+  },
+  {
+    "pinyin": "yu",
+    "ipa": "[y]",
+    "zhuyin": "ㄩ",
+    "wadeGiles": "yü"
+  },
+  {
+    "pinyin": "yue",
+    "ipa": "[y̯œ]",
+    "zhuyin": "ㄩㄝ",
+    "wadeGiles": "yüeh"
+  },
+  {
+    "pinyin": "yuan",
+    "ipa": "[y̯ɛn]",
+    "zhuyin": "ㄩㄢ",
+    "wadeGiles": "yüan"
+  },
+  {
+    "pinyin": "yun",
+    "ipa": "[yn]",
+    "zhuyin": "ㄩㄣ",
+    "wadeGiles": "yün"
+  },
+  {
+    "pinyin": "ba",
+    "ipa": "[pɑ]",
+    "zhuyin": "ㄅㄚ",
+    "wadeGiles": "pa"
+  },
+  {
+    "pinyin": "bai",
+    "ipa": "[paɪ̯]",
+    "zhuyin": "ㄅㄞ",
+    "wadeGiles": "pai"
+  },
+  {
+    "pinyin": "bao",
+    "ipa": "[pɑʊ̯]",
+    "zhuyin": "ㄅㄠ",
+    "wadeGiles": "pao"
+  },
+  {
+    "pinyin": "ban",
+    "ipa": "[pan]",
+    "zhuyin": "ㄅㄢ",
+    "wadeGiles": "pan"
+  },
+  {
+    "pinyin": "bang",
+    "ipa": "[pɑŋ]",
+    "zhuyin": "ㄅㄤ",
+    "wadeGiles": "pang"
+  },
+  {
+    "pinyin": "bei",
+    "ipa": "[peɪ̯]",
+    "zhuyin": "ㄅㄟ",
+    "wadeGiles": "pei"
+  },
+  {
+    "pinyin": "ben",
+    "ipa": "[pən]",
+    "zhuyin": "ㄅㄣ",
+    "wadeGiles": "pen"
+  },
+  {
+    "pinyin": "beng",
+    "ipa": "[pəŋ]",
+    "zhuyin": "ㄅㄥ",
+    "wadeGiles": "peng"
+  },
+  {
+    "pinyin": "bo",
+    "ipa": "[pu̯ɔ]",
+    "zhuyin": "ㄅㄛ",
+    "wadeGiles": "po"
+  },
+  {
+    "pinyin": "bi",
+    "ipa": "[pi]",
+    "zhuyin": "ㄅㄧ",
+    "wadeGiles": "pi"
+  },
+  {
+    "pinyin": "biao",
+    "ipa": "[pi̯ɑʊ̯]",
+    "zhuyin": "ㄅㄧㄠ",
+    "wadeGiles": "piao"
+  },
+  {
+    "pinyin": "bie",
+    "ipa": "[piɛ]",
+    "zhuyin": "ㄅㄧㄝ",
+    "wadeGiles": "pieh"
+  },
+  {
+    "pinyin": "bian",
+    "ipa": "[piɛn]",
+    "zhuyin": "ㄅㄧㄢ",
+    "wadeGiles": "pien"
+  },
+  {
+    "pinyin": "bin",
+    "ipa": "[pin]",
+    "zhuyin": "ㄅㄧㄣ",
+    "wadeGiles": "pin"
+  },
+  {
+    "pinyin": "bing",
+    "ipa": "[piŋ]",
+    "zhuyin": "ㄅㄧㄥ",
+    "wadeGiles": "ping"
+  },
+  {
+    "pinyin": "bu",
+    "ipa": "[pu]",
+    "zhuyin": "ㄅㄨ",
+    "wadeGiles": "pu"
+  },
+  {
+    "pinyin": "pa",
+    "ipa": "[pʰɑ]",
+    "zhuyin": "ㄆㄚ",
+    "wadeGiles": "p'a"
+  },
+  {
+    "pinyin": "pai",
+    "ipa": "[pʰaɪ̯]",
+    "zhuyin": "ㄆㄞ",
+    "wadeGiles": "p'ai"
+  },
+  {
+    "pinyin": "pao",
+    "ipa": "[pʰɑʊ̯]",
+    "zhuyin": "ㄆㄠ",
+    "wadeGiles": "p'ao"
+  },
+  {
+    "pinyin": "pan",
+    "ipa": "[pʰan]",
+    "zhuyin": "ㄆㄢ",
+    "wadeGiles": "p'an"
+  },
+  {
+    "pinyin": "pang",
+    "ipa": "[pʰɑŋ]",
+    "zhuyin": "ㄆㄤ",
+    "wadeGiles": "p'ang"
+  },
+  {
+    "pinyin": "pei",
+    "ipa": "[pʰeɪ̯]",
+    "zhuyin": "ㄆㄟ",
+    "wadeGiles": "p'ei"
+  },
+  {
+    "pinyin": "pen",
+    "ipa": "[pʰən]",
+    "zhuyin": "ㄆㄣ",
+    "wadeGiles": "p'en"
+  },
+  {
+    "pinyin": "peng",
+    "ipa": "[pʰəŋ]",
+    "zhuyin": "ㄆㄥ",
+    "wadeGiles": "p'eng"
+  },
+  {
+    "pinyin": "po",
+    "ipa": "[pʰu̯ɔ]",
+    "zhuyin": "ㄆㄛ",
+    "wadeGiles": "p'o"
+  },
+  {
+    "pinyin": "pou",
+    "ipa": "[pʰɤʊ̯]",
+    "zhuyin": "ㄆㄡ",
+    "wadeGiles": "p'ou"
+  },
+  {
+    "pinyin": "pi",
+    "ipa": "[pʰi]",
+    "zhuyin": "ㄆㄧ",
+    "wadeGiles": "p'i"
+  },
+  {
+    "pinyin": "piao",
+    "ipa": "[pʰi̯ɑʊ̯]",
+    "zhuyin": "ㄆㄧㄠ",
+    "wadeGiles": "p'iao"
+  },
+  {
+    "pinyin": "pie",
+    "ipa": "[pʰiɛ]",
+    "zhuyin": "ㄆㄧㄝ",
+    "wadeGiles": "p'ieh"
+  },
+  {
+    "pinyin": "pian",
+    "ipa": "[pʰiɛn]",
+    "zhuyin": "ㄆㄧㄢ",
+    "wadeGiles": "p'ien"
+  },
+  {
+    "pinyin": "pin",
+    "ipa": "[pʰin]",
+    "zhuyin": "ㄆㄧㄣ",
+    "wadeGiles": "p'in"
+  },
+  {
+    "pinyin": "ping",
+    "ipa": "[pʰiŋ]",
+    "zhuyin": "ㄆㄧㄥ",
+    "wadeGiles": "p'ing"
+  },
+  {
+    "pinyin": "pu",
+    "ipa": "[pʰu]",
+    "zhuyin": "ㄆㄨ",
+    "wadeGiles": "p'u"
+  },
+  {
+    "pinyin": "ma",
+    "ipa": "[mɑ]",
+    "zhuyin": "ㄇㄚ",
+    "wadeGiles": "ma"
+  },
+  {
+    "pinyin": "mai",
+    "ipa": "[maɪ̯]",
+    "zhuyin": "ㄇㄞ",
+    "wadeGiles": "mai"
+  },
+  {
+    "pinyin": "mao",
+    "ipa": "[mɑʊ̯]",
+    "zhuyin": "ㄇㄠ",
+    "wadeGiles": "mao"
+  },
+  {
+    "pinyin": "man",
+    "ipa": "[man]",
+    "zhuyin": "ㄇㄢ",
+    "wadeGiles": "man"
+  },
+  {
+    "pinyin": "mang",
+    "ipa": "[mɑŋ]",
+    "zhuyin": "ㄇㄤ",
+    "wadeGiles": "mang"
+  },
+  {
+    "pinyin": "me",
+    "ipa": "[mɯ̯ʌ]",
+    "zhuyin": "ㄇㄜ",
+    "wadeGiles": "me"
+  },
+  {
+    "pinyin": "mei",
+    "ipa": "[meɪ̯]",
+    "zhuyin": "ㄇㄟ",
+    "wadeGiles": "mei"
+  },
+  {
+    "pinyin": "men",
+    "ipa": "[mən]",
+    "zhuyin": "ㄇㄣ",
+    "wadeGiles": "men"
+  },
+  {
+    "pinyin": "meng",
+    "ipa": "[məŋ]",
+    "zhuyin": "ㄇㄥ",
+    "wadeGiles": "meng"
+  },
+  {
+    "pinyin": "mo",
+    "ipa": "[mu̯ɔ]",
+    "zhuyin": "ㄇㄛ",
+    "wadeGiles": "mo"
+  },
+  {
+    "pinyin": "mou",
+    "ipa": "[mɤʊ̯]",
+    "zhuyin": "ㄇㄡ",
+    "wadeGiles": "mou"
+  },
+  {
+    "pinyin": "mi",
+    "ipa": "[mi]",
+    "zhuyin": "ㄇㄧ",
+    "wadeGiles": "mi"
+  },
+  {
+    "pinyin": "miao",
+    "ipa": "[mi̯ɑʊ̯]",
+    "zhuyin": "ㄇㄧㄠ",
+    "wadeGiles": "miao"
+  },
+  {
+    "pinyin": "mie",
+    "ipa": "[miɛ]",
+    "zhuyin": "ㄇㄧㄝ",
+    "wadeGiles": "mieh"
+  },
+  {
+    "pinyin": "miu",
+    "ipa": "[mi̯ɤʊ̯]",
+    "zhuyin": "ㄇㄧㄡ",
+    "wadeGiles": "miu"
+  },
+  {
+    "pinyin": "mian",
+    "ipa": "[miɛn]",
+    "zhuyin": "ㄇㄧㄢ",
+    "wadeGiles": "mien"
+  },
+  {
+    "pinyin": "min",
+    "ipa": "[min]",
+    "zhuyin": "ㄇㄧㄣ",
+    "wadeGiles": "min"
+  },
+  {
+    "pinyin": "ming",
+    "ipa": "[miŋ]",
+    "zhuyin": "ㄇㄧㄥ",
+    "wadeGiles": "ming"
+  },
+  {
+    "pinyin": "mu",
+    "ipa": "[mu]",
+    "zhuyin": "ㄇㄨ",
+    "wadeGiles": "mu"
+  },
+  {
+    "pinyin": "fa",
+    "ipa": "[fɑ]",
+    "zhuyin": "ㄈㄚ",
+    "wadeGiles": "fa"
+  },
+  {
+    "pinyin": "fan",
+    "ipa": "[fan]",
+    "zhuyin": "ㄈㄢ",
+    "wadeGiles": "fan"
+  },
+  {
+    "pinyin": "fang",
+    "ipa": "[fɑŋ]",
+    "zhuyin": "ㄈㄤ",
+    "wadeGiles": "fang"
+  },
+  {
+    "pinyin": "fei",
+    "ipa": "[feɪ̯]",
+    "zhuyin": "ㄈㄟ",
+    "wadeGiles": "fei"
+  },
+  {
+    "pinyin": "fen",
+    "ipa": "[fən]",
+    "zhuyin": "ㄈㄣ",
+    "wadeGiles": "fen"
+  },
+  {
+    "pinyin": "feng",
+    "ipa": "[fəŋ]",
+    "zhuyin": "ㄈㄥ",
+    "wadeGiles": "feng"
+  },
+  {
+    "pinyin": "fo",
+    "ipa": "[fu̯ɔ]",
+    "zhuyin": "ㄈㄛ",
+    "wadeGiles": "fo"
+  },
+  {
+    "pinyin": "fou",
+    "ipa": "[fɤʊ̯]",
+    "zhuyin": "ㄈㄡ",
+    "wadeGiles": "fou"
+  },
+  {
+    "pinyin": "fu",
+    "ipa": "[fu]",
+    "zhuyin": "ㄈㄨ",
+    "wadeGiles": "fu"
+  },
+  {
+    "pinyin": "da",
+    "ipa": "[tɑ]",
+    "zhuyin": "ㄉㄚ",
+    "wadeGiles": "ta"
+  },
+  {
+    "pinyin": "dai",
+    "ipa": "[taɪ̯]",
+    "zhuyin": "ㄉㄞ",
+    "wadeGiles": "tai"
+  },
+  {
+    "pinyin": "dao",
+    "ipa": "[tɑʊ̯]",
+    "zhuyin": "ㄉㄠ",
+    "wadeGiles": "tao"
+  },
+  {
+    "pinyin": "dan",
+    "ipa": "[tan]",
+    "zhuyin": "ㄉㄢ",
+    "wadeGiles": "tan"
+  },
+  {
+    "pinyin": "dang",
+    "ipa": "[tɑŋ]",
+    "zhuyin": "ㄉㄤ",
+    "wadeGiles": "tang"
+  },
+  {
+    "pinyin": "de",
+    "ipa": "[tɯ̯ʌ]",
+    "zhuyin": "ㄉㄜ",
+    "wadeGiles": "te"
+  },
+  {
+    "pinyin": "dei",
+    "ipa": "[teɪ̯]",
+    "zhuyin": "ㄉㄟ",
+    "wadeGiles": "tei"
+  },
+  {
+    "pinyin": "den",
+    "ipa": "[tən]",
+    "zhuyin": "ㄉㄣ",
+    "wadeGiles": "ten"
+  },
+  {
+    "pinyin": "deng",
+    "ipa": "[təŋ]",
+    "zhuyin": "ㄉㄥ",
+    "wadeGiles": "teng"
+  },
+  {
+    "pinyin": "dou",
+    "ipa": "[tɤʊ̯]",
+    "zhuyin": "ㄉㄡ",
+    "wadeGiles": "tou"
+  },
+  {
+    "pinyin": "dong",
+    "ipa": "[tʊŋ]",
+    "zhuyin": "ㄉㄨㄥ",
+    "wadeGiles": "tung"
+  },
+  {
+    "pinyin": "di",
+    "ipa": "[ti]",
+    "zhuyin": "ㄉㄧ",
+    "wadeGiles": "ti"
+  },
+  {
+    "pinyin": "diao",
+    "ipa": "[ti̯ɑʊ̯]",
+    "zhuyin": "ㄉㄧㄠ",
+    "wadeGiles": "tiao"
+  },
+  {
+    "pinyin": "die",
+    "ipa": "[tiɛ]",
+    "zhuyin": "ㄉㄧㄝ",
+    "wadeGiles": "tieh"
+  },
+  {
+    "pinyin": "diu",
+    "ipa": "[ti̯ɤʊ̯]",
+    "zhuyin": "ㄉㄧㄡ",
+    "wadeGiles": "tiu"
+  },
+  {
+    "pinyin": "dian",
+    "ipa": "[tiɛn]",
+    "zhuyin": "ㄉㄧㄢ",
+    "wadeGiles": "tien"
+  },
+  {
+    "pinyin": "ding",
+    "ipa": "[tiŋ]",
+    "zhuyin": "ㄉㄧㄥ",
+    "wadeGiles": "ting"
+  },
+  {
+    "pinyin": "du",
+    "ipa": "[tu]",
+    "zhuyin": "ㄉㄨ",
+    "wadeGiles": "tu"
+  },
+  {
+    "pinyin": "dui",
+    "ipa": "[tu̯eɪ̯]",
+    "zhuyin": "ㄉㄨㄟ",
+    "wadeGiles": "tui"
+  },
+  {
+    "pinyin": "duo",
+    "ipa": "[tu̯ɔ]",
+    "zhuyin": "ㄉㄨㄛ",
+    "wadeGiles": "to"
+  },
+  {
+    "pinyin": "duan",
+    "ipa": "[tu̯an]",
+    "zhuyin": "ㄉㄨㄢ",
+    "wadeGiles": "tuan"
+  },
+  {
+    "pinyin": "dun",
+    "ipa": "[tu̯ən]",
+    "zhuyin": "ㄉㄨㄣ",
+    "wadeGiles": "tun"
+  },
+  {
+    "pinyin": "ta",
+    "ipa": "[tʰɑ]",
+    "zhuyin": "ㄊㄚ",
+    "wadeGiles": "t'a"
+  },
+  {
+    "pinyin": "tai",
+    "ipa": "[tʰaɪ̯]",
+    "zhuyin": "ㄊㄞ",
+    "wadeGiles": "t'ai"
+  },
+  {
+    "pinyin": "tao",
+    "ipa": "[tʰɑʊ̯]",
+    "zhuyin": "ㄊㄠ",
+    "wadeGiles": "t'ao"
+  },
+  {
+    "pinyin": "tan",
+    "ipa": "[tʰan]",
+    "zhuyin": "ㄊㄢ",
+    "wadeGiles": "t'an"
+  },
+  {
+    "pinyin": "tang",
+    "ipa": "[tʰɑŋ]",
+    "zhuyin": "ㄊㄤ",
+    "wadeGiles": "t'ang"
+  },
+  {
+    "pinyin": "te",
+    "ipa": "[tʰɯ̯ʌ]",
+    "zhuyin": "ㄊㄜ",
+    "wadeGiles": "t'e"
+  },
+  {
+    "pinyin": "teng",
+    "ipa": "[tʰəŋ]",
+    "zhuyin": "ㄊㄥ",
+    "wadeGiles": "t'eng"
+  },
+  {
+    "pinyin": "tou",
+    "ipa": "[tʰɤʊ̯]",
+    "zhuyin": "ㄊㄡ",
+    "wadeGiles": "t'ou"
+  },
+  {
+    "pinyin": "tong",
+    "ipa": "[tʰʊŋ]",
+    "zhuyin": "ㄊㄨㄥ",
+    "wadeGiles": "t'ung"
+  },
+  {
+    "pinyin": "ti",
+    "ipa": "[tʰi]",
+    "zhuyin": "ㄊㄧ",
+    "wadeGiles": "t'i"
+  },
+  {
+    "pinyin": "tiao",
+    "ipa": "[tʰi̯ɑʊ̯]",
+    "zhuyin": "ㄊㄧㄠ",
+    "wadeGiles": "t'iao"
+  },
+  {
+    "pinyin": "tie",
+    "ipa": "[tʰiɛ]",
+    "zhuyin": "ㄊㄧㄝ",
+    "wadeGiles": "t'ieh"
+  },
+  {
+    "pinyin": "tian",
+    "ipa": "[tʰiɛn]",
+    "zhuyin": "ㄊㄧㄢ",
+    "wadeGiles": "t'ien"
+  },
+  {
+    "pinyin": "ting",
+    "ipa": "[tʰiŋ]",
+    "zhuyin": "ㄊㄧㄥ",
+    "wadeGiles": "t'ing"
+  },
+  {
+    "pinyin": "tu",
+    "ipa": "[tʰu]",
+    "zhuyin": "ㄊㄨ",
+    "wadeGiles": "t'u"
+  },
+  {
+    "pinyin": "tui",
+    "ipa": "[tʰu̯eɪ̯]",
+    "zhuyin": "ㄊㄨㄟ",
+    "wadeGiles": "t'ui"
+  },
+  {
+    "pinyin": "tuo",
+    "ipa": "[tʰu̯ɔ]",
+    "zhuyin": "ㄊㄨㄛ",
+    "wadeGiles": "t'o"
+  },
+  {
+    "pinyin": "tuan",
+    "ipa": "[tʰu̯an]",
+    "zhuyin": "ㄊㄨㄢ",
+    "wadeGiles": "t'uan"
+  },
+  {
+    "pinyin": "tun",
+    "ipa": "[tʰu̯ən]",
+    "zhuyin": "ㄊㄨㄣ",
+    "wadeGiles": "t'un"
+  },
+  {
+    "pinyin": "na",
+    "ipa": "[nɑ]",
+    "zhuyin": "ㄋㄚ",
+    "wadeGiles": "na"
+  },
+  {
+    "pinyin": "nai",
+    "ipa": "[naɪ̯]",
+    "zhuyin": "ㄋㄞ",
+    "wadeGiles": "nai"
+  },
+  {
+    "pinyin": "nao",
+    "ipa": "[nɑʊ̯]",
+    "zhuyin": "ㄋㄠ",
+    "wadeGiles": "nao"
+  },
+  {
+    "pinyin": "nan",
+    "ipa": "[nan]",
+    "zhuyin": "ㄋㄢ",
+    "wadeGiles": "nan"
+  },
+  {
+    "pinyin": "nang",
+    "ipa": "[nɑŋ]",
+    "zhuyin": "ㄋㄤ",
+    "wadeGiles": "nang"
+  },
+  {
+    "pinyin": "ne",
+    "ipa": "[nɯ̯ʌ]",
+    "zhuyin": "ㄋㄜ",
+    "wadeGiles": "ne"
+  },
+  {
+    "pinyin": "nei",
+    "ipa": "[neɪ̯]",
+    "zhuyin": "ㄋㄟ",
+    "wadeGiles": "nei"
+  },
+  {
+    "pinyin": "nen",
+    "ipa": "[nən]",
+    "zhuyin": "ㄋㄣ",
+    "wadeGiles": "nen"
+  },
+  {
+    "pinyin": "neng",
+    "ipa": "[nəŋ]",
+    "zhuyin": "ㄋㄥ",
+    "wadeGiles": "neng"
+  },
+  {
+    "pinyin": "nou",
+    "ipa": "[nɤʊ̯]",
+    "zhuyin": "ㄋㄡ",
+    "wadeGiles": "nou"
+  },
+  {
+    "pinyin": "nong",
+    "ipa": "[nʊŋ]",
+    "zhuyin": "ㄋㄨㄥ",
+    "wadeGiles": "nung"
+  },
+  {
+    "pinyin": "ni",
+    "ipa": "[ni]",
+    "zhuyin": "ㄋㄧ",
+    "wadeGiles": "ni"
+  },
+  {
+    "pinyin": "niao",
+    "ipa": "[ni̯ɑʊ̯]",
+    "zhuyin": "ㄋㄧㄠ",
+    "wadeGiles": "niao"
+  },
+  {
+    "pinyin": "nie",
+    "ipa": "[niɛ]",
+    "zhuyin": "ㄋㄧㄝ",
+    "wadeGiles": "nieh"
+  },
+  {
+    "pinyin": "niu",
+    "ipa": "[ni̯ɤʊ̯]",
+    "zhuyin": "ㄋㄧㄡ",
+    "wadeGiles": "niu"
+  },
+  {
+    "pinyin": "nian",
+    "ipa": "[niɛn]",
+    "zhuyin": "ㄋㄧㄢ",
+    "wadeGiles": "nien"
+  },
+  {
+    "pinyin": "niang",
+    "ipa": "[ni̯ɑŋ]",
+    "zhuyin": "ㄋㄧㄤ",
+    "wadeGiles": "niang"
+  },
+  {
+    "pinyin": "nin",
+    "ipa": "[nin]",
+    "zhuyin": "ㄋㄧㄣ",
+    "wadeGiles": "nin"
+  },
+  {
+    "pinyin": "ning",
+    "ipa": "[niŋ]",
+    "zhuyin": "ㄋㄧㄥ",
+    "wadeGiles": "ning"
+  },
+  {
+    "pinyin": "nu",
+    "ipa": "[nu]",
+    "zhuyin": "ㄋㄨ",
+    "wadeGiles": "nu"
+  },
+  {
+    "pinyin": "nuo",
+    "ipa": "[nu̯ɔ]",
+    "zhuyin": "ㄋㄨㄛ",
+    "wadeGiles": "no"
+  },
+  {
+    "pinyin": "nuan",
+    "ipa": "[nu̯an]",
+    "zhuyin": "ㄋㄨㄢ",
+    "wadeGiles": "nuan"
+  },
+  {
+    "pinyin": "nü",
+    "ipa": "[ny]",
+    "zhuyin": "ㄋㄩ",
+    "wadeGiles": "nü"
+  },
+  {
+    "pinyin": "nüe",
+    "ipa": "[ny̯œ]",
+    "zhuyin": "ㄋㄩㄝ",
+    "wadeGiles": "nüeh"
+  },
+  {
+    "pinyin": "la",
+    "ipa": "[lɑ]",
+    "zhuyin": "ㄌㄚ",
+    "wadeGiles": "la"
+  },
+  {
+    "pinyin": "lai",
+    "ipa": "[laɪ̯]",
+    "zhuyin": "ㄌㄞ",
+    "wadeGiles": "lai"
+  },
+  {
+    "pinyin": "lao",
+    "ipa": "[lɑʊ̯]",
+    "zhuyin": "ㄌㄠ",
+    "wadeGiles": "lao"
+  },
+  {
+    "pinyin": "lan",
+    "ipa": "[lan]",
+    "zhuyin": "ㄌㄢ",
+    "wadeGiles": "lan"
+  },
+  {
+    "pinyin": "lang",
+    "ipa": "[lɑŋ]",
+    "zhuyin": "ㄌㄤ",
+    "wadeGiles": "lang"
+  },
+  {
+    "pinyin": "le",
+    "ipa": "[lɯ̯ʌ]",
+    "zhuyin": "ㄌㄜ",
+    "wadeGiles": "le"
+  },
+  {
+    "pinyin": "lei",
+    "ipa": "[leɪ̯]",
+    "zhuyin": "ㄌㄟ",
+    "wadeGiles": "lei"
+  },
+  {
+    "pinyin": "leng",
+    "ipa": "[ləŋ]",
+    "zhuyin": "ㄌㄥ",
+    "wadeGiles": "leng"
+  },
+  {
+    "pinyin": "lo",
+    "ipa": "[lu̯ɔ]",
+    "zhuyin": "ㄌㄛ",
+    "wadeGiles": "lo"
+  },
+  {
+    "pinyin": "lou",
+    "ipa": "[lɤʊ̯]",
+    "zhuyin": "ㄌㄡ",
+    "wadeGiles": "lou"
+  },
+  {
+    "pinyin": "long",
+    "ipa": "[lʊŋ]",
+    "zhuyin": "ㄌㄨㄥ",
+    "wadeGiles": "lung"
+  },
+  {
+    "pinyin": "li",
+    "ipa": "[li]",
+    "zhuyin": "ㄌㄧ",
+    "wadeGiles": "li"
+  },
+  {
+    "pinyin": "lia",
+    "ipa": "[li̯ɑ]",
+    "zhuyin": "ㄌㄧㄚ",
+    "wadeGiles": "lia"
+  },
+  {
+    "pinyin": "liao",
+    "ipa": "[li̯ɑʊ̯]",
+    "zhuyin": "ㄌㄧㄠ",
+    "wadeGiles": "liao"
+  },
+  {
+    "pinyin": "lie",
+    "ipa": "[liɛ]",
+    "zhuyin": "ㄌㄧㄝ",
+    "wadeGiles": "lieh"
+  },
+  {
+    "pinyin": "liu",
+    "ipa": "[li̯ɤʊ̯]",
+    "zhuyin": "ㄌㄧㄡ",
+    "wadeGiles": "liu"
+  },
+  {
+    "pinyin": "lian",
+    "ipa": "[liɛn]",
+    "zhuyin": "ㄌㄧㄢ",
+    "wadeGiles": "lien"
+  },
+  {
+    "pinyin": "liang",
+    "ipa": "[li̯ɑŋ]",
+    "zhuyin": "ㄌㄧㄤ",
+    "wadeGiles": "liang"
+  },
+  {
+    "pinyin": "lin",
+    "ipa": "[lin]",
+    "zhuyin": "ㄌㄧㄣ",
+    "wadeGiles": "lin"
+  },
+  {
+    "pinyin": "ling",
+    "ipa": "[liŋ]",
+    "zhuyin": "ㄌㄧㄥ",
+    "wadeGiles": "ling"
+  },
+  {
+    "pinyin": "lu",
+    "ipa": "[lu]",
+    "zhuyin": "ㄌㄨ",
+    "wadeGiles": "lu"
+  },
+  {
+    "pinyin": "luo",
+    "ipa": "[lu̯ɔ]",
+    "zhuyin": "ㄌㄨㄛ",
+    "wadeGiles": "lo"
+  },
+  {
+    "pinyin": "luan",
+    "ipa": "[lu̯an]",
+    "zhuyin": "ㄌㄨㄢ",
+    "wadeGiles": "luan"
+  },
+  {
+    "pinyin": "lun",
+    "ipa": "[lu̯ən]",
+    "zhuyin": "ㄌㄨㄣ",
+    "wadeGiles": "lun"
+  },
+  {
+    "pinyin": "lü",
+    "ipa": "[ly]",
+    "zhuyin": "ㄌㄩ",
+    "wadeGiles": "lü"
+  },
+  {
+    "pinyin": "lüe",
+    "ipa": "[ly̯œ]",
+    "zhuyin": "ㄌㄩㄝ",
+    "wadeGiles": "lüeh"
+  },
+  {
+    "pinyin": "za",
+    "ipa": "[tsɑ]",
+    "zhuyin": "ㄗㄚ",
+    "wadeGiles": "tsa"
+  },
+  {
+    "pinyin": "zai",
+    "ipa": "[tsaɪ̯]",
+    "zhuyin": "ㄗㄞ",
+    "wadeGiles": "tsai"
+  },
+  {
+    "pinyin": "zao",
+    "ipa": "[tsɑʊ̯]",
+    "zhuyin": "ㄗㄠ",
+    "wadeGiles": "tsao"
+  },
+  {
+    "pinyin": "zan",
+    "ipa": "[tsan]",
+    "zhuyin": "ㄗㄢ",
+    "wadeGiles": "tsan"
+  },
+  {
+    "pinyin": "zang",
+    "ipa": "[tsɑŋ]",
+    "zhuyin": "ㄗㄤ",
+    "wadeGiles": "tsang"
+  },
+  {
+    "pinyin": "ze",
+    "ipa": "[tsɯ̯ʌ]",
+    "zhuyin": "ㄗㄜ",
+    "wadeGiles": "tse"
+  },
+  {
+    "pinyin": "zei",
+    "ipa": "[tseɪ̯]",
+    "zhuyin": "ㄗㄟ",
+    "wadeGiles": "tsei"
+  },
+  {
+    "pinyin": "zen",
+    "ipa": "[tsən]",
+    "zhuyin": "ㄗㄣ",
+    "wadeGiles": "tsen"
+  },
+  {
+    "pinyin": "zeng",
+    "ipa": "[tsəŋ]",
+    "zhuyin": "ㄗㄥ",
+    "wadeGiles": "tseng"
+  },
+  {
+    "pinyin": "zou",
+    "ipa": "[tsɤʊ̯]",
+    "zhuyin": "ㄗㄡ",
+    "wadeGiles": "tsou"
+  },
+  {
+    "pinyin": "zong",
+    "ipa": "[tsʊŋ]",
+    "zhuyin": "ㄗㄨㄥ",
+    "wadeGiles": "tsung"
+  },
+  {
+    "pinyin": "zi",
+    "ipa": "[tsɿ]",
+    "zhuyin": "ㄗ",
+    "wadeGiles": "tzu"
+  },
+  {
+    "pinyin": "zu",
+    "ipa": "[tsu]",
+    "zhuyin": "ㄗㄨ",
+    "wadeGiles": "tsu"
+  },
+  {
+    "pinyin": "zui",
+    "ipa": "[tsu̯eɪ̯]",
+    "zhuyin": "ㄗㄨㄟ",
+    "wadeGiles": "tsui"
+  },
+  {
+    "pinyin": "zuo",
+    "ipa": "[tsu̯ɔ]",
+    "zhuyin": "ㄗㄨㄛ",
+    "wadeGiles": "tso"
+  },
+  {
+    "pinyin": "zuan",
+    "ipa": "[tsu̯an]",
+    "zhuyin": "ㄗㄨㄢ",
+    "wadeGiles": "tsuan"
+  },
+  {
+    "pinyin": "zun",
+    "ipa": "[tsu̯ən]",
+    "zhuyin": "ㄗㄨㄣ",
+    "wadeGiles": "tsun"
+  },
+  {
+    "pinyin": "ca",
+    "ipa": "[tsʰɑ]",
+    "zhuyin": "ㄘㄚ",
+    "wadeGiles": "ts'a"
+  },
+  {
+    "pinyin": "cai",
+    "ipa": "[tsʰaɪ̯]",
+    "zhuyin": "ㄘㄞ",
+    "wadeGiles": "ts'ai"
+  },
+  {
+    "pinyin": "cao",
+    "ipa": "[tsʰɑʊ̯]",
+    "zhuyin": "ㄘㄠ",
+    "wadeGiles": "ts'ao"
+  },
+  {
+    "pinyin": "can",
+    "ipa": "[tsʰan]",
+    "zhuyin": "ㄘㄢ",
+    "wadeGiles": "ts'an"
+  },
+  {
+    "pinyin": "cang",
+    "ipa": "[tsʰɑŋ]",
+    "zhuyin": "ㄘㄤ",
+    "wadeGiles": "ts'ang"
+  },
+  {
+    "pinyin": "ce",
+    "ipa": "[tsʰɯ̯ʌ]",
+    "zhuyin": "ㄘㄜ",
+    "wadeGiles": "ts'e"
+  },
+  {
+    "pinyin": "cei",
+    "ipa": "[tsʰeɪ̯]",
+    "zhuyin": "ㄘㄟ",
+    "wadeGiles": "ts'ei"
+  },
+  {
+    "pinyin": "cen",
+    "ipa": "[tsʰən]",
+    "zhuyin": "ㄘㄣ",
+    "wadeGiles": "ts'en"
+  },
+  {
+    "pinyin": "ceng",
+    "ipa": "[tsʰəŋ]",
+    "zhuyin": "ㄘㄥ",
+    "wadeGiles": "ts'eng"
+  },
+  {
+    "pinyin": "cou",
+    "ipa": "[tsʰɤʊ̯]",
+    "zhuyin": "ㄘㄡ",
+    "wadeGiles": "ts'ou"
+  },
+  {
+    "pinyin": "cong",
+    "ipa": "[tsʰʊŋ]",
+    "zhuyin": "ㄘㄨㄥ",
+    "wadeGiles": "ts'ung"
+  },
+  {
+    "pinyin": "ci",
+    "ipa": "[tsʰɿ]",
+    "zhuyin": "ㄘ",
+    "wadeGiles": "tz'u"
+  },
+  {
+    "pinyin": "cu",
+    "ipa": "[tsʰu]",
+    "zhuyin": "ㄘㄨ",
+    "wadeGiles": "ts'u"
+  },
+  {
+    "pinyin": "cui",
+    "ipa": "[tsʰu̯eɪ̯]",
+    "zhuyin": "ㄘㄨㄟ",
+    "wadeGiles": "ts'ui"
+  },
+  {
+    "pinyin": "cuo",
+    "ipa": "[tsʰu̯ɔ]",
+    "zhuyin": "ㄘㄨㄛ",
+    "wadeGiles": "ts'o"
+  },
+  {
+    "pinyin": "cuan",
+    "ipa": "[tsʰu̯an]",
+    "zhuyin": "ㄘㄨㄢ",
+    "wadeGiles": "ts'uan"
+  },
+  {
+    "pinyin": "cun",
+    "ipa": "[tsʰu̯ən]",
+    "zhuyin": "ㄘㄨㄣ",
+    "wadeGiles": "ts'un"
+  },
+  {
+    "pinyin": "sa",
+    "ipa": "[sɑ]",
+    "zhuyin": "ㄙㄚ",
+    "wadeGiles": "sa"
+  },
+  {
+    "pinyin": "sai",
+    "ipa": "[saɪ̯]",
+    "zhuyin": "ㄙㄞ",
+    "wadeGiles": "sai"
+  },
+  {
+    "pinyin": "sao",
+    "ipa": "[sɑʊ̯]",
+    "zhuyin": "ㄙㄠ",
+    "wadeGiles": "sao"
+  },
+  {
+    "pinyin": "san",
+    "ipa": "[san]",
+    "zhuyin": "ㄙㄢ",
+    "wadeGiles": "san"
+  },
+  {
+    "pinyin": "sang",
+    "ipa": "[sɑŋ]",
+    "zhuyin": "ㄙㄤ",
+    "wadeGiles": "sang"
+  },
+  {
+    "pinyin": "se",
+    "ipa": "[sɯ̯ʌ]",
+    "zhuyin": "ㄙㄜ",
+    "wadeGiles": "se"
+  },
+  {
+    "pinyin": "sen",
+    "ipa": "[sən]",
+    "zhuyin": "ㄙㄣ",
+    "wadeGiles": "sen"
+  },
+  {
+    "pinyin": "seng",
+    "ipa": "[səŋ]",
+    "zhuyin": "ㄙㄥ",
+    "wadeGiles": "seng"
+  },
+  {
+    "pinyin": "sou",
+    "ipa": "[sɤʊ̯]",
+    "zhuyin": "ㄙㄡ",
+    "wadeGiles": "sou"
+  },
+  {
+    "pinyin": "song",
+    "ipa": "[sʊŋ]",
+    "zhuyin": "ㄙㄨㄥ",
+    "wadeGiles": "sung"
+  },
+  {
+    "pinyin": "si",
+    "ipa": "[sɿ]",
+    "zhuyin": "ㄙ",
+    "wadeGiles": "ssu"
+  },
+  {
+    "pinyin": "su",
+    "ipa": "[su]",
+    "zhuyin": "ㄙㄨ",
+    "wadeGiles": "su"
+  },
+  {
+    "pinyin": "sui",
+    "ipa": "[su̯eɪ̯]",
+    "zhuyin": "ㄙㄨㄟ",
+    "wadeGiles": "sui"
+  },
+  {
+    "pinyin": "suo",
+    "ipa": "[su̯ɔ]",
+    "zhuyin": "ㄙㄨㄛ",
+    "wadeGiles": "so"
+  },
+  {
+    "pinyin": "suan",
+    "ipa": "[su̯an]",
+    "zhuyin": "ㄙㄨㄢ",
+    "wadeGiles": "suan"
+  },
+  {
+    "pinyin": "sun",
+    "ipa": "[su̯ən]",
+    "zhuyin": "ㄙㄨㄣ",
+    "wadeGiles": "sun"
+  },
+  {
+    "pinyin": "zha",
+    "ipa": "[tʂɑ]",
+    "zhuyin": "ㄓㄚ",
+    "wadeGiles": "cha"
+  },
+  {
+    "pinyin": "zhai",
+    "ipa": "[tʂaɪ̯]",
+    "zhuyin": "ㄓㄞ",
+    "wadeGiles": "chai"
+  },
+  {
+    "pinyin": "zhao",
+    "ipa": "[tʂɑʊ̯]",
+    "zhuyin": "ㄓㄠ",
+    "wadeGiles": "chao"
+  },
+  {
+    "pinyin": "zhan",
+    "ipa": "[tʂan]",
+    "zhuyin": "ㄓㄢ",
+    "wadeGiles": "chan"
+  },
+  {
+    "pinyin": "zhang",
+    "ipa": "[tʂɑŋ]",
+    "zhuyin": "ㄓㄤ",
+    "wadeGiles": "chang"
+  },
+  {
+    "pinyin": "zhe",
+    "ipa": "[tʂɯ̯ʌ]",
+    "zhuyin": "ㄓㄜ",
+    "wadeGiles": "che"
+  },
+  {
+    "pinyin": "zhei",
+    "ipa": "[tʂeɪ̯]",
+    "zhuyin": "ㄓㄟ",
+    "wadeGiles": "chei"
+  },
+  {
+    "pinyin": "zhen",
+    "ipa": "[tʂən]",
+    "zhuyin": "ㄓㄣ",
+    "wadeGiles": "chen"
+  },
+  {
+    "pinyin": "zheng",
+    "ipa": "[tʂəŋ]",
+    "zhuyin": "ㄓㄥ",
+    "wadeGiles": "cheng"
+  },
+  {
+    "pinyin": "zhou",
+    "ipa": "[tʂɤʊ̯]",
+    "zhuyin": "ㄓㄡ",
+    "wadeGiles": "chou"
+  },
+  {
+    "pinyin": "zhong",
+    "ipa": "[tʂʊŋ]",
+    "zhuyin": "ㄓㄨㄥ",
+    "wadeGiles": "chung"
+  },
+  {
+    "pinyin": "zhi",
+    "ipa": "[tʂʅ]",
+    "zhuyin": "ㄓ",
+    "wadeGiles": "chih"
+  },
+  {
+    "pinyin": "zhu",
+    "ipa": "[tʂu]",
+    "zhuyin": "ㄓㄨ",
+    "wadeGiles": "chu"
+  },
+  {
+    "pinyin": "zhua",
+    "ipa": "[tʂu̯ɑ]",
+    "zhuyin": "ㄓㄨㄚ",
+    "wadeGiles": "chua"
+  },
+  {
+    "pinyin": "zhuai",
+    "ipa": "[tʂu̯aɪ̯]",
+    "zhuyin": "ㄓㄨㄞ",
+    "wadeGiles": "chuai"
+  },
+  {
+    "pinyin": "zhui",
+    "ipa": "[tʂu̯eɪ̯]",
+    "zhuyin": "ㄓㄨㄟ",
+    "wadeGiles": "chui"
+  },
+  {
+    "pinyin": "zhuo",
+    "ipa": "[tʂu̯ɔ]",
+    "zhuyin": "ㄓㄨㄛ",
+    "wadeGiles": "cho"
+  },
+  {
+    "pinyin": "zhuan",
+    "ipa": "[tʂu̯an]",
+    "zhuyin": "ㄓㄨㄢ",
+    "wadeGiles": "chuan"
+  },
+  {
+    "pinyin": "zhuang",
+    "ipa": "[tʂ̯u̯ɑŋ]",
+    "zhuyin": "ㄓㄨㄤ",
+    "wadeGiles": "chuang"
+  },
+  {
+    "pinyin": "zhun",
+    "ipa": "[tʂu̯ən]",
+    "zhuyin": "ㄓㄨㄣ",
+    "wadeGiles": "chun"
+  },
+  {
+    "pinyin": "cha",
+    "ipa": "[tʂʰɑ]",
+    "zhuyin": "ㄔㄚ",
+    "wadeGiles": "ch'a"
+  },
+  {
+    "pinyin": "chai",
+    "ipa": "[tʂʰaɪ̯]",
+    "zhuyin": "ㄔㄞ",
+    "wadeGiles": "ch'ai"
+  },
+  {
+    "pinyin": "chao",
+    "ipa": "[tʂʰɑʊ̯]",
+    "zhuyin": "ㄔㄠ",
+    "wadeGiles": "ch'ao"
+  },
+  {
+    "pinyin": "chan",
+    "ipa": "[tʂʰan]",
+    "zhuyin": "ㄔㄢ",
+    "wadeGiles": "ch'an"
+  },
+  {
+    "pinyin": "chang",
+    "ipa": "[tʂʰɑŋ]",
+    "zhuyin": "ㄔㄤ",
+    "wadeGiles": "ch'ang"
+  },
+  {
+    "pinyin": "che",
+    "ipa": "[tʂʰɯ̯ʌ]",
+    "zhuyin": "ㄔㄜ",
+    "wadeGiles": "ch'e"
+  },
+  {
+    "pinyin": "chen",
+    "ipa": "[tʂʰən]",
+    "zhuyin": "ㄔㄣ",
+    "wadeGiles": "ch'en"
+  },
+  {
+    "pinyin": "cheng",
+    "ipa": "[tʂʰəŋ]",
+    "zhuyin": "ㄔㄥ",
+    "wadeGiles": "ch'eng"
+  },
+  {
+    "pinyin": "chou",
+    "ipa": "[tʂʰɤʊ̯]",
+    "zhuyin": "ㄔㄡ",
+    "wadeGiles": "ch'ou"
+  },
+  {
+    "pinyin": "chong",
+    "ipa": "[tʂʰʊŋ]",
+    "zhuyin": "ㄔㄨㄥ",
+    "wadeGiles": "ch'ung"
+  },
+  {
+    "pinyin": "chi",
+    "ipa": "[tʂʰʅ]",
+    "zhuyin": "ㄔ",
+    "wadeGiles": "ch'ih"
+  },
+  {
+    "pinyin": "chu",
+    "ipa": "[tʂʰu]",
+    "zhuyin": "ㄔㄨ",
+    "wadeGiles": "ch'u"
+  },
+  {
+    "pinyin": "chua",
+    "ipa": "[tʂʰu̯ɑ]",
+    "zhuyin": "ㄔㄨㄚ",
+    "wadeGiles": "ch'ua"
+  },
+  {
+    "pinyin": "chuai",
+    "ipa": "[tʂʰu̯aɪ̯]",
+    "zhuyin": "ㄔㄨㄞ",
+    "wadeGiles": "ch'uai"
+  },
+  {
+    "pinyin": "chui",
+    "ipa": "[tʂʰu̯eɪ̯]",
+    "zhuyin": "ㄔㄨㄟ",
+    "wadeGiles": "ch'ui"
+  },
+  {
+    "pinyin": "chuo",
+    "ipa": "[tʂʰu̯ɔ]",
+    "zhuyin": "ㄔㄨㄛ",
+    "wadeGiles": "ch'o"
+  },
+  {
+    "pinyin": "chuan",
+    "ipa": "[tʂʰu̯an]",
+    "zhuyin": "ㄔㄨㄢ",
+    "wadeGiles": "ch'uan"
+  },
+  {
+    "pinyin": "chuang",
+    "ipa": "[tʂʰu̯ɑŋ]",
+    "zhuyin": "ㄔㄨㄤ",
+    "wadeGiles": "ch'uang"
+  },
+  {
+    "pinyin": "chun",
+    "ipa": "[tʂʰu̯ən]",
+    "zhuyin": "ㄔㄨㄣ",
+    "wadeGiles": "ch'un"
+  },
+  {
+    "pinyin": "sha",
+    "ipa": "[ʂɑ]",
+    "zhuyin": "ㄕㄚ",
+    "wadeGiles": "sha"
+  },
+  {
+    "pinyin": "shai",
+    "ipa": "[ʂaɪ̯]",
+    "zhuyin": "ㄕㄞ",
+    "wadeGiles": "shai"
+  },
+  {
+    "pinyin": "shao",
+    "ipa": "[ʂɑʊ̯]",
+    "zhuyin": "ㄕㄠ",
+    "wadeGiles": "shao"
+  },
+  {
+    "pinyin": "shan",
+    "ipa": "[ʂan]",
+    "zhuyin": "ㄕㄢ",
+    "wadeGiles": "shan"
+  },
+  {
+    "pinyin": "shang",
+    "ipa": "[ʂɑŋ]",
+    "zhuyin": "ㄕㄤ",
+    "wadeGiles": "shang"
+  },
+  {
+    "pinyin": "she",
+    "ipa": "[ʂɯ̯ʌ]",
+    "zhuyin": "ㄕㄜ",
+    "wadeGiles": "she"
+  },
+  {
+    "pinyin": "shei",
+    "ipa": "[ʂeɪ̯]",
+    "zhuyin": "ㄕㄟ",
+    "wadeGiles": "shei"
+  },
+  {
+    "pinyin": "shen",
+    "ipa": "[ʂən]",
+    "zhuyin": "ㄕㄣ",
+    "wadeGiles": "shen"
+  },
+  {
+    "pinyin": "sheng",
+    "ipa": "[ʂəŋ]",
+    "zhuyin": "ㄕㄥ",
+    "wadeGiles": "sheng"
+  },
+  {
+    "pinyin": "shou",
+    "ipa": "[ʂɤʊ̯]",
+    "zhuyin": "ㄕㄡ",
+    "wadeGiles": "shou"
+  },
+  {
+    "pinyin": "shi",
+    "ipa": "[ʂʅ]",
+    "zhuyin": "ㄕ",
+    "wadeGiles": "shih"
+  },
+  {
+    "pinyin": "shu",
+    "ipa": "[ʂu]",
+    "zhuyin": "ㄕㄨ",
+    "wadeGiles": "shu"
+  },
+  {
+    "pinyin": "shua",
+    "ipa": "[ʂu̯ɑ]",
+    "zhuyin": "ㄕㄨㄚ",
+    "wadeGiles": "shua"
+  },
+  {
+    "pinyin": "shuai",
+    "ipa": "[ʂu̯aɪ̯]",
+    "zhuyin": "ㄕㄨㄞ",
+    "wadeGiles": "shuai"
+  },
+  {
+    "pinyin": "shui",
+    "ipa": "[ʂu̯eɪ̯]",
+    "zhuyin": "ㄕㄨㄟ",
+    "wadeGiles": "shui"
+  },
+  {
+    "pinyin": "shuo",
+    "ipa": "[ʂu̯ɔ]",
+    "zhuyin": "ㄕㄨㄛ",
+    "wadeGiles": "sho"
+  },
+  {
+    "pinyin": "shuan",
+    "ipa": "[ʂu̯an]",
+    "zhuyin": "ㄕㄨㄢ",
+    "wadeGiles": "shuan"
+  },
+  {
+    "pinyin": "shuang",
+    "ipa": "[ʂu̯ɑŋ]",
+    "zhuyin": "ㄕㄨㄤ",
+    "wadeGiles": "shuang"
+  },
+  {
+    "pinyin": "shun",
+    "ipa": "[ʂu̯ən]",
+    "zhuyin": "ㄕㄨㄣ",
+    "wadeGiles": "shun"
+  },
+  {
+    "pinyin": "rao",
+    "ipa": "[ʐɑʊ̯]",
+    "zhuyin": "ㄖㄠ",
+    "wadeGiles": "jao"
+  },
+  {
+    "pinyin": "ran",
+    "ipa": "[ʐan]",
+    "zhuyin": "ㄖㄢ",
+    "wadeGiles": "jan"
+  },
+  {
+    "pinyin": "rang",
+    "ipa": "[ʐɑŋ]",
+    "zhuyin": "ㄖㄤ",
+    "wadeGiles": "jang"
+  },
+  {
+    "pinyin": "re",
+    "ipa": "[ʐɯ̯ʌ]",
+    "zhuyin": "ㄖㄜ",
+    "wadeGiles": "je"
+  },
+  {
+    "pinyin": "ren",
+    "ipa": "[ʐən]",
+    "zhuyin": "ㄖㄣ",
+    "wadeGiles": "jen"
+  },
+  {
+    "pinyin": "reng",
+    "ipa": "[ʐəŋ]",
+    "zhuyin": "ㄖㄥ",
+    "wadeGiles": "jeng"
+  },
+  {
+    "pinyin": "rou",
+    "ipa": "[ʐɤʊ̯]",
+    "zhuyin": "ㄖㄡ",
+    "wadeGiles": "jou"
+  },
+  {
+    "pinyin": "rong",
+    "ipa": "[ʐʊŋ]",
+    "zhuyin": "ㄖㄨㄥ",
+    "wadeGiles": "jung"
+  },
+  {
+    "pinyin": "ri",
+    "ipa": "[ʐʅ]",
+    "zhuyin": "ㄖ",
+    "wadeGiles": "jih"
+  },
+  {
+    "pinyin": "ru",
+    "ipa": "[ʐu]",
+    "zhuyin": "ㄖㄨ",
+    "wadeGiles": "ju"
+  },
+  {
+    "pinyin": "rua",
+    "ipa": "[ʐu̯ɑ]",
+    "zhuyin": "ㄖㄨㄚ",
+    "wadeGiles": "jua"
+  },
+  {
+    "pinyin": "rui",
+    "ipa": "[ʐu̯eɪ̯]",
+    "zhuyin": "ㄖㄨㄟ",
+    "wadeGiles": "jui"
+  },
+  {
+    "pinyin": "ruo",
+    "ipa": "[ʐu̯ɔ]",
+    "zhuyin": "ㄖㄨㄛ",
+    "wadeGiles": "jo"
+  },
+  {
+    "pinyin": "ruan",
+    "ipa": "[ʐu̯an]",
+    "zhuyin": "ㄖㄨㄢ",
+    "wadeGiles": "juan"
+  },
+  {
+    "pinyin": "run",
+    "ipa": "[ʐu̯ən]",
+    "zhuyin": "ㄖㄨㄣ",
+    "wadeGiles": "jun"
+  },
+  {
+    "pinyin": "ji",
+    "ipa": "[tɕi]",
+    "zhuyin": "ㄐㄧ",
+    "wadeGiles": "chi"
+  },
+  {
+    "pinyin": "jia",
+    "ipa": "[tɕi̯ɑ]",
+    "zhuyin": "ㄐㄧㄚ",
+    "wadeGiles": "chia"
+  },
+  {
+    "pinyin": "jiao",
+    "ipa": "[tɕi̯ɑʊ̯]",
+    "zhuyin": "ㄐㄧㄠ",
+    "wadeGiles": "chiao"
+  },
+  {
+    "pinyin": "jie",
+    "ipa": "[tɕiɛ]",
+    "zhuyin": "ㄐㄧㄝ",
+    "wadeGiles": "chieh"
+  },
+  {
+    "pinyin": "jiu",
+    "ipa": "[tɕi̯ɤʊ̯]",
+    "zhuyin": "ㄐㄧㄡ",
+    "wadeGiles": "chiu"
+  },
+  {
+    "pinyin": "jian",
+    "ipa": "[tɕiɛn]",
+    "zhuyin": "ㄐㄧㄢ",
+    "wadeGiles": "chien"
+  },
+  {
+    "pinyin": "jiang",
+    "ipa": "[tɕi̯ɑŋ]",
+    "zhuyin": "ㄐㄧㄤ",
+    "wadeGiles": "chiang"
+  },
+  {
+    "pinyin": "jin",
+    "ipa": "[tɕin]",
+    "zhuyin": "ㄐㄧㄣ",
+    "wadeGiles": "chin"
+  },
+  {
+    "pinyin": "jing",
+    "ipa": "[tɕiŋ]",
+    "zhuyin": "ㄐㄧㄥ",
+    "wadeGiles": "ching"
+  },
+  {
+    "pinyin": "jiong",
+    "ipa": "[tɕi̯ʊŋ]",
+    "zhuyin": "ㄐㄩㄥ",
+    "wadeGiles": "chiung"
+  },
+  {
+    "pinyin": "ju",
+    "ipa": "[tɕy]",
+    "zhuyin": "ㄐㄩ",
+    "wadeGiles": "chü"
+  },
+  {
+    "pinyin": "jue",
+    "ipa": "[tɕy̯œ]",
+    "zhuyin": "ㄐㄩㄝ",
+    "wadeGiles": "chüeh"
+  },
+  {
+    "pinyin": "juan",
+    "ipa": "[tɕy̯ɛn]",
+    "zhuyin": "ㄐㄩㄢ",
+    "wadeGiles": "chüan"
+  },
+  {
+    "pinyin": "jun",
+    "ipa": "[tɕyn]",
+    "zhuyin": "ㄐㄩㄣ",
+    "wadeGiles": "chün"
+  },
+  {
+    "pinyin": "qi",
+    "ipa": "[tɕʰi]",
+    "zhuyin": "ㄑㄧ",
+    "wadeGiles": "ch'i"
+  },
+  {
+    "pinyin": "qia",
+    "ipa": "[tɕʰi̯ɑ]",
+    "zhuyin": "ㄑㄧㄚ",
+    "wadeGiles": "ch'ia"
+  },
+  {
+    "pinyin": "qiao",
+    "ipa": "[tɕʰi̯ɑʊ̯]",
+    "zhuyin": "ㄑㄧㄠ",
+    "wadeGiles": "ch'iao"
+  },
+  {
+    "pinyin": "qie",
+    "ipa": "[tɕʰiɛ]",
+    "zhuyin": "ㄑㄧㄝ",
+    "wadeGiles": "ch'ieh"
+  },
+  {
+    "pinyin": "qiu",
+    "ipa": "[tɕʰi̯ɤʊ̯]",
+    "zhuyin": "ㄑㄧㄡ",
+    "wadeGiles": "ch'iu"
+  },
+  {
+    "pinyin": "qian",
+    "ipa": "[tɕʰiɛn]",
+    "zhuyin": "ㄑㄧㄢ",
+    "wadeGiles": "ch'ien"
+  },
+  {
+    "pinyin": "qiang",
+    "ipa": "[tɕʰi̯ɑŋ]",
+    "zhuyin": "ㄑㄧㄤ",
+    "wadeGiles": "ch'iang"
+  },
+  {
+    "pinyin": "qin",
+    "ipa": "[tɕʰin]",
+    "zhuyin": "ㄑㄧㄣ",
+    "wadeGiles": "ch'in"
+  },
+  {
+    "pinyin": "qing",
+    "ipa": "[tɕʰiŋ]",
+    "zhuyin": "ㄑㄧㄥ",
+    "wadeGiles": "ch'ing"
+  },
+  {
+    "pinyin": "qiong",
+    "ipa": "[tɕʰi̯ʊŋ]",
+    "zhuyin": "ㄑㄩㄥ",
+    "wadeGiles": "ch'iung"
+  },
+  {
+    "pinyin": "qu",
+    "ipa": "[tɕʰy]",
+    "zhuyin": "ㄑㄩ",
+    "wadeGiles": "ch'ü"
+  },
+  {
+    "pinyin": "que",
+    "ipa": "[tɕʰy̯œ]",
+    "zhuyin": "ㄑㄩㄝ",
+    "wadeGiles": "ch'üeh"
+  },
+  {
+    "pinyin": "quan",
+    "ipa": "[tɕʰy̯ɛn]",
+    "zhuyin": "ㄑㄩㄢ",
+    "wadeGiles": "ch'üan"
+  },
+  {
+    "pinyin": "qun",
+    "ipa": "[tɕʰyn]",
+    "zhuyin": "ㄑㄩㄣ",
+    "wadeGiles": "ch'ün"
+  },
+  {
+    "pinyin": "xi",
+    "ipa": "[ɕi]",
+    "zhuyin": "ㄒㄧ",
+    "wadeGiles": "his"
+  },
+  {
+    "pinyin": "xia",
+    "ipa": "[ɕi̯ɑ]",
+    "zhuyin": "ㄒㄧㄚ",
+    "wadeGiles": "hsia"
+  },
+  {
+    "pinyin": "xiao",
+    "ipa": "[ɕi̯ɑʊ̯]",
+    "zhuyin": "ㄒㄧㄠ",
+    "wadeGiles": "hsiao"
+  },
+  {
+    "pinyin": "xie",
+    "ipa": "[ɕiɛ]",
+    "zhuyin": "ㄒㄧㄝ",
+    "wadeGiles": "hsieh"
+  },
+  {
+    "pinyin": "xiu",
+    "ipa": "[ɕi̯ɤʊ̯]",
+    "zhuyin": "ㄒㄧㄡ",
+    "wadeGiles": "hsiu"
+  },
+  {
+    "pinyin": "xian",
+    "ipa": "[ɕiɛn]",
+    "zhuyin": "ㄒㄧㄢ",
+    "wadeGiles": "hsien"
+  },
+  {
+    "pinyin": "xiang",
+    "ipa": "[ɕi̯ɑŋ]",
+    "zhuyin": "ㄒㄧㄤ",
+    "wadeGiles": "hsiang"
+  },
+  {
+    "pinyin": "xin",
+    "ipa": "[ɕin]",
+    "zhuyin": "ㄒㄧㄣ",
+    "wadeGiles": "hsin"
+  },
+  {
+    "pinyin": "xing",
+    "ipa": "[ɕiŋ]",
+    "zhuyin": "ㄒㄧㄥ",
+    "wadeGiles": "hsing"
+  },
+  {
+    "pinyin": "xiong",
+    "ipa": "[ɕi̯ʊŋ]",
+    "zhuyin": "ㄒㄩㄥ",
+    "wadeGiles": "hsiung"
+  },
+  {
+    "pinyin": "xu",
+    "ipa": "[ɕy]",
+    "zhuyin": "ㄒㄩ",
+    "wadeGiles": "hsü"
+  },
+  {
+    "pinyin": "xue",
+    "ipa": "[ɕy̯œ]",
+    "zhuyin": "ㄒㄩㄝ",
+    "wadeGiles": "hsüeh"
+  },
+  {
+    "pinyin": "xuan",
+    "ipa": "[ɕy̯ɛn]",
+    "zhuyin": "ㄒㄩㄢ",
+    "wadeGiles": "hsüan"
+  },
+  {
+    "pinyin": "xun",
+    "ipa": "[ɕyn]",
+    "zhuyin": "ㄒㄩㄣ",
+    "wadeGiles": "hsün"
+  },
+  {
+    "pinyin": "ga",
+    "ipa": "[kɑ]",
+    "zhuyin": "ㄍㄚ",
+    "wadeGiles": "ka"
+  },
+  {
+    "pinyin": "gai",
+    "ipa": "[kaɪ̯]",
+    "zhuyin": "ㄍㄞ",
+    "wadeGiles": "kai"
+  },
+  {
+    "pinyin": "gao",
+    "ipa": "[kɑʊ̯]",
+    "zhuyin": "ㄍㄠ",
+    "wadeGiles": "kao"
+  },
+  {
+    "pinyin": "gan",
+    "ipa": "[kan]",
+    "zhuyin": "ㄍㄢ",
+    "wadeGiles": "kan"
+  },
+  {
+    "pinyin": "gang",
+    "ipa": "[kɑŋ]",
+    "zhuyin": "ㄍㄤ",
+    "wadeGiles": "kang"
+  },
+  {
+    "pinyin": "ge",
+    "ipa": "[kɯ̯ʌ]",
+    "zhuyin": "ㄍㄜ",
+    "wadeGiles": "ke"
+  },
+  {
+    "pinyin": "gei",
+    "ipa": "[keɪ̯]",
+    "zhuyin": "ㄍㄟ",
+    "wadeGiles": "kei"
+  },
+  {
+    "pinyin": "gen",
+    "ipa": "[kən]",
+    "zhuyin": "ㄍㄣ",
+    "wadeGiles": "ken"
+  },
+  {
+    "pinyin": "geng",
+    "ipa": "[kəŋ]",
+    "zhuyin": "ㄍㄥ",
+    "wadeGiles": "keng"
+  },
+  {
+    "pinyin": "gou",
+    "ipa": "[kɤʊ̯]",
+    "zhuyin": "ㄍㄡ",
+    "wadeGiles": "kou"
+  },
+  {
+    "pinyin": "gong",
+    "ipa": "[kʊŋ]",
+    "zhuyin": "ㄍㄨㄥ",
+    "wadeGiles": "kung"
+  },
+  {
+    "pinyin": "gu",
+    "ipa": "[ku]",
+    "zhuyin": "ㄍㄨ",
+    "wadeGiles": "ku"
+  },
+  {
+    "pinyin": "gua",
+    "ipa": "[ku̯ɑ]",
+    "zhuyin": "ㄍㄨㄚ",
+    "wadeGiles": "kua"
+  },
+  {
+    "pinyin": "guai",
+    "ipa": "[ku̯aɪ̯]",
+    "zhuyin": "ㄍㄨㄞ",
+    "wadeGiles": "kuai"
+  },
+  {
+    "pinyin": "gui",
+    "ipa": "[ku̯eɪ̯]",
+    "zhuyin": "ㄍㄨㄟ",
+    "wadeGiles": "kui"
+  },
+  {
+    "pinyin": "guo",
+    "ipa": "[ku̯ɔ]",
+    "zhuyin": "ㄍㄨㄛ",
+    "wadeGiles": "ko"
+  },
+  {
+    "pinyin": "guan",
+    "ipa": "[ku̯an]",
+    "zhuyin": "ㄍㄨㄢ",
+    "wadeGiles": "kuan"
+  },
+  {
+    "pinyin": "guang",
+    "ipa": "[ku̯ɑŋ]",
+    "zhuyin": "ㄍㄨㄤ",
+    "wadeGiles": "kuang"
+  },
+  {
+    "pinyin": "gun",
+    "ipa": "[ku̯ən]",
+    "zhuyin": "ㄍㄨㄣ",
+    "wadeGiles": "kun"
+  },
+  {
+    "pinyin": "ka",
+    "ipa": "[kʰɑ]",
+    "zhuyin": "ㄎㄚ",
+    "wadeGiles": "k'a"
+  },
+  {
+    "pinyin": "kai",
+    "ipa": "[kʰaɪ̯]",
+    "zhuyin": "ㄎㄞ",
+    "wadeGiles": "k'ai"
+  },
+  {
+    "pinyin": "kao",
+    "ipa": "[kʰɑʊ̯]",
+    "zhuyin": "ㄎㄠ",
+    "wadeGiles": "k'ao"
+  },
+  {
+    "pinyin": "kan",
+    "ipa": "[kʰan]",
+    "zhuyin": "ㄎㄢ",
+    "wadeGiles": "k'an"
+  },
+  {
+    "pinyin": "kang",
+    "ipa": "[kʰɑŋ]",
+    "zhuyin": "ㄎㄤ",
+    "wadeGiles": "k'ang"
+  },
+  {
+    "pinyin": "ke",
+    "ipa": "[kʰɯ̯ʌ]",
+    "zhuyin": "ㄎㄜ",
+    "wadeGiles": "k'e"
+  },
+  {
+    "pinyin": "kei",
+    "ipa": "[kʰeɪ̯]",
+    "zhuyin": "ㄎㄟ",
+    "wadeGiles": "k'ei"
+  },
+  {
+    "pinyin": "ken",
+    "ipa": "[kʰən]",
+    "zhuyin": "ㄎㄣ",
+    "wadeGiles": "k'en"
+  },
+  {
+    "pinyin": "keng",
+    "ipa": "[kʰəŋ]",
+    "zhuyin": "ㄎㄥ",
+    "wadeGiles": "k'eng"
+  },
+  {
+    "pinyin": "kou",
+    "ipa": "[kʰɤʊ̯]",
+    "zhuyin": "ㄎㄡ",
+    "wadeGiles": "k'ou"
+  },
+  {
+    "pinyin": "kong",
+    "ipa": "[kʰʊŋ]",
+    "zhuyin": "ㄎㄨㄥ",
+    "wadeGiles": "k'ung"
+  },
+  {
+    "pinyin": "ku",
+    "ipa": "[kʰu]",
+    "zhuyin": "ㄎㄨ",
+    "wadeGiles": "k'u"
+  },
+  {
+    "pinyin": "kua",
+    "ipa": "[kʰu̯ɑ]",
+    "zhuyin": "ㄎㄨㄚ",
+    "wadeGiles": "k'ua"
+  },
+  {
+    "pinyin": "kuai",
+    "ipa": "[kʰu̯aɪ̯]",
+    "zhuyin": "ㄎㄨㄞ",
+    "wadeGiles": "k'uai"
+  },
+  {
+    "pinyin": "kui",
+    "ipa": "[kʰu̯eɪ̯]",
+    "zhuyin": "ㄎㄨㄟ",
+    "wadeGiles": "k'ui"
+  },
+  {
+    "pinyin": "kuo",
+    "ipa": "[kʰu̯ɔ]",
+    "zhuyin": "ㄎㄨㄛ",
+    "wadeGiles": "k'o"
+  },
+  {
+    "pinyin": "kuan",
+    "ipa": "[kʰu̯an]",
+    "zhuyin": "ㄎㄨㄢ",
+    "wadeGiles": "k'uan"
+  },
+  {
+    "pinyin": "kuang",
+    "ipa": "[kʰu̯ɑŋ]",
+    "zhuyin": "ㄎㄨㄤ",
+    "wadeGiles": "k'uang"
+  },
+  {
+    "pinyin": "kun",
+    "ipa": "[kʰu̯ən]",
+    "zhuyin": "ㄎㄨㄣ",
+    "wadeGiles": "k'un"
+  },
+  {
+    "pinyin": "ha",
+    "ipa": "[xɑ]",
+    "zhuyin": "ㄏㄚ",
+    "wadeGiles": "ha"
+  },
+  {
+    "pinyin": "hai",
+    "ipa": "[xaɪ̯]",
+    "zhuyin": "ㄏㄞ",
+    "wadeGiles": "hai"
+  },
+  {
+    "pinyin": "hao",
+    "ipa": "[xɑʊ̯]",
+    "zhuyin": "ㄏㄠ",
+    "wadeGiles": "hao"
+  },
+  {
+    "pinyin": "han",
+    "ipa": "[xan]",
+    "zhuyin": "ㄏㄢ",
+    "wadeGiles": "han"
+  },
+  {
+    "pinyin": "hang",
+    "ipa": "[xɑŋ]",
+    "zhuyin": "ㄏㄤ",
+    "wadeGiles": "hang"
+  },
+  {
+    "pinyin": "he",
+    "ipa": "[xɯ̯ʌ]",
+    "zhuyin": "ㄏㄜ",
+    "wadeGiles": "he"
+  },
+  {
+    "pinyin": "hei",
+    "ipa": "[xeɪ̯]",
+    "zhuyin": "ㄏㄟ",
+    "wadeGiles": "hei"
+  },
+  {
+    "pinyin": "hen",
+    "ipa": "[xən]",
+    "zhuyin": "ㄏㄣ",
+    "wadeGiles": "hen"
+  },
+  {
+    "pinyin": "heng",
+    "ipa": "[xəŋ]",
+    "zhuyin": "ㄏㄥ",
+    "wadeGiles": "heng"
+  },
+  {
+    "pinyin": "hou",
+    "ipa": "[xɤʊ̯]",
+    "zhuyin": "ㄏㄡ",
+    "wadeGiles": "hou"
+  },
+  {
+    "pinyin": "hong",
+    "ipa": "[xʊŋ]",
+    "zhuyin": "ㄏㄨㄥ",
+    "wadeGiles": "hung"
+  },
+  {
+    "pinyin": "hu",
+    "ipa": "[xu]",
+    "zhuyin": "ㄏㄨ",
+    "wadeGiles": "hu"
+  },
+  {
+    "pinyin": "hua",
+    "ipa": "[xu̯ɑ]",
+    "zhuyin": "ㄏㄨㄚ",
+    "wadeGiles": "hua"
+  },
+  {
+    "pinyin": "huai",
+    "ipa": "[xu̯aɪ̯]",
+    "zhuyin": "ㄏㄨㄞ",
+    "wadeGiles": "huai"
+  },
+  {
+    "pinyin": "hui",
+    "ipa": "[xu̯eɪ̯]",
+    "zhuyin": "ㄏㄨㄟ",
+    "wadeGiles": "hui"
+  },
+  {
+    "pinyin": "huo",
+    "ipa": "[xu̯ɔ]",
+    "zhuyin": "ㄏㄨㄛ",
+    "wadeGiles": "ho"
+  },
+  {
+    "pinyin": "huan",
+    "ipa": "[xu̯an]",
+    "zhuyin": "ㄏㄨㄢ",
+    "wadeGiles": "huan"
+  },
+  {
+    "pinyin": "huang",
+    "ipa": "[xu̯ɑŋ]",
+    "zhuyin": "ㄏㄨㄤ",
+    "wadeGiles": "huang"
+  },
+  {
+    "pinyin": "hun",
+    "ipa": "[xu̯ən]",
+    "zhuyin": "ㄏㄨㄣ",
+    "wadeGiles": "hun"
+  }
+]

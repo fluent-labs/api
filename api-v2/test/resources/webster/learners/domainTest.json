@@ -1,0 +1,836 @@
+[
+  {
+    "meta": {
+      "id": "test:1",
+      "uuid": "050b619c-ffad-4eaf-ba0a-93e9dab0e278",
+      "source": "learners",
+      "section": "alpha",
+      "stems": [
+        "test",
+        "tests",
+        "put (someone or something) to the test",
+        "put someone to the test",
+        "put something to the test",
+        "put to the test",
+        "stand the test of time",
+        "test of (your) character",
+        "test of character",
+        "test of your character",
+        "took/had a test",
+        "had a test",
+        "took a test",
+        "did a test",
+        "test scores",
+        "drug test",
+        "test results",
+        "pregnancy test",
+        "dna test",
+        "taste tests",
+        "test subjects",
+        "test group"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "test",
+      "pronunciations": [
+        {
+          "sound": {
+            "audio": "test0001",
+            "language": "en",
+            "country": "us"
+          },
+          "ipa":"ˈtɛst"
+        }
+      ]
+    },
+    "partOfSpeech": "noun",
+    "inflections": [
+      {
+        "inflection": "tests",
+        "inflectionLabel": "plural"
+      }
+    ],
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}a set of questions or problems that are designed to measure a person's knowledge, skills, or abilities ",
+                  "{dx}see also {dxt|intelligence test||} {dxt|rorschach test||} {dxt|screen test||}{/dx}"
+                ],
+                "examples": [
+                  {
+                    "text": "She is studying for her math/spelling/history {it}test{/it}."
+                  },
+                  {
+                    "text": "I passed/failed/flunked my biology {it}test{/it}."
+                  },
+                  {
+                    "text": "The teacher sat at his desk grading {it}tests{/it}."
+                  },
+                  {
+                    "text": "a driver's/driving {it}test{/it} [=a test that is used to see if someone is able to safely drive a car]"
+                  },
+                  {
+                    "text": "an IQ {it}test{/it}"
+                  },
+                  {
+                    "text": "{it}test{/it} questions"
+                  },
+                  {
+                    "text": "The {it}test{/it} will be on [=the questions on the test will be about] the first three chapters of the book."
+                  },
+                  {
+                    "text": "We {phrase}took/had a test{/phrase} on European capitals. = ({it}Brit{/it}) We {phrase}did a test{/phrase} on European capitals."
+                  },
+                  {
+                    "text": "The college relies on {phrase}test scores{/phrase} in its admissions process."
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}a careful study of a part of the body or of a substance taken from the body ",
+                  "{dx}see also {dxt|blood test||} {dxt|breath test||} {dxt|stress test||}{/dx}"
+                ],
+                "examples": [
+                  {
+                    "text": "The {it}test{/it} showed/revealed a problem with your liver function."
+                  },
+                  {
+                    "text": "a vision/hearing {it}test{/it} [=a test that shows how well you see/hear]"
+                  },
+                  {
+                    "text": "a urine {it}test{/it} [=a test that examines a person's urine for evidence of disease or illegal drugs]"
+                  },
+                  {
+                    "text": "allergy {it}tests{/it} [=tests that show what you are allergic to]"
+                  },
+                  {
+                    "text": "All applicants must pass a {phrase}drug test{/phrase}. [=a test that examines a person's blood or urine for evidence of illegal drugs]"
+                  },
+                  {
+                    "text": "The doctor will call you with the {phrase}test results{/phrase}."
+                  },
+                  {
+                    "text": "They went to the drug store to buy a {phrase}pregnancy test{/phrase}. [=a device that reacts to a woman's urine in a way that shows whether or not she is pregnant]"
+                  },
+                  {
+                    "text": "a {phrase}DNA test{/phrase} [=a test that examines DNA and that is used to identify someone or to show that people are relatives]"
+                  }
+                ]
+              }
+            },
+            {
+              "definingText": {
+                "text": [
+                  "{bc}a careful study of a small amount of water, soil, air, etc., in order to see if its quality is good, to find out if it contains a dangerous substance, etc. "
+                ],
+                "examples": [
+                  {
+                    "text": "The {it}test{/it} indicated high levels of lead in the soil."
+                  },
+                  {
+                    "text": "routine water {it}tests{/it}"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}a planned and usually controlled act or series of acts that is done to learn something, to see if something works properly, etc. ",
+                  "{dx}see also {dxt|road test||}{/dx}"
+                ],
+                "examples": [
+                  {
+                    "text": "lab/laboratory {it}tests{/it}"
+                  },
+                  {
+                    "text": "underground nuclear {it}tests{/it}"
+                  },
+                  {
+                    "text": "a {it}test{/it} of a new vaccine"
+                  },
+                  {
+                    "text": "{phrase}Taste tests{/phrase} revealed that people prefer this brand of cola over that one."
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}something (such as a difficult situation or task) that shows how strong or skilled someone or something is ",
+                  "{dx}see also {dxt|acid test||} {dxt|litmus test||}{/dx}"
+                ],
+                "examples": [
+                  {
+                    "text": "a {it}test{/it} of will/strength/character"
+                  },
+                  {
+                    "text": "The real/true {it}test{/it} of your ability as a skier is whether you can ski well on very hard snow."
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{sx|test match||}"
+                ]
+              },
+              "subjectStatusLabels": [
+                "British",
+                "sports"
+              ]
+            }
+          ]
+        ]
+      }
+    ],
+    "definedRunOns": [
+      {
+        "definedRunOnPhrase": "put (someone or something) to the test",
+        "definition": [
+          {
+            "senseSequence": [
+              [
+                {
+                  "definingText": {
+                    "text": [
+                      "{bc}to cause (someone or something) to be in a situation that shows how strong, good, etc., that person or thing really is "
+                    ],
+                    "examples": [
+                      {
+                        "text": "The team has been playing well so far, but tomorrow's game will really {it}put them to the test{/it}. [=will really test them]"
+                      },
+                      {
+                        "text": "A trip through the desert will {it}put{/it} the truck {it}to the test{/it}."
+                      },
+                      {
+                        "text": "We decided to {it}put{/it} the idea/theory {it}to the test{/it} [=to test the theory] with a little experiment."
+                      }
+                    ]
+                  }
+                }
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "definedRunOnPhrase": "stand the test of time",
+        "definition": [
+          {
+            "senseSequence": [
+              [
+                {
+                  "definingText": {
+                    "text": [
+                      "{bc}to continue to be important, respected, etc., for a long period of time "
+                    ],
+                    "examples": [
+                      {
+                        "text": "Great art/literature/music can {it}stand the test of time{/it}."
+                      }
+                    ]
+                  }
+                }
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "definedRunOnPhrase": "test of (your) character",
+        "definition": [
+          {
+            "senseSequence": [
+              [
+                {
+                  "definingText": {
+                    "text": [
+                      "{dx}see {dxt|character||}{/dx}"
+                    ]
+                  }
+                }
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "a set of questions or problems that are designed to measure a person's knowledge, skills, or abilities",
+      "a careful study of a part of the body or of a substance taken from the body",
+      "a careful study of a small amount of water, soil, air, etc., in order to see if its quality is good, to find out if it contains a dangerous substance, etc."
+    ]
+  },
+  {
+    "meta": {
+      "id": "test:2",
+      "uuid": "d667460e-a08d-45a2-b3e8-1841649269ae",
+      "source": "learners",
+      "section": "alpha",
+      "stems": [
+        "test",
+        "test the water",
+        "test the waters",
+        "testabilities",
+        "testability",
+        "testable",
+        "tested",
+        "testing",
+        "tests",
+        "tested positive/negative",
+        "tested negative",
+        "tested positive"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "test",
+      "alternatePronunciations":[
+        {
+          "ipa":"ˈtɛst"
+        }
+      ]
+    },
+    "partOfSpeech": "verb",
+    "inflections": [
+      {
+        "inflection": "tests"
+      },
+      {
+        "inflection": "test*ed"
+      },
+      {
+        "inflection": "test*ing"
+      }
+    ],
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}to use a set of questions or problems to measure someone's skills, knowledge, or abilities "
+                ],
+                "examples": [
+                  {
+                    "text": "Weekly quizzes will {it}test{/it} your understanding of the material."
+                  },
+                  {
+                    "text": "The students will all be {it}tested{/it} again at the end of the school year."
+                  }
+                ]
+              },
+              "senseSpecificGrammaticalLabel": "+ obj"
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}to examine a part of the body or a substance taken from the body "
+                ],
+                "examples": [
+                  {
+                    "text": "The school nurse will be {it}testing{/it} students' hearing next week."
+                  },
+                  {
+                    "text": "The athletes knew that tournament officials would be {it}testing for{/it} (the presence of) illegal drugs."
+                  },
+                  {
+                    "text": "She {phrase}tested positive/negative{/phrase} {it}for{/it} AIDS."
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}to examine a small amount of water, soil, air, etc., in order to see if its quality is good, if it contains a dangerous substance, etc. "
+                ],
+                "examples": [
+                  {
+                    "text": "The water gets {it}tested{/it} regularly."
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}to use (something) in a planned and usually controlled way in order to see if it works properly ",
+                  "{dx}see also {dxt|field-test||}{/dx}"
+                ],
+                "examples": [
+                  {
+                    "text": "Only one of the vehicles they {it}tested{/it} performed well in wet conditions."
+                  },
+                  {
+                    "text": "Researchers are currently {it}testing{/it} (the safety of) the vaccine."
+                  },
+                  {
+                    "text": "The vaccine has not been {it}tested{/it} on humans yet."
+                  },
+                  {
+                    "text": "We designed a series of experiments to {it}test{/it} our hypothesis."
+                  }
+                ]
+              },
+              "senseSpecificGrammaticalLabel": "+ obj"
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}to show how strong, good, etc., someone or something is in a difficult situation ",
+                  "{dx}see also {dxt|time-tested||}{/dx}"
+                ],
+                "examples": [
+                  {
+                    "text": "The stress is {it}testing{/it} the strength of our relationship."
+                  },
+                  {
+                    "text": "The scandal is {it}testing{/it} the country's faith in its leadership."
+                  },
+                  {
+                    "text": "Life's ordeals {it}test{/it} us."
+                  },
+                  {
+                    "text": "You're {it}testing{/it} my patience. [=you are starting to make me annoyed or upset]"
+                  }
+                ]
+              },
+              "senseSpecificGrammaticalLabel": "+ obj"
+            }
+          ]
+        ]
+      }
+    ],
+    "definedRunOns": [
+      {
+        "definedRunOnPhrase": "test the waters",
+        "definition": [
+          {
+            "senseSequence": [
+              [
+                {
+                  "definingText": {
+                    "text": [
+                      "{bc}to do something to find out if people like or approve a possible plan, product, etc., so that you can make a decision about it "
+                    ],
+                    "examples": [
+                      {
+                        "text": "The company is {it}testing the waters{/it} with a new online version of the product."
+                      },
+                      {
+                        "text": "She's {it}testing the waters{/it} for a presidential bid."
+                      }
+                    ]
+                  }
+                }
+              ]
+            ]
+          }
+        ],
+        "variations": [
+          {
+            "variant": "test the water",
+            "variantLabel": "also"
+          }
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "to use a set of questions or problems to measure someone's skills, knowledge, or abilities —often + on",
+      "to examine a part of the body or a substance taken from the body —often + for",
+      "to examine a small amount of water, soil, air, etc., in order to see if its quality is good, if it contains a dangerous substance, etc. —often + for —+ for"
+    ]
+  },
+  {
+    "meta": {
+      "id": "test ban",
+      "uuid": "27e1f115-a901-41a6-8fd4-4e4a3a8cceca",
+      "source": "learners",
+      "section": "alpha",
+      "stems": [
+        "test ban",
+        "test bans"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "test ban"
+    },
+    "partOfSpeech": "noun",
+    "inflections": [
+      {
+        "inflection": "test bans",
+        "inflectionCutback": "~ bans",
+        "inflectionLabel": "plural"
+      }
+    ],
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}an official agreement between countries with nuclear weapons to not test those weapons "
+                ],
+                "examples": [
+                  {
+                    "text": "a nuclear {it}test ban{/it} treaty"
+                  }
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "an official agreement between countries with nuclear weapons to not test those weapons"
+    ]
+  },
+  {
+    "meta": {
+      "id": "test case",
+      "uuid": "7846d08d-d46d-45b7-9a44-223af2be0547",
+      "source": "learners",
+      "section": "alpha",
+      "stems": [
+        "test case",
+        "test cases"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "test case"
+    },
+    "partOfSpeech": "noun",
+    "inflections": [
+      {
+        "inflection": "test cases",
+        "inflectionCutback": "~ cases",
+        "inflectionLabel": "plural"
+      }
+    ],
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}a legal case that will be used as an example when other similar cases are decided in the future"
+                ]
+              },
+              "subjectStatusLabels": [
+                "law"
+              ]
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "a legal case that will be used as an example when other similar cases are decided in the future"
+    ]
+  },
+  {
+    "meta": {
+      "id": "test drive",
+      "uuid": "36f30a0c-df42-4d82-a523-b6fa203c7663",
+      "source": "learners",
+      "section": "alpha",
+      "stems": [
+        "test drive",
+        "test drives",
+        "test-drive",
+        "test-drives",
+        "test-drove",
+        "test-driven",
+        "test-driving"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "test drive"
+    },
+    "partOfSpeech": "noun",
+    "inflections": [
+      {
+        "inflection": "test drives",
+        "inflectionCutback": "~ drives",
+        "inflectionLabel": "plural"
+      }
+    ],
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}an occurrence in which you drive a car that you do not own to see if you like it and would like to buy it "
+                ],
+                "examples": [
+                  {
+                    "text": "Would you like to take the car for a {it}test drive{/it}?"
+                  }
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "an occurrence in which you drive a car that you do not own to see if you like it and would like to buy it"
+    ]
+  },
+  {
+    "meta": {
+      "id": "test match",
+      "uuid": "bcdc0d34-0778-4c84-a6ff-66b43090202b",
+      "source": "learners",
+      "section": "alpha",
+      "stems": [
+        "test match",
+        "test matches"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "test match"
+    },
+    "partOfSpeech": "noun",
+    "inflections": [
+      {
+        "inflection": "test matches",
+        "inflectionCutback": "~ matches",
+        "inflectionLabel": "plural"
+      }
+    ],
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}a game or series of games of cricket or rugby played by teams from different countries"
+                ]
+              },
+              "subjectStatusLabels": [
+                "chiefly British",
+                "sports"
+              ]
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "a game or series of games of cricket or rugby played by teams from different countries"
+    ]
+  },
+  {
+    "meta": {
+      "id": "test pilot",
+      "uuid": "4931622c-524b-4748-bbd4-13e8afa2af12",
+      "source": "learners",
+      "section": "alpha",
+      "stems": [
+        "test pilot",
+        "test pilots"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "test pilot"
+    },
+    "partOfSpeech": "noun",
+    "inflections": [
+      {
+        "inflection": "test pilots",
+        "inflectionCutback": "~ -lots",
+        "inflectionLabel": "plural"
+      }
+    ],
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}a pilot who flies new aircraft in order to see how well they work"
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "a pilot who flies new aircraft in order to see how well they work"
+    ]
+  },
+  {
+    "meta": {
+      "id": "test run",
+      "uuid": "aba55ede-7caa-49a5-83df-3a1b09d0dba9",
+      "source": "learners",
+      "section": "alpha",
+      "stems": [
+        "test run",
+        "test runs"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "test run"
+    },
+    "partOfSpeech": "noun",
+    "inflections": [
+      {
+        "inflection": "test runs",
+        "inflectionCutback": "~ runs",
+        "inflectionLabel": "plural"
+      }
+    ],
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}an occurrence in which a product or procedure is tried in order to see if it works correctly {bc}{sx|trial run||} "
+                ],
+                "examples": [
+                  {
+                    "text": "They did a {it}test run{/it} of the new software."
+                  }
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "an occurrence in which a product or procedure is tried in order to see if it works correctly : trial run"
+    ]
+  },
+  {
+    "meta": {
+      "id": "test tube",
+      "uuid": "d47f3adf-8724-4702-a0f5-e7021f6ffdb6",
+      "source": "learners",
+      "section": "alpha",
+      "stems": [
+        "test tube",
+        "test tubes"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "test tube"
+    },
+    "partOfSpeech": "noun",
+    "inflections": [
+      {
+        "inflection": "test tubes",
+        "inflectionCutback": "~ tubes",
+        "inflectionLabel": "plural"
+      }
+    ],
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}a glass container that is shaped like a tube which is closed at one end and that is used especially in science experiments"
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "a glass container that is shaped like a tube which is closed at one end and that is used especially in science experiments"
+    ]
+  },
+  {
+    "meta": {
+      "id": "test-tube baby",
+      "uuid": "8feee161-e568-4ef6-b352-67bfa66e1e44",
+      "source": "learners",
+      "section": "alpha",
+      "stems": [
+        "test-tube baby",
+        "test-tube babies"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "test-tube baby"
+    },
+    "partOfSpeech": "noun",
+    "inflections": [
+      {
+        "inflection": "test-tube babies",
+        "inflectionCutback": "~ -bies",
+        "inflectionLabel": "plural"
+      }
+    ],
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}a child produced from an egg that was fertilized outside of a woman's body and then put back into the woman's body to finish developing"
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "a child produced from an egg that was fertilized outside of a woman's body and then put back into the woman's body to finish developing"
+    ]
+  }
+]

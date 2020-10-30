@@ -1,0 +1,401 @@
+[
+  {
+    "meta": {
+      "id": "vale",
+      "uuid": "349c7ab4-6135-4eed-9090-1aad55d4a8c2",
+      "language": "en",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "vale",
+        "vales"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "vale",
+      "pronunciations": [
+        {
+          "writtenPronunciation": "ˈveɪl",
+          "sound": {
+            "audio": "vale0001",
+            "language": "en",
+            "country": "us"
+          }
+        }
+      ]
+    },
+    "partOfSpeechRaw": "noun",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|valle} "
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "valle"
+    ]
+  },
+  {
+    "meta": {
+      "id": "vale",
+      "uuid": "b7277301-a192-4b6d-b0ed-f46cf8728fc1",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "vale"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "vale"
+    },
+    "partOfSpeechRaw": "masculine noun",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|voucher}"
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{sx|pagaré||} {bc}promissory note, {a_link|IOU}"
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "voucher",
+      "pagaré : promissory note, IOU"
+    ]
+  },
+  {
+    "meta": {
+      "id": "comino",
+      "uuid": "1925d2d6-9496-4874-bb9d-31aef8c6264a",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "comino",
+        "me vale un comino"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "comino",
+      "pronunciations": [
+        {
+          "sound": {
+            "audio": "comin01sp",
+            "language": "en",
+            "country": "us"
+          }
+        }
+      ]
+    },
+    "partOfSpeechRaw": "masculine noun",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|cumin}"
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}not to matter to someone "
+                ],
+                "examples": [
+                  {
+                    "text": "no me importa un comino"
+                  }
+                ]
+              },
+              "subjectStatusLabels": [
+                "familiar"
+              ],
+              "variations": [
+                {
+                  "variant": "me vale un comino"
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "cumin",
+      "not to matter to someone"
+    ]
+  },
+  {
+    "meta": {
+      "id": "valer",
+      "uuid": "732ebc07-7a06-4fcf-8fe3-397854c65918",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "valer",
+        "hacerse valer",
+        "más vale",
+        "valerse",
+        "valerse de",
+        "valerse solo",
+        "valerse por sí mismo"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "valer",
+      "pronunciations": [
+        {
+          "sound": {
+            "audio": "valer01sp",
+            "language": "en",
+            "country": "us"
+          }
+        }
+      ]
+    },
+    "partOfSpeechRaw": "transitive verb",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}to {a_link|be worth} "
+                ],
+                "examples": [
+                  {
+                    "text": "valen una fortuna"
+                  },
+                  {
+                    "text": "no vale protestar"
+                  },
+                  {
+                    "text": "valer la pena"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}to {a_link|cost} "
+                ],
+                "examples": [
+                  {
+                    "text": "¿cuánto vale?"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}to {a_link|earn}, to {a_link|gain} "
+                ],
+                "examples": [
+                  {
+                    "text": "le valió una reprimenda"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}to {a_link|protect}, to {a_link|aid} "
+                ],
+                "examples": [
+                  {
+                    "text": "¡válgame Dios!"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}to be equal to"
+                ]
+              }
+            }
+          ]
+        ]
+      },
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}to have value "
+                ],
+                "examples": [
+                  {
+                    "text": "sus consejos no valen para nada"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}to be valid, to {a_link|count} "
+                ],
+                "examples": [
+                  {
+                    "text": "¡eso no vale!"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}to {a_link|assert oneself}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "hacerse valer"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}it's better "
+                ],
+                "examples": [
+                  {
+                    "text": "más vale que te vayas"
+                  }
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "más vale"
+                }
+              ]
+            }
+          ]
+        ],
+        "verbDivider": "intransitive verb"
+      }
+    ],
+    "definedRunOns": [
+      {
+        "definedRunOnPhrase": "valerse",
+        "definition": [
+          {
+            "senseSequence": [
+              [
+                {
+                  "definingText": {
+                    "text": [
+                      "{bc}to {a_link|take advantage of}"
+                    ]
+                  },
+                  "variations": [
+                    {
+                      "variant": "valerse de"
+                    }
+                  ]
+                }
+              ],
+              [
+                {
+                  "definingText": {
+                    "text": [
+                      "{bc}to look after oneself"
+                    ]
+                  },
+                  "variations": [
+                    {
+                      "variant": "valerse solo"
+                    },
+                    {
+                      "variant": "valerse por sí mismo",
+                      "variantLabel": "or"
+                    }
+                  ]
+                }
+              ],
+              [
+                {
+                  "definingText": {
+                    "text": [
+                      "{bc}to be fair "
+                    ],
+                    "examples": [
+                      {
+                        "text": "no se vale"
+                      }
+                    ]
+                  },
+                  "subjectStatusLabels": [
+                    "Mexico"
+                  ]
+                }
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "to be worth",
+      "to cost",
+      "to earn, to gain"
+    ]
+  }
+]

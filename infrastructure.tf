@@ -10,9 +10,6 @@ terraform {
 }
 
 variable "digitalocean_token" {}
-variable "test_environment" {
-  default = false
-}
 
 provider "aws" {
   profile = "default"
@@ -31,21 +28,20 @@ provider "acme" {
 resource "digitalocean_kubernetes_cluster" "foreign_language_reader" {
   name    = "foreign-language-reader"
   region  = "sfo2"
-  version = "1.16.6-do.0"
+  version = "1.16.6-do.2"
   tags    = ["prod"]
 
   node_pool {
     name       = "worker-pool"
     size       = "s-2vcpu-4gb"
     auto_scale = true
-    min_nodes  = 1
-    max_nodes  = 5
+    min_nodes  = 3
+    max_nodes  = 6
   }
 }
 
 module "infrastructure" {
   source             = "./infrastructure/terraform"
   cluster_name       = digitalocean_kubernetes_cluster.foreign_language_reader.name
-  test_environment   = var.test_environment
   digitalocean_token = var.digitalocean_token
 }

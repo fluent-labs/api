@@ -1,0 +1,268 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: master
+
+jobs:
+  configure-infrastructure:
+    runs-on: ubuntu-latest
+    name: Update infrastructure
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: 'Prepare Terraform'
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 0.12.24
+        tf_actions_subcommand: 'init'
+        tf_actions_comment: false
+        args: '-backend-config="token=${{ secrets.TF_API_TOKEN }}" -backend-config="organization=foreign-language-reader"'
+
+    - name: 'Apply infrastucture changes'
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 0.12.24
+        tf_actions_subcommand: 'apply'
+        tf_actions_comment: false
+
+  build-api:
+    runs-on: ubuntu-latest
+    name: Build API
+    needs: [configure-infrastructure]
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Move build files to root of build worker
+      run: mv api/* .
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: foreign-language-reader-api
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        echo "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" > api.txt
+
+    - uses: actions/upload-artifact@master
+      name: Upload container address
+      with:
+        name: api.txt
+        path: api.txt
+
+  deploy-api:
+    name: Deploy API
+    runs-on: ubuntu-latest
+    needs: [build-api]
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Save DigitalOcean kubeconfig
+        uses: digitalocean/action-doctl@master
+        env:
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+        with:
+          args: kubernetes cluster kubeconfig show foreign-language-reader > $GITHUB_WORKSPACE/.kubeconfig
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Update image in K8s
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: foreign-language-reader-api
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
+            set image deployment/api api=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --record
+
+      - name: Wait for deployment to finish
+        run: |
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
+            rollout status deployment/api
+
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    name: Deploy frontend
+    needs: [configure-infrastructure]
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Move build files to root of build worker
+      run: |
+        shopt -s dotglob
+        mv frontend/* .
+
+    - uses: actions/setup-node@v1
+      name: Install node 12
+      with:
+        node-version: '12.x'
+
+    - name: Install dependencies
+      run: |
+        npm ci
+      env:
+        CI: true
+
+    - name: Create build
+      run: npm run build
+      env:
+        CI: true
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+
+    - name: Deploy to S3
+      run: aws s3 sync build/ s3://www.foreignlanguagereader.com
+
+  build-language-service:
+    name: Build Language Service
+    runs-on: ubuntu-latest
+    needs: [configure-infrastructure]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Move build files to root of build worker
+      run: |
+        shopt -s dotglob
+        mv language-service/* .
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: foreign-language-reader-language-service
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        echo "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" > language_service.txt
+
+    - uses: actions/upload-artifact@master
+      name: Upload container address
+      with:
+        name: language_service.txt
+        path: language_service.txt
+
+  deploy-language-service:
+    name: Deploy Language Service
+    runs-on: ubuntu-latest
+    needs: [build-language-service]
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Save DigitalOcean kubeconfig
+        uses: digitalocean/action-doctl@master
+        env:
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+        with:
+          args: kubernetes cluster kubeconfig show foreign-language-reader > $GITHUB_WORKSPACE/.kubeconfig
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Update image in K8s
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: foreign-language-reader-language-service
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
+            set image deployment/language-service language-service=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --record
+
+      - name: Wait for deployment to finish
+        run: |
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
+            rollout status deployment/language-service
+
+  deploy-storybook:
+    runs-on: ubuntu-latest
+    name: Deploy storybook
+    needs: [configure-infrastructure]
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Move build files to root of build worker
+      run: |
+        shopt -s dotglob
+        mv frontend/* .
+
+    - uses: actions/setup-node@v1
+      name: Install node 12
+      with:
+        node-version: '12.x'
+
+    - name: Install dependencies
+      run: |
+        npm ci
+      env:
+        CI: true
+
+    - name: Create build
+      run: npm run build-storybook
+      env:
+        CI: true
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+
+    - name: Deploy to S3
+      run: aws s3 sync storybook-static/ s3://storybook.foreignlanguagereader.com
