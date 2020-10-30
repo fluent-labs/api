@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine3.9 as base
+FROM openjdk:8-jdk-alpine3.9 as base
 
 FROM base as builder
 ENV SBT_VERSION 1.3.10
