@@ -12,7 +12,13 @@ RUN apk add --no-cache --update bash wget && mkdir -p "$SBT_HOME" && \
     wget -qO - --no-check-certificate "https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz" |  tar xz -C $INSTALL_DIR && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
 
+# Cache dependencies
 WORKDIR /app
+COPY project project
+COPY build.sbt build.sbt
+RUN sbt compile
+
+# Compile the service
 ADD . /app
 RUN sbt dist
 
