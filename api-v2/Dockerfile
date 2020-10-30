@@ -23,10 +23,8 @@ COPY . /app
 RUN sbt dist && \
     unzip /app/target/universal/foreign-language-reader-api-1.0-SNAPSHOT.zip
 
-RUN echo "==app==" && ls /app && echo "==target==" && ls /app/target && echo "==universal==" && ls /app/target/universal
-
 FROM base as final
 RUN apk add bash
 EXPOSE 8000
 CMD ["/app/bin/foreign-language-reader-api"]
-COPY --from=builder /app/universal/foreign-language-reader-api-1.0-SNAPSHOT /app
+COPY --from=builder /app/foreign-language-reader-api-1.0-SNAPSHOT /app
