@@ -20,7 +20,8 @@ RUN sbt compile
 
 # Compile the service
 ADD . /app
-RUN sbt dist
+RUN sbt dist && \
+    unzip /app/target/universal/foreign-language-reader-api-1.0-SNAPSHOT.zip
 
 # RUN apk add bash
 # COPY target/universal/foreign-language-reader-api-1.0-SNAPSHOT /app
