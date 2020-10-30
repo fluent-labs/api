@@ -17,7 +17,7 @@ COPY build.sbt build.sbt
 RUN sbt compile
 
 # Compile the service
-ADD . /app
+COPY . /app
 RUN sbt dist && \
     unzip /app/target/universal/foreign-language-reader-api-1.0-SNAPSHOT.zip
 
