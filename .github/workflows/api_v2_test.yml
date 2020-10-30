@@ -15,8 +15,8 @@ jobs:
     - name: Move build files to root of build worker
       run: mv api-v2/* .
 
-    # - name: Build container
-    #   run: docker build .
+    - name: Build container
+      run: docker build .
 
   test:
     runs-on: ubuntu-latest

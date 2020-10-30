@@ -2,13 +2,13 @@ package com.foreignlanguagereader.api.contentsource.definition.webster.common
 
 import play.api.libs.json._
 
-/**
-  * Webster has a data structure that uses nested lists.
-  * ["key", [[ something ] ... [something]]
-  * Those don't fit very well in our JSON model, so this class is here to help with parsing it.
-  *
-  * Build a lookup map, and then classes can pull them out.
-  */
+/*
+ * Webster has a data structure that uses nested lists.
+ * ["key", [[ something ] ... [something]]
+ * Those don't fit very well in our JSON model, so this class is here to help with parsing it.
+ *
+ * Build a lookup map, and then classes can pull them out.
+ */
 object WebsterNestedArrayHelper {
   def buildLookupMap(input: List[List[JsValue]]): Map[String, List[JsValue]] =
     input
