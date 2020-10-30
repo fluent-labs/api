@@ -1,6 +1,4 @@
-FROM openjdk:8-jdk-alpine3.9 as base
-
-FROM base as builder
+FROM openjdk:8-jdk-alpine3.9 as builder
 ENV SBT_VERSION 1.3.10
 ENV INSTALL_DIR /usr/local
 ENV SBT_HOME /usr/local/sbt
@@ -23,7 +21,9 @@ ADD . /app
 RUN sbt dist && \
     unzip /app/target/universal/foreign-language-reader-api-1.0-SNAPSHOT.zip
 
-# RUN apk add bash
-# COPY target/universal/foreign-language-reader-api-1.0-SNAPSHOT /app
-# EXPOSE 8000
-# CMD ["/app/bin/foreign-language-reader-api"]
+FROM openjdk:8-jre-alpine3.9 as final
+WORKDIR /app
+RUN apk add bash
+EXPOSE 8000
+CMD ["/app/bin/foreign-language-reader-api"]
+COPY --from=builder /app/target/universal/foreign-language-reader-api-1.0-SNAPSHOT /app
