@@ -24,6 +24,6 @@ RUN sbt coverageOff dist && \
 FROM openjdk:8-jre-alpine3.9 as final
 WORKDIR /app
 RUN apk add bash
-EXPOSE 8000
+EXPOSE 9000
 CMD ["/app/bin/foreign-language-reader-api"]
 COPY --from=builder /app/foreign-language-reader-api-1.0-SNAPSHOT /app
