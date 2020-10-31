@@ -4,32 +4,10 @@ import Wiktionary.{
   loadWiktionaryDump,
   regexp_extract_all
 }
+import com.foreignlanguagereader.domain.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{Column, DataFrame, Dataset, SparkSession}
-
-case class SimpleWiktionaryDefinition(
-                                      // Required fields
-                                      token: String,
-                                      definition: String,
-                                      tag: String,
-                                      ipa: String,
-                                      subdefinitions: Array[String],
-                                      examples: Array[String],
-                                      // Constants
-                                      definitionLanguage: String,
-                                      wordLanguage: String,
-                                      source: String,
-                                      // Nice extras
-                                      antonyms: Array[String],
-                                      homonyms: Array[String],
-                                      homophones: Array[String],
-                                      notes: Array[String],
-                                      otherSpellings: Array[String],
-                                      pronunciation: Array[String],
-                                      related: Array[String],
-                                      synonyms: Array[String],
-                                      usage: Array[String])
 
 object SimpleWiktionary {
   val metaSections = List("pronunciation", "usage", "usage notes")
@@ -111,7 +89,7 @@ object SimpleWiktionary {
     array(partsOfSpeech.head, partsOfSpeech.tail: _*)
 
   def mapWiktionaryPartOfSpeechToDomainPartOfSpeech(
-    partOfSpeech: String
+      partOfSpeech: String
   ): String = partOfSpeechMapping.getOrElse(partOfSpeech, "Unknown")
 
   val leftBracket = "\\{"
@@ -123,24 +101,24 @@ object SimpleWiktionary {
   val newline = "\\n"
 
   // It looks like this: {{IPA|/whatWeWant/}}
-  val ipaRegex
-    : String = leftBracket + leftBracket + "IPA" + pipe + slash + anythingButSlash + slash + rightBracket + rightBracket
+  val ipaRegex: String =
+    leftBracket + leftBracket + "IPA" + pipe + slash + anythingButSlash + slash + rightBracket + rightBracket
 
   val subdefinitionMarker = "#"
   val examplesMarker = "#:"
-  val subdefinitionsRegex
-    : String = subdefinitionMarker + optionalSpace + "([^\\n:]*)" + newline
+  val subdefinitionsRegex: String =
+    subdefinitionMarker + optionalSpace + "([^\\n:]*)" + newline
   val examplesRegex: String = examplesMarker + optionalSpace + "([^\\n]*)"
 
   def loadSimple(
-    path: String
-  )(implicit spark: SparkSession): Dataset[SimpleWiktionaryDefinition] = {
+      path: String
+  )(implicit spark: SparkSession): Dataset[SimpleWiktionaryDefinitionEntry] = {
     parseSimple(loadWiktionaryDump(path))
   }
 
   def parseSimple(
-    data: Dataset[WiktionaryRawEntry]
-  )(implicit spark: SparkSession): Dataset[SimpleWiktionaryDefinition] = {
+      data: Dataset[WiktionaryRawEntry]
+  )(implicit spark: SparkSession): Dataset[SimpleWiktionaryDefinitionEntry] = {
     import spark.implicits._
     val splitDefinitions = splitWordsByPartOfSpeech(data)
       .withColumn("ipa", regexp_extract(col("text"), ipaRegex, 1))
@@ -149,21 +127,18 @@ object SimpleWiktionary {
         regexp_extract_all(subdefinitionsRegex, 1)(col("definition"))
       )
       .withColumn(
-        "examples",
+        "examplesRaw",
         regexp_extract_all(examplesRegex, 1)(col("definition"))
       )
 
     addOptionalSections(splitDefinitions)
       .drop("text")
-      .withColumn("definitionLanguage", lit("ENGLISH"))
-      .withColumn("wordLanguage", lit("ENGLISH"))
-      .withColumn("source", lit("WIKTIONARY_SIMPLE_ENGLISH"))
-      .as[SimpleWiktionaryDefinition]
+      .withColumnRenamed("pronunciation", "pronunciationRaw")
+      .as[SimpleWiktionaryDefinitionEntry]
   }
 
-  val mapPartOfSpeech: UserDefinedFunction = udf(
-    (index: Integer) =>
-      mapWiktionaryPartOfSpeechToDomainPartOfSpeech(partsOfSpeech(index))
+  val mapPartOfSpeech: UserDefinedFunction = udf((index: Integer) =>
+    mapWiktionaryPartOfSpeechToDomainPartOfSpeech(partsOfSpeech(index))
   )
 
   def splitWordsByPartOfSpeech(data: Dataset[WiktionaryRawEntry]): DataFrame =
@@ -172,7 +147,7 @@ object SimpleWiktionary {
       .filter("col not like ''")
       .drop(partOfSpeechCols)
       .withColumnRenamed("col", "definition")
-      .withColumn("tag", mapPartOfSpeech(col("pos")))
+      .withColumn("tagRaw", mapPartOfSpeech(col("pos")))
       .drop("pos")
 
   val subsectionsInverted: Map[String, Set[String]] = subsectionMap
@@ -187,8 +162,8 @@ object SimpleWiktionary {
 
   val subsectionsToCombine: Map[String, Column] =
     subsectionsInverted
-      .mapValues(
-        subsections => array(subsections.head, subsections.tail.toArray: _*)
+      .mapValues(subsections =>
+        array(subsections.head, subsections.tail.toArray: _*)
       )
 
   def addOptionalSections(data: DataFrame): DataFrame = {

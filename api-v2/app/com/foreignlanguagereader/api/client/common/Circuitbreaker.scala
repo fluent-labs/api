@@ -6,8 +6,8 @@ import akka.actor.ActorSystem
 import akka.pattern.{CircuitBreaker, CircuitBreakerOpenException}
 import cats.Functor
 import cats.data.Nested
-import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus
-import com.foreignlanguagereader.api.dto.v1.health.ReadinessStatus.ReadinessStatus
+import com.foreignlanguagereader.dto.v1.health.ReadinessStatus
+import com.foreignlanguagereader.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.Logger
 
 import scala.concurrent.duration._
@@ -40,23 +40,24 @@ trait Circuitbreaker {
   def defaultIsFailure(error: Throwable): Boolean = true
   def defaultIsSuccess[T](result: T): Boolean = true
 
-  def health(): ReadinessStatus = breaker match {
-    case breaker if breaker.isClosed   => ReadinessStatus.UP
-    case breaker if breaker.isHalfOpen => ReadinessStatus.DEGRADED
-    case breaker if breaker.isOpen     => ReadinessStatus.DOWN
-  }
+  def health(): ReadinessStatus =
+    breaker match {
+      case breaker if breaker.isClosed   => ReadinessStatus.UP
+      case breaker if breaker.isHalfOpen => ReadinessStatus.DEGRADED
+      case breaker if breaker.isOpen     => ReadinessStatus.DOWN
+    }
 
   def withBreaker[T](
-    logIfError: String,
-    body: => Future[T]
+      logIfError: String,
+      body: => Future[T]
   ): Nested[Future, CircuitBreakerResult, T] =
     withBreaker(logIfError, defaultIsFailure, defaultIsSuccess[T], body)
 
   def withBreaker[T](
-    logIfError: String,
-    isFailure: Throwable => Boolean,
-    isSuccess: T => Boolean,
-    body: => Future[T]
+      logIfError: String,
+      isFailure: Throwable => Boolean,
+      isSuccess: T => Boolean,
+      body: => Future[T]
   ): Nested[Future, CircuitBreakerResult, T] =
     Nested[Future, CircuitBreakerResult, T](
       breaker
@@ -75,8 +76,8 @@ trait Circuitbreaker {
     )
 
   private[this] def makeFailureFunction[T](
-    isFailure: Throwable => Boolean,
-    isSuccess: T => Boolean
+      isFailure: Throwable => Boolean,
+      isSuccess: T => Boolean
   ): Try[T] => Boolean = {
     case Success(result)    => isSuccess(result)
     case Failure(exception) => isFailure(exception)
@@ -93,11 +94,12 @@ object CircuitBreakerResult {
   implicit def functor: Functor[CircuitBreakerResult] =
     new Functor[CircuitBreakerResult] {
       override def map[A, B](
-        fa: CircuitBreakerResult[A]
-      )(f: A => B): CircuitBreakerResult[B] = fa match {
-        case CircuitBreakerNonAttempt()     => CircuitBreakerNonAttempt()
-        case CircuitBreakerFailedAttempt(e) => CircuitBreakerFailedAttempt(e)
-        case CircuitBreakerAttempt(result)  => CircuitBreakerAttempt(f(result))
-      }
+          fa: CircuitBreakerResult[A]
+      )(f: A => B): CircuitBreakerResult[B] =
+        fa match {
+          case CircuitBreakerNonAttempt()     => CircuitBreakerNonAttempt()
+          case CircuitBreakerFailedAttempt(e) => CircuitBreakerFailedAttempt(e)
+          case CircuitBreakerAttempt(result)  => CircuitBreakerAttempt(f(result))
+        }
     }
 }

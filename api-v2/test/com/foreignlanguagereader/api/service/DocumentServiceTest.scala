@@ -7,16 +7,15 @@ import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerNonAttempt
 }
 import com.foreignlanguagereader.api.client.google.GoogleCloudClient
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.definition.{
+import com.foreignlanguagereader.domain.internal.word.{PartOfSpeech, Word}
+import com.foreignlanguagereader.api.service.definition.DefinitionService
+import com.foreignlanguagereader.domain.Language
+import com.foreignlanguagereader.domain.internal.definition.{
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.api.domain.word.{PartOfSpeech, Word}
-import com.foreignlanguagereader.api.service.definition.DefinitionService
-import org.mockito.Mockito._
+import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
-import org.scalatestplus.mockito.MockitoSugar
 
 import scala.concurrent.{ExecutionContext, Future}
 

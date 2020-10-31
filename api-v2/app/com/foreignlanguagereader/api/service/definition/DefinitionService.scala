@@ -1,20 +1,20 @@
 package com.foreignlanguagereader.api.service.definition
 
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.Definition
-import com.foreignlanguagereader.api.domain.word.Word
+import com.foreignlanguagereader.domain.Language.Language
+import com.foreignlanguagereader.domain.Language
+import com.foreignlanguagereader.domain.internal.definition.Definition
+import com.foreignlanguagereader.domain.internal.word.Word
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DefinitionService @Inject()(
-  val chineseDefinitionService: ChineseDefinitionService,
-  val englishDefinitionService: EnglishDefinitionService,
-  val spanishDefinitionService: SpanishDefinitionService,
-  implicit val ec: ExecutionContext
+class DefinitionService @Inject() (
+    val chineseDefinitionService: ChineseDefinitionService,
+    val englishDefinitionService: EnglishDefinitionService,
+    val spanishDefinitionService: SpanishDefinitionService,
+    implicit val ec: ExecutionContext
 ) {
   val logger: Logger = Logger(this.getClass)
 
@@ -26,9 +26,11 @@ class DefinitionService @Inject()(
     * @param word The token to search for.
     * @return
     */
-  def getDefinition(wordLanguage: Language,
-                    definitionLanguage: Language,
-                    word: Word): Future[List[Definition]] =
+  def getDefinition(
+      wordLanguage: Language,
+      definitionLanguage: Language,
+      word: Word
+  ): Future[List[Definition]] =
     wordLanguage match {
       case Language.CHINESE =>
         chineseDefinitionService.getDefinitions(definitionLanguage, word)

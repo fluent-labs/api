@@ -8,16 +8,16 @@ import com.foreignlanguagereader.api.client.elasticsearch.{
   LookupAttempt
 }
 import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchSearchRequest
-import com.foreignlanguagereader.api.contentsource.definition.WiktionaryDefinitionEntry
-import com.foreignlanguagereader.api.contentsource.definition.cedict.CEDICTDefinitionEntry
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.api.domain.definition.{
+import com.foreignlanguagereader.domain.external.definition.cedict.CEDICTDefinitionEntry
+import com.foreignlanguagereader.domain.Language.Language
+import com.foreignlanguagereader.domain.internal.definition.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.domain.Language
+import com.foreignlanguagereader.domain.external.definition.WiktionaryDefinitionEntry
+import com.foreignlanguagereader.domain.internal.definition.{
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.api.domain.word.{PartOfSpeech, Word}
+import com.foreignlanguagereader.domain.internal.word.{PartOfSpeech, Word}
 import com.sksamuel.elastic4s.{HitReader, Indexable}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
@@ -35,7 +35,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     examples = Some(List("example 1", "example 2")),
     definitionLanguage = Language.ENGLISH,
     wordLanguage = Language.ENGLISH,
-    token = "test",
+    token = "test"
   )
   val elasticsearchClientMock: ElasticsearchClient = mock[ElasticsearchClient]
   val languageServiceClientMock: LanguageServiceClient =
@@ -185,9 +185,9 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       class CustomizedEnricherLangaugeDefinitionService
           extends CustomizedLanguageDefinitionService {
         override def enrichDefinitions(
-          definitionLanguage: Language,
-          word: Word,
-          definitions: Map[DefinitionSource, List[Definition]]
+            definitionLanguage: Language,
+            word: Word,
+            definitions: Map[DefinitionSource, List[Definition]]
         ): List[Definition] = {
           val stub: Map[DefinitionSource, List[Definition]] = Map(
             DefinitionSource.CEDICT ->

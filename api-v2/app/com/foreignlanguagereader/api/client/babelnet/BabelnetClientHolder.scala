@@ -3,7 +3,7 @@ package com.foreignlanguagereader.api.client.babelnet
 import it.uniroma1.lcl.babelnet.{BabelNet, BabelNetQuery, BabelSense}
 import javax.inject.Singleton
 
-import scala.jdk.CollectionConverters._
+import scala.collection.JavaConverters._
 
 /**
   * Holder for the babelnet.

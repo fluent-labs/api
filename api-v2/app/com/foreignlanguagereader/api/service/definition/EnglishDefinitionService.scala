@@ -10,23 +10,23 @@ import com.foreignlanguagereader.api.client.{
   LanguageServiceClient,
   MirriamWebsterClient
 }
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.api.domain.definition.{
+import com.foreignlanguagereader.domain.Language.Language
+import com.foreignlanguagereader.domain.internal.definition.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.domain.Language
+import com.foreignlanguagereader.domain.internal.definition.{
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.api.domain.word.Word
+import com.foreignlanguagereader.domain.internal.word.Word
 import javax.inject.Inject
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EnglishDefinitionService @Inject()(
-  val elasticsearch: ElasticsearchClient,
-  val languageServiceClient: LanguageServiceClient,
-  val websterClient: MirriamWebsterClient,
-  implicit val ec: ExecutionContext
+class EnglishDefinitionService @Inject() (
+    val elasticsearch: ElasticsearchClient,
+    val languageServiceClient: LanguageServiceClient,
+    val websterClient: MirriamWebsterClient,
+    implicit val ec: ExecutionContext
 ) extends LanguageDefinitionService {
   override val wordLanguage: Language = Language.ENGLISH
   override val sources: List[DefinitionSource] =
@@ -39,8 +39,8 @@ class EnglishDefinitionService @Inject()(
   // TODO enhance by searching for all versions of stems
 
   def websterFetcher: (
-    Language,
-    Word
+      Language,
+      Word
   ) => Nested[Future, CircuitBreakerResult, List[Definition]] =
     (language: Language, word: Word) =>
       language match {
@@ -49,15 +49,21 @@ class EnglishDefinitionService @Inject()(
         case Language.SPANISH =>
           websterClient.getSpanishDefinition(word)
         case _ => Nested(Future.successful(CircuitBreakerNonAttempt()))
-    }
+      }
 
-  override val definitionFetchers
-    : Map[(DefinitionSource, Language),
-          (Language,
-           Word) => Nested[Future, CircuitBreakerResult, List[Definition]]] =
+  override val definitionFetchers: Map[
+    (DefinitionSource, Language),
+    (Language, Word) => Nested[Future, CircuitBreakerResult, List[Definition]]
+  ] =
     Map(
-      (DefinitionSource.MIRRIAM_WEBSTER_LEARNERS, Language.ENGLISH) -> websterFetcher,
-      (DefinitionSource.MIRRIAM_WEBSTER_SPANISH, Language.SPANISH) -> websterFetcher,
+      (
+        DefinitionSource.MIRRIAM_WEBSTER_LEARNERS,
+        Language.ENGLISH
+      ) -> websterFetcher,
+      (
+        DefinitionSource.MIRRIAM_WEBSTER_SPANISH,
+        Language.SPANISH
+      ) -> websterFetcher,
       (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
     )
 }

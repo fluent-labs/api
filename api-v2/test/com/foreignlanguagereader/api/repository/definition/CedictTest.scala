@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.api.repository.definition
 
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.word.Word
+import com.foreignlanguagereader.domain.Language
+import com.foreignlanguagereader.domain.internal.word.Word
 import org.scalatest.funspec.AnyFunSpec
 
 class CedictTest extends AnyFunSpec {

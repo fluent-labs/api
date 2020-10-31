@@ -1,10 +1,12 @@
 package com.foreignlanguagereader.api.repository.definition
 
-import com.foreignlanguagereader.api.contentsource.definition.cedict.CEDICTDefinitionEntry
-import com.foreignlanguagereader.api.domain.word.Word
+import cats.implicits._
+import com.foreignlanguagereader.domain.external.definition.cedict.CEDICTDefinitionEntry
+import com.foreignlanguagereader.domain.internal.word.Word
 import play.api.Logger
 
 import scala.io.{BufferedSource, Source}
+import scala.util.matching.Regex
 import scala.util.{Failure, Success, Using}
 
 object Cedict {
@@ -51,22 +53,25 @@ object Cedict {
     }
 
   private[this] def parseCedictFile(
-    cedict: BufferedSource
-  ): List[CEDICTDefinitionEntry] =
+      cedict: BufferedSource
+  ): List[CEDICTDefinitionEntry] = {
+    val cedictLineRegex: Regex = """(\S+) (\S+) \[(.+)\] \/(.+)\/""".r
     cedict
       .getLines()
       // These lines are all dictionary comments. License, schema, etc.
       .filterNot(_.startsWith("#"))
-      .map(line => {
-        val s"$traditional $simplified [$pinyin] /$definition/" = line
-        val subdefinitions = definition.split("/").toList
-        CEDICTDefinitionEntry(
-          subdefinitions,
-          pinyin,
-          simplified,
-          traditional,
-          traditional
-        )
-      })
+      .flatMap {
+        case cedictLineRegex(traditional, simplified, pinyin, definition) =>
+          val subdefinitions = definition.split("/").toList
+          CEDICTDefinitionEntry(
+            subdefinitions,
+            pinyin,
+            simplified,
+            traditional,
+            traditional
+          ).some
+        case _ => None
+      }
       .toList
+  }
 }

@@ -1,7 +1,11 @@
+import com.foreignlanguagereader.domain.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
+import com.foreignlanguagereader.domain.internal.word.PartOfSpeech
 import org.apache.spark.sql.SparkSession
-import org.scalatest.FunSpec
+import org.scalatest.funspec.AnyFunSpec
 
-class SimpleWiktionaryTest extends FunSpec {
+import scala.List
+
+class SimpleWiktionaryTest extends AnyFunSpec {
   lazy val spark: SparkSession = {
     SparkSession
       .builder()
@@ -30,7 +34,7 @@ class SimpleWiktionaryTest extends FunSpec {
                  |[[Category:Auxiliary verbs]]""".stripMargin
 
     val entryraw = WiktionaryRawEntry(42, "Is", text)
-    val entryParsed: SimpleWiktionaryDefinition =
+    val entryParsed: SimpleWiktionaryDefinitionEntry =
       SimpleWiktionary.parseSimple(Seq(entryraw).toDS())(spark).first()
 
     val definition =
@@ -47,23 +51,23 @@ class SimpleWiktionaryTest extends FunSpec {
 
     assert(entryParsed.token == "Is")
     assert(entryParsed.definition == definition)
-    assert(entryParsed.tag == "Verb")
+    assert(entryParsed.tag.contains(PartOfSpeech.VERB))
     assert(entryParsed.ipa == "ɪz")
     assert(
-      entryParsed.subdefinitions sameElements Array(
+      entryParsed.subdefinitions === List(
         "{{Auxiliary}} {{linking verb}} A form of the [[verb]] ''[[be]]'' when talking about someone or something else."
       )
     )
     assert(
-      entryParsed.examples sameElements Array(
-        "''He '''is''' late for class.''",
-        "'''''Is''' it hot in here?''"
+      entryParsed.examples.contains(
+        List(
+          "''He '''is''' late for class.''",
+          "'''''Is''' it hot in here?''"
+        )
       )
     )
     assert(
-      entryParsed.pronunciation sameElements Array(
-        "=\n* {{IPA|/ɪz/}}\n* {{SAMPA|/Iz/}}\n* {{audio|en-us-is.ogg|Audio (US)}}\n\n"
-      )
+      entryParsed.pronunciation === "=\n* {{IPA|/ɪz/}}\n* {{SAMPA|/Iz/}}\n* {{audio|en-us-is.ogg|Audio (US)}}\n\n"
     )
     assert(
       entryParsed.related sameElements Array(
@@ -78,9 +82,5 @@ class SimpleWiktionaryTest extends FunSpec {
     assert(entryParsed.homophones.isEmpty)
     assert(entryParsed.homonyms.isEmpty)
     assert(entryParsed.otherSpellings.isEmpty)
-
-    assert(entryParsed.definitionLanguage == "ENGLISH")
-    assert(entryParsed.wordLanguage == "ENGLISH")
-    assert(entryParsed.source == "WIKTIONARY_SIMPLE_ENGLISH")
   }
 }
