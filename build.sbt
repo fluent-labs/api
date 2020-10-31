@@ -12,12 +12,14 @@ lazy val global = project
 
 lazy val dto = project
   .settings(
+    settings,
     assemblySettings,
     libraryDependencies ++= commonDependencies
   )
 
 lazy val domain = project
   .settings(
+    settings,
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.utilBackports,
