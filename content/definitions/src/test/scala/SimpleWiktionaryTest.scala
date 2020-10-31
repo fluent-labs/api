@@ -1,3 +1,4 @@
+import com.foreignlanguagereader.domain.external.definition.wiktionary.SimpleWiktionaryDefinition
 import org.apache.spark.sql.SparkSession
 import org.scalatest.funspec.AnyFunSpec
 
