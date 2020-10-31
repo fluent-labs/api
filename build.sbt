@@ -20,6 +20,7 @@ lazy val domain = project
   .settings(
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ Seq(
+      dependencies.utilBackports,
       // Used to generate elasticsearch matchers
       dependencies.elastic4s,
       dependencies.elastic4sPlay,
@@ -37,7 +38,6 @@ lazy val api = project
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ playDependencies ++ Seq(
       dependencies.cats,
-      dependencies.utilBackports,
       dependencies.elastic4s,
       dependencies.elastic4sTestkit,
       dependencies.elastic4sPlay,

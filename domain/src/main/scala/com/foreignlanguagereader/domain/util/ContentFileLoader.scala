@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.api.util
+package com.foreignlanguagereader.domain.util
 
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Json, Reads}

@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.api.domain.definition
+package com.foreignlanguagereader.domain.definition
 
 import play.api.libs.json._
 

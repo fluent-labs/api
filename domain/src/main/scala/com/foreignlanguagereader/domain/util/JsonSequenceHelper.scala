@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.api.util
+package com.foreignlanguagereader.domain.util
 
 import play.api.libs.json.{JsValue, Reads, Writes}
 
@@ -11,8 +11,10 @@ import play.api.libs.json.{JsValue, Reads, Writes}
   * @param writes An implementation of json writing. Just needs to be in scope.
   * @tparam T The type we are helping with.
   */
-class JsonSequenceHelper[T](implicit val reads: Reads[T],
-                            implicit val writes: Writes[T]) {
+class JsonSequenceHelper[T](
+    implicit val reads: Reads[T],
+    implicit val writes: Writes[T]
+) {
   implicit val readsList: Reads[List[T]] = Reads.list(reads)
   implicit val readsListList: Reads[List[List[T]]] = Reads.list(readsList)
   implicit val readsListListList: Reads[List[List[List[T]]]] =

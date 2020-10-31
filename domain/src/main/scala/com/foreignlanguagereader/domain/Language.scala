@@ -1,15 +1,12 @@
-package com.foreignlanguagereader.api.domain
+package com.foreignlanguagereader.domain
 
-import com.foreignlanguagereader.api.domain
-import play.api.libs.json._
+import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.PathBindable
-import sangria.macros.derive.{EnumTypeDescription, EnumTypeName, deriveEnumType}
-import sangria.schema.EnumType
 
 object Language extends Enumeration {
   type Language = Value
   val CHINESE: Value = Value("CHINESE")
-  val CHINESE_TRADITIONAL: domain.Language.Value = Value("CHINESE_TRADITIONAL")
+  val CHINESE_TRADITIONAL: Language.Value = Value("CHINESE_TRADITIONAL")
   val ENGLISH: Value = Value("ENGLISH")
   val SPANISH: Value = Value("SPANISH")
 
@@ -29,9 +26,4 @@ object Language extends Enumeration {
         }
       override def unbind(key: String, value: Language): String = value.toString
     }
-
-  val graphqlType: EnumType[Language] = deriveEnumType[Language](
-    EnumTypeName("Language"),
-    EnumTypeDescription("A human language")
-  )
 }

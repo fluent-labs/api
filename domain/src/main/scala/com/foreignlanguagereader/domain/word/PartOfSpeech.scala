@@ -1,8 +1,8 @@
-package com.foreignlanguagereader.api.domain.word
+package com.foreignlanguagereader.domain.word
 
+import com.foreignlanguagereader.dto.v1.word.PartOfSpeechDTO
+import com.foreignlanguagereader.dto.v1.word.PartOfSpeechDTO.PartOfSpeechDTO
 import play.api.libs.json.{Reads, Writes}
-import sangria.macros.derive.{EnumTypeDescription, EnumTypeName, deriveEnumType}
-import sangria.schema.EnumType
 
 /**
   * This is a crude bucketing of all possible parts of speech in a language.
@@ -38,9 +38,21 @@ object PartOfSpeech extends Enumeration {
   implicit val reads: Reads[PartOfSpeech] = Reads.enumNameReads(PartOfSpeech)
   implicit val writes: Writes[PartOfSpeech] = Writes.enumNameWrites
 
-  implicit val graphqlType: EnumType[PartOfSpeech] =
-    deriveEnumType[PartOfSpeech](
-      EnumTypeName("PartOfSpeech"),
-      EnumTypeDescription("The part of speech for a word")
-    )
+  def toDTO(partOfSpeech: PartOfSpeech): PartOfSpeechDTO =
+    partOfSpeech match {
+      case ADJECTIVE   => PartOfSpeechDTO.ADJECTIVE
+      case ADPOSITION  => PartOfSpeechDTO.ADPOSITION
+      case ADVERB      => PartOfSpeechDTO.ADVERB
+      case CONJUNCTION => PartOfSpeechDTO.CONJUNCTION
+      case DETERMINER  => PartOfSpeechDTO.DETERMINER
+      case NOUN        => PartOfSpeechDTO.NOUN
+      case NUMBER      => PartOfSpeechDTO.NUMBER
+      case PRONOUN     => PartOfSpeechDTO.PRONOUN
+      case PARTICLE    => PartOfSpeechDTO.PARTICLE
+      case PUNCTUATION => PartOfSpeechDTO.PUNCTUATION
+      case VERB        => PartOfSpeechDTO.VERB
+      case OTHER       => PartOfSpeechDTO.OTHER
+      case AFFIX       => PartOfSpeechDTO.AFFIX
+      case UNKNOWN     => PartOfSpeechDTO.UNKNOWN
+    }
 }

@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.api.domain.word
+package com.foreignlanguagereader.domain.word
 
 import play.api.libs.json.{Reads, Writes}
 
