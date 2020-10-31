@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.api.domain
+package com.foreignlanguagereader.domain.internal
 
 import com.foreignlanguagereader.domain.Language
 

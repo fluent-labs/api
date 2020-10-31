@@ -1,10 +1,6 @@
-package com.foreignlanguagereader.api.domain.definition
+package com.foreignlanguagereader.domain.internal.definition
 
 import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.internal.definition.{
-  ChineseDefinition,
-  DefinitionSource
-}
 import com.foreignlanguagereader.domain.internal.word.PartOfSpeech
 import com.foreignlanguagereader.dto.v1.definition.ChineseDefinitionDTO
 import com.foreignlanguagereader.dto.v1.definition.chinese.HskLevel

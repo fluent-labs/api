@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.api.contentsource.webster.common
+package com.foreignlanguagereader.domain.external.definition.webster.common
 
 import com.foreignlanguagereader.domain.external.definition.webster.common.WebsterDefinition
 import org.scalatest.funspec.AnyFunSpec

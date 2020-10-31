@@ -1,12 +1,11 @@
-package com.foreignlanguagereader.api.contentsource.webster
+package com.foreignlanguagereader.domain.external.definition.webster
 
-import com.foreignlanguagereader.domain.external.definition.webster.WebsterLearnersDefinitionEntry
-import com.foreignlanguagereader.domain.internal.word.PartOfSpeech
 import com.foreignlanguagereader.domain.Language
 import com.foreignlanguagereader.domain.internal.definition.{
   Definition,
   DefinitionSource
 }
+import com.foreignlanguagereader.domain.internal.word.PartOfSpeech
 import com.foreignlanguagereader.domain.util.ContentFileLoader
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.{JsValue, Json}
