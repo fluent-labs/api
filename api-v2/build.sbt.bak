@@ -1,4 +1,4 @@
-name := """foreign-language-reader-api"""
+name := "foreign-language-reader-api"
 organization := "com.foreignlanguagereader"
 
 version := "1.0-SNAPSHOT"

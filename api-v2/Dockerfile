@@ -13,7 +13,7 @@ RUN apk add --no-cache --update bash wget && mkdir -p "$SBT_HOME" && \
 # Cache dependencies
 WORKDIR /app
 COPY project project
-COPY build.sbt build.sbt
+COPY build.sbt.bak build.sbt
 RUN sbt compile
 
 # Compile the service
