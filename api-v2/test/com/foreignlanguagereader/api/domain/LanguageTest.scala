@@ -1,5 +1,7 @@
 package com.foreignlanguagereader.api.domain
 
+import com.foreignlanguagereader.domain.Language
+
 class LanguageTest extends org.scalatest.funsuite.AnyFunSuite {
 
   test("Enums should evaluate to their value using toString") {

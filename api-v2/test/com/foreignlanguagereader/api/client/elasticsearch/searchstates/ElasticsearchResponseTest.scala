@@ -6,14 +6,14 @@ import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerResult
 }
 import com.foreignlanguagereader.api.client.elasticsearch.LookupAttempt
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.definition.{
+import com.foreignlanguagereader.domain.word.PartOfSpeech
+import com.foreignlanguagereader.api.util.ElasticsearchTestUtil
+import com.foreignlanguagereader.domain.Language
+import com.foreignlanguagereader.domain.definition.{
   Definition,
   DefinitionSource,
   GenericDefinition
 }
-import com.foreignlanguagereader.api.domain.word.PartOfSpeech
-import com.foreignlanguagereader.api.util.ElasticsearchTestUtil
 import com.sksamuel.elastic4s.HitReader
 import org.scalatest.funspec.AsyncFunSpec
 import org.scalatestplus.mockito.MockitoSugar

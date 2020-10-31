@@ -1,9 +1,10 @@
 package com.foreignlanguagereader.api.util
 
-import com.foreignlanguagereader.api.service.definition.{
+import com.foreignlanguagereader.domain.content.chinese.{
   ChinesePronunciationFromFile,
   HskHolder
 }
+import com.foreignlanguagereader.domain.util.ContentFileLoader
 import org.scalatest.funspec.AnyFunSpec
 
 class ContentFileLoaderTest extends AnyFunSpec {

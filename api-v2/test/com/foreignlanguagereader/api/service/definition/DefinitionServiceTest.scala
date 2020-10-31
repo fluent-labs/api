@@ -1,12 +1,12 @@
 package com.foreignlanguagereader.api.service.definition
 
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.definition.{
+import com.foreignlanguagereader.domain.Language
+import com.foreignlanguagereader.domain.definition.{
   ChineseDefinition,
   DefinitionSource,
   GenericDefinition
 }
-import com.foreignlanguagereader.api.domain.word.{PartOfSpeech, Word}
+import com.foreignlanguagereader.domain.word.{PartOfSpeech, Word}
 import org.mockito.Mockito._
 import org.scalatest.funspec.AsyncFunSpec
 import org.scalatestplus.mockito.MockitoSugar

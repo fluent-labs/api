@@ -1,15 +1,15 @@
 package com.foreignlanguagereader.api.controller.v1.graphql
 
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.Definition
-import com.foreignlanguagereader.api.domain.word.Word
+import com.foreignlanguagereader.domain.Language.Language
+import com.foreignlanguagereader.domain.word.Word
 import com.foreignlanguagereader.api.service.definition.{
   ChineseDefinitionService,
   DefinitionService,
   EnglishDefinitionService,
   SpanishDefinitionService
 }
+import com.foreignlanguagereader.domain.Language
+import com.foreignlanguagereader.domain.definition.Definition
 import org.mockito.Mockito
 import org.mockito.Mockito._
 import org.scalatest.OptionValues
@@ -60,9 +60,11 @@ class MockDefinitionService
     ).thenReturn(Future.successful(List()))
     m
   }
-  override def getDefinition(wordLanguage: Language,
-                             definitionLanguage: Language,
-                             word: Word): Future[List[Definition]] =
+  override def getDefinition(
+      wordLanguage: Language,
+      definitionLanguage: Language,
+      word: Word
+  ): Future[List[Definition]] =
     mock.getDefinition(wordLanguage, definitionLanguage, word)
 }
 

@@ -2,8 +2,8 @@ package com.foreignlanguagereader.api.client.google
 
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.client.common.CircuitBreakerAttempt
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.word.{
+import com.foreignlanguagereader.domain.Language
+import com.foreignlanguagereader.domain.word.{
   GrammaticalGender,
   PartOfSpeech,
   _

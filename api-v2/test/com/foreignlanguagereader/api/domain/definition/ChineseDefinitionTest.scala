@@ -1,8 +1,13 @@
 package com.foreignlanguagereader.api.domain.definition
 
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.word.PartOfSpeech
-import com.foreignlanguagereader.api.dto.v1.definition.ChineseDefinitionDTO
+import com.foreignlanguagereader.domain.Language
+import com.foreignlanguagereader.domain.definition.{
+  ChineseDefinition,
+  DefinitionSource
+}
+import com.foreignlanguagereader.domain.word.PartOfSpeech
+import com.foreignlanguagereader.dto.v1.definition.ChineseDefinitionDTO
+import com.foreignlanguagereader.dto.v1.definition.chinese.HskLevel
 import org.scalatest.funspec.AnyFunSpec
 
 class ChineseDefinitionTest extends AnyFunSpec {
@@ -91,7 +96,7 @@ class ChineseDefinitionTest extends AnyFunSpec {
       val compareAgainst = ChineseDefinitionDTO(
         example.id,
         example.subdefinitions,
-        example.tag,
+        PartOfSpeech.toDTO(example.tag),
         example.examples,
         example.simplified,
         example.traditional,
