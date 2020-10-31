@@ -13,13 +13,13 @@ import com.foreignlanguagereader.api.repository.definition.Cedict
 import com.foreignlanguagereader.domain.Language
 import com.foreignlanguagereader.domain.Language.Language
 import com.foreignlanguagereader.domain.content.chinese.SimplifiedTraditionalConverter
-import com.foreignlanguagereader.domain.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.domain.definition.{
+import com.foreignlanguagereader.domain.internal.definition.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.domain.internal.definition.{
   ChineseDefinition,
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.domain.word.Word
+import com.foreignlanguagereader.domain.internal.word.Word
 import com.github.houbb.opencc4j.util.ZhConverterUtil
 import javax.inject.Inject
 import play.api.Logger

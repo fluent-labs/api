@@ -1,9 +1,9 @@
 package com.foreignlanguagereader.api.contentsource.webster
 
-import com.foreignlanguagereader.api.contentsource.definition.webster.WebsterSpanishDefinitionEntry
-import com.foreignlanguagereader.domain.word.PartOfSpeech
+import com.foreignlanguagereader.domain.external.definition.webster.WebsterSpanishDefinitionEntry
+import com.foreignlanguagereader.domain.internal.word.PartOfSpeech
 import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.definition.{
+import com.foreignlanguagereader.domain.internal.definition.{
   Definition,
   DefinitionSource
 }

@@ -1,10 +1,10 @@
 package com.foreignlanguagereader.api.controller.v1.language
 
 import com.foreignlanguagereader.domain.Language.Language
-import com.foreignlanguagereader.domain.word.Word
+import com.foreignlanguagereader.domain.internal.word.Word
 import com.foreignlanguagereader.api.service.definition.DefinitionService
 import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.definition.Definition
+import com.foreignlanguagereader.domain.internal.definition.Definition
 import javax.inject._
 import play.api.Logger
 import play.api.libs.json.Json

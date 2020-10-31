@@ -6,10 +6,10 @@ import com.foreignlanguagereader.api.client.elasticsearch.searchstates.{
   ElasticsearchCacheRequest,
   ElasticsearchSearchRequest
 }
-import com.foreignlanguagereader.domain.word.PartOfSpeech
+import com.foreignlanguagereader.domain.internal.word.PartOfSpeech
 import com.foreignlanguagereader.api.util.ElasticsearchTestUtil
 import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.definition.{
+import com.foreignlanguagereader.domain.internal.definition.{
   Definition,
   DefinitionSource,
   GenericDefinition

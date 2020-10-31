@@ -2,8 +2,8 @@ package com.foreignlanguagereader.api.service.definition
 
 import com.foreignlanguagereader.domain.Language.Language
 import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.definition.Definition
-import com.foreignlanguagereader.domain.word.Word
+import com.foreignlanguagereader.domain.internal.definition.Definition
+import com.foreignlanguagereader.domain.internal.word.Word
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 

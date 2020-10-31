@@ -10,13 +10,13 @@ import com.foreignlanguagereader.api.client.common.{
 import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
 import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchSearchRequest
 import com.foreignlanguagereader.domain.Language.Language
-import com.foreignlanguagereader.domain.definition.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.domain.internal.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.definition.{
+import com.foreignlanguagereader.domain.internal.definition.{
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.domain.word.Word
+import com.foreignlanguagereader.domain.internal.word.Word
 import com.sksamuel.elastic4s.playjson._
 import play.api.Logger
 

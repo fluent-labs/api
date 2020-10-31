@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.contentsource.webster.common
 
-import com.foreignlanguagereader.api.contentsource.definition.webster.common.WebsterDefinition
+import com.foreignlanguagereader.domain.external.definition.webster.common.WebsterDefinition
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
 

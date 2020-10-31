@@ -8,7 +8,7 @@ import com.foreignlanguagereader.api.client.common.{
 }
 import com.foreignlanguagereader.api.client.google.GoogleCloudClient
 import com.foreignlanguagereader.domain.Language.Language
-import com.foreignlanguagereader.domain.word.Word
+import com.foreignlanguagereader.domain.internal.word.Word
 import com.foreignlanguagereader.api.service.definition.DefinitionService
 import com.google.inject.Inject
 import javax.inject

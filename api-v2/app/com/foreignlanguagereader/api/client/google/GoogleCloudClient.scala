@@ -9,11 +9,11 @@ import com.foreignlanguagereader.api.client.common.{
 }
 import com.foreignlanguagereader.domain.Language
 import com.foreignlanguagereader.domain.Language.Language
-import com.foreignlanguagereader.domain.word.Count.Count
-import com.foreignlanguagereader.domain.word.GrammaticalGender.GrammaticalGender
-import com.foreignlanguagereader.domain.word.PartOfSpeech.PartOfSpeech
-import com.foreignlanguagereader.domain.word.WordTense.WordTense
-import com.foreignlanguagereader.domain.word.{PartOfSpeech, _}
+import com.foreignlanguagereader.domain.internal.word.Count.Count
+import com.foreignlanguagereader.domain.internal.word.GrammaticalGender.GrammaticalGender
+import com.foreignlanguagereader.domain.internal.word.PartOfSpeech.PartOfSpeech
+import com.foreignlanguagereader.domain.internal.word.WordTense.WordTense
+import com.foreignlanguagereader.domain.internal.word.{PartOfSpeech, _}
 import com.google.cloud.language.v1.Document.Type
 import com.google.cloud.language.v1.PartOfSpeech.{
   Gender,

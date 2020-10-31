@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.api.controller.v1.graphql
 
 import com.foreignlanguagereader.domain.Language.Language
-import com.foreignlanguagereader.domain.word.Word
+import com.foreignlanguagereader.domain.internal.word.Word
 import com.foreignlanguagereader.api.service.definition.{
   ChineseDefinitionService,
   DefinitionService,
@@ -9,7 +9,7 @@ import com.foreignlanguagereader.api.service.definition.{
   SpanishDefinitionService
 }
 import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.definition.Definition
+import com.foreignlanguagereader.domain.internal.definition.Definition
 import org.mockito.Mockito
 import org.mockito.Mockito._
 import org.scalatest.OptionValues

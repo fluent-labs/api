@@ -57,6 +57,7 @@ lazy val definitions = project
       dependencies.sparkXml
     )
   )
+  .dependsOn(domain)
 
 lazy val commonDependencies = Seq(
   dependencies.scalatest % "test",

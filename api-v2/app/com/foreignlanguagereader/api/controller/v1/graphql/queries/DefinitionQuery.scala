@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.controller.v1.graphql.queries
 
-import com.foreignlanguagereader.domain.word.Word
+import com.foreignlanguagereader.domain.internal.word.Word
 import com.foreignlanguagereader.dto.v1.definition.DefinitionDTO
 import com.foreignlanguagereader.api.service.definition.DefinitionService
 import com.foreignlanguagereader.domain.Language

@@ -7,10 +7,10 @@ import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerNonAttempt
 }
 import com.foreignlanguagereader.api.client.google.GoogleCloudClient
-import com.foreignlanguagereader.domain.word.{PartOfSpeech, Word}
+import com.foreignlanguagereader.domain.internal.word.{PartOfSpeech, Word}
 import com.foreignlanguagereader.api.service.definition.DefinitionService
 import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.definition.{
+import com.foreignlanguagereader.domain.internal.definition.{
   Definition,
   DefinitionSource
 }

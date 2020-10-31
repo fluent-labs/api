@@ -7,12 +7,12 @@ import com.foreignlanguagereader.api.client.elasticsearch.{
 }
 import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchSearchRequest
 import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.definition.{
+import com.foreignlanguagereader.domain.internal.definition.{
   ChineseDefinition,
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.domain.word.{PartOfSpeech, Word}
+import com.foreignlanguagereader.domain.internal.word.{PartOfSpeech, Word}
 import com.sksamuel.elastic4s.{HitReader, Indexable}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._

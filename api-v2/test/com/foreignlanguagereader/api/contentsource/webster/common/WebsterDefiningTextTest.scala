@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.contentsource.webster.common
 
-import com.foreignlanguagereader.api.contentsource.definition.webster.common.WebsterDefiningText
+import com.foreignlanguagereader.domain.external.definition.webster.common.WebsterDefiningText
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
 
@@ -16,7 +16,9 @@ class WebsterDefiningTextTest extends AnyFunSpec {
           Json.parse(webster).validate[WebsterDefiningText].get
         assert(definingText.text.size == 1)
         assert(
-          definingText.text(0) == "{bc}a person or way of behaving that is seen as a model that should be followed "
+          definingText.text(
+            0
+          ) == "{bc}a person or way of behaving that is seen as a model that should be followed "
         )
       }
 

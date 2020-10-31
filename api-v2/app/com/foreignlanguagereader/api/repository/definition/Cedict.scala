@@ -1,8 +1,8 @@
 package com.foreignlanguagereader.api.repository.definition
 
 import cats.implicits._
-import com.foreignlanguagereader.api.contentsource.definition.cedict.CEDICTDefinitionEntry
-import com.foreignlanguagereader.domain.word.Word
+import com.foreignlanguagereader.domain.external.definition.cedict.CEDICTDefinitionEntry
+import com.foreignlanguagereader.domain.internal.word.Word
 import play.api.Logger
 
 import scala.io.{BufferedSource, Source}
