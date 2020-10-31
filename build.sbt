@@ -34,7 +34,7 @@ lazy val api = project
   .in(file("api-v2"))
   .enablePlugins(PlayService, PlayLayoutPlugin)
   .settings(
-    name := "definitions",
+    name := "api",
     settings,
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ playDependencies ++ Seq(
