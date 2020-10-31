@@ -54,7 +54,7 @@ class SimpleWiktionaryTest extends AnyFunSpec {
     assert(entryParsed.tag.contains(PartOfSpeech.VERB))
     assert(entryParsed.ipa == "ɪz")
     assert(
-      entryParsed.subdefinitions == List(
+      entryParsed.subdefinitions === List(
         "{{Auxiliary}} {{linking verb}} A form of the [[verb]] ''[[be]]'' when talking about someone or something else."
       )
     )
@@ -67,7 +67,7 @@ class SimpleWiktionaryTest extends AnyFunSpec {
       )
     )
     assert(
-      entryParsed.pronunciation == "=\n* {{IPA|/ɪz/}}\n* {{SAMPA|/Iz/}}\n* {{audio|en-us-is.ogg|Audio (US)}}\n\n"
+      entryParsed.pronunciation === "=\n* {{IPA|/ɪz/}}\n* {{SAMPA|/Iz/}}\n* {{audio|en-us-is.ogg|Audio (US)}}\n\n"
     )
     assert(
       entryParsed.related sameElements Array(
