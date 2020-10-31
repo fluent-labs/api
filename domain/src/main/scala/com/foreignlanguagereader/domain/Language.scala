@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.domain
 
+import cats.implicits._
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.PathBindable
 import sangria.macros.derive.{EnumTypeDescription, EnumTypeName, deriveEnumType}
@@ -13,7 +14,7 @@ object Language extends Enumeration {
   val SPANISH: Value = Value("SPANISH")
 
   def fromString(s: String): Option[Language] =
-    Language.values.find(_.toString == s)
+    Language.values.find(_.toString === s)
 
   implicit val reads: Reads[Language] = Reads.enumNameReads(Language)
   implicit val writes: Writes[Language] = Writes.enumNameWrites

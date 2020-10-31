@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.domain.definition
 
+import cats.implicits._
 import play.api.libs.json._
 
 /*
@@ -16,7 +17,7 @@ object DefinitionSource extends Enumeration {
   val MULTIPLE: Value = Value("MULTIPLE")
 
   def fromString(source: String): Option[DefinitionSource] =
-    DefinitionSource.values.find(_.toString == source)
+    DefinitionSource.values.find(_.toString === source)
 
   // Makes sure we can serialize and deserialize this to JSON
   implicit val sourceFormat: Format[DefinitionSource] =

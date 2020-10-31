@@ -38,7 +38,6 @@ lazy val api = project
     settings,
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ playDependencies ++ Seq(
-      dependencies.cats,
       dependencies.elastic4s,
       dependencies.elastic4sTestkit,
       dependencies.elastic4sPlay,
@@ -62,6 +61,7 @@ lazy val definitions = project
 lazy val commonDependencies = Seq(
   dependencies.scalatest % "test",
   dependencies.scalactic,
+  dependencies.cats,
   ws,
   dependencies.sangria
 )
