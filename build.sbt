@@ -8,7 +8,7 @@ lazy val global = project
   .in(file("."))
   .settings(settings)
   .disablePlugins(AssemblyPlugin)
-  .aggregate(api, definitions)
+  .aggregate(api, domain, dto, definitions)
 
 lazy val dto = project
   .settings(
