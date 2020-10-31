@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine3.9 as builder
+FROM openjdk:14-jdk-alpine3.10 as builder
 
 ENV SBT_VERSION 1.3.10
 ENV INSTALL_DIR /usr/local
@@ -13,17 +13,17 @@ RUN apk add --no-cache --update bash wget && mkdir -p "$SBT_HOME" && \
 # Cache dependencies
 WORKDIR /app
 COPY project project
-COPY build.sbt.bak build.sbt
+COPY build.sbt build.sbt
 RUN sbt compile
 
 # Compile the service
-COPY . /app
-RUN sbt clean coverageOff dist && \
-    unzip /app/api-v2/target/universal/definitions-0.1.0-SNAPSHOT.zip
+COPY . /app/
+RUN sbt clean coverageOff dist
+RUN unzip /app/api-v2/target/universal/api-0.1.0-SNAPSHOT.zip
 
-FROM openjdk:8-jre-alpine3.9 as final
+FROM openjdk:14-jdk-alpine3.10 as final
 WORKDIR /app
 RUN apk add bash
 EXPOSE 9000
-CMD ["/app/bin/foreign-language-reader-api"]
-COPY --from=builder /app/foreign-language-reader-api-1.0-SNAPSHOT /app
+CMD ["/app/bin/api"]
+COPY --from=builder /app/api-0.1.0-SNAPSHOT /app
