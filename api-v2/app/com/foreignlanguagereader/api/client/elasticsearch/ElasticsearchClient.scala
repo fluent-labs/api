@@ -18,10 +18,11 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
 
 @Singleton
-class ElasticsearchClient @Inject()(config: Configuration,
-                                    val client: ElasticsearchClientHolder,
-                                    val system: ActorSystem)
-    extends Circuitbreaker {
+class ElasticsearchClient @Inject() (
+    config: Configuration,
+    val client: ElasticsearchClientHolder,
+    val system: ActorSystem
+) extends Circuitbreaker {
   override val logger: Logger = Logger(this.getClass)
   implicit val ec: ExecutionContext =
     system.dispatchers.lookup("elasticsearch-context")
@@ -39,24 +40,25 @@ class ElasticsearchClient @Inject()(config: Configuration,
     * @return
     */
   def findFromCacheOrRefetch[T: Indexable](
-    requests: List[ElasticsearchSearchRequest[T]]
-  )(implicit hitReader: HitReader[T],
-    attemptsHitReader: HitReader[LookupAttempt],
-    tag: ClassTag[T]): Future[List[List[T]]] = {
+      requests: List[ElasticsearchSearchRequest[T]]
+  )(implicit
+      hitReader: HitReader[T],
+      attemptsHitReader: HitReader[LookupAttempt],
+      tag: ClassTag[T]
+  ): Future[List[List[T]]] = {
     // Fork and join for getting each request
     requests
-      .traverse(
-        request =>
-          execute(request.query).value
-            .map(
-              result => ElasticsearchSearchResponse.fromResult(request, result)
-            )
-            // This is where fetchers are called to get results if they aren't in elasticsearch
-            // There is also logic to remember what has been fetched from external sources
-            // So that we don't try too many times on the same query
-            .map(_.getResultOrFetchFromSource)
-            // Future of a future can just wait until both complete
-            .flatten
+      .traverse(request =>
+        execute(request.query).value
+          .map(result =>
+            ElasticsearchSearchResponse.fromResult(request, result)
+          )
+          // This is where fetchers are called to get results if they aren't in elasticsearch
+          // There is also logic to remember what has been fetched from external sources
+          // So that we don't try too many times on the same query
+          .map(_.getResultOrFetchFromSource)
+          // Future of a future can just wait until both complete
+          .flatten
       )
       // Block here until we have finished with all of the requests
       .map(results => {
@@ -79,22 +81,25 @@ class ElasticsearchClient @Inject()(config: Configuration,
 
   // The breaker guard is pretty important, or else we just infinitely retry insertions
   // That will quickly consume the thread pool.
-  def startInserting(): Future[Unit] = Future.apply {
-    while (breaker.isClosed && client.hasMore) {
-      // We could rely on the check for queue emptiness but that opens us up to race conditions.
-      //  Removing and checking is atomic, and the queue is thread safe, so we are protected.
-      client.nextInsert() match {
-        case Some(item) =>
-          save(item)
-        case None =>
-          logger.info("Finished inserting")
+  def startInserting(): Future[Unit] =
+    Future.apply {
+      while (breaker.isClosed && client.hasMore) {
+        // We could rely on the check for queue emptiness but that opens us up to race conditions.
+        //  Removing and checking is atomic, and the queue is thread safe, so we are protected.
+        client.nextInsert() match {
+          case Some(item) =>
+            save(item)
+          case None =>
+            logger.info("Finished inserting")
+        }
       }
     }
-  }
 
   def save(request: ElasticsearchCacheRequest): Future[Unit] = {
     logger.info(s"Saving to elasticsearch: $request")
-    execute(bulk(request.requests)).value.map {
+    val result = execute(bulk(request.requests))
+    val searchValue = result.value
+    searchValue.map {
       case CircuitBreakerAttempt(_) =>
         logger
           .info(s"Successfully saved to elasticsearch: $request")
@@ -124,9 +129,9 @@ class ElasticsearchClient @Inject()(config: Configuration,
   // Common wrappers for all requests below here
 
   // Unwraps all elasticsearch requests so there can be a single failure path
-  private[this] def execute[T, U](request: T)(
-    implicit handler: Handler[T, U],
-    manifest: Manifest[U]
+  private[this] def execute[T, U](request: T)(implicit
+      handler: Handler[T, U],
+      manifest: Manifest[U]
   ): Nested[Future, CircuitBreakerResult, U] =
     withBreaker(
       s"Error executing elasticearch query: $request due to error",
@@ -150,9 +155,10 @@ class ElasticsearchClient @Inject()(config: Configuration,
     * @tparam T Whatever the request is. Doesn't matter for this one
     * @return Was it a failure?
     */
-  override def defaultIsSuccess[T](result: T): Boolean = result match {
-    case RequestSuccess(_, _, _, _) => true
-    case RequestFailure(_, _, _, _) => false
-    case _                          => true
-  }
+  override def defaultIsSuccess[T](result: T): Boolean =
+    result match {
+      case RequestSuccess(_, _, _, _) => true
+      case RequestFailure(_, _, _, _) => false
+      case _                          => true
+    }
 }
