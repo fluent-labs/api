@@ -7,4 +7,14 @@ terraform.tfstate.backup
 terraform.tfvars
 state.json
 
+# Build
 .idea
+logs
+project/project
+project/target
+target
+
+# Spark written files
+part-0000*
+_SUCCESS
+*.crc

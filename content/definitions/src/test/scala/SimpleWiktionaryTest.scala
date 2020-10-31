@@ -1,7 +1,7 @@
 import org.apache.spark.sql.SparkSession
-import org.scalatest.FunSpec
+import org.scalatest.funspec.AnyFunSpec
 
-class SimpleWiktionaryTest extends FunSpec {
+class SimpleWiktionaryTest extends AnyFunSpec {
   lazy val spark: SparkSession = {
     SparkSession
       .builder()
