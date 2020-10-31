@@ -24,6 +24,7 @@ case class HskHolder(
     hsk5: Set[String],
     hsk6: Set[String]
 ) {
+  // scalastyle:off cyclomatic.complexity
   def getLevel(simplified: String): HskLevel.Value =
     simplified match {
       case s if hsk1.contains(s) => HskLevel.ONE
@@ -34,6 +35,7 @@ case class HskHolder(
       case s if hsk6.contains(s) => HskLevel.SIX
       case _                     => HskLevel.NONE
     }
+  // scalastyle:on cyclomatic.complexity
 }
 object HskHolder {
   implicit val reads: Reads[HskHolder] = Json.reads[HskHolder]

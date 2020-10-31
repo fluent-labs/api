@@ -38,6 +38,7 @@ object PartOfSpeech extends Enumeration {
   implicit val reads: Reads[PartOfSpeech] = Reads.enumNameReads(PartOfSpeech)
   implicit val writes: Writes[PartOfSpeech] = Writes.enumNameWrites
 
+  // scalastyle:off cyclomatic.complexity
   def toDTO(partOfSpeech: PartOfSpeech): PartOfSpeechDTO =
     partOfSpeech match {
       case ADJECTIVE   => PartOfSpeechDTO.ADJECTIVE
@@ -55,4 +56,5 @@ object PartOfSpeech extends Enumeration {
       case AFFIX       => PartOfSpeechDTO.AFFIX
       case UNKNOWN     => PartOfSpeechDTO.UNKNOWN
     }
+  // scalastyle:on cyclomatic.complexity
 }
