@@ -5,6 +5,8 @@ on:
     paths:
       - "content/definitions/*"
       - "content/definitions/**/*"
+      - "domain/*"
+      - "domain/**/*"
 
 jobs:
   build:
