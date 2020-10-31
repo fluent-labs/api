@@ -24,6 +24,7 @@ lazy val domain = project
       // Used to generate elasticsearch matchers
       dependencies.elastic4s,
       dependencies.elastic4sPlay,
+      dependencies.scalatestPlay,
       dependencies.opencc4j
     )
   )

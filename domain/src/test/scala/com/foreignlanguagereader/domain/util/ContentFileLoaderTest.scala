@@ -1,10 +1,9 @@
-package com.foreignlanguagereader.api.util
+package com.foreignlanguagereader.domain.util
 
 import com.foreignlanguagereader.domain.content.chinese.{
   ChinesePronunciationFromFile,
   HskHolder
 }
-import com.foreignlanguagereader.domain.util.ContentFileLoader
 import org.scalatest.funspec.AnyFunSpec
 
 class ContentFileLoaderTest extends AnyFunSpec {
@@ -12,7 +11,7 @@ class ContentFileLoaderTest extends AnyFunSpec {
     it("can load files from json") {
       val goodFile = ContentFileLoader
         .loadJsonResourceFile[Seq[ChinesePronunciationFromFile]](
-          "/resources/definition/chinese/pronunciation.json"
+          "/definition/chinese/pronunciation.json"
         )
       assert(goodFile.nonEmpty)
     }
@@ -20,7 +19,7 @@ class ContentFileLoaderTest extends AnyFunSpec {
       assertThrows[NullPointerException] {
         ContentFileLoader
           .loadJsonResourceFile[Seq[ChinesePronunciationFromFile]](
-            "/resources/notfound.json"
+            "=/notfound.json"
           )
       }
     }
@@ -28,7 +27,7 @@ class ContentFileLoaderTest extends AnyFunSpec {
       assertThrows[IllegalStateException] {
         ContentFileLoader
           .loadJsonResourceFile[HskHolder](
-            "/resources/definition/chinese/pronunciation.json"
+            "/definition/chinese/pronunciation.json"
           )
       }
     }
