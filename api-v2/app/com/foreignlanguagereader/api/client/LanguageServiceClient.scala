@@ -11,9 +11,9 @@ import com.foreignlanguagereader.api.client.common.{
   WsClient
 }
 import com.foreignlanguagereader.api.contentsource.definition.DefinitionEntry
-import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.Definition
-import com.foreignlanguagereader.api.domain.word.Word
+import com.foreignlanguagereader.domain.Language.Language
+import com.foreignlanguagereader.domain.definition.Definition
+import com.foreignlanguagereader.domain.word.Word
 import javax.inject.Inject
 import play.api.libs.json.Reads
 import play.api.libs.ws.WSClient
@@ -22,10 +22,11 @@ import play.api.{Configuration, Logger}
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ExecutionContext, Future}
 
-class LanguageServiceClient @Inject()(config: Configuration,
-                                      val ws: WSClient,
-                                      val system: ActorSystem)
-    extends WsClient
+class LanguageServiceClient @Inject() (
+    config: Configuration,
+    val ws: WSClient,
+    val system: ActorSystem
+) extends WsClient
     with Circuitbreaker {
   override val logger: Logger = Logger(this.getClass)
   implicit val ec: ExecutionContext =
@@ -47,8 +48,8 @@ class LanguageServiceClient @Inject()(config: Configuration,
     DefinitionEntry.readsList
 
   def getDefinition(
-    wordLanguage: Language,
-    word: Word
+      wordLanguage: Language,
+      word: Word
   ): Nested[Future, CircuitBreakerResult, List[Definition]] =
     get(
       s"$languageServiceBaseUrl/v1/definition/$wordLanguage/${word.processedToken}"

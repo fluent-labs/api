@@ -14,8 +14,8 @@ import com.foreignlanguagereader.api.contentsource.definition.webster.{
   WebsterLearnersDefinitionEntry,
   WebsterSpanishDefinitionEntry
 }
-import com.foreignlanguagereader.api.domain.definition.Definition
-import com.foreignlanguagereader.api.domain.word.Word
+import com.foreignlanguagereader.domain.definition.Definition
+import com.foreignlanguagereader.domain.word.Word
 import javax.inject.Inject
 import play.api.libs.json.Reads
 import play.api.libs.ws.WSClient
@@ -24,10 +24,11 @@ import play.api.{Configuration, Logger}
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ExecutionContext, Future}
 
-class MirriamWebsterClient @Inject()(config: Configuration,
-                                     val ws: WSClient,
-                                     val system: ActorSystem)
-    extends WsClient
+class MirriamWebsterClient @Inject() (
+    config: Configuration,
+    val ws: WSClient,
+    val system: ActorSystem
+) extends WsClient
     with Circuitbreaker {
   override val logger: Logger = Logger(this.getClass)
   implicit val ec: ExecutionContext =
@@ -49,14 +50,14 @@ class MirriamWebsterClient @Inject()(config: Configuration,
   // TODO filter garbage
 
   def getLearnersDefinition(
-    word: Word
+      word: Word
   ): Nested[Future, CircuitBreakerResult, List[Definition]] =
     get[List[WebsterLearnersDefinitionEntry]](
       s"https://www.dictionaryapi.com/api/v3/references/learners/json/${word.processedToken}?key=$learnersApiKey"
     ).map(results => results.map(_.toDefinition(word.tag)))
 
   def getSpanishDefinition(
-    word: Word
+      word: Word
   ): Nested[Future, CircuitBreakerResult, List[Definition]] =
     get[List[WebsterSpanishDefinitionEntry]](
       s"https://www.dictionaryapi.com/api/v3/references/spanish/json/${word.processedToken}?key=$spanishApiKey"

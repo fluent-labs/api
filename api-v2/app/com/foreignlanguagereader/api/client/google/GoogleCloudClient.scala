@@ -7,13 +7,13 @@ import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerResult,
   Circuitbreaker
 }
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.word.Count.Count
-import com.foreignlanguagereader.api.domain.word.GrammaticalGender.GrammaticalGender
-import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
-import com.foreignlanguagereader.api.domain.word.WordTense.WordTense
-import com.foreignlanguagereader.api.domain.word.{PartOfSpeech, _}
+import com.foreignlanguagereader.domain.Language
+import com.foreignlanguagereader.domain.Language.Language
+import com.foreignlanguagereader.domain.word.Count.Count
+import com.foreignlanguagereader.domain.word.GrammaticalGender.GrammaticalGender
+import com.foreignlanguagereader.domain.word.PartOfSpeech.PartOfSpeech
+import com.foreignlanguagereader.domain.word.WordTense.WordTense
+import com.foreignlanguagereader.domain.word.{PartOfSpeech, _}
 import com.google.cloud.language.v1.Document.Type
 import com.google.cloud.language.v1.PartOfSpeech.{
   Gender,
@@ -33,15 +33,16 @@ import play.api.Logger
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
-                                  implicit val ec: ExecutionContext,
-                                  val system: ActorSystem)
-    extends Circuitbreaker {
+class GoogleCloudClient @Inject() (
+    gcloud: GoogleLanguageServiceClientHolder,
+    implicit val ec: ExecutionContext,
+    val system: ActorSystem
+) extends Circuitbreaker {
   override val logger: Logger = Logger(this.getClass)
 
   def getWordsForDocument(
-    language: Language,
-    document: String
+      language: Language,
+      document: String
   ): Nested[Future, CircuitBreakerResult, Set[Word]] = {
     logger.info(s"Getting tokens in $language from Google cloud: $document")
 
@@ -57,9 +58,12 @@ class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
       .setEncodingType(EncodingType.UTF16)
       .build
 
-    withBreaker(s"Failed to get tokens from google cloud", Future {
-      gcloud.getTokens(request)
-    }).map(tokens => convertTokensToWord(language, tokens))
+    withBreaker(
+      s"Failed to get tokens from google cloud",
+      Future {
+        gcloud.getTokens(request)
+      }
+    ).map(tokens => convertTokensToWord(language, tokens))
   }
 
   /*
@@ -78,21 +82,20 @@ class GoogleCloudClient @Inject()(gcloud: GoogleLanguageServiceClientHolder,
 
   def convertTokensToWord(language: Language, tokens: Seq[Token]): Set[Word] =
     tokens
-      .map(
-        token =>
-          Word(
-            language = language,
-            token = token.getText.getContent,
-            tag = googlePartOfSpeechToDomainPartOfSpeech(
-              token.getPartOfSpeech.getTag
-            ),
-            lemma = token.getLemma,
-            definitions = List(),
-            gender = googleGenderToDomainGender(token.getPartOfSpeech.getGender),
-            number = googleCountToDomainCount(token.getPartOfSpeech.getNumber),
-            proper = isProperNoun(token.getPartOfSpeech.getProper),
-            tense = googleTenseToDomainTense(token.getPartOfSpeech.getTense),
-            processedToken = token.getText.getContent
+      .map(token =>
+        Word(
+          language = language,
+          token = token.getText.getContent,
+          tag = googlePartOfSpeechToDomainPartOfSpeech(
+            token.getPartOfSpeech.getTag
+          ),
+          lemma = token.getLemma,
+          definitions = List(),
+          gender = googleGenderToDomainGender(token.getPartOfSpeech.getGender),
+          number = googleCountToDomainCount(token.getPartOfSpeech.getNumber),
+          proper = isProperNoun(token.getPartOfSpeech.getProper),
+          tense = googleTenseToDomainTense(token.getPartOfSpeech.getTense),
+          processedToken = token.getText.getContent
         )
       )
       .toSet

@@ -1,15 +1,17 @@
 package com.foreignlanguagereader.api.contentsource.definition.webster.common
 
-import com.foreignlanguagereader.api.util.JsonSequenceHelper
+import com.foreignlanguagereader.domain.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
-case class WebsterPronunciation(writtenPronunciation: Option[String],
-                                beforePronunciationLabel: Option[String],
-                                afterPronunciationLabel: Option[String],
-                                seperatorPunctuation: Option[String],
-                                sound: Option[WebsterPronunciationSound],
-                                ipa: Option[String])
+case class WebsterPronunciation(
+    writtenPronunciation: Option[String],
+    beforePronunciationLabel: Option[String],
+    afterPronunciationLabel: Option[String],
+    seperatorPunctuation: Option[String],
+    sound: Option[WebsterPronunciationSound],
+    ipa: Option[String]
+)
 object WebsterPronunciation {
   implicit val reads: Reads[WebsterPronunciation] = (
     (JsPath \ "mw").readNullable[String] and
@@ -26,9 +28,11 @@ object WebsterPronunciation {
     new JsonSequenceHelper[WebsterPronunciation]
 }
 
-case class WebsterPronunciationSound(audio: String,
-                                     language: String = "en",
-                                     country: String = "us") {
+case class WebsterPronunciationSound(
+    audio: String,
+    language: String = "en",
+    country: String = "us"
+) {
   val subdirectory: String = audio match {
     case bix if bix.startsWith("bix")                      => "bix"
     case gg if gg.startsWith("gg")                         => "gg"
@@ -46,8 +50,10 @@ case class WebsterPronunciationSound(audio: String,
     s"https://media.merriam-webster.com/audio/prons/$language/$country/mp3/$subdirectory/$audio.mp3"
 }
 object WebsterPronunciationSound {
-  def createWithDefaults(audio: String,
-                         ref: Option[String]): WebsterPronunciationSound =
+  def createWithDefaults(
+      audio: String,
+      ref: Option[String]
+  ): WebsterPronunciationSound =
     WebsterPronunciationSound(audio)
   implicit val reads: Reads[WebsterPronunciationSound] = (
     (JsPath \ "audio").read[String] and

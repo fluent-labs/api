@@ -9,16 +9,18 @@ import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 
 import scala.concurrent.Future
-import scala.jdk.CollectionConverters._
+import scala.collection.JavaConverters._
 
 // Holder to enable easy mocking
 @Singleton
-class ElasticsearchClientHolder @Inject()(config: Configuration) {
+class ElasticsearchClientHolder @Inject() (config: Configuration) {
   val elasticSearchUrl: String = config.get[String]("elasticsearch.url")
   val client = ElasticClient(JavaClient(ElasticProperties(elasticSearchUrl)))
 
-  def execute[T, U](request: T)(implicit handler: Handler[T, U],
-                                manifest: Manifest[U]): Future[Response[U]] =
+  def execute[T, U](request: T)(implicit
+      handler: Handler[T, U],
+      manifest: Manifest[U]
+  ): Future[Response[U]] =
     client.execute(request)
 
   // Handles retrying of queue
@@ -37,7 +39,7 @@ class ElasticsearchClientHolder @Inject()(config: Configuration) {
   // Mutability is a risk but a decent tradeoff because the cost of losing an insert or two is low
   // But setting up actors makes this much more complicated and is not worth it IMO
   private[this] val insertionQueue
-    : ConcurrentLinkedQueue[ElasticsearchCacheRequest] =
+      : ConcurrentLinkedQueue[ElasticsearchCacheRequest] =
     new ConcurrentLinkedQueue()
 
   def nextInsert(): Option[ElasticsearchCacheRequest] =

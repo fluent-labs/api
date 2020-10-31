@@ -1,23 +1,24 @@
 package com.foreignlanguagereader.api.contentsource.definition.cedict
 
 import com.foreignlanguagereader.api.contentsource.definition.DefinitionEntry
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.api.domain.definition.{
+import com.foreignlanguagereader.domain.Language.Language
+import com.foreignlanguagereader.domain.definition.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.domain.Language
+import com.foreignlanguagereader.domain.definition.{
   ChineseDefinition,
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
+import com.foreignlanguagereader.domain.word.PartOfSpeech.PartOfSpeech
 import play.api.libs.json.{Format, Json, Reads}
 
-case class CEDICTDefinitionEntry(override val subdefinitions: List[String],
-                                 pinyin: String,
-                                 simplified: String,
-                                 traditional: String,
-                                 override val token: String)
-    extends DefinitionEntry {
+case class CEDICTDefinitionEntry(
+    override val subdefinitions: List[String],
+    pinyin: String,
+    simplified: String,
+    traditional: String,
+    override val token: String
+) extends DefinitionEntry {
   override val tag: Option[PartOfSpeech] = None
   override val pronunciation: String = pinyin
   override val examples: Option[List[String]] = None

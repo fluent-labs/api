@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.api.contentsource.definition.webster.common
 
-import com.foreignlanguagereader.api.domain.word.PartOfSpeech
-import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
+import com.foreignlanguagereader.domain.word.PartOfSpeech
+import com.foreignlanguagereader.domain.word.PartOfSpeech.PartOfSpeech
 import play.api.libs.json.{Reads, Writes}
 
 object WebsterPartOfSpeech extends Enumeration {

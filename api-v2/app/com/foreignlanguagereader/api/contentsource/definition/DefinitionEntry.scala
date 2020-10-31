@@ -1,15 +1,15 @@
 package com.foreignlanguagereader.api.contentsource.definition
 
 import com.foreignlanguagereader.api.contentsource.definition.cedict.CEDICTDefinitionEntry
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.Language.Language
-import com.foreignlanguagereader.api.domain.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.api.domain.definition.{
+import com.foreignlanguagereader.domain.Language.Language
+import com.foreignlanguagereader.domain.definition.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.domain.{Language, definition}
+import com.foreignlanguagereader.domain.definition.{
   ChineseDefinition,
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
+import com.foreignlanguagereader.domain.word.PartOfSpeech.PartOfSpeech
 import play.api.libs.json._
 
 trait DefinitionEntry {
@@ -69,18 +69,22 @@ object DefinitionEntry {
             )
         }
       }
-      override def writes(o: DefinitionEntry): JsValue = o match {
-        case c: CEDICTDefinitionEntry => CEDICTDefinitionEntry.format.writes(c)
-        case w: WiktionaryDefinitionEntry =>
-          WiktionaryDefinitionEntry.format.writes(w)
-      }
+      override def writes(o: DefinitionEntry): JsValue =
+        o match {
+          case c: CEDICTDefinitionEntry =>
+            CEDICTDefinitionEntry.format.writes(c)
+          case w: WiktionaryDefinitionEntry =>
+            WiktionaryDefinitionEntry.format.writes(w)
+        }
     }
   implicit val readsList: Reads[List[DefinitionEntry]] =
     Reads.list(formatDefinitionEntry)
 
-  def buildChineseDefinition(entry: DefinitionEntry,
-                             partOfSpeech: PartOfSpeech): ChineseDefinition =
-    ChineseDefinition(
+  def buildChineseDefinition(
+      entry: DefinitionEntry,
+      partOfSpeech: PartOfSpeech
+  ): ChineseDefinition =
+    definition.ChineseDefinition(
       subdefinitions = entry.subdefinitions,
       tag = partOfSpeech,
       examples = entry.examples,

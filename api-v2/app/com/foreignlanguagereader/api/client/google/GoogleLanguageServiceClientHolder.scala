@@ -8,7 +8,7 @@ import com.google.cloud.language.v1.{
 }
 import javax.inject.Singleton
 
-import scala.jdk.CollectionConverters._
+import scala.collection.JavaConverters._
 
 /**
   * Holder for the google cloud client.

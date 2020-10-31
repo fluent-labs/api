@@ -1,12 +1,14 @@
 package com.foreignlanguagereader.api.contentsource.definition.webster.common
 
-import com.foreignlanguagereader.api.util.JsonSequenceHelper
+import com.foreignlanguagereader.domain.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
-case class WebsterVariant(variant: String,
-                          variantLabel: Option[String],
-                          pronunciations: Option[List[WebsterPronunciation]])
+case class WebsterVariant(
+    variant: String,
+    variantLabel: Option[String],
+    pronunciations: Option[List[WebsterPronunciation]]
+)
 object WebsterVariant {
   implicit val reads: Reads[WebsterVariant] = ((JsPath \ "va")
     .read[String] and

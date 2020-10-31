@@ -1,15 +1,19 @@
 package com.foreignlanguagereader.api.contentsource.definition.webster.common
 
-import com.foreignlanguagereader.api.util.JsonSequenceHelper
+import com.foreignlanguagereader.domain.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-case class WebsterDefinition(senseSequence: Option[List[List[WebsterSense]]],
-                             verbDivider: Option[String])
+case class WebsterDefinition(
+    senseSequence: Option[List[List[WebsterSense]]],
+    verbDivider: Option[String]
+)
 // TODO verbDivider seems to be "transitive verb" or "intransitive verb". Opportunity for enum?
 object WebsterDefinition {
-  def parseSenseSequences(sseq: Option[List[List[List[JsValue]]]],
-                          verbDivider: Option[String]): WebsterDefinition = {
+  def parseSenseSequences(
+      sseq: Option[List[List[List[JsValue]]]],
+      verbDivider: Option[String]
+  ): WebsterDefinition = {
     val senseSequence: Option[List[List[WebsterSense]]] = sseq match {
       case Some(seq) =>
         WebsterNestedArrayHelper
@@ -18,18 +22,17 @@ object WebsterDefinition {
           // We only care about the senses in this array, other types can be safely ignored.
           .flatMap(_.get("sense"))
           // Now it's time to parse the nested objects
-          .flatMap(
-            sseq =>
-              sseq
-                .map(sense => sense.validate[WebsterSense])
-                // Remove the invalid senses
-                .flatMap {
-                  case JsSuccess(sense, _) => Some(sense)
-                  case JsError(_)          => None
-                } match {
-                // And then remove the sequence if there are no valid senses in it.
-                case List() => None
-                case s      => Some(s)
+          .flatMap(sseq =>
+            sseq
+              .map(sense => sense.validate[WebsterSense])
+              // Remove the invalid senses
+              .flatMap {
+                case JsSuccess(sense, _) => Some(sense)
+                case JsError(_)          => None
+              } match {
+              // And then remove the sequence if there are no valid senses in it.
+              case List() => None
+              case s      => Some(s)
             }
           ) match {
           // Final sanity check - Do we have any valid senses? If not then let's be up front about it.

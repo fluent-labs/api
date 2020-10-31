@@ -1,15 +1,15 @@
 package com.foreignlanguagereader.api.contentsource.definition.webster.common
 
-import com.foreignlanguagereader.api.util.JsonSequenceHelper
+import com.foreignlanguagereader.domain.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
 case class WebsterDefiningText(
-  text: Seq[String],
-  biographicalName: Option[Seq[WebsterBiographicalNameWrap]],
-  calledAlso: Option[Seq[WebsterCalledAlso]],
-  supplementalNote: Option[Seq[WebsterSupplementalNote]],
-  examples: Option[Seq[WebsterVerbalIllustration]]
+    text: Seq[String],
+    biographicalName: Option[Seq[WebsterBiographicalNameWrap]],
+    calledAlso: Option[Seq[WebsterCalledAlso]],
+    supplementalNote: Option[Seq[WebsterSupplementalNote]],
+    examples: Option[Seq[WebsterVerbalIllustration]]
 )
 object WebsterDefiningText {
 
@@ -49,8 +49,8 @@ object WebsterDefiningText {
 
       WebsterDefiningText(text, bnw, ca, snote, vis)
     })
-    .filter(JsonValidationError("Text is a required field"))(
-      d => d.text.nonEmpty
+    .filter(JsonValidationError("Text is a required field"))(d =>
+      d.text.nonEmpty
     )
 
   implicit val writes: Writes[WebsterDefiningText] =
@@ -58,10 +58,10 @@ object WebsterDefiningText {
 }
 
 case class WebsterBiographicalNameWrap(
-  personalName: Option[String],
-  surname: Option[String],
-  alternateName: Option[String],
-  pronunciations: Option[Seq[WebsterPronunciation]]
+    personalName: Option[String],
+    surname: Option[String],
+    alternateName: Option[String],
+    pronunciations: Option[Seq[WebsterPronunciation]]
 )
 object WebsterBiographicalNameWrap {
   implicit val reads: Reads[WebsterBiographicalNameWrap] = (
@@ -79,8 +79,8 @@ object WebsterBiographicalNameWrap {
 }
 
 case class WebsterCalledAlso(
-  intro: Option[String],
-  calledAlsoTargets: Option[Seq[WebsterCalledAlsoTarget]]
+    intro: Option[String],
+    calledAlsoTargets: Option[Seq[WebsterCalledAlsoTarget]]
 )
 object WebsterCalledAlso {
   implicit val reads: Reads[WebsterCalledAlso] =
@@ -94,11 +94,11 @@ object WebsterCalledAlso {
 }
 
 case class WebsterCalledAlsoTarget(
-  calledAlsoTargetText: Option[String],
-  calledAlsoReference: Option[String],
-  parenthesizedNumber: Option[String],
-  pronunciations: Option[Seq[WebsterPronunciation]],
-  areaOfUsage: Option[String]
+    calledAlsoTargetText: Option[String],
+    calledAlsoReference: Option[String],
+    parenthesizedNumber: Option[String],
+    pronunciations: Option[Seq[WebsterPronunciation]],
+    areaOfUsage: Option[String]
 )
 object WebsterCalledAlsoTarget {
   implicit val reads: Reads[WebsterCalledAlsoTarget] = (
@@ -117,8 +117,8 @@ object WebsterCalledAlsoTarget {
 }
 
 case class WebsterSupplementalNote(
-  text: String,
-  example: Option[Seq[WebsterVerbalIllustration]]
+    text: String,
+    example: Option[Seq[WebsterVerbalIllustration]]
 )
 // Note: This class can also contain run ins (ri). It's not really useful for this application so I have dropped it.
 object WebsterSupplementalNote {
@@ -146,8 +146,8 @@ object WebsterSupplementalNote {
 
       WebsterSupplementalNote(text(0), example)
     })
-    .filter(JsonValidationError("Text is a required field"))(
-      d => d.text.nonEmpty
+    .filter(JsonValidationError("Text is a required field"))(d =>
+      d.text.nonEmpty
     )
 
   implicit val writes: Writes[WebsterSupplementalNote] =

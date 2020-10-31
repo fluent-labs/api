@@ -7,7 +7,7 @@ import com.foreignlanguagereader.api.contentsource.definition.webster.common.{
   WebsterMeta,
   WebsterPartOfSpeech
 }
-import com.foreignlanguagereader.api.domain.word.PartOfSpeech.PartOfSpeech
+import com.foreignlanguagereader.domain.word.PartOfSpeech.PartOfSpeech
 
 trait WebsterDefinitionEntryBase {
   val meta: WebsterMeta

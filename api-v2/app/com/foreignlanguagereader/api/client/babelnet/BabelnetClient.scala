@@ -6,8 +6,8 @@ import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerResult,
   Circuitbreaker
 }
-import com.foreignlanguagereader.api.domain.Language
-import com.foreignlanguagereader.api.domain.Language.Language
+import com.foreignlanguagereader.domain.Language
+import com.foreignlanguagereader.domain.Language.Language
 import it.uniroma1.lcl.babelnet.{BabelNetQuery, BabelSense}
 import it.uniroma1.lcl.jlt.util.{Language => BabelLanguage}
 import javax.inject.Inject
@@ -15,15 +15,16 @@ import play.api.Logger
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class BabelnetClient @Inject()(babelnet: BabelnetClientHolder,
-                               implicit val ec: ExecutionContext,
-                               val system: ActorSystem)
-    extends Circuitbreaker {
+class BabelnetClient @Inject() (
+    babelnet: BabelnetClientHolder,
+    implicit val ec: ExecutionContext,
+    val system: ActorSystem
+) extends Circuitbreaker {
   override val logger: Logger = Logger(this.getClass)
 
   def getSenses(
-    language: Language,
-    lemma: String
+      language: Language,
+      lemma: String
   ): Nested[Future, CircuitBreakerResult, List[BabelSense]] = {
     val lang = language match {
       case Language.CHINESE             => BabelLanguage.ZH
