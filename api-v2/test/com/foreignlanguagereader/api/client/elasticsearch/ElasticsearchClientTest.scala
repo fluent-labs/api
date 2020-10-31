@@ -243,7 +243,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
       it("retries requests one by one if bulk requests failed") {
         when(
           holder.execute[BulkRequest, BulkResponse](
-            mockitoEq[BulkRequest](bulk(request.requests(0)))
+            mockitoEq[BulkRequest](bulk(request.requests))
           )(
             any(classOf[Handler[BulkRequest, BulkResponse]]),
             any(classOf[Manifest[BulkResponse]])
