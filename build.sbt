@@ -10,6 +10,24 @@ lazy val global = project
   .disablePlugins(AssemblyPlugin)
   .aggregate(api, definitions)
 
+lazy val dto = project
+  .settings(
+    assemblySettings,
+    libraryDependencies ++= commonDependencies
+  )
+
+lazy val domain = project
+  .settings(
+    assemblySettings,
+    libraryDependencies ++= commonDependencies ++ Seq(
+      // Used to generate elasticsearch matchers
+      dependencies.elastic4s,
+      dependencies.elastic4sPlay,
+      dependencies.opencc4j
+    )
+  )
+  .dependsOn(dto)
+
 lazy val api = project
   .in(file("api-v2"))
   .enablePlugins(PlayService, PlayLayoutPlugin)
@@ -26,6 +44,8 @@ lazy val api = project
       dependencies.googleCloudClient
     )
   )
+  .dependsOn(domain)
+
 lazy val definitions = project
   .in(file("content/definitions"))
   .settings(
