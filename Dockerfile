@@ -21,6 +21,10 @@ COPY . /app/
 RUN sbt clean coverageOff dist
 RUN unzip /app/api-v2/target/universal/api-0.1.0-SNAPSHOT.zip
 
+## Make sure tests are run on the correct JVM
+## Changes to string methods between versions has burned us before
+RUN sbt test
+
 FROM openjdk:14-jdk-alpine3.10 as final
 WORKDIR /app
 RUN apk add bash
