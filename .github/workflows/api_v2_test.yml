@@ -5,6 +5,10 @@ on:
     paths:
       - "api-v2/*"
       - "api-v2/**/*"
+      - "domain/*"
+      - "domain/**/*"
+      - "dto/*"
+      - "dto/**/*"
 
 jobs:
   build:
