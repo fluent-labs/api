@@ -4,7 +4,7 @@ import Wiktionary.{
   loadWiktionaryDump,
   regexp_extract_all
 }
-import com.foreignlanguagereader.domain.external.definition.wiktionary.SimpleWiktionaryDefinition
+import com.foreignlanguagereader.domain.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{Column, DataFrame, Dataset, SparkSession}
@@ -112,13 +112,13 @@ object SimpleWiktionary {
 
   def loadSimple(
       path: String
-  )(implicit spark: SparkSession): Dataset[SimpleWiktionaryDefinition] = {
+  )(implicit spark: SparkSession): Dataset[SimpleWiktionaryDefinitionEntry] = {
     parseSimple(loadWiktionaryDump(path))
   }
 
   def parseSimple(
       data: Dataset[WiktionaryRawEntry]
-  )(implicit spark: SparkSession): Dataset[SimpleWiktionaryDefinition] = {
+  )(implicit spark: SparkSession): Dataset[SimpleWiktionaryDefinitionEntry] = {
     import spark.implicits._
     val splitDefinitions = splitWordsByPartOfSpeech(data)
       .withColumn("ipa", regexp_extract(col("text"), ipaRegex, 1))
@@ -127,16 +127,14 @@ object SimpleWiktionary {
         regexp_extract_all(subdefinitionsRegex, 1)(col("definition"))
       )
       .withColumn(
-        "examples",
+        "examplesRaw",
         regexp_extract_all(examplesRegex, 1)(col("definition"))
       )
 
     addOptionalSections(splitDefinitions)
       .drop("text")
-      .withColumn("definitionLanguage", lit("ENGLISH"))
-      .withColumn("wordLanguage", lit("ENGLISH"))
-      .withColumn("source", lit("WIKTIONARY_SIMPLE_ENGLISH"))
-      .as[SimpleWiktionaryDefinition]
+      .withColumnRenamed("pronunciation", "pronunciationRaw")
+      .as[SimpleWiktionaryDefinitionEntry]
   }
 
   val mapPartOfSpeech: UserDefinedFunction = udf((index: Integer) =>
@@ -149,7 +147,7 @@ object SimpleWiktionary {
       .filter("col not like ''")
       .drop(partOfSpeechCols)
       .withColumnRenamed("col", "definition")
-      .withColumn("tag", mapPartOfSpeech(col("pos")))
+      .withColumn("tagRaw", mapPartOfSpeech(col("pos")))
       .drop("pos")
 
   val subsectionsInverted: Map[String, Set[String]] = subsectionMap
