@@ -1,6 +1,5 @@
 package com.foreignlanguagereader.domain.external.definition.webster.common
 
-import com.foreignlanguagereader.domain.external.definition.webster.common.WebsterHeadwordInfo
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
 
@@ -15,11 +14,7 @@ class WebsterHeadwordInfoTest extends AnyFunSpec {
       val headword = Json.parse(webster).validate[WebsterHeadwordInfo].get
       assert(headword.headword == "pa*ja*ma")
       assert(
-        headword.pronunciations
-          .get(0)
-          .sound
-          .get
-          .audioUrl == "https://media.merriam-webster.com/audio/prons/en/us/mp3/p/pajama02.mp3"
+        headword.pronunciations.get.head.sound.get.audioUrl == "https://media.merriam-webster.com/audio/prons/en/us/mp3/p/pajama02.mp3"
       )
     }
 

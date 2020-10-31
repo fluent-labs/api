@@ -1,6 +1,5 @@
 package com.foreignlanguagereader.domain.external.definition.webster.common
 
-import com.foreignlanguagereader.domain.external.definition.webster.common.WebsterVariant
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
 

@@ -1,6 +1,5 @@
 package com.foreignlanguagereader.domain.external.definition.webster.common
 
-import com.foreignlanguagereader.domain.external.definition.webster.common.WebsterInflection
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
 
@@ -17,7 +16,7 @@ class WebsterInflectionTest extends AnyFunSpec {
         .validate[List[WebsterInflection]](WebsterInflection.helper.readsList)
         .get
       assert(inflection.size == 4)
-      assert(inflection(0).inflection.get == "tas*seled")
+      assert(inflection.head.inflection.get == "tas*seled")
     }
 
     it("can be written back out to JSON") {

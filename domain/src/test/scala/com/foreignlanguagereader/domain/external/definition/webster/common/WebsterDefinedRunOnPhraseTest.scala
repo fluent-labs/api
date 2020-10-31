@@ -1,6 +1,5 @@
 package com.foreignlanguagereader.domain.external.definition.webster.common
 
-import com.foreignlanguagereader.domain.external.definition.webster.common.WebsterDefinedRunOnPhrase
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
 
@@ -18,8 +17,8 @@ class WebsterDefinedRunOnPhraseTest extends AnyFunSpec {
         .get
       assert(definition.definedRunOnPhrase == "abide by")
 
-      assert(definition.definition(0).senseSequence.isDefined)
-      val sseq = definition.definition(0).senseSequence.get
+      assert(definition.definition.head.senseSequence.isDefined)
+      val sseq = definition.definition.head.senseSequence.get
       assert(sseq.size == 2)
     }
 

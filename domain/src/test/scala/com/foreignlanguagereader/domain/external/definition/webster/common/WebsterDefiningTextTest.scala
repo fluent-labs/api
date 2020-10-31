@@ -1,6 +1,5 @@
 package com.foreignlanguagereader.domain.external.definition.webster.common
 
-import com.foreignlanguagereader.domain.external.definition.webster.common.WebsterDefiningText
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
 
@@ -16,9 +15,7 @@ class WebsterDefiningTextTest extends AnyFunSpec {
           Json.parse(webster).validate[WebsterDefiningText].get
         assert(definingText.text.size == 1)
         assert(
-          definingText.text(
-            0
-          ) == "{bc}a person or way of behaving that is seen as a model that should be followed "
+          definingText.text.head == "{bc}a person or way of behaving that is seen as a model that should be followed "
         )
       }
 
@@ -42,7 +39,9 @@ class WebsterDefiningTextTest extends AnyFunSpec {
         assert(definingText.biographicalName.isDefined)
         val biographicalNameWrap = definingText.biographicalName.get
         assert(biographicalNameWrap.size == 2)
-        assert(biographicalNameWrap(0).personalName.get == "Charles Lut*widge")
+        assert(
+          biographicalNameWrap.head.personalName.get == "Charles Lut*widge"
+        )
         assert(biographicalNameWrap(1).alternateName.get == "Lewis Car*roll")
       }
 
@@ -68,8 +67,8 @@ class WebsterDefiningTextTest extends AnyFunSpec {
         val calledAlso = definingText.calledAlso.get
         assert(calledAlso.size == 1)
 
-        assert(calledAlso(0).calledAlsoTargets.isDefined)
-        val calledAlsoTargets = calledAlso(0).calledAlsoTargets.get
+        assert(calledAlso.head.calledAlsoTargets.isDefined)
+        val calledAlsoTargets = calledAlso.head.calledAlsoTargets.get
         assert(calledAlsoTargets(1).areaOfUsage.isDefined)
         assert(calledAlsoTargets(1).areaOfUsage.get == "({it}chiefly US{/it}) ")
       }
@@ -96,7 +95,7 @@ class WebsterDefiningTextTest extends AnyFunSpec {
         val supplementalNotes = definingText.supplementalNote.get
         assert(supplementalNotes.size == 1)
 
-        val supplementalNote = supplementalNotes(0)
+        val supplementalNote = supplementalNotes.head
         assert(
           supplementalNote.text == "Manatees are {d_link|sirenians|sirenian} related to and resembling the {d_link|dugong|dugong} but differing most notably in the shape of the tail."
         )
