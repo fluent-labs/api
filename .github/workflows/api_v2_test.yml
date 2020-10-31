@@ -30,7 +30,7 @@ jobs:
     - name: Compile
       run: sbt compile
     - name: Run tests
-      run: sbt coverage api/test
+      run: sbt coverage test
     - name: Enforce coverage
       run: sbt coverageReport
     - name: Upload coverage to Codecov
