@@ -5,6 +5,10 @@ on:
     paths:
       - "api/*"
       - "api/**/*"
+      - "domain/*"
+      - "domain/**/*"
+      - "dto/*"
+      - "dto/**/*"
 
 jobs:
   build:
@@ -12,44 +16,5 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: Move build files to root of build worker
-      run: mv api/* .
-
     - name: Build container
       run: docker build .
-
-  test:
-    runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_USER: ci-user
-          MYSQL_PASSWORD: ci-password
-          MYSQL_DATABASE: api-test
-          MYSQL_RANDOM_ROOT_PASSWORD: "true"
-        ports:
-        - 33061:3306
-    steps:
-    - uses: actions/checkout@v1
-
-    - name: Move build files to root of build worker
-      run: mv api/* .
-
-    - uses: actions/setup-elixir@v1
-      name: Set up elixir
-      with:
-        otp-version: 22.2
-        elixir-version: 1.9.4
-
-    - name: Install Dependencies
-      run: |
-        mix local.rebar --force
-        mix local.hex --force
-        mix deps.get
-
-    - name: Lint
-      run: mix credo --strict
-
-    - name: Run Tests
-      run: mix test

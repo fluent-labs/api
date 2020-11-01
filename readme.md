@@ -10,7 +10,7 @@ Infrastructure has been disabled for now until development is complete. Why pay 
 A React application that allows users to enter text and see which words they don't know.
 
 ### API
-A glue layer that puts together all the different data sources and keeps track of the user's vocabulary. Built in Elixir and served with the Phoenix framework.
+A glue layer that puts together all the different data sources and keeps track of the user's vocabulary. Built in Scala and served with the Play framework.
 
 ### Language-Service
 A service that provides text processing methods.
