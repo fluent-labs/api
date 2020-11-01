@@ -1,12 +1,12 @@
-name: Definitions PR Review
+name: Jobs PR Review
 
 on:
   pull_request:
     paths:
-      - "content/definitions/*"
-      - "content/definitions/**/*"
-      - "domain/*"
-      - "domain/**/*"
+      - "content/*"
+      - "content/**/*"
+      - "jobs/*"
+      - "jobs/**/*"
 
 jobs:
   build:
@@ -18,4 +18,4 @@ jobs:
       with:
         java-version: '14.0.1'
     - name: Build jar
-      run: sbt definitions/package
+      run: sbt jobs/package
