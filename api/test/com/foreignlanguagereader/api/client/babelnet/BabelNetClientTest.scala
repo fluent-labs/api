@@ -2,7 +2,7 @@ package com.foreignlanguagereader.api.client.babelnet
 
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.client.common.CircuitBreakerAttempt
-import com.foreignlanguagereader.domain.Language
+import com.foreignlanguagereader.content.types.Language
 import com.typesafe.config.ConfigFactory
 import it.uniroma1.lcl.babelnet.BabelNetQuery
 import org.mockito.ArgumentMatchers.any

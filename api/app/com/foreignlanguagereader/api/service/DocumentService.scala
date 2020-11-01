@@ -7,9 +7,9 @@ import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerNonAttempt
 }
 import com.foreignlanguagereader.api.client.google.GoogleCloudClient
-import com.foreignlanguagereader.domain.Language.Language
-import com.foreignlanguagereader.domain.internal.word.Word
+import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.api.service.definition.DefinitionService
+import com.foreignlanguagereader.content.types.internal.word.Word
 import com.google.inject.Inject
 import javax.inject
 import play.api.Logger

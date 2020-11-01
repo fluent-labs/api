@@ -10,18 +10,18 @@ import com.foreignlanguagereader.api.client.common.{
   Circuitbreaker,
   WsClient
 }
-import com.foreignlanguagereader.domain.external.definition.webster.{
+import com.foreignlanguagereader.content.types.external.definition.webster.webster.{
   WebsterLearnersDefinitionEntry,
   WebsterSpanishDefinitionEntry
 }
-import com.foreignlanguagereader.domain.internal.definition.Definition
-import com.foreignlanguagereader.domain.internal.word.Word
+import com.foreignlanguagereader.content.types.internal.word.Word
+import com.foreignlanguagereader.content.types.internal.definition.Definition
 import javax.inject.Inject
 import play.api.libs.json.Reads
 import play.api.libs.ws.WSClient
 import play.api.{Configuration, Logger}
 
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration.{Duration, FiniteDuration}
 import scala.concurrent.{ExecutionContext, Future}
 
 class MirriamWebsterClient @Inject() (
@@ -33,7 +33,7 @@ class MirriamWebsterClient @Inject() (
   override val logger: Logger = Logger(this.getClass)
   implicit val ec: ExecutionContext =
     system.dispatchers.lookup("webster-context")
-  override val timeout =
+  override val timeout: FiniteDuration =
     Duration(config.get[Int]("webster.timeout"), TimeUnit.SECONDS)
 
   val learnersApiKey = ""

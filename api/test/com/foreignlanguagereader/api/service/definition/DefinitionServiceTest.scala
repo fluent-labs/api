@@ -1,12 +1,15 @@
 package com.foreignlanguagereader.api.service.definition
 
-import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.internal.definition.{
+import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.internal.definition.{
   ChineseDefinition,
   DefinitionSource,
   GenericDefinition
 }
-import com.foreignlanguagereader.domain.internal.word.{PartOfSpeech, Word}
+import com.foreignlanguagereader.content.types.internal.word.{
+  PartOfSpeech,
+  Word
+}
 import org.mockito.Mockito._
 import org.scalatest.funspec.AsyncFunSpec
 import org.scalatestplus.mockito.MockitoSugar
@@ -29,7 +32,7 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     ec
   )
 
-  val dummyChineseDefinition = ChineseDefinition(
+  val dummyChineseDefinition: ChineseDefinition = ChineseDefinition(
     subdefinitions = List("definition 1", "definition 2"),
     tag = PartOfSpeech.NOUN,
     examples = Some(List("example 1", "example 2")),
@@ -40,7 +43,7 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     source = DefinitionSource.MULTIPLE,
     token = "你好"
   )
-  val dummyGenericDefinition = GenericDefinition(
+  val dummyGenericDefinition: GenericDefinition = GenericDefinition(
     subdefinitions = List("definition 1", "definition 2"),
     ipa = "",
     tag = PartOfSpeech.NOUN,
@@ -64,7 +67,7 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         .getDefinition(Language.CHINESE, Language.ENGLISH, suoYouDe)
         .map { response =>
           assert(response.size == 1)
-          assert(response(0) == dummyChineseDefinition)
+          assert(response.head == dummyChineseDefinition)
         }
     }
 
@@ -76,7 +79,7 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         .getDefinition(Language.ENGLISH, Language.CHINESE, anything)
         .map { response =>
           assert(response.size == 1)
-          assert(response(0) == dummyGenericDefinition)
+          assert(response.head == dummyGenericDefinition)
         }
     }
 
@@ -88,7 +91,7 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         .getDefinition(Language.SPANISH, Language.ENGLISH, cualquier)
         .map { response =>
           assert(response.size == 1)
-          assert(response(0) == dummyGenericDefinition)
+          assert(response.head == dummyGenericDefinition)
         }
     }
   }

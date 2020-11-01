@@ -10,16 +10,17 @@ import com.foreignlanguagereader.api.client.common.{
 }
 import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
 import com.foreignlanguagereader.api.repository.definition.Cedict
-import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.Language.Language
-import com.foreignlanguagereader.domain.content.chinese.SimplifiedTraditionalConverter
-import com.foreignlanguagereader.domain.internal.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.domain.internal.definition.{
+import com.foreignlanguagereader.content.enrichers.chinese.SimplifiedTraditionalConverter
+import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.internal.word.Word
+import Language.Language
+import com.foreignlanguagereader.content.types.internal.definition
+import com.foreignlanguagereader.content.types.internal.definition.{
   ChineseDefinition,
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.domain.internal.word.Word
+import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.github.houbb.opencc4j.util.ZhConverterUtil
 import javax.inject.Inject
 import play.api.Logger
@@ -146,7 +147,7 @@ class ChineseDefinitionService @Inject() (
       wiktionary: List[ChineseDefinition]
   ): List[ChineseDefinition] = {
     wiktionary.map(w =>
-      ChineseDefinition(
+      definition.ChineseDefinition(
         subdefinitions = w.subdefinitions,
         tag = w.tag,
         examples = w.examples,
@@ -173,7 +174,7 @@ class ChineseDefinitionService @Inject() (
     }
 
     List(
-      ChineseDefinition(
+      definition.ChineseDefinition(
         subdefinitions = cedict.subdefinitions,
         tag = wiktionary(0).tag,
         examples = examples,

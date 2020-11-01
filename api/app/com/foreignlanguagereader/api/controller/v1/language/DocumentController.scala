@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.controller.v1.language
 
-import com.foreignlanguagereader.domain.Language.Language
+import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.dto.v1.document.DocumentRequest
 import com.foreignlanguagereader.api.service.DocumentService
 import javax.inject._

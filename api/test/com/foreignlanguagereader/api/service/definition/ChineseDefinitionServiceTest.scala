@@ -6,13 +6,17 @@ import com.foreignlanguagereader.api.client.elasticsearch.{
   LookupAttempt
 }
 import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchSearchRequest
-import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.internal.definition.{
+import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.internal.definition
+import com.foreignlanguagereader.content.types.internal.definition.{
   ChineseDefinition,
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.domain.internal.word.{PartOfSpeech, Word}
+import com.foreignlanguagereader.content.types.internal.word.{
+  PartOfSpeech,
+  Word
+}
 import com.sksamuel.elastic4s.{HitReader, Indexable}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
@@ -35,7 +39,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   )
   val definitionsIndex = "definitions"
 
-  val dummyChineseDefinition = ChineseDefinition(
+  val dummyChineseDefinition: ChineseDefinition = definition.ChineseDefinition(
     subdefinitions = List("definition 1", "definition 2"),
     tag = PartOfSpeech.NOUN,
     examples = Some(List("example 1", "example 2")),
@@ -47,7 +51,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     token = "你好"
   )
 
-  val dummyCedictDefinition: ChineseDefinition = ChineseDefinition(
+  val dummyCedictDefinition: ChineseDefinition = definition.ChineseDefinition(
     subdefinitions = List("cedict definition 1", "cedict definition 2"),
     tag = PartOfSpeech.PARTICLE,
     examples = None,
@@ -59,19 +63,21 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     token = "你好"
   )
 
-  val dummyWiktionaryDefinition = ChineseDefinition(
-    subdefinitions = List("wiktionary definition 1", "wiktionary definition 2"),
-    tag = PartOfSpeech.NOUN,
-    examples = Some(List("example 1", "example 2")),
-    inputPinyin = "",
-    inputSimplified = None,
-    inputTraditional = None,
-    definitionLanguage = Language.ENGLISH,
-    source = DefinitionSource.WIKTIONARY,
-    token = "你好"
-  )
+  val dummyWiktionaryDefinition: ChineseDefinition =
+    definition.ChineseDefinition(
+      subdefinitions =
+        List("wiktionary definition 1", "wiktionary definition 2"),
+      tag = PartOfSpeech.NOUN,
+      examples = Some(List("example 1", "example 2")),
+      inputPinyin = "",
+      inputSimplified = None,
+      inputTraditional = None,
+      definitionLanguage = Language.ENGLISH,
+      source = DefinitionSource.WIKTIONARY,
+      token = "你好"
+    )
 
-  val dummyWiktionaryDefinitionTwo = ChineseDefinition(
+  val dummyWiktionaryDefinitionTwo: ChineseDefinition = ChineseDefinition(
     subdefinitions = List("wiktionary definition 3", "wiktionary definition 4"),
     tag = PartOfSpeech.NOUN,
     examples = Some(List("example 3", "example 4")),
@@ -187,7 +193,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           .getDefinitions(Language.ENGLISH, niHao)
           .map { definitions =>
             assert(definitions.size == 1)
-            val combined = definitions(0)
+            val combined = definitions.head
             assert(
               combined.subdefinitions == dummyCedictDefinition.subdefinitions
             )
@@ -237,7 +243,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           .getDefinitions(Language.ENGLISH, niHao)
           .map { definitions =>
             assert(definitions.size == 2)
-            val combinedOne = definitions(0)
+            val combinedOne = definitions.head
             val combinedTwo = definitions(1)
 
             // Cedict sourced data should be the same for all

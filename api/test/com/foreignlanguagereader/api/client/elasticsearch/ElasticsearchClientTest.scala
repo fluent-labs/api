@@ -6,14 +6,14 @@ import com.foreignlanguagereader.api.client.elasticsearch.searchstates.{
   ElasticsearchCacheRequest,
   ElasticsearchSearchRequest
 }
-import com.foreignlanguagereader.domain.internal.word.PartOfSpeech
 import com.foreignlanguagereader.api.util.ElasticsearchTestUtil
-import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.internal.definition.{
+import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.internal.definition.{
   Definition,
   DefinitionSource,
   GenericDefinition
 }
+import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.sksamuel.elastic4s.ElasticDsl.{bulk, indexInto}
 import com.sksamuel.elastic4s._
 import com.sksamuel.elastic4s.playjson._

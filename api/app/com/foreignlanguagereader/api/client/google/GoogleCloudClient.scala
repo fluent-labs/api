@@ -7,13 +7,20 @@ import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerResult,
   Circuitbreaker
 }
-import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.Language.Language
-import com.foreignlanguagereader.domain.internal.word.Count.Count
-import com.foreignlanguagereader.domain.internal.word.GrammaticalGender.GrammaticalGender
-import com.foreignlanguagereader.domain.internal.word.PartOfSpeech.PartOfSpeech
-import com.foreignlanguagereader.domain.internal.word.WordTense.WordTense
-import com.foreignlanguagereader.domain.internal.word.{PartOfSpeech, _}
+import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.internal.word
+import Language.Language
+import com.foreignlanguagereader.content.types.internal.word.Count.Count
+import com.foreignlanguagereader.content.types.internal.word.GrammaticalGender.GrammaticalGender
+import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
+import com.foreignlanguagereader.content.types.internal.word.{
+  Count,
+  GrammaticalGender,
+  PartOfSpeech,
+  Word,
+  WordTense
+}
+import com.foreignlanguagereader.content.types.internal.word.WordTense.WordTense
 import com.google.cloud.language.v1.Document.Type
 import com.google.cloud.language.v1.PartOfSpeech.{
   Gender,
@@ -83,7 +90,7 @@ class GoogleCloudClient @Inject() (
   def convertTokensToWord(language: Language, tokens: Seq[Token]): Set[Word] =
     tokens
       .map(token =>
-        Word(
+        word.Word(
           language = language,
           token = token.getText.getContent,
           tag = googlePartOfSpeechToDomainPartOfSpeech(

@@ -2,11 +2,12 @@ package com.foreignlanguagereader.api.client.google
 
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.api.client.common.CircuitBreakerAttempt
-import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.internal.word.{
+import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.internal.word.{
+  Count,
   GrammaticalGender,
   PartOfSpeech,
-  _
+  WordTense
 }
 import com.google.cloud.language.v1.AnalyzeSyntaxRequest
 import com.google.cloud.language.v1.PartOfSpeech.{

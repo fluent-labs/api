@@ -7,12 +7,16 @@ import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerNonAttempt
 }
 import com.foreignlanguagereader.api.client.google.GoogleCloudClient
-import com.foreignlanguagereader.domain.internal.word.{PartOfSpeech, Word}
 import com.foreignlanguagereader.api.service.definition.DefinitionService
-import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.internal.definition.{
+import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.internal.definition.{
   Definition,
   DefinitionSource
+}
+import com.foreignlanguagereader.content.types.internal.word
+import com.foreignlanguagereader.content.types.internal.word.{
+  PartOfSpeech,
+  Word
 }
 import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
@@ -65,16 +69,16 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       )
       documentService
         .getWordsForDocument(Language.ENGLISH, Language.ENGLISH, "some words")
-        .map(_ => assert(false, "This should have failed"))
+        .map(_ => fail("This should have failed"))
         .recover {
           case err: IllegalArgumentException =>
             assert(err.getMessage == "Uh oh")
-          case _ => assert(false, "This is the wrong exception")
+          case _ => fail("This is the wrong exception")
         }
     }
 
     it("can get words for a document") {
-      val testWord = Word(
+      val testWord = word.Word(
         language = Language.ENGLISH,
         token = "test",
         tag = PartOfSpeech.VERB,
@@ -141,7 +145,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         .getWordsForDocument(Language.ENGLISH, Language.SPANISH, "test phrase")
         .map(result => {
           assert(result.size == 2)
-          val test = result(0)
+          val test = result.head
           val phrase = result(1)
 
           assert(test == testWord.copy(definitions = List(testDefinition)))

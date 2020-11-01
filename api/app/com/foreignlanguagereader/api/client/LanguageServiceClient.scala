@@ -10,10 +10,10 @@ import com.foreignlanguagereader.api.client.common.{
   Circuitbreaker,
   WsClient
 }
-import com.foreignlanguagereader.domain.Language.Language
-import com.foreignlanguagereader.domain.external.definition.DefinitionEntry
-import com.foreignlanguagereader.domain.internal.definition.Definition
-import com.foreignlanguagereader.domain.internal.word.Word
+import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
+import com.foreignlanguagereader.content.types.internal.word.Word
+import com.foreignlanguagereader.content.types.Language.Language
+import com.foreignlanguagereader.content.types.internal.definition.Definition
 import javax.inject.Inject
 import play.api.libs.json.Reads
 import play.api.libs.ws.WSClient

@@ -8,16 +8,19 @@ import com.foreignlanguagereader.api.client.elasticsearch.{
   LookupAttempt
 }
 import com.foreignlanguagereader.api.client.elasticsearch.searchstates.ElasticsearchSearchRequest
-import com.foreignlanguagereader.domain.external.definition.cedict.CEDICTDefinitionEntry
-import com.foreignlanguagereader.domain.Language.Language
-import com.foreignlanguagereader.domain.internal.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.external.definition.WiktionaryDefinitionEntry
-import com.foreignlanguagereader.domain.internal.definition.{
+import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.external.definition.cedict.CEDICTDefinitionEntry
+import com.foreignlanguagereader.content.types.internal.word.{
+  PartOfSpeech,
+  Word
+}
+import Language.Language
+import com.foreignlanguagereader.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
+import com.foreignlanguagereader.content.types.internal.definition.{
   Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.domain.internal.word.{PartOfSpeech, Word}
+import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.sksamuel.elastic4s.{HitReader, Indexable}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
@@ -28,15 +31,16 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
 
 class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
-  val dummyWiktionaryDefinition = WiktionaryDefinitionEntry(
-    subdefinitions = List("definition 1", "definition 2"),
-    pronunciation = "",
-    tag = Some(PartOfSpeech.NOUN),
-    examples = Some(List("example 1", "example 2")),
-    definitionLanguage = Language.ENGLISH,
-    wordLanguage = Language.ENGLISH,
-    token = "test"
-  )
+  val dummyWiktionaryDefinition: WiktionaryDefinitionEntry =
+    WiktionaryDefinitionEntry(
+      subdefinitions = List("definition 1", "definition 2"),
+      pronunciation = "",
+      tag = Some(PartOfSpeech.NOUN),
+      examples = Some(List("example 1", "example 2")),
+      definitionLanguage = Language.ENGLISH,
+      wordLanguage = Language.ENGLISH,
+      token = "test"
+    )
   val elasticsearchClientMock: ElasticsearchClient = mock[ElasticsearchClient]
   val languageServiceClientMock: LanguageServiceClient =
     mock[LanguageServiceClient]
@@ -81,7 +85,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         .map { results =>
           assert(results.length == 1)
           assert(
-            results(0) == dummyWiktionaryDefinition
+            results.head == dummyWiktionaryDefinition
               .toDefinition(PartOfSpeech.NOUN)
           )
         }

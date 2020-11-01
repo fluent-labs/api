@@ -1,15 +1,15 @@
 package com.foreignlanguagereader.api.controller.v1.graphql
 
-import com.foreignlanguagereader.domain.Language.Language
-import com.foreignlanguagereader.domain.internal.word.Word
+import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.api.service.definition.{
   ChineseDefinitionService,
   DefinitionService,
   EnglishDefinitionService,
   SpanishDefinitionService
 }
-import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.internal.definition.Definition
+import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.internal.definition.Definition
+import com.foreignlanguagereader.content.types.internal.word.Word
 import org.mockito.Mockito
 import org.mockito.Mockito._
 import org.scalatest.OptionValues

@@ -6,8 +6,8 @@ import com.foreignlanguagereader.api.client.common.{
   CircuitBreakerResult,
   Circuitbreaker
 }
-import com.foreignlanguagereader.domain.Language
-import com.foreignlanguagereader.domain.Language.Language
+import com.foreignlanguagereader.content.types.Language
+import Language.Language
 import it.uniroma1.lcl.babelnet.{BabelNetQuery, BabelSense}
 import it.uniroma1.lcl.jlt.util.{Language => BabelLanguage}
 import javax.inject.Inject
