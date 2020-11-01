@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.api.controller.v1.graphql
 
 import com.foreignlanguagereader.api.controller.v1.graphql.queries.DefinitionQuery
-import com.foreignlanguagereader.api.service.definition.DefinitionService
+import com.foreignlanguagereader.domain.service.definition.DefinitionService
 import javax.inject.Inject
 import play.api.Logger
 import play.api.libs.json.{JsObject, JsString, JsValue, Json}
@@ -16,11 +16,12 @@ import sangria.schema.Schema
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
-class GraphQL @Inject()(val controllerComponents: ControllerComponents,
-                        val definitionQuery: DefinitionQuery,
-                        val definitionService: DefinitionService,
-                        implicit val ec: ExecutionContext)
-    extends BaseController {
+class GraphQL @Inject() (
+    val controllerComponents: ControllerComponents,
+    val definitionQuery: DefinitionQuery,
+    val definitionService: DefinitionService,
+    implicit val ec: ExecutionContext
+) extends BaseController {
 
   val logger: Logger = Logger(this.getClass)
 
@@ -34,31 +35,34 @@ class GraphQL @Inject()(val controllerComponents: ControllerComponents,
     if (variables.trim == "" || variables.trim == "null") Json.obj()
     else Json.parse(variables).as[JsObject]
 
-  def graphql: Action[JsValue] = Action.async(parse.json) { request =>
-    val query = (request.body \ "query").as[String]
-    val operation = (request.body \ "operationName").asOpt[String]
-    val variables: Option[JsObject] =
-      (request.body \ "variables").toOption.flatMap {
-        case JsString(vars) => Some(parseVariables(vars))
-        case obj: JsObject  => Some(obj)
-        case _              => None
+  def graphql: Action[JsValue] =
+    Action.async(parse.json) { request =>
+      val query = (request.body \ "query").as[String]
+      val operation = (request.body \ "operationName").asOpt[String]
+      val variables: Option[JsObject] =
+        (request.body \ "variables").toOption.flatMap {
+          case JsString(vars) => Some(parseVariables(vars))
+          case obj: JsObject  => Some(obj)
+          case _              => None
+        }
+
+      QueryParser.parse(query) match {
+        case Success(queryAst) =>
+          executeGraphQLQuery(queryAst, operation, variables)
+        case Failure(error: SyntaxError) =>
+          Future.successful(BadRequest(Json.obj("error" -> error.getMessage)))
+        case _ =>
+          Future.successful(
+            BadRequest(Json.obj("error" -> "failed to parse query"))
+          )
       }
-
-    QueryParser.parse(query) match {
-      case Success(queryAst) =>
-        executeGraphQLQuery(queryAst, operation, variables)
-      case Failure(error: SyntaxError) =>
-        Future.successful(BadRequest(Json.obj("error" -> error.getMessage)))
-      case _ =>
-        Future.successful(
-          BadRequest(Json.obj("error" -> "failed to parse query"))
-        )
     }
-  }
 
-  def executeGraphQLQuery(query: Document,
-                          op: Option[String],
-                          vars: Option[JsObject]): Future[Result] =
+  def executeGraphQLQuery(
+      query: Document,
+      op: Option[String],
+      vars: Option[JsObject]
+  ): Future[Result] =
     (vars match {
       case Some(v) =>
         Executor

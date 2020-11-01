@@ -8,16 +8,18 @@ lazy val global = project
   .in(file("."))
   .settings(settings)
   .disablePlugins(AssemblyPlugin)
-  .aggregate(api, domain, dto, definitions)
+  .aggregate(api, content, domain, dto, jobs)
 
-lazy val dto = project
+lazy val api = project
+  .enablePlugins(PlayService, PlayLayoutPlugin)
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies
+    libraryDependencies ++= commonDependencies ++ playDependencies
   )
+  .dependsOn(domain)
 
-lazy val domain = project
+lazy val content = project
   .settings(
     settings,
     assemblySettings,
@@ -32,24 +34,37 @@ lazy val domain = project
   )
   .dependsOn(dto)
 
-lazy val api = project
-  .enablePlugins(PlayService, PlayLayoutPlugin)
+lazy val domain = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies ++ playDependencies ++ Seq(
+    libraryDependencies ++= commonDependencies ++ Seq(
+      dependencies.utilBackports,
+      // Dependency injection
+      guice,
+      // Used to generate elasticsearch matchers
       dependencies.elastic4s,
       dependencies.elastic4sTestkit,
       dependencies.elastic4sPlay,
+      // Testing
+      dependencies.mockito,
+      dependencies.scalatestPlay,
+      // Clients
+      dependencies.opencc4j,
       dependencies.googleCloudClient
     )
   )
-  .dependsOn(domain)
+  .dependsOn(content)
 
-lazy val definitions = project
-  .in(file("content/definitions"))
+lazy val dto = project
   .settings(
-    name := "definitions",
+    settings,
+    assemblySettings,
+    libraryDependencies ++= commonDependencies
+  )
+
+lazy val jobs = project
+  .settings(
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.sparkCore % "provided",
@@ -57,7 +72,7 @@ lazy val definitions = project
       dependencies.sparkXml
     )
   )
-  .dependsOn(domain)
+  .dependsOn(content)
 
 lazy val commonDependencies = Seq(
   dependencies.scalatest % "test",
@@ -69,10 +84,9 @@ lazy val commonDependencies = Seq(
 
 lazy val playDependencies = Seq(
   dependencies.scalatestPlay,
-  dependencies.mockito,
-  guice,
   dependencies.sangria,
-  dependencies.sangriaPlay
+  dependencies.sangriaPlay,
+  dependencies.mockito
 )
 
 lazy val dependencies =

@@ -2,8 +2,8 @@ package com.foreignlanguagereader.api.controller.v1
 
 import java.util.concurrent.TimeUnit
 
-import com.foreignlanguagereader.api.client.LanguageServiceClient
-import com.foreignlanguagereader.api.client.elasticsearch.ElasticsearchClient
+import com.foreignlanguagereader.domain.client.LanguageServiceClient
+import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchClient
 import com.foreignlanguagereader.dto.v1.health.{Readiness, ReadinessStatus}
 import javax.inject._
 import play.api.libs.json.Json
