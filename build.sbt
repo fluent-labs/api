@@ -33,10 +33,8 @@ lazy val domain = project
   .dependsOn(dto)
 
 lazy val api = project
-  .in(file("api-v2"))
   .enablePlugins(PlayService, PlayLayoutPlugin)
   .settings(
-    name := "api",
     settings,
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ playDependencies ++ Seq(

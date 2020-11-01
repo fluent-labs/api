@@ -1,10 +1,10 @@
-name: API V2 PR Review
+name: API PR Review
 
 on:
   pull_request:
     paths:
-      - "api-v2/*"
-      - "api-v2/**/*"
+      - "api/*"
+      - "api/**/*"
       - "domain/*"
       - "domain/**/*"
       - "dto/*"
