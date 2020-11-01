@@ -19,7 +19,7 @@ RUN sbt compile
 # Compile the service
 COPY . /app/
 RUN sbt clean coverageOff dist
-RUN unzip /app/api-v2/target/universal/api-0.1.0-SNAPSHOT.zip
+RUN unzip /app/api/target/universal/api-0.1.0-SNAPSHOT.zip
 
 ## Make sure tests are run on the correct JVM
 ## Changes to string methods between versions has burned us before
