@@ -25,7 +25,7 @@ class ElasticsearchClient @Inject() (
 ) extends Circuitbreaker {
   override val logger: Logger = Logger(this.getClass)
   implicit val ec: ExecutionContext =
-    system.dispatchers.lookup("elasticsearch-context")
+    scala.concurrent.ExecutionContext.Implicits.global
 
   /**
     *
