@@ -8,29 +8,7 @@ lazy val global = project
   .in(file("."))
   .settings(settings)
   .disablePlugins(AssemblyPlugin)
-  .aggregate(api, domain, dto, definitions)
-
-lazy val dto = project
-  .settings(
-    settings,
-    assemblySettings,
-    libraryDependencies ++= commonDependencies
-  )
-
-lazy val domain = project
-  .settings(
-    settings,
-    assemblySettings,
-    libraryDependencies ++= commonDependencies ++ Seq(
-      dependencies.utilBackports,
-      // Used to generate elasticsearch matchers
-      dependencies.elastic4s,
-      dependencies.elastic4sPlay,
-      dependencies.scalatestPlay,
-      dependencies.opencc4j
-    )
-  )
-  .dependsOn(dto)
+  .aggregate(api, domain, dto, jobs)
 
 lazy val api = project
   .enablePlugins(PlayService, PlayLayoutPlugin)
@@ -46,10 +24,45 @@ lazy val api = project
   )
   .dependsOn(domain)
 
-lazy val definitions = project
-  .in(file("content/definitions"))
+lazy val content = project
   .settings(
-    name := "definitions",
+    settings,
+    assemblySettings,
+    libraryDependencies ++= commonDependencies ++ Seq(
+      dependencies.utilBackports,
+      // Used to generate elasticsearch matchers
+      dependencies.elastic4s,
+      dependencies.elastic4sPlay,
+      dependencies.scalatestPlay,
+      dependencies.opencc4j
+    )
+  )
+  .dependsOn(dto)
+
+lazy val domain = project
+  .settings(
+    settings,
+    assemblySettings,
+    libraryDependencies ++= commonDependencies ++ Seq(
+      dependencies.utilBackports,
+      // Used to generate elasticsearch matchers
+      dependencies.elastic4s,
+      dependencies.elastic4sPlay,
+      dependencies.scalatestPlay,
+      dependencies.opencc4j
+    )
+  )
+  .dependsOn(content, dto)
+
+lazy val dto = project
+  .settings(
+    settings,
+    assemblySettings,
+    libraryDependencies ++= commonDependencies
+  )
+
+lazy val jobs = project
+  .settings(
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.sparkCore % "provided",

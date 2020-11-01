@@ -4,7 +4,7 @@ import Wiktionary.{
   loadWiktionaryDump,
   regexp_extract_all
 }
-import com.foreignlanguagereader.domain.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
+import com.foreignlanguagereader.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{Column, DataFrame, Dataset, SparkSession}
