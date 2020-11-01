@@ -2,8 +2,6 @@
 .github/*
 .idea/*
 .terraform/*
-.api/*
-content/*
 frontend/*
 language-service/*
 logs/*
