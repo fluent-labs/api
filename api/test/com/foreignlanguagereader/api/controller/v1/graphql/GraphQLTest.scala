@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.api.controller.v1.graphql
 
 import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.api.service.definition.{
+import com.foreignlanguagereader.domain.service.definition.{
   ChineseDefinitionService,
   DefinitionService,
   EnglishDefinitionService,
@@ -10,12 +10,10 @@ import com.foreignlanguagereader.api.service.definition.{
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.definition.Definition
 import com.foreignlanguagereader.content.types.internal.word.Word
-import org.mockito.Mockito
-import org.mockito.Mockito._
+import org.mockito.{Mockito, MockitoSugar}
 import org.scalatest.OptionValues
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.WsScalaTestClient
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import play.api.Application

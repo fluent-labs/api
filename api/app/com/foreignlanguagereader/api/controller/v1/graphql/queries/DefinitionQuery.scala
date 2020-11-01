@@ -1,8 +1,9 @@
 package com.foreignlanguagereader.api.controller.v1.graphql.queries
 
 import com.foreignlanguagereader.dto.v1.definition.DefinitionDTO
-import com.foreignlanguagereader.api.service.definition.DefinitionService
+import com.foreignlanguagereader.domain.service.definition.DefinitionService
 import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.internal.word.Word
 import javax.inject.Inject
 import sangria.schema.{Argument, Field, ListType, ObjectType, StringType}
@@ -10,10 +11,11 @@ import sangria.schema.{Argument, Field, ListType, ObjectType, StringType}
 import scala.concurrent.ExecutionContext
 
 class DefinitionQuery @Inject() (implicit val ec: ExecutionContext) {
-  val wordLanguageArgument = Argument("wordLanguage", Language.graphqlType)
-  val definitionLanguageArgument =
+  val wordLanguageArgument: Argument[Language] =
+    Argument("wordLanguage", Language.graphqlType)
+  val definitionLanguageArgument: Argument[Language] =
     Argument("definitionLanguage", Language.graphqlType)
-  val tokenArgument = Argument("token", StringType)
+  val tokenArgument: Argument[String] = Argument("token", StringType)
 
   val field: Field[DefinitionService, Unit] = Field(
     "definition",
@@ -35,6 +37,6 @@ class DefinitionQuery @Inject() (implicit val ec: ExecutionContext) {
     }
   )
 
-  val query =
+  val query: ObjectType[DefinitionService, Unit] =
     ObjectType("Query", List(field))
 }

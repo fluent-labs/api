@@ -8,7 +8,7 @@ import play.api.libs.json.{Json, Reads}
 
 object HSKLevelFinder {
   private[this] val hsk: HskHolder = ContentFileLoader
-    .loadJsonResourceFile[HskHolder]("/definition/chinese/hsk.json")
+    .loadJsonResourceFile[HskHolder]("/chinese/hsk.json")
 
   def sentenceIsTraditional(sentence: String): Boolean =
     ZhConverterUtil.isTraditional(sentence)

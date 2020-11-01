@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.api.controller.v1.language
 
 import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.api.service.definition.DefinitionService
+import com.foreignlanguagereader.domain.service.definition.DefinitionService
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.definition.Definition
 import com.foreignlanguagereader.content.types.internal.word.Word

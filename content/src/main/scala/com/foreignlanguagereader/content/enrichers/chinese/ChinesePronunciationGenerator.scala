@@ -10,7 +10,7 @@ object ChinesePronunciationGenerator {
   private[this] val pronunciations: Map[String, ChinesePronunciationFromFile] =
     ContentFileLoader
       .loadJsonResourceFile[Seq[ChinesePronunciationFromFile]](
-        "/definition/chinese/pronunciation.json"
+        "/chinese/pronunciation.json"
       )
       .map(pron => pron.pinyin -> pron)
       .toMap

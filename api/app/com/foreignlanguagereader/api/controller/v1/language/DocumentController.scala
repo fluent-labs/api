@@ -2,7 +2,7 @@ package com.foreignlanguagereader.api.controller.v1.language
 
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.dto.v1.document.DocumentRequest
-import com.foreignlanguagereader.api.service.DocumentService
+import com.foreignlanguagereader.domain.service.DocumentService
 import javax.inject._
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}

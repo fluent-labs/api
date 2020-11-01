@@ -8,19 +8,14 @@ lazy val global = project
   .in(file("."))
   .settings(settings)
   .disablePlugins(AssemblyPlugin)
-  .aggregate(api, domain, dto, jobs)
+  .aggregate(api, content, domain, dto, jobs)
 
 lazy val api = project
   .enablePlugins(PlayService, PlayLayoutPlugin)
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies ++ playDependencies ++ Seq(
-      dependencies.elastic4s,
-      dependencies.elastic4sTestkit,
-      dependencies.elastic4sPlay,
-      dependencies.googleCloudClient
-    )
+    libraryDependencies ++= commonDependencies ++ playDependencies
   )
   .dependsOn(domain)
 
@@ -45,14 +40,21 @@ lazy val domain = project
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.utilBackports,
+      // Dependency injection
+      guice,
       // Used to generate elasticsearch matchers
       dependencies.elastic4s,
+      dependencies.elastic4sTestkit,
       dependencies.elastic4sPlay,
+      // Testing
+      dependencies.mockito,
       dependencies.scalatestPlay,
-      dependencies.opencc4j
+      // Clients
+      dependencies.opencc4j,
+      dependencies.googleCloudClient
     )
   )
-  .dependsOn(content, dto)
+  .dependsOn(content)
 
 lazy val dto = project
   .settings(
@@ -70,7 +72,7 @@ lazy val jobs = project
       dependencies.sparkXml
     )
   )
-  .dependsOn(domain)
+  .dependsOn(content)
 
 lazy val commonDependencies = Seq(
   dependencies.scalatest % "test",
@@ -82,10 +84,9 @@ lazy val commonDependencies = Seq(
 
 lazy val playDependencies = Seq(
   dependencies.scalatestPlay,
-  dependencies.mockito,
-  guice,
   dependencies.sangria,
-  dependencies.sangriaPlay
+  dependencies.sangriaPlay,
+  dependencies.mockito
 )
 
 lazy val dependencies =
