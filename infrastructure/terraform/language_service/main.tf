@@ -2,7 +2,8 @@ data "aws_caller_identity" "current" {}
 
 resource "kubernetes_service" "language_service" {
   metadata {
-    name = "language-service"
+    name      = "language-service"
+    namespace = var.env
   }
   spec {
     selector = {
@@ -17,7 +18,8 @@ resource "kubernetes_service" "language_service" {
 
 resource "kubernetes_horizontal_pod_autoscaler" "language_service_autoscale" {
   metadata {
-    name = "language-service"
+    name      = "language-service"
+    namespace = var.env
   }
   spec {
     min_replicas = var.min_replicas
@@ -33,7 +35,8 @@ resource "kubernetes_horizontal_pod_autoscaler" "language_service_autoscale" {
 
 resource "kubernetes_deployment" "language_service" {
   metadata {
-    name = "language-service"
+    name      = "language-service"
+    namespace = var.env
   }
 
   spec {
@@ -154,7 +157,8 @@ resource "random_password" "language_service_elasticsearch_password" {
 
 resource "kubernetes_secret" "language_service_elastic_credentials" {
   metadata {
-    name = "language-service-elastic-credentials"
+    namespace = var.env
+    name      = "language-service-elastic-credentials"
   }
 
   data = {

@@ -1,0 +1,1239 @@
+[
+  {
+    "meta": {
+      "id": "porque",
+      "uuid": "4548a265-3c3f-4a5a-81e3-30de6646357b",
+      "lang": "es",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "porque",
+        "por que"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "porque",
+      "prs": [
+        {
+          "sound": {
+            "audio": "porqu02sp"
+          }
+        }
+      ]
+    },
+    "fl": "conjunction",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|because}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "vrs": [
+                  {
+                    "vl": "or",
+                    "va": "por que"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|in order that}"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "because",
+      "in order that"
+    ]
+  },
+  {
+    "meta": {
+      "id": "porque'",
+      "uuid": "b5fc0045-8701-4a97-94fb-7d9e0be211c3",
+      "lang": "es",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "porque"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "porqué",
+      "prs": [
+        {
+          "sound": {
+            "audio": "porqu01sp"
+          }
+        }
+      ]
+    },
+    "fl": "masculine noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|reason}, {a_link|cause} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "no explicó el porqué",
+                        "tr": "he didn't explain the reason"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "reason, cause"
+    ]
+  },
+  {
+    "meta": {
+      "id": "por",
+      "uuid": "b5d36247-f9a0-46a7-adea-92bf5358620b",
+      "lang": "es",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "por",
+        "estar por",
+        "por ciento",
+        "por favor",
+        "por lo tanto",
+        "¿por que?",
+        "por que",
+        "por … que",
+        "por si",
+        "por si acaso"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "por",
+      "prs": [
+        {
+          "sound": {
+            "audio": "por0001sp"
+          }
+        }
+      ]
+    },
+    "fl": "preposition",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|for}, {a_link|during} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "se quedaron allí por la semana",
+                        "tr": "they stayed there for the week"
+                      },
+                      {
+                        "t": "por el momento",
+                        "tr": "for now, at the moment"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|around}, {a_link|during} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "por noviembre empieza a nevar",
+                        "tr": "around November it starts to snow"
+                      },
+                      {
+                        "t": "por la mañana",
+                        "tr": "in the morning"
+                      },
+                      {
+                        "t": "por la noche",
+                        "tr": "at night"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "3",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|around} (a place) "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "debe estar por allí",
+                        "tr": "it must be over there"
+                      },
+                      {
+                        "t": "por todas partes",
+                        "tr": "everywhere"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "4",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|by}, {a_link|through}, {a_link|along} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "por la puerta",
+                        "tr": "through the door"
+                      },
+                      {
+                        "t": "pasamos por el centro",
+                        "tr": "we went through the downtown"
+                      },
+                      {
+                        "t": "pasé por tu casa",
+                        "tr": "I stopped by your house"
+                      },
+                      {
+                        "t": "por la costa",
+                        "tr": "along the coast"
+                      },
+                      {
+                        "t": "caminando por la calle",
+                        "tr": "walking down the street"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "5",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|for}, for the sake of "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "lo hizo por su madre",
+                        "tr": "he did it for his mother"
+                      },
+                      {
+                        "t": "¡por Dios!",
+                        "tr": "for heaven's sake!"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "6",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|because of}, {a_link|on account of} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "llegué tarde por el tráfico",
+                        "tr": "I arrived late because of the traffic"
+                      },
+                      {
+                        "t": "dejar por imposible",
+                        "tr": "to give up as impossible"
+                      },
+                      {
+                        "t": "perdón por la demora",
+                        "tr": "sorry for the delay"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "7",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|per} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "60 millas por hora",
+                        "tr": "60 miles per hour"
+                      },
+                      {
+                        "t": "por docena",
+                        "tr": "by the dozen"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "8",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|for}, in exchange for, {a_link|instead of} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "su hermana habló por él",
+                        "tr": "his sister spoke on his behalf"
+                      },
+                      {
+                        "t": "lo vendió por cien dólares",
+                        "tr": "he sold it for a hundred dollars"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "9",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|by means of} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "hablar por teléfono",
+                        "tr": "to talk on the phone"
+                      },
+                      {
+                        "t": "por escrito",
+                        "tr": "in writing"
+                      },
+                      {
+                        "t": "por avión",
+                        "tr": "by plane"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "10",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|as for} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "por mí",
+                        "tr": "as far as I'm concerned"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "11",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|times} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "tres por dos son seis",
+                        "tr": "three times two is six"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "12",
+                "dt": [
+                  [
+                    "text",
+                    "{sx|según||} {bc}{a_link|from}, {a_link|according to} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "por lo que dices",
+                        "tr": "judging from what you're telling me"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "13",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|as}, {a_link|for} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "por ejemplo",
+                        "tr": "for example"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "14",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|by} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "hecho por mi abuela",
+                        "tr": "made by my grandmother"
+                      },
+                      {
+                        "t": "por correo",
+                        "tr": "by mail"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "15",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|for}, {a_link|in order to} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "lucha por ganar su respeto",
+                        "tr": "he struggles to win her respect"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "16",
+                "vrs": [
+                  {
+                    "va": "estar por"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}to {a_link|be about to}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "17",
+                "vrs": [
+                  {
+                    "va": "por ciento"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|percent}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "18",
+                "vrs": [
+                  {
+                    "va": "por favor"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|please}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "19",
+                "vrs": [
+                  {
+                    "va": "por lo tanto"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|therefore}, {a_link|consequently}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "20",
+                "vrs": [
+                  {
+                    "va": "¿por qué?"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}why?"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sen",
+              {
+                "sn": "21",
+                "vrs": [
+                  {
+                    "va": "por que"
+                  }
+                ],
+                "xrs": [
+                  [
+                    {
+                      "xrt": "porque",
+                      "xref": "porque"
+                    }
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "22",
+                "vrs": [
+                  {
+                    "va": "por … que"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}no matter how "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "por mucho que intente",
+                        "tr": "no matter how hard I try"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "23",
+                "vrs": [
+                  {
+                    "va": "por si"
+                  },
+                  {
+                    "vl": "or",
+                    "va": "por si acaso"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}just in case"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "for, during",
+      "around, during",
+      "around (a place)"
+    ]
+  },
+  {
+    "meta": {
+      "id": "mas:5",
+      "uuid": "3a9af8bc-b413-404a-affc-3fb55c23e82b",
+      "lang": "es",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "más",
+        "a lo más",
+        "de más",
+        "más bien",
+        "más o menos",
+        "por más que"
+      ],
+      "offensive": false
+    },
+    "hom": 5,
+    "hwi": {
+      "hw": "más",
+      "prs": [
+        {
+          "sound": {
+            "audio": "mas0005sp"
+          }
+        }
+      ]
+    },
+    "fl": "pronoun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|more} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "¿tienes más?",
+                        "tr": "do you have more?"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "vrs": [
+                  {
+                    "va": "a lo más"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}at most"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "3",
+                "vrs": [
+                  {
+                    "va": "de más",
+                    "vac": "de ~"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|extra}, {a_link|excess}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "4",
+                "vrs": [
+                  {
+                    "va": "más bien",
+                    "vac": "~ bien"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|rather}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "5",
+                "vrs": [
+                  {
+                    "va": "más o menos"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|more or less}, {a_link|approximately}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "6",
+                "vrs": [
+                  {
+                    "va": "por más que"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|no matter how much} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "por más que corras no llegarás a tiempo",
+                        "tr": "no matter how fast you run you won't arrive on time"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "more",
+      "at most",
+      "extra, excess"
+    ]
+  },
+  {
+    "meta": {
+      "id": "mucho:3",
+      "uuid": "06e62227-e342-4854-899c-85403bb86b5b",
+      "lang": "es",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "mucho",
+        "mucha",
+        "cuando/como mucho",
+        "como mucho",
+        "cuando mucho",
+        "con mucho",
+        "ni mucho menos",
+        "por mucho que"
+      ],
+      "offensive": false
+    },
+    "hom": 3,
+    "hwi": {
+      "hw": "mucho",
+      "prs": [
+        {
+          "sound": {
+            "audio": "mucho03sp"
+          }
+        }
+      ]
+    },
+    "ahws": [
+      {
+        "hw": "mucha",
+        "hwc": "-cha"
+      }
+    ],
+    "fl": "pronoun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|a lot}, {a_link|many}, {a_link|much} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "hay mucho que hacer",
+                        "tr": "there is a lot to do"
+                      },
+                      {
+                        "t": "muchos no vinieron",
+                        "tr": "many didn't come"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "ins": [
+                  {
+                    "if": "mucho"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|long}, a long time "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "tardó mucho en venir",
+                        "tr": "he was a long time getting here"
+                      },
+                      {
+                        "t": "¿te falta mucho?",
+                        "tr": "will you be much longer?"
+                      },
+                      {
+                        "t": "hace mucho que no te veo",
+                        "tr": "it's been a long time since I've seen you"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "3",
+                "vrs": [
+                  {
+                    "va": "cuando/como mucho",
+                    "vac": "cuando/como ~"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}at most"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "4",
+                "vrs": [
+                  {
+                    "va": "con mucho",
+                    "vac": "con ~"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|by far}"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "5",
+                "vrs": [
+                  {
+                    "va": "ni mucho menos"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}not at all, far from it"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "6",
+                "vrs": [
+                  {
+                    "va": "por mucho que"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|no matter how much}, (as) {a_link|much as} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "por mucho que quiera no puedo",
+                        "tr": "as much as I would like to, I can't"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "a lot, many, much",
+      "long, a long time",
+      "at most"
+    ]
+  },
+  {
+    "meta": {
+      "id": "si:1",
+      "uuid": "148542dd-090b-46d5-927d-f324cb7633a8",
+      "lang": "es",
+      "src": "spanish",
+      "section": "alpha",
+      "stems": [
+        "sí",
+        "sí que",
+        "porque sí"
+      ],
+      "offensive": false
+    },
+    "hom": 1,
+    "hwi": {
+      "hw": "sí",
+      "prs": [
+        {
+          "sound": {
+            "audio": "si00001sp"
+          }
+        }
+      ]
+    },
+    "fl": "adverb",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|yes} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "sí, gracias",
+                        "tr": "yes, please"
+                      },
+                      {
+                        "t": "creo que sí",
+                        "tr": "I think so"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "vrs": [
+                  {
+                    "va": "sí que"
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|indeed}, {a_link|absolutely} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "esta vez sí que ganaré",
+                        "tr": "this time I'm sure to win"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "3",
+                "vrs": [
+                  {
+                    "va": "porque sí"
+                  }
+                ],
+                "sls": [
+                  "familiar"
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{a_link|because}, just because "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "lo hizo porque sí",
+                        "tr": "she did it just because"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "yes",
+      "indeed, absolutely",
+      "because, just because"
+    ]
+  }
+]

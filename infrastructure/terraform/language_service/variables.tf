@@ -1,3 +1,7 @@
+variable "env" {
+  description = "The namespace to put things in"
+}
+
 variable "min_replicas" {
   description = "The minimum number of service replicas to run"
 }

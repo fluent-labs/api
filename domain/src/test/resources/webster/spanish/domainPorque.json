@@ -1,0 +1,898 @@
+[
+  {
+    "meta": {
+      "id": "porque",
+      "uuid": "4548a265-3c3f-4a5a-81e3-30de6646357b",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "porque",
+        "por que"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "porque",
+      "pronunciations": [
+        {
+          "sound": {
+            "audio": "porqu02sp",
+            "language": "en",
+            "country": "us"
+          }
+        }
+      ]
+    },
+    "partOfSpeechRaw": "conjunction",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|because}"
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|in order that}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "por que",
+                  "variantLabel": "or"
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "because",
+      "in order that"
+    ]
+  },
+  {
+    "meta": {
+      "id": "porque'",
+      "uuid": "b5fc0045-8701-4a97-94fb-7d9e0be211c3",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "porque"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "porqué",
+      "pronunciations": [
+        {
+          "sound": {
+            "audio": "porqu01sp",
+            "language": "en",
+            "country": "us"
+          }
+        }
+      ]
+    },
+    "partOfSpeechRaw": "masculine noun",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|reason}, {a_link|cause} "
+                ],
+                "examples": [
+                  {
+                    "text": "no explicó el porqué"
+                  }
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "reason, cause"
+    ]
+  },
+  {
+    "meta": {
+      "id": "por",
+      "uuid": "b5d36247-f9a0-46a7-adea-92bf5358620b",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "por",
+        "estar por",
+        "por ciento",
+        "por favor",
+        "por lo tanto",
+        "¿por que?",
+        "por que",
+        "por … que",
+        "por si",
+        "por si acaso"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "por",
+      "pronunciations": [
+        {
+          "sound": {
+            "audio": "por0001sp",
+            "language": "en",
+            "country": "us"
+          }
+        }
+      ]
+    },
+    "partOfSpeechRaw": "preposition",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|for}, {a_link|during} "
+                ],
+                "examples": [
+                  {
+                    "text": "se quedaron allí por la semana"
+                  },
+                  {
+                    "text": "por el momento"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|around}, {a_link|during} "
+                ],
+                "examples": [
+                  {
+                    "text": "por noviembre empieza a nevar"
+                  },
+                  {
+                    "text": "por la mañana"
+                  },
+                  {
+                    "text": "por la noche"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|around} (a place) "
+                ],
+                "examples": [
+                  {
+                    "text": "debe estar por allí"
+                  },
+                  {
+                    "text": "por todas partes"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|by}, {a_link|through}, {a_link|along} "
+                ],
+                "examples": [
+                  {
+                    "text": "por la puerta"
+                  },
+                  {
+                    "text": "pasamos por el centro"
+                  },
+                  {
+                    "text": "pasé por tu casa"
+                  },
+                  {
+                    "text": "por la costa"
+                  },
+                  {
+                    "text": "caminando por la calle"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|for}, for the sake of "
+                ],
+                "examples": [
+                  {
+                    "text": "lo hizo por su madre"
+                  },
+                  {
+                    "text": "¡por Dios!"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|because of}, {a_link|on account of} "
+                ],
+                "examples": [
+                  {
+                    "text": "llegué tarde por el tráfico"
+                  },
+                  {
+                    "text": "dejar por imposible"
+                  },
+                  {
+                    "text": "perdón por la demora"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|per} "
+                ],
+                "examples": [
+                  {
+                    "text": "60 millas por hora"
+                  },
+                  {
+                    "text": "por docena"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|for}, in exchange for, {a_link|instead of} "
+                ],
+                "examples": [
+                  {
+                    "text": "su hermana habló por él"
+                  },
+                  {
+                    "text": "lo vendió por cien dólares"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|by means of} "
+                ],
+                "examples": [
+                  {
+                    "text": "hablar por teléfono"
+                  },
+                  {
+                    "text": "por escrito"
+                  },
+                  {
+                    "text": "por avión"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|as for} "
+                ],
+                "examples": [
+                  {
+                    "text": "por mí"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|times} "
+                ],
+                "examples": [
+                  {
+                    "text": "tres por dos son seis"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{sx|según||} {bc}{a_link|from}, {a_link|according to} "
+                ],
+                "examples": [
+                  {
+                    "text": "por lo que dices"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|as}, {a_link|for} "
+                ],
+                "examples": [
+                  {
+                    "text": "por ejemplo"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|by} "
+                ],
+                "examples": [
+                  {
+                    "text": "hecho por mi abuela"
+                  },
+                  {
+                    "text": "por correo"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|for}, {a_link|in order to} "
+                ],
+                "examples": [
+                  {
+                    "text": "lucha por ganar su respeto"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}to {a_link|be about to}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "estar por"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|percent}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "por ciento"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|please}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "por favor"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|therefore}, {a_link|consequently}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "por lo tanto"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}why?"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "¿por qué?"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}no matter how "
+                ],
+                "examples": [
+                  {
+                    "text": "por mucho que intente"
+                  }
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "por … que"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}just in case"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "por si"
+                },
+                {
+                  "variant": "por si acaso",
+                  "variantLabel": "or"
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "for, during",
+      "around, during",
+      "around (a place)"
+    ]
+  },
+  {
+    "meta": {
+      "id": "mas:5",
+      "uuid": "3a9af8bc-b413-404a-affc-3fb55c23e82b",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "más",
+        "a lo más",
+        "de más",
+        "más bien",
+        "más o menos",
+        "por más que"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "más",
+      "pronunciations": [
+        {
+          "sound": {
+            "audio": "mas0005sp",
+            "language": "en",
+            "country": "us"
+          }
+        }
+      ]
+    },
+    "partOfSpeechRaw": "pronoun",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|more} "
+                ],
+                "examples": [
+                  {
+                    "text": "¿tienes más?"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}at most"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "a lo más"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|extra}, {a_link|excess}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "de más"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|rather}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "más bien"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|more or less}, {a_link|approximately}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "más o menos"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|no matter how much} "
+                ],
+                "examples": [
+                  {
+                    "text": "por más que corras no llegarás a tiempo"
+                  }
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "por más que"
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "more",
+      "at most",
+      "extra, excess"
+    ]
+  },
+  {
+    "meta": {
+      "id": "mucho:3",
+      "uuid": "06e62227-e342-4854-899c-85403bb86b5b",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "mucho",
+        "mucha",
+        "cuando/como mucho",
+        "como mucho",
+        "cuando mucho",
+        "con mucho",
+        "ni mucho menos",
+        "por mucho que"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "mucho",
+      "pronunciations": [
+        {
+          "sound": {
+            "audio": "mucho03sp",
+            "language": "en",
+            "country": "us"
+          }
+        }
+      ]
+    },
+    "partOfSpeechRaw": "pronoun",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|a lot}, {a_link|many}, {a_link|much} "
+                ],
+                "examples": [
+                  {
+                    "text": "hay mucho que hacer"
+                  },
+                  {
+                    "text": "muchos no vinieron"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|long}, a long time "
+                ],
+                "examples": [
+                  {
+                    "text": "tardó mucho en venir"
+                  },
+                  {
+                    "text": "¿te falta mucho?"
+                  },
+                  {
+                    "text": "hace mucho que no te veo"
+                  }
+                ]
+              },
+              "inflections": [
+                {
+                  "inflection": "mucho"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}at most"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "cuando/como mucho"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|by far}"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "con mucho"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}not at all, far from it"
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "ni mucho menos"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|no matter how much}, (as) {a_link|much as} "
+                ],
+                "examples": [
+                  {
+                    "text": "por mucho que quiera no puedo"
+                  }
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "por mucho que"
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "a lot, many, much",
+      "long, a long time",
+      "at most"
+    ]
+  },
+  {
+    "meta": {
+      "id": "si:1",
+      "uuid": "148542dd-090b-46d5-927d-f324cb7633a8",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "sí",
+        "sí que",
+        "porque sí"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "sí",
+      "pronunciations": [
+        {
+          "sound": {
+            "audio": "si00001sp",
+            "language": "en",
+            "country": "us"
+          }
+        }
+      ]
+    },
+    "partOfSpeechRaw": "adverb",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|yes} "
+                ],
+                "examples": [
+                  {
+                    "text": "sí, gracias"
+                  },
+                  {
+                    "text": "creo que sí"
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|indeed}, {a_link|absolutely} "
+                ],
+                "examples": [
+                  {
+                    "text": "esta vez sí que ganaré"
+                  }
+                ]
+              },
+              "variations": [
+                {
+                  "variant": "sí que"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|because}, just because "
+                ],
+                "examples": [
+                  {
+                    "text": "lo hizo porque sí"
+                  }
+                ]
+              },
+              "subjectStatusLabels": [
+                "familiar"
+              ],
+              "variations": [
+                {
+                  "variant": "porque sí"
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "yes",
+      "indeed, absolutely",
+      "because, just because"
+    ]
+  }
+]

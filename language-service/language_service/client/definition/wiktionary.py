@@ -56,6 +56,9 @@ class Wiktionary(DefinitionClient):
                     ):
                         definitions.append(
                             Definition(
+                                token=word,
+                                source="WIKTIONARY",
+                                language=language,
                                 subdefinitions=subdefinitions,
                                 tag=tag,
                                 examples=examples,

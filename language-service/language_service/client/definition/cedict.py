@@ -35,6 +35,8 @@ class CEDICT(DefinitionClient):
             definition = self.definitions[word]
             return [
                 ChineseDefinition(
+                    token=word,
+                    source="CEDICT",
                     subdefinitions=definition["definitions"],
                     pinyin=definition["pinyin"],
                     simplified=definition["simplified"],

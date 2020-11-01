@@ -1,0 +1,7 @@
+# Health checks for K8s to know how to handle this service
+GET    /health       com.foreignlanguagereader.api.controller.v1.HealthController.health
+GET    /readiness    com.foreignlanguagereader.api.controller.v1.HealthController.readiness
+
+GET    /v1/language/definition/:wordlanguage/:word/ com.foreignlanguagereader.api.controller.v1.language.DefinitionController.definition(wordlanguage: com.foreignlanguagereader.domain.Language.Language, word: String)
+
+POST  /graphql  com.foreignlanguagereader.api.controller.v1.graphql.GraphQL.graphql

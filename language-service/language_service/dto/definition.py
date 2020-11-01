@@ -3,7 +3,7 @@ from marshmallow import Schema, fields
 
 class Definition:
     def __init__(
-        self, subdefinitions=None, tag="", examples=None,
+        self, token, source, language, subdefinitions=None, tag="", examples=None
     ):
         """
         subdefinitions: The different definitions for this meaning of the word
@@ -13,6 +13,9 @@ class Definition:
         self.subdefinitions = subdefinitions
         self.tag = tag
         self.examples = examples
+        self.token = token
+        self.source = source
+        self.language = language
 
     def set_subdefinitions(self, subdefinitions):
         self.subdefinitions = subdefinitions
@@ -28,6 +31,8 @@ class Definition:
 class ChineseDefinition(Definition):
     def __init__(
         self,
+        token,
+        source,
         subdefinitions=None,
         tag="",
         examples=None,
@@ -50,6 +55,9 @@ class ChineseDefinition(Definition):
         self.simplified = simplified
         self.traditional = traditional
         self.hsk = hsk
+        self.token = token
+        self.source = source
+        self.language = "CHINESE"
 
     def __repr__(self):
         return (
@@ -74,6 +82,9 @@ def make_definition_object(definition):
 
 
 class DefinitionSchema(Schema):
+    token = fields.Str()
+    source = fields.Str()
+    language = fields.Str()
     subdefinitions = fields.List(fields.Str())
     tag = fields.Str()
     examples = fields.List(fields.Str())

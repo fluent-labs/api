@@ -1,0 +1,191 @@
+[
+  {
+    "meta": {
+      "id": "animal",
+      "uuid": "dbfe3fc4-9b8f-4107-9199-c78512995c65",
+      "language": "en",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "animal",
+        "animals",
+        "animallike"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "animal",
+      "pronunciations": [
+        {
+          "writtenPronunciation": "ˈænəm{it}ə{/it}l"
+        }
+      ]
+    },
+    "partOfSpeechRaw": "noun",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}animal "
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{sx|brute||} {bc}{a_link|bruto} ",
+                  ", ",
+                  "  "
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "animal",
+      "brute : bruto, bruta"
+    ]
+  },
+  {
+    "meta": {
+      "id": "animal:1",
+      "uuid": "6c9d64c0-7d96-41ce-9f71-23fcda990d26",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "animal"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "animal"
+    },
+    "partOfSpeechRaw": "adjective",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}animal"
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{sx|estúpido||} {bc}{a_link|stupid}, {a_link|idiotic}"
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|rough}, {a_link|brutish}"
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "animal",
+      "estúpido : stupid, idiotic",
+      "rough, brutish"
+    ]
+  },
+  {
+    "meta": {
+      "id": "animal:2",
+      "uuid": "1e8b9ea2-40b2-42ac-8a3a-f48b97f98d1e",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "animal"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "animal"
+    },
+    "partOfSpeechRaw": "masculine noun",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}animal"
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "animal"
+    ]
+  },
+  {
+    "meta": {
+      "id": "animal:3",
+      "uuid": "538889c3-7472-498a-b5f7-4807001cc084",
+      "language": "es",
+      "source": "spanish",
+      "section": "alpha",
+      "stems": [
+        "animal"
+      ],
+      "offensive": false
+    },
+    "headwordInfo": {
+      "headword": "animal"
+    },
+    "partOfSpeechRaw": "masculine or feminine noun",
+    "definitions": [
+      {
+        "senseSequence": [
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{sx|idiota||} {bc}{a_link|idiot}, {a_link|fool}"
+                ]
+              }
+            }
+          ],
+          [
+            {
+              "definingText": {
+                "text": [
+                  "{bc}{a_link|brute}, beastly person"
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    ],
+    "shortDefinitions": [
+      "idiota : idiot, fool",
+      "brute, beastly person"
+    ]
+  }
+]
