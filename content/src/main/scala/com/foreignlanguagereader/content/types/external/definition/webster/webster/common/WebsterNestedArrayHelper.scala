@@ -13,7 +13,7 @@ object WebsterNestedArrayHelper {
   def buildLookupMap(input: List[List[JsValue]]): Map[String, List[JsValue]] =
     input
       .map(row => {
-        val typeString = row(0).validate[String] match {
+        val typeString = row.head.validate[String] match {
           case JsSuccess(t, _) => t
           case JsError(e)      => throw new IllegalArgumentException(e.toString)
         }

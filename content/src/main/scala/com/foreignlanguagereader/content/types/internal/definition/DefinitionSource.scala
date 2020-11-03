@@ -27,7 +27,7 @@ object DefinitionSource extends Enumeration {
           case Some(source) => JsSuccess(source)
           case None         => JsError("Unknown definition source")
         }
-      def writes(source: DefinitionSource.DefinitionSource) =
+      def writes(source: DefinitionSource.DefinitionSource): JsString =
         JsString(source.toString)
     }
 }

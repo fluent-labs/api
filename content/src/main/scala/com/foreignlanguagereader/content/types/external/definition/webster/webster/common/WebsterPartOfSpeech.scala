@@ -54,7 +54,7 @@ object WebsterPartOfSpeech extends Enumeration {
     // There are some definitions that will have multiple parts of speech.
     // Our model can't really handle that, and there's no way to automatically tell which one is right
     // So we should throw it out.
-    if (matches.size == 1) Some(matches(0)) else None
+    if (matches.size == 1) Some(matches.head) else None
   }
 
   // Webster's model of part of speech varies a bit from ours. This is how we go between them.

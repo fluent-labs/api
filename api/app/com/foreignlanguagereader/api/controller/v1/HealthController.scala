@@ -10,7 +10,7 @@ import play.api.libs.json.Json
 import play.api.mvc._
 
 import scala.concurrent.ExecutionContext
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration.{Duration, FiniteDuration}
 
 @Singleton
 class HealthController @Inject() (
@@ -20,7 +20,7 @@ class HealthController @Inject() (
     implicit val ec: ExecutionContext
 ) extends BaseController {
 
-  val timeout = Duration(1, TimeUnit.SECONDS)
+  val timeout: FiniteDuration = Duration(1, TimeUnit.SECONDS)
 
   /*
    * This is simpler than the readiness check. It should just confirm that the server can respond to requests.

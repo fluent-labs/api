@@ -37,9 +37,9 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
   val index = "definition"
   val fields: Map[String, String] =
     Map("field1" -> "value1", "field2" -> "value2", "field3" -> "value3")
-  val attemptsRefreshEligible = LookupAttempt(index, fields, 4)
+  val attemptsRefreshEligible: LookupAttempt = LookupAttempt(index, fields, 4)
 
-  val fetchedDefinition = GenericDefinition(
+  val fetchedDefinition: GenericDefinition = GenericDefinition(
     List("refetched"),
     "ipa",
     PartOfSpeech.NOUN,
@@ -103,7 +103,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
           verify(holder, never())
             .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
 
-          val result = results(0)
+          val result = results.head
           assert(result.contains(fetchedDefinition))
         })
     }
@@ -141,7 +141,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
           verify(holder)
             .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
 
-          val result = results(0)
+          val result = results.head
           assert(result.contains(fetchedDefinition))
         })
     }
@@ -190,7 +190,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
             verify(holder, never())
               .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
 
-            val result = results(0)
+            val result = results.head
             assert(result.contains(fetchedDefinition))
           })
       }
@@ -212,7 +212,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
         )
         .toList
       val requests = ElasticsearchCacheRequest.fromRequests(indexRequests)
-      val request = requests(0)
+      val request = requests.head
 
       it("can save correctly") {
         when(

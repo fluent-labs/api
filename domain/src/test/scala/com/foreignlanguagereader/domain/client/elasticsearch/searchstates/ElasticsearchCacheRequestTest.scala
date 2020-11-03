@@ -28,7 +28,7 @@ class ElasticsearchCacheRequestTest extends AnyFunSpec {
       val batchOne = indexRequests.take(5)
       val batchTwo = indexRequests.drop(5)
 
-      assert(requests(0) == ElasticsearchCacheRequest(batchOne))
+      assert(requests.head == ElasticsearchCacheRequest(batchOne))
       assert(requests(1) == ElasticsearchCacheRequest(batchTwo))
     }
 
