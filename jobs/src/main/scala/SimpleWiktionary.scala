@@ -151,7 +151,7 @@ object SimpleWiktionary {
       .drop("pos")
 
   val subsectionsInverted: Map[String, Set[String]] = subsectionMap
-    .groupBy(_._2)
+    .groupBy { case (_, normalized) => normalized }
     .mapValues(_.keySet)
 
   val subsectionsToDrop: Map[String, Set[String]] = subsectionsInverted.map {
@@ -169,8 +169,7 @@ object SimpleWiktionary {
   def addOptionalSections(data: DataFrame): DataFrame = {
     val extracted = extractSubsections(data, subsectionMap.keySet.toArray)
     subsectionsToCombine.foldLeft(extracted)((acc, subsection) => {
-      val subsectionName = subsection._1
-      val subsectionColumns = subsection._2
+      val (subsectionName, subsectionColumns) = subsection
       val columnsToDrop: Array[String] =
         subsectionsToDrop.getOrElse(subsectionName, Set()).toArray
       acc
