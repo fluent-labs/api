@@ -1,9 +1,7 @@
-import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
+import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import org.apache.spark.sql.SparkSession
 import org.scalatest.funspec.AnyFunSpec
-
-import scala.List
 
 class SimpleWiktionaryTest extends AnyFunSpec {
   lazy val spark: SparkSession = {
@@ -70,7 +68,7 @@ class SimpleWiktionaryTest extends AnyFunSpec {
       entryParsed.pronunciation === "=\n* {{IPA|/ɪz/}}\n* {{SAMPA|/Iz/}}\n* {{audio|en-us-is.ogg|Audio (US)}}\n\n"
     )
     assert(
-      entryParsed.related sameElements Array(
+      entryParsed.related === Array(
         "=\n* [['s]] - contraction\n\n[[Category:Auxiliary verbs]]"
       )
     )

@@ -25,7 +25,7 @@ class BabelNetClientTest extends AsyncFunSpec with MockitoSugar {
       when(holderMock.getSenses(any(classOf[BabelNetQuery])))
         .thenReturn(List())
 
-      val result = client
+      val _ = client
         .getSenses(Language.SPANISH, "hola")
         .value
         .map {
