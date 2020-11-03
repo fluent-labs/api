@@ -33,9 +33,9 @@ object ReadinessStatus extends Enumeration {
 
   implicit val readinessStatusFormat: Format[ReadinessStatus] =
     new Format[ReadinessStatus] {
-      def reads(json: JsValue) =
+      def reads(json: JsValue): JsResult[ReadinessStatus] =
         JsError("We don't read these")
-      def writes(status: ReadinessStatus.ReadinessStatus) =
+      def writes(status: ReadinessStatus.ReadinessStatus): JsString =
         JsString(status.toString)
     }
 }

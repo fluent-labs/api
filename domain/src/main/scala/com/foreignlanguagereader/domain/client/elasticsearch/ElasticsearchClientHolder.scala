@@ -15,7 +15,9 @@ import scala.collection.JavaConverters._
 @Singleton
 class ElasticsearchClientHolder @Inject() (config: Configuration) {
   val elasticSearchUrl: String = config.get[String]("elasticsearch.url")
-  val client = ElasticClient(JavaClient(ElasticProperties(elasticSearchUrl)))
+  val client: ElasticClient = ElasticClient(
+    JavaClient(ElasticProperties(elasticSearchUrl))
+  )
 
   def execute[T, U](request: T)(implicit
       handler: Handler[T, U],

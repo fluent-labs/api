@@ -37,9 +37,9 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
   val index = "definition"
   val fields: Map[String, String] =
     Map("field1" -> "value1", "field2" -> "value2", "field3" -> "value3")
-  val attemptsRefreshEligible = LookupAttempt(index, fields, 4)
+  val attemptsRefreshEligible: LookupAttempt = LookupAttempt(index, fields, 4)
 
-  val fetchedDefinition = GenericDefinition(
+  val fetchedDefinition: GenericDefinition = GenericDefinition(
     List("refetched"),
     "ipa",
     PartOfSpeech.NOUN,

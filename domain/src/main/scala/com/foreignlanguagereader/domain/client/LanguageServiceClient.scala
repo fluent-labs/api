@@ -19,7 +19,7 @@ import play.api.libs.json.Reads
 import play.api.libs.ws.WSClient
 import play.api.{Configuration, Logger}
 
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration.{Duration, FiniteDuration}
 import scala.concurrent.{ExecutionContext, Future}
 
 class LanguageServiceClient @Inject() (
@@ -31,7 +31,7 @@ class LanguageServiceClient @Inject() (
   override val logger: Logger = Logger(this.getClass)
   implicit val ec: ExecutionContext =
     system.dispatchers.lookup("language-service-context")
-  override val timeout =
+  override val timeout: FiniteDuration =
     Duration(config.get[Int]("language-service.timeout"), TimeUnit.SECONDS)
 
   // This token only works for localhost
