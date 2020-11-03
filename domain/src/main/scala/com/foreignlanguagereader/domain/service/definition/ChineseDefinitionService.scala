@@ -106,7 +106,7 @@ class ChineseDefinitionService @Inject() (
         logger.info(s"Combining cedict and wiktionary definitions for $word")
         mergeCedictAndWiktionary(
           word,
-          cedict(0).asInstanceOf[ChineseDefinition],
+          cedict.head.asInstanceOf[ChineseDefinition],
           wiktionary.map(_.asInstanceOf[ChineseDefinition])
         )
       case (Some(cedict), None) =>
@@ -154,7 +154,7 @@ class ChineseDefinitionService @Inject() (
         inputPinyin = cedict.pronunciation.pinyin,
         inputSimplified = cedict.simplified,
         inputTraditional = cedict.traditional.map(
-          _(0)
+          _.head
         ), // CEDICT has only one traditional option
         definitionLanguage = Language.ENGLISH,
         source = DefinitionSource.MULTIPLE,
@@ -176,12 +176,12 @@ class ChineseDefinitionService @Inject() (
     List(
       definition.ChineseDefinition(
         subdefinitions = cedict.subdefinitions,
-        tag = wiktionary(0).tag,
+        tag = wiktionary.head.tag,
         examples = examples,
         inputPinyin = cedict.pronunciation.pinyin,
         inputSimplified = cedict.simplified,
         inputTraditional = cedict.traditional.map(
-          _(0)
+          _.head
         ), // CEDICT has only one traditional option
         definitionLanguage = Language.ENGLISH,
         source = DefinitionSource.MULTIPLE,

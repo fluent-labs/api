@@ -144,7 +144,7 @@ object WebsterSupplementalNote {
         }
       }
 
-      WebsterSupplementalNote(text(0), example)
+      WebsterSupplementalNote(text.head, example)
     })
     .filter(JsonValidationError("Text is a required field"))(d =>
       d.text.nonEmpty

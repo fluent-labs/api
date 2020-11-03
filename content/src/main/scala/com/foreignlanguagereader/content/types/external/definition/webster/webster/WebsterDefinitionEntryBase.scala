@@ -71,12 +71,12 @@ trait WebsterDefinitionEntryBase {
     }
 
     prons match {
-      case Some(p) => p(0)
+      case Some(p) => p.head
       case None =>
         headwordInfo.alternatePronunciations match {
           case Some(a) =>
             val alt = a.flatMap(_.ipa)
-            if (alt.isEmpty) "" else alt(0)
+            if (alt.isEmpty) "" else alt.head
           case None => ""
         }
     }

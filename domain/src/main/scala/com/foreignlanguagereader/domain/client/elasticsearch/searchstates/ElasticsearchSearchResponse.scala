@@ -56,7 +56,7 @@ case class ElasticsearchSearchResponse[T: Indexable](
   ) =
     response match {
       case CircuitBreakerAttempt(r) =>
-        val result = parseResults(r.items(0).response)
+        val result = parseResults(r.items.head.response)
         val (attempts, id) = parseAttempts(r.items(1).response)
         (result, attempts, id, true)
       case _ =>

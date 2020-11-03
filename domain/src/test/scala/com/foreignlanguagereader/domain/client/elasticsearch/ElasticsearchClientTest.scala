@@ -103,7 +103,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
           verify(holder, never())
             .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
 
-          val result = results(0)
+          val result = results.head
           assert(result.contains(fetchedDefinition))
         })
     }
@@ -141,7 +141,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
           verify(holder)
             .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
 
-          val result = results(0)
+          val result = results.head
           assert(result.contains(fetchedDefinition))
         })
     }
@@ -190,7 +190,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
             verify(holder, never())
               .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
 
-            val result = results(0)
+            val result = results.head
             assert(result.contains(fetchedDefinition))
           })
       }
@@ -212,7 +212,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
         )
         .toList
       val requests = ElasticsearchCacheRequest.fromRequests(indexRequests)
-      val request = requests(0)
+      val request = requests.head
 
       it("can save correctly") {
         when(
