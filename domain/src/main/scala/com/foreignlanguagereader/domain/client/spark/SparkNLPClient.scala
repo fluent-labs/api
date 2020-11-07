@@ -2,24 +2,7 @@ package com.foreignlanguagereader.domain.client.spark
 
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.{
-  ADJECTIVE,
-  ADPOSITION,
-  ADVERB,
-  AUXILIARY,
-  CONJUNCTION,
-  DETERMINER,
-  NOUN,
-  NUMBER,
-  OTHER,
-  PARTICLE,
-  PRONOUN,
-  PROPERNOUN,
-  PUNCTUATION,
-  PartOfSpeech,
-  UNKNOWN,
-  VERB
-}
+import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech._
 import com.foreignlanguagereader.content.types.internal.word.Word
 import com.johnsnowlabs.nlp.LightPipeline
 import org.apache.spark.sql.SparkSession
