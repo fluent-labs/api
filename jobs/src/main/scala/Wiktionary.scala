@@ -28,7 +28,7 @@ object Wiktionary {
     )
 
   def loadWiktionaryDump(
-    path: String
+      path: String
   )(implicit spark: SparkSession): Dataset[WiktionaryRawEntry] = {
     import spark.implicits._
 
@@ -47,6 +47,10 @@ object Wiktionary {
     metaArticleTitles.forall(prefix => !title.startsWith(prefix))
   }
 
+  def repeat(token: String, count: Int): String = {
+    (0 to count).map(_ => token).mkString
+  }
+
   val caseInsensitiveFlag = "(?i)"
   val periodMatchesNewlineFlag = "(?s)"
   val oneOrMoreEqualsSign = "=+"
@@ -60,8 +64,13 @@ object Wiktionary {
   val nextSectionOrEndOfFile = s"(?>$nextSection|\\Z)+"
 
   def headingRegex(equalsCount: Int): String =
-    "=".repeat(equalsCount) + optionalWhiteSpace + anythingButEqualsSign + optionalWhiteSpace + "="
-      .repeat(equalsCount) + anythingButEqualsSign // Needed or else outer equals will be ignored
+    repeat(
+      "=",
+      equalsCount
+    ) + optionalWhiteSpace + anythingButEqualsSign + optionalWhiteSpace + repeat(
+      "=",
+      equalsCount
+    ) + anythingButEqualsSign // Needed or else outer equals will be ignored
   // Subtle but '== Test ==' will match '=== Test ===' at this point: '="== Test =="='
 
   def sectionRegex(sectionName: String): String =
@@ -70,8 +79,10 @@ object Wiktionary {
   def subSectionRegex(sectionName: String): String =
     periodMatchesNewlineFlag + caseInsensitiveFlag + tripleEqualsSign + optionalWhiteSpace + sectionName + optionalWhiteSpace + tripleEqualsSign + lazyMatchAnything + nextSectionOrEndOfFile
 
-  def getHeadings(data: Dataset[WiktionaryRawEntry],
-                  equalsCount: Integer): DataFrame = {
+  def getHeadings(
+      data: Dataset[WiktionaryRawEntry],
+      equalsCount: Integer
+  ): DataFrame = {
     data
       .select(explode(findHeadings(equalsCount)(col("text"))))
       .distinct()
@@ -80,16 +91,14 @@ object Wiktionary {
   }
   def findHeadings: Int => UserDefinedFunction =
     (equalsCount: Int) =>
-      udf(
-        (text: String) =>
-          text.linesIterator
-            .filter(line => line.matches(headingRegex(equalsCount)))
-            .map(
-              line =>
-                line.replaceAll("=".repeat(equalsCount), "").trim().toLowerCase
-            )
-            .toArray
-    )
+      udf((text: String) =>
+        text.linesIterator
+          .filter(line => line.matches(headingRegex(equalsCount)))
+          .map(line =>
+            line.replaceAll(repeat("=", equalsCount), "").trim().toLowerCase
+          )
+          .toArray
+      )
 
   def extractSection(data: DataFrame, name: String): DataFrame =
     data.withColumn(
@@ -97,8 +106,10 @@ object Wiktionary {
       regexp_extract(col("text"), sectionRegex(name), 1)
     )
 
-  def extractSections(data: Dataset[WiktionaryRawEntry],
-                      sections: Array[String]): DataFrame = {
+  def extractSections(
+      data: Dataset[WiktionaryRawEntry],
+      sections: Array[String]
+  ): DataFrame = {
     sections
       .foldLeft(data.toDF())((data, section) => extractSection(data, section))
   }
@@ -108,8 +119,10 @@ object Wiktionary {
       name.toLowerCase(),
       regexp_extract(col("text"), subSectionRegex(name), 1)
     )
-  def extractSubsections(data: DataFrame,
-                         sections: Array[String]): DataFrame = {
+  def extractSubsections(
+      data: DataFrame,
+      sections: Array[String]
+  ): DataFrame = {
     sections.foldLeft(data)((data, section) => extractSection(data, section))
   }
 
