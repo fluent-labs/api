@@ -49,8 +49,17 @@ lazy val domain = project
       dependencies.scalatestPlay,
       // Clients
       dependencies.opencc4j,
-      dependencies.googleCloudClient
-    )
+      dependencies.googleCloudClient,
+      // Spark NLP
+      dependencies.sparkCore,
+      dependencies.sparkSql,
+      dependencies.sparkNLP,
+      dependencies.sparkMl,
+      // Handles breaking guava changes https://stackoverflow.com/questions/36427291/illegalaccesserror-to-guavas-stopwatch-from-org-apache-hadoop-mapreduce-lib-inp
+      dependencies.hadoopCommon,
+      dependencies.apacheCommonsIo
+    ),
+    dependencyOverrides += dependencies.hadoopClient
   )
   .dependsOn(content)
 
@@ -104,7 +113,19 @@ lazy val dependencies =
 
     val sparkCore = "org.apache.spark" %% "spark-core" % sparkVersion
     val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
+    val sparkMl =
+      "org.apache.spark" %% "spark-mllib" % sparkVersion
     val sparkXml = "com.databricks" %% "spark-xml" % sparkXmlVersion
+    val sparkNLP =
+      "com.johnsnowlabs.nlp" %% "spark-nlp" % "2.6.3"
+
+    // Hacks for guava incompatibility
+    val hadoopClient =
+      "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "2.7.2"
+    val hadoopCommon =
+      "org.apache.hadoop" % "hadoop-common" % "2.7.2" // required for org.apache.hadoop.util.StopWatch
+    val apacheCommonsIo =
+      "commons-io" % "commons-io" % "2.4" // required for org.apache.commons.io.Charsets that is used internally
 
     val elastic4s =
       "com.sksamuel.elastic4s" %% "elastic4s-client-esjava" % elastic4sVersion
