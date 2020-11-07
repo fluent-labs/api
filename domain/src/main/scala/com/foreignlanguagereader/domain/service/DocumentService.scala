@@ -24,6 +24,7 @@ import scala.concurrent.{ExecutionContext, Future}
 @inject.Singleton
 class DocumentService @Inject() (
     val googleCloudClient: GoogleCloudClient,
+    val sparkClient: SparkNLPClient,
     val definitionService: DefinitionService,
     implicit val ec: ExecutionContext
 ) {
@@ -55,7 +56,7 @@ class DocumentService @Inject() (
       // So we fall back to Google cloud
       case CHINESE             => getWordsFromGoogleCloud(language, document)
       case CHINESE_TRADITIONAL => getWordsFromGoogleCloud(language, document)
-      case _                   => Future.apply(SparkNLPClient.lemmatize(language, document))
+      case _                   => Future.apply(sparkClient.lemmatize(language, document))
     }
 
   def getWordsFromGoogleCloud(

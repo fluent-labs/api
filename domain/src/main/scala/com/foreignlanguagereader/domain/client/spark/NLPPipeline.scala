@@ -1,17 +1,16 @@
 package com.foreignlanguagereader.domain.client.spark
 
 import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.domain.client.spark.SparkNLPClient.{
-  getClass,
-  logger
-}
 import com.johnsnowlabs.nlp.annotator.PerceptronModel
 import com.johnsnowlabs.nlp.annotators.{LemmatizerModel, Tokenizer}
 import com.johnsnowlabs.nlp.{DocumentAssembler, Finisher, LightPipeline}
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.sql.SparkSession
+import play.api.Logger
 
 object NLPPipeline {
+  val logger: Logger = Logger(this.getClass)
+
   def getModelPath(language: Language, modelName: String): String = {
     val path = s"/nlp/${language.toString.toLowerCase}/$modelName"
     logger.info(

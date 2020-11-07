@@ -8,7 +8,7 @@ import com.johnsnowlabs.nlp.LightPipeline
 import org.apache.spark.sql.SparkSession
 import play.api.Logger
 
-object SparkNLPClient {
+class SparkNLPClient {
   implicit val spark: SparkSession = NLPSparkContext.spark
   val logger: Logger = Logger(this.getClass)
 
