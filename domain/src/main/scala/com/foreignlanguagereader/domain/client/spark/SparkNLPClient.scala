@@ -2,6 +2,24 @@ package com.foreignlanguagereader.domain.client.spark
 
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.Language.Language
+import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.{
+  ADJECTIVE,
+  ADPOSITION,
+  ADVERB,
+  AUXILIARY,
+  CONJUNCTION,
+  DETERMINER,
+  NOUN,
+  NUMBER,
+  OTHER,
+  PARTICLE,
+  PRONOUN,
+  PROPERNOUN,
+  PUNCTUATION,
+  PartOfSpeech,
+  UNKNOWN,
+  VERB
+}
 import com.foreignlanguagereader.content.types.internal.word.Word
 import com.johnsnowlabs.nlp.LightPipeline
 import org.apache.spark.sql.SparkSession
@@ -31,7 +49,7 @@ object SparkNLPClient {
       "pos_ud_gsd_es_2.4.0_2.4_1581891015986"
     )
 
-  def lemmatize(language: Language, text: String): Unit = {
+  def lemmatize(language: Language, text: String): Seq[Word] = {
     val output: Map[String, Seq[String]] = (language match {
       case Language.CHINESE             => chineseModel.annotate(Array(text))
       case Language.CHINESE_TRADITIONAL => chineseModel.annotate(Array(text))
@@ -42,20 +60,54 @@ object SparkNLPClient {
       output.contains("token") && output
         .contains("lemmas") && output.contains("pos")
     ) {
-      (output.get("token"), output.get("lemmas"), output.get("pos")).zipped.map {
-        case (token, lemma, partOfSpeech) => Word(language, token, )
-      }
+      output
+        .getOrElse("token", List())
+        .zip(output.getOrElse("lemmas", List()))
+        .zip(output.getOrElse("pos", List()))
+        .map {
+          case ((token, lemma), partOfSpeech) =>
+            Word(
+              language,
+              token,
+              modelPartOfSpeechToDomainPartOfSpeech(partOfSpeech),
+              lemma,
+              List(),
+              None,
+              None,
+              None,
+              None,
+              token
+            )
+        }
+    } else {
+      logger.error(
+        s"Failed to process input in $language because required fields (tokens, lemmas, pos) are missing - fields: ${output.keys} text:$text"
+      )
+      List()
     }
   }
 
-  def lemmatizeEnglish(sentence: String): Unit = {
-    val whatever = englishModel
-      .annotate(Array(sentence))
-    whatever.head.foreach {
-      case (key, values) =>
-        val vals = values.mkString(",")
-        println(s"$key: $vals")
+  def modelPartOfSpeechToDomainPartOfSpeech(pos: String): PartOfSpeech =
+    pos match {
+      case "ADJ"   => ADJECTIVE
+      case "ADP"   => ADPOSITION
+      case "ADV"   => ADVERB
+      case "AUX"   => AUXILIARY
+      case "CCONJ" => CONJUNCTION
+      case "DET"   => DETERMINER
+      case "INTJ"  => PARTICLE
+      case "NOUN"  => NOUN
+      case "NUM"   => NUMBER
+      case "PART"  => PARTICLE
+      case "PRON"  => PRONOUN
+      case "PROPN" => PROPERNOUN
+      case "PUNCT" => PUNCTUATION
+      case "SCONJ" => CONJUNCTION
+      case "SYM"   => OTHER
+      case "VERB"  => VERB
+      case "X"     => UNKNOWN
+      case a =>
+        logger.error(s"Unknown part of speech returned from Spark NLP: $a")
+        UNKNOWN
     }
-    print(whatever.head)
-  }
 }
