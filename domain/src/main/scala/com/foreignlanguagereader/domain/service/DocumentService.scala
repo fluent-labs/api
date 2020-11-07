@@ -7,9 +7,14 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerNonAttempt
 }
 import com.foreignlanguagereader.domain.client.google.GoogleCloudClient
-import com.foreignlanguagereader.content.types.Language.Language
+import com.foreignlanguagereader.content.types.Language.{
+  CHINESE,
+  CHINESE_TRADITIONAL,
+  Language
+}
 import com.foreignlanguagereader.domain.service.definition.DefinitionService
 import com.foreignlanguagereader.content.types.internal.word.Word
+import com.foreignlanguagereader.domain.client.spark.SparkNLPClient
 import com.google.inject.Inject
 import javax.inject
 import play.api.Logger
@@ -32,23 +37,38 @@ class DocumentService @Inject() (
       definitionLanguage: Language,
       document: String
   ): Future[List[Word]] =
+    tokenizeDocument(wordLanguage, document).flatMap(words => {
+      words.toList
+        .traverse(word =>
+          definitionService
+            .getDefinition(wordLanguage, definitionLanguage, word)
+            .map(d => word.copy(definitions = d))
+        )
+    })
+
+  def tokenizeDocument(
+      language: Language,
+      document: String
+  ): Future[Set[Word]] =
+    language match {
+      // Spark NLP currently doesn't have a good way to tokenize Chinese
+      // So we fall back to Google cloud
+      case CHINESE             => getWordsFromGoogleCloud(language, document)
+      case CHINESE_TRADITIONAL => getWordsFromGoogleCloud(language, document)
+      case _                   => Future.apply(SparkNLPClient.lemmatize(language, document))
+    }
+
+  def getWordsFromGoogleCloud(
+      language: Language,
+      document: String
+  ): Future[Set[Word]] = {
     googleCloudClient
-      .getWordsForDocument(wordLanguage, document)
+      .getWordsForDocument(language, document)
       .value
-      .flatMap {
-        case CircuitBreakerAttempt(w) if w.isEmpty =>
-          logger.warn(
-            s"No tokens found in language=$language for document=$document"
-          )
-          Future.successful(List())
-        case CircuitBreakerAttempt(words) =>
-          words.toList
-            .traverse(word =>
-              definitionService
-                .getDefinition(wordLanguage, definitionLanguage, word)
-                .map(d => word.copy(definitions = d))
-            )
-        case CircuitBreakerNonAttempt()     => Future.successful(List())
+      .map {
+        case CircuitBreakerAttempt(result)  => result
+        case CircuitBreakerNonAttempt()     => Set[Word]()
         case CircuitBreakerFailedAttempt(e) => throw e
       }
+  }
 }

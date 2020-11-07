@@ -49,7 +49,7 @@ object SparkNLPClient {
       "pos_ud_gsd_es_2.4.0_2.4_1581891015986"
     )
 
-  def lemmatize(language: Language, text: String): Seq[Word] = {
+  def lemmatize(language: Language, text: String): Set[Word] = {
     val output: Map[String, Seq[String]] = (language match {
       case Language.CHINESE             => chineseModel.annotate(Array(text))
       case Language.CHINESE_TRADITIONAL => chineseModel.annotate(Array(text))
@@ -79,11 +79,12 @@ object SparkNLPClient {
               token
             )
         }
+        .toSet
     } else {
       logger.error(
         s"Failed to process input in $language because required fields (tokens, lemmas, pos) are missing - fields: ${output.keys} text:$text"
       )
-      List()
+      Set()
     }
   }
 
