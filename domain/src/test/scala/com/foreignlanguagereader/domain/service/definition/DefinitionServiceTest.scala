@@ -10,9 +10,8 @@ import com.foreignlanguagereader.content.types.internal.word.{
   PartOfSpeech,
   Word
 }
-import org.mockito.Mockito._
+import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
-import org.scalatestplus.mockito.MockitoSugar
 
 import scala.concurrent.{ExecutionContext, Future}
 

@@ -23,5 +23,5 @@ object WiktionaryDefinitionEntry {
   implicit val format: Format[WiktionaryDefinitionEntry] =
     Json.format[WiktionaryDefinitionEntry]
   implicit val readsSeq: Reads[Seq[WiktionaryDefinitionEntry]] =
-    Reads.seq(format.reads)
+    Reads.seq
 }

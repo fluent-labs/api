@@ -47,5 +47,5 @@ object CEDICTDefinitionEntry {
   implicit val format: Format[CEDICTDefinitionEntry] =
     Json.format[CEDICTDefinitionEntry]
   implicit val readsSeq: Reads[Seq[CEDICTDefinitionEntry]] =
-    Reads.seq(format.reads)
+    Reads.seq
 }

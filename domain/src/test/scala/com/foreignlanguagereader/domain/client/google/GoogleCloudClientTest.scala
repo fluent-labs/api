@@ -19,9 +19,8 @@ import com.google.cloud.language.v1.PartOfSpeech.{
 }
 import com.typesafe.config.ConfigFactory
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito._
+import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
-import org.scalatestplus.mockito.MockitoSugar
 
 class GoogleCloudClientTest extends AsyncFunSpec with MockitoSugar {
   val holderMock: GoogleLanguageServiceClientHolder =

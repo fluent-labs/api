@@ -3,7 +3,7 @@ package com.foreignlanguagereader.domain.util
 import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
 import com.sksamuel.elastic4s.requests.common.Shards
 import com.sksamuel.elastic4s.requests.searches._
-import com.sksamuel.elastic4s.{ElasticError, Hit, HitReader}
+import com.sksamuel.elastic4s.{Hit, HitReader}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{mock, when}
 
@@ -25,8 +25,7 @@ object ElasticsearchTestUtil {
 
     val resultsResponse = results match {
       case Left(e) =>
-        val result = mock(classOf[ElasticError])
-        when(result.asException).thenReturn(e)
+        val result = mock(classOf[SearchError])
         Left(result)
       case Right(r) =>
         val hits = r
@@ -40,8 +39,7 @@ object ElasticsearchTestUtil {
     }
     val attemptsResponse = attempts match {
       case Left(e) =>
-        val result = mock(classOf[ElasticError])
-        when(result.asException).thenReturn(e)
+        val result = mock(classOf[SearchError])
         Left(result)
       case Right(a) =>
         when(attemptsHitReader.read(any(classOf[Hit]))).thenReturn(Try(a))

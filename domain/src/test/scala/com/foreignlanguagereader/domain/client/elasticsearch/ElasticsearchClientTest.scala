@@ -24,11 +24,9 @@ import com.sksamuel.elastic4s.requests.searches.{
 }
 import com.typesafe.config.ConfigFactory
 import org.mockito.ArgumentMatchers.{any, eq => mockitoEq}
-import org.mockito.Mockito
-import org.mockito.Mockito._
+import org.mockito.{Mockito, MockitoSugar}
 import org.scalatest.FutureOutcome
 import org.scalatest.funspec.AsyncFunSpec
-import org.scalatestplus.mockito.MockitoSugar
 import play.api.Configuration
 
 import scala.concurrent.Future
@@ -100,7 +98,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
           )
         )
         .map(results => {
-          verify(holder, never())
+          verify(holder, never)
             .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
 
           val result = results.head
@@ -187,7 +185,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
             )
           )
           .map(results => {
-            verify(holder, never())
+            verify(holder, never)
               .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
 
             val result = results.head
@@ -235,7 +233,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
         client
           .save(request)
           .map(_ => {
-            verify(holder, never())
+            verify(holder, never)
               .addInsertsToQueue(request.retries.getOrElse(List()))
             succeed
           })

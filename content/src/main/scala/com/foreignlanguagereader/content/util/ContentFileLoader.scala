@@ -3,7 +3,7 @@ package com.foreignlanguagereader.content.util
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Json, Reads}
 
-import scala.util.{Failure, Success, Using}
+import scala.util.{Failure, Success, Try}
 
 object ContentFileLoader {
   val logger: Logger = Logger(this.getClass)
@@ -19,11 +19,12 @@ object ContentFileLoader {
     * @return
     */
   def loadJsonResourceFile[T](path: String)(implicit rds: Reads[T]): T = {
-    Using(
-      this.getClass
+    Try {
+      val file = this.getClass
         .getResourceAsStream(path)
-    ) { file =>
-      Json.parse(file).validate[T]
+      val parsed = Json.parse(file).validate[T]
+      file.close()
+      parsed
     } match {
       case Success(result) =>
         result match {

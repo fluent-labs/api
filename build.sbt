@@ -2,7 +2,7 @@ name := "foreign-language-reader-parent"
 organization := "com.foreignlanguagereader"
 version := "1.0-SNAPSHOT"
 
-scalaVersion in ThisBuild := "2.12.12"
+scalaVersion in ThisBuild := "2.11.12"
 
 lazy val global = project
   .in(file("."))
@@ -24,7 +24,6 @@ lazy val content = project
     settings,
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ Seq(
-      dependencies.utilBackports,
       // Used to generate elasticsearch matchers
       dependencies.elastic4s,
       dependencies.elastic4sPlay,
@@ -39,7 +38,6 @@ lazy val domain = project
     settings,
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ Seq(
-      dependencies.utilBackports,
       // Dependency injection
       guice,
       // Used to generate elasticsearch matchers
@@ -92,18 +90,17 @@ lazy val playDependencies = Seq(
 lazy val dependencies =
   new {
     val scalatestVersion = "3.2.2"
-    val sparkVersion = "3.0.1"
+    val sparkVersion = "2.4.4"
     val sparkXmlVersion = "0.10.0"
-    val elastic4sVersion = "7.8.0"
+    val elastic4sVersion = "7.1.0"
 
     val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
     val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion
     val scalatestPlay =
-      "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
+      "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.0" % Test
     val mockito = "org.mockito" %% "mockito-scala" % "1.16.0" % Test
 
-    val cats = "org.typelevel" %% "cats-core" % "2.1.1"
-    val utilBackports = "com.github.bigwheel" %% "util-backports" % "2.1"
+    val cats = "org.typelevel" %% "cats-core" % "2.0.0"
 
     val sparkCore = "org.apache.spark" %% "spark-core" % sparkVersion
     val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
@@ -117,7 +114,7 @@ lazy val dependencies =
     val sangria = "org.sangria-graphql" %% "sangria" % "2.0.0"
     val elastic4sPlay =
       "com.sksamuel.elastic4s" %% "elastic4s-json-play" % elastic4sVersion
-    val sangriaPlay = "org.sangria-graphql" %% "sangria-play-json" % "2.0.1"
+    val sangriaPlay = "org.sangria-graphql" %% "sangria-play-json" % "2.0.0"
 
     val googleCloudClient =
       "com.google.cloud" % "google-cloud-language" % "1.100.0"
