@@ -9,14 +9,10 @@ import org.elasticsearch.search.{SearchHit, SearchHits}
 import org.mockito.Mockito.{mock, when}
 import play.api.libs.json.{Json, Writes}
 
-import scala.util.Random
-
 /**
   * Helper library to get rid of boilerplate when testing elasticsearch responses
   */
 object ElasticsearchTestUtil {
-  val random = new Random()
-
   def getSearchResponseFrom[T](
       items: Seq[T]
   )(implicit writes: Writes[T]): SearchResponse = {
@@ -84,6 +80,6 @@ object ElasticsearchTestUtil {
   ): IndexRequest = {
     new IndexRequest()
       .index(index)
-      .source(Json.toJson(item).toString())
+      .source(Json.toJson(item).toString(), XContentType.JSON)
   }
 }
