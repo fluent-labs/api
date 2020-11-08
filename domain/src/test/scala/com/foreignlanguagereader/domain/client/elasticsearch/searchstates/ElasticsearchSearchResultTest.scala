@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
+import cats.implicits._
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.definition.{
   ChineseDefinition,
@@ -9,8 +10,7 @@ import com.foreignlanguagereader.content.types.internal.definition.{
 }
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
-import com.sksamuel.elastic4s.ElasticDsl.{indexInto, updateById}
-import com.sksamuel.elastic4s.playjson._
+import com.foreignlanguagereader.domain.util.ElasticsearchTestUtil
 import org.scalatest.funspec.AnyFunSpec
 
 class ElasticsearchSearchResultTest extends AnyFunSpec {
@@ -47,15 +47,19 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
         queried = true
       )
       val attemptsQuery =
-        indexInto("attempts").doc(LookupAttempt(index, fields, 5))
+        ElasticsearchTestUtil.lookupIndexRequestFrom(
+          LookupAttempt(index, fields, 5)
+        )
       it("correctly saves fetch attempts to elasticsearch") {
-        assert(result.updateAttemptsQuery.contains(attemptsQuery))
+        assert(result.updateAttemptsQuery.contains(attemptsQuery.asLeft))
       }
       it("does not cache anything") {
         assert(result.cacheQueries.isEmpty)
         assert(
           result.toIndex
-            .contains(List(ElasticsearchCacheRequest(List(attemptsQuery))))
+            .contains(
+              List(ElasticsearchCacheRequest(List(attemptsQuery.asLeft)))
+            )
         )
       }
     }
@@ -93,20 +97,28 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
         queried = true
       )
       val attemptsQuery =
-        indexInto("attempts").doc(LookupAttempt(index, fields, 1))
+        ElasticsearchTestUtil.lookupIndexRequestFrom(
+          LookupAttempt(index, fields, 1)
+        )
       val indexQuery = List(
-        indexInto(index).doc(dummyChineseDefinition),
-        indexInto(index).doc(dummyGenericDefinition)
+        ElasticsearchTestUtil
+          .indexRequestFrom(index, dummyChineseDefinition)
+          .asLeft,
+        ElasticsearchTestUtil
+          .indexRequestFrom(index, dummyGenericDefinition)
+          .asLeft
       )
       it("creates a new fetch attempt in elasticsearch") {
-        assert(result.updateAttemptsQuery.contains(attemptsQuery))
+        assert(result.updateAttemptsQuery.contains(attemptsQuery.asLeft))
       }
       it("caches search results to elasticsearch") {
         assert(result.cacheQueries.contains(indexQuery))
         assert(
           result.toIndex
             .contains(
-              List(ElasticsearchCacheRequest(attemptsQuery :: indexQuery))
+              List(
+                ElasticsearchCacheRequest(attemptsQuery.asLeft :: indexQuery)
+              )
             )
         )
       }
@@ -126,12 +138,20 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
         queried = true
       )
       val attemptsQuery =
-        updateById("attempts", attemptsId)
-          .doc(LookupAttempt(index = index, fields = fields, count = 2))
+        ElasticsearchTestUtil
+          .lookupUpdateRequestFrom(
+            attemptsId,
+            LookupAttempt(index = index, fields = fields, count = 2)
+          )
+          .asRight
 
       val indexQuery = List(
-        indexInto(index).doc(dummyChineseDefinition),
-        indexInto(index).doc(dummyGenericDefinition)
+        ElasticsearchTestUtil
+          .indexRequestFrom(index, dummyChineseDefinition)
+          .asLeft,
+        ElasticsearchTestUtil
+          .indexRequestFrom(index, dummyGenericDefinition)
+          .asLeft
       )
       it("updates the previous fetch attempt in elasticsearch") {
         assert(result.updateAttemptsQuery.contains(attemptsQuery))

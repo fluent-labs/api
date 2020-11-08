@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
+import cats.implicits._
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.definition.{
   Definition,
@@ -14,7 +15,6 @@ import com.foreignlanguagereader.domain.client.common.{
 }
 import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
 import com.foreignlanguagereader.domain.util.ElasticsearchTestUtil
-import com.sksamuel.elastic4s.HitReader
 import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
 
@@ -37,13 +37,6 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
   val attemptsRefreshEligible: LookupAttempt = LookupAttempt(index, fields, 4)
   val attemptsRefreshIneligible: LookupAttempt = LookupAttempt(index, fields, 7)
 
-  // These are necessary to avoid having to manually create the results.
-  // They are pulled into ElasticsearchTestUtil.cacheQueryResponseFrom, and given the appropriate responses.
-  implicit val definitionHitReader: HitReader[Definition] =
-    mock[HitReader[Definition]]
-  implicit val attemptsHitReader: HitReader[LookupAttempt] =
-    mock[HitReader[LookupAttempt]]
-
   val responseBase: ElasticsearchSearchResponse[Definition] =
     ElasticsearchSearchResponse[Definition](
       index = index,
@@ -57,8 +50,8 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
   describe("an elasticsearch response") {
     describe("where data was found in elasticsearch") {
       val es = ElasticsearchTestUtil.cacheQueryResponseFrom[Definition](
-        Right(List(fetchedDefinition)),
-        Right(attemptsRefreshEligible)
+        List(fetchedDefinition).some,
+        attemptsRefreshEligible.some
       )
 
       val response = responseBase.copy(response = CircuitBreakerAttempt(es))
@@ -74,10 +67,11 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
     }
 
     describe("where data was not found") {
-      val es = ElasticsearchTestUtil.cacheQueryResponseFrom[Definition](
-        Right(List()),
-        Right(attemptsRefreshEligible)
-      )
+      val es = ElasticsearchTestUtil
+        .cacheQueryResponseFrom[Definition](
+          Some(List()),
+          attemptsRefreshEligible.some
+        )
       it("updates the fetch count if the fetcher fetched") {
         val response = responseBase.copy(response = CircuitBreakerAttempt(es))
         assert(response.elasticsearchResult.isEmpty)
@@ -117,10 +111,11 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
     }
     describe("where fetching has failed too many times") {
       it("does not call the fetcher") {
-        val es = ElasticsearchTestUtil.cacheQueryResponseFrom[Definition](
-          Right(List()),
-          Right(attemptsRefreshIneligible)
-        )
+        val es = ElasticsearchTestUtil
+          .cacheQueryResponseFrom[Definition](
+            Some(List()),
+            attemptsRefreshIneligible.some
+          )
 
         val response = responseBase.copy(response = CircuitBreakerAttempt(es))
         assert(response.elasticsearchResult.isEmpty)
@@ -134,8 +129,8 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
     describe("with errors") {
       it("fetches when the fetch count cannot be found") {
         val es = ElasticsearchTestUtil.cacheQueryResponseFrom[Definition](
-          Right(List()),
-          Left(new IllegalArgumentException("oh no"))
+          Some(List()),
+          None
         )
         val response = responseBase.copy(response = CircuitBreakerAttempt(es))
         assert(response.elasticsearchResult.isEmpty)
@@ -147,8 +142,8 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
       }
       it("gracefully handles when elasticsearch fails") {
         val es = ElasticsearchTestUtil.cacheQueryResponseFrom[Definition](
-          Left(new IllegalArgumentException("oh no")),
-          Right(attemptsRefreshEligible)
+          None,
+          attemptsRefreshEligible.some
         )
         val response = responseBase.copy(response = CircuitBreakerAttempt(es))
         assert(response.elasticsearchResult.isEmpty)
