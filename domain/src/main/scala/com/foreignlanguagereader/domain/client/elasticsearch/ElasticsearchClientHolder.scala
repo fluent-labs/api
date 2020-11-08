@@ -3,8 +3,6 @@ package com.foreignlanguagereader.domain.client.elasticsearch
 import java.util.concurrent.ConcurrentLinkedQueue
 
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchCacheRequest
-import com.sksamuel.elastic4s._
-import com.sksamuel.elastic4s.http.JavaClient
 import javax.inject.{Inject, Singleton}
 import org.apache.http.HttpHost
 import org.elasticsearch.action.bulk.{BulkRequest, BulkResponse}
@@ -29,9 +27,6 @@ import scala.collection.JavaConverters._
 @Singleton
 class ElasticsearchClientHolder @Inject() (config: Configuration) {
   val elasticSearchUrl: String = config.get[String]("elasticsearch.url")
-  val client: ElasticClient = ElasticClient(
-    JavaClient(ElasticProperties(elasticSearchUrl))
-  )
 
   val javaClient = new RestHighLevelClient(
     RestClient.builder(
@@ -58,12 +53,6 @@ class ElasticsearchClientHolder @Inject() (config: Configuration) {
       request: MultiSearchRequest
   )(implicit ec: ExecutionContext): Future[MultiSearchResponse] =
     Future { javaClient.msearch(request, RequestOptions.DEFAULT) }
-
-  def execute[T, U](request: T)(implicit
-      handler: Handler[T, U],
-      manifest: Manifest[U]
-  ): Future[Response[U]] =
-    client.execute(request)
 
   // Handles retrying of queue
 

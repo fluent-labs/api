@@ -2,10 +2,10 @@ package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
 import cats.implicits._
 import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
-import com.sksamuel.elastic4s.ElasticDsl.{indexInto, updateById}
-import com.sksamuel.elastic4s.Indexable
-import com.sksamuel.elastic4s.playjson._
-import com.sksamuel.elastic4s.requests.bulk.BulkCompatibleRequest
+import org.elasticsearch.action.index.IndexRequest
+import org.elasticsearch.action.update.UpdateRequest
+import org.elasticsearch.common.xcontent.XContentType
+import play.api.libs.json.{Json, Writes}
 
 /**
   *
@@ -21,7 +21,7 @@ import com.sksamuel.elastic4s.requests.bulk.BulkCompatibleRequest
   * @param refetched Did we need to go outside of elasticsearch?
   * @tparam T A case class with Reads[T] and Writes[T] defined.
   */
-case class ElasticsearchSearchResult[T: Indexable](
+case class ElasticsearchSearchResult[T: Writes](
     index: String,
     fields: Map[String, String],
     result: List[T],
@@ -32,29 +32,36 @@ case class ElasticsearchSearchResult[T: Indexable](
 ) {
   val attemptsIndex = "attempts"
 
-  val cacheQueries: Option[List[BulkCompatibleRequest]] =
+  val cacheQueries: Option[List[Either[IndexRequest, UpdateRequest]]] =
     result match {
       case values if refetched && values.nonEmpty =>
-        values.map(v => indexInto(index).doc(v)).some
+        values
+          .map(v => {
+            new IndexRequest()
+              .source(Json.toJson(v).toString(), XContentType.JSON)
+              .index(index)
+              .asLeft
+          })
+          .some
       case _ => None
     }
 
-  val updateAttemptsQuery: Option[BulkCompatibleRequest] =
+  val updateAttemptsQuery: Option[Either[IndexRequest, UpdateRequest]] =
     if (refetched) {
+      val attempt =
+        LookupAttempt(index = index, fields = fields, count = fetchCount)
       lookupId match {
         case Some(id) =>
-          updateById(attemptsIndex, id)
-            .doc(
-              LookupAttempt(index = index, fields = fields, count = fetchCount)
-            )
+          new UpdateRequest(attemptsIndex, id)
+            .upsert(Json.toJson(attempt).toString(), XContentType.JSON)
+            .asRight
             .some
         case None =>
-          indexInto(attemptsIndex)
-            .doc(
-              LookupAttempt(index = index, fields = fields, count = fetchCount)
-            )
+          new IndexRequest()
+            .source(Json.toJson(attempt).toString(), XContentType.JSON)
+            .index(index)
+            .asLeft
             .some
-
       }
     } else None
 

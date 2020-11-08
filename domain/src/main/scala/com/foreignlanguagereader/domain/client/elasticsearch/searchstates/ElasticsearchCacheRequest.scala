@@ -1,10 +1,12 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
 import cats.implicits._
-import com.sksamuel.elastic4s.requests.bulk.BulkCompatibleRequest
+import org.elasticsearch.action.ActionRequest
+import org.elasticsearch.action.index.IndexRequest
+import org.elasticsearch.action.update.UpdateRequest
 
 case class ElasticsearchCacheRequest(
-    requests: List[BulkCompatibleRequest],
+    requests: List[Either[IndexRequest, UpdateRequest]],
     retried: Boolean = false
 ) {
 
@@ -24,7 +26,7 @@ case class ElasticsearchCacheRequest(
 object ElasticsearchCacheRequest {
   val maxConcurrentInserts = 5
   def fromRequests(
-      requests: List[BulkCompatibleRequest]
+      requests: List[Either[IndexRequest, UpdateRequest]]
   ): List[ElasticsearchCacheRequest] = {
     requests
       .grouped(maxConcurrentInserts)

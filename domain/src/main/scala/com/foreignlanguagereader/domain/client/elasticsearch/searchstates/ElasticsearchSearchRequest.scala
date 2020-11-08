@@ -1,10 +1,9 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
 import com.foreignlanguagereader.domain.client.common.CircuitBreakerResult
-import com.sksamuel.elastic4s.ElasticDsl.{boolQuery, matchQuery, multi, search}
-import com.sksamuel.elastic4s.requests.searches.MultiSearchRequest
-import com.sksamuel.elastic4s.requests.searches.queries.BoolQuery
-import com.sksamuel.elastic4s.requests.searches.queries.matches.MatchQuery
+import org.elasticsearch.action.search.{MultiSearchRequest, SearchRequest}
+import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.search.builder.SearchSourceBuilder
 
 import scala.concurrent.Future
 
@@ -28,20 +27,28 @@ case class ElasticsearchSearchRequest[T](
 
   // This finds out if we've searched for this before
   // It'll be used later to know if we should try to fetch if there are no elasticsearch results
-  val attemptsQuery: BoolQuery = {
-    val queries: Seq[MatchQuery] = fields.map {
-      case (field, value) => matchQuery(s"fields.$field", value)
-    }.toSeq
-    boolQuery().must(matchQuery("index", index) +: queries)
+  val attemptsQuery: SearchRequest = {
+    val q = fields
+      .foldLeft(QueryBuilders.boolQuery()) {
+        case (acc, (field, value)) =>
+          acc.must(QueryBuilders.matchQuery(s"fields.$field", value))
+      }
+      .must(QueryBuilders.matchQuery("index", index))
+    new SearchRequest()
+      .source(new SearchSourceBuilder().query(q))
+      .indices(attemptsIndex)
   }
 
-  val searchQuery: BoolQuery = boolQuery().must(fields.map {
-    case (field, value) => matchQuery(field, value)
-  })
+  val searchQuery: SearchRequest = {
+    val q = fields.foldLeft(QueryBuilders.boolQuery()) {
+      case (acc, (field, value)) =>
+        acc.must(QueryBuilders.matchQuery(field, value))
+    }
+    new SearchRequest()
+      .source(new SearchSourceBuilder().query(q))
+      .indices(index)
+  }
 
   val query: MultiSearchRequest =
-    multi(
-      search(index).query(searchQuery),
-      search(attemptsIndex).query(attemptsQuery)
-    )
+    new MultiSearchRequest().add(searchQuery).add(attemptsQuery)
 }
