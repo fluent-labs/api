@@ -15,8 +15,8 @@ import com.foreignlanguagereader.domain.client.common.{
 import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
 import com.foreignlanguagereader.domain.util.ElasticsearchTestUtil
 import com.sksamuel.elastic4s.HitReader
+import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
-import org.scalatestplus.mockito.MockitoSugar
 
 import scala.concurrent.Future
 

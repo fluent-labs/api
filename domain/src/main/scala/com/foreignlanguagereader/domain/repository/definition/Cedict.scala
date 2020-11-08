@@ -7,21 +7,22 @@ import play.api.Logger
 
 import scala.io.{BufferedSource, Source}
 import scala.util.matching.Regex
-import scala.util.{Failure, Success, Using}
+import scala.util.{Failure, Success, Try}
 
 object Cedict {
   val logger: Logger = Logger(this.getClass)
 
   private[this] val CEDICTPath = "/definition/chinese/cedict_ts.u8"
 
-  val definitions: Map[String, List[CEDICTDefinitionEntry]] =
-    Using(
-      Source.fromInputStream(
+  val definitions: Map[String, List[CEDICTDefinitionEntry]] = {
+    Try {
+      val cedict = Source.fromInputStream(
         this.getClass
           .getResourceAsStream(CEDICTPath)
       )
-    ) { cedict =>
-      parseCedictFile(cedict).groupBy(_.traditional)
+      val parsed = parseCedictFile(cedict).groupBy(_.traditional)
+      cedict.close
+      parsed
     } match {
       case Success(d) =>
         val entries = d.values.map(_.size).sum
@@ -33,6 +34,7 @@ object Cedict {
       case Failure(e) =>
         throw new IllegalStateException("Failed to load CEDICT", e)
     }
+  }
 
   def getDefinition(word: Word): Option[List[CEDICTDefinitionEntry]] =
     // If it's already traditional then we can just do the lookup

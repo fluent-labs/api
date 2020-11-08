@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.content.util
 
+import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import com.foreignlanguagereader.content.enrichers.chinese.{
   ChinesePronunciationFromFile,
   HskHolder
@@ -16,7 +17,7 @@ class ContentFileLoaderTest extends AnyFunSpec {
       assert(goodFile.nonEmpty)
     }
     it("throws an exception if the file cannot be opened") {
-      assertThrows[NullPointerException] {
+      assertThrows[MismatchedInputException] {
         ContentFileLoader
           .loadJsonResourceFile[Seq[ChinesePronunciationFromFile]](
             "=/notfound.json"

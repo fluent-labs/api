@@ -24,8 +24,8 @@ import com.foreignlanguagereader.domain.client.elasticsearch.{
 import com.sksamuel.elastic4s.{HitReader, Indexable}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
+import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
-import org.scalatestplus.mockito.MockitoSugar
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag

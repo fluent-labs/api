@@ -10,9 +10,10 @@ import com.foreignlanguagereader.domain.client.common.{
 import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
 import com.sksamuel.elastic4s.requests.searches.{
   MultiSearchResponse,
+  SearchError,
   SearchResponse
 }
-import com.sksamuel.elastic4s.{ElasticError, HitReader, Indexable}
+import com.sksamuel.elastic4s.{HitReader, Indexable}
 import play.api.Logger
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -154,13 +155,12 @@ case class ElasticsearchSearchResponse[T: Indexable](
   }
 
   private[this] def parseResults(
-      results: Either[ElasticError, SearchResponse]
+      results: Either[SearchError, SearchResponse]
   ): Option[List[T]] =
     results match {
       case Left(error) =>
         logger.error(
-          s"Failed to get result from elasticsearch on index $index due to error ${error.reason}",
-          error.asException
+          s"Failed to get result from elasticsearch on index $index due to error ${error.reason}"
         )
         None
       case Right(response) =>
@@ -169,13 +169,12 @@ case class ElasticsearchSearchResponse[T: Indexable](
     }
 
   private[this] def parseAttempts(
-      attempts: Either[ElasticError, SearchResponse]
+      attempts: Either[SearchError, SearchResponse]
   ): (Int, Option[String]) =
     attempts match {
       case Left(error) =>
         logger.error(
-          s"Failed to get request count from elasticsearch on index $index due to error ${error.reason}",
-          error.asException
+          s"Failed to get request count from elasticsearch on index $index due to error ${error.reason}"
         )
         (0, None)
       case Right(response) =>

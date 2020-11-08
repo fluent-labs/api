@@ -17,6 +17,7 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerNonAttempt
 }
 import com.foreignlanguagereader.domain.client.google.GoogleCloudClient
+import com.foreignlanguagereader.domain.client.spark.SparkNLPClient
 import com.foreignlanguagereader.domain.service.definition.DefinitionService
 import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
@@ -26,40 +27,47 @@ import scala.concurrent.{ExecutionContext, Future}
 class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
   val mockGoogleCloudClient: GoogleCloudClient =
     mock[GoogleCloudClient]
+  val mockSparkClient: SparkNLPClient =
+    mock[SparkNLPClient]
   val mockDefinitionService: DefinitionService =
     mock[DefinitionService]
   val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 
   val documentService =
-    new DocumentService(mockGoogleCloudClient, mockDefinitionService, ec)
+    new DocumentService(
+      mockGoogleCloudClient,
+      mockSparkClient,
+      mockDefinitionService,
+      ec
+    )
 
   describe("A document service") {
     it("reacts correctly to an empty document") {
       when(
         mockGoogleCloudClient
-          .getWordsForDocument(Language.ENGLISH, "some words")
+          .getWordsForDocument(Language.CHINESE, "some words")
       ).thenReturn(Nested(Future.successful(CircuitBreakerAttempt(Set()))))
 
       documentService
-        .getWordsForDocument(Language.ENGLISH, Language.ENGLISH, "some words")
+        .getWordsForDocument(Language.CHINESE, Language.CHINESE, "some words")
         .map(result => assert(result.isEmpty))
     }
 
     it("reacts correctly to the circuit breaker being closed") {
       when(
         mockGoogleCloudClient
-          .getWordsForDocument(Language.ENGLISH, "some words")
+          .getWordsForDocument(Language.CHINESE, "some words")
       ).thenReturn(Nested(Future.successful(CircuitBreakerNonAttempt())))
 
       documentService
-        .getWordsForDocument(Language.ENGLISH, Language.ENGLISH, "some words")
+        .getWordsForDocument(Language.CHINESE, Language.CHINESE, "some words")
         .map(result => assert(result.isEmpty))
     }
 
     it("throws errors from google cloud") {
       when(
         mockGoogleCloudClient
-          .getWordsForDocument(Language.ENGLISH, "some words")
+          .getWordsForDocument(Language.CHINESE_TRADITIONAL, "some words")
       ).thenReturn(
         Nested(
           Future.apply(
@@ -68,7 +76,11 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         )
       )
       documentService
-        .getWordsForDocument(Language.ENGLISH, Language.ENGLISH, "some words")
+        .getWordsForDocument(
+          Language.CHINESE_TRADITIONAL,
+          Language.CHINESE_TRADITIONAL,
+          "some words"
+        )
         .map(_ => fail("This should have failed"))
         .recover {
           case err: IllegalArgumentException =>
@@ -103,13 +115,9 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         processedToken = "phrase"
       )
       when(
-        mockGoogleCloudClient
-          .getWordsForDocument(Language.ENGLISH, "test phrase")
-      ).thenReturn(
-        Nested(
-          Future.successful(CircuitBreakerAttempt(Set(testWord, phraseWord)))
-        )
-      )
+        mockSparkClient
+          .lemmatize(Language.ENGLISH, "test phrase")
+      ).thenReturn(Set(testWord, phraseWord))
 
       val testDefinition = Definition(
         subdefinitions = List("test"),

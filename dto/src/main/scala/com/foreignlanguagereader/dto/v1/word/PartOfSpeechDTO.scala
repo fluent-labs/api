@@ -22,13 +22,15 @@ object PartOfSpeechDTO extends Enumeration {
   // What's an adposition? Prepositions and postpositions
   val ADPOSITION: Value = Value("Adposition")
   val ADVERB: Value = Value("Adverb")
+  val AUXILIARY: Value = Value("Auxiliary")
   val CONJUNCTION: Value = Value("Conjunction")
   val DETERMINER: Value = Value("Determiner")
   val NOUN: Value = Value("Noun")
   val NUMBER: Value = Value("Number")
-  val PRONOUN: Value = Value("Pronoun")
   // Particles are a bit of a grab bag. Interjections are a big part.
   val PARTICLE: Value = Value("Particle")
+  val PRONOUN: Value = Value("Pronoun")
+  val PROPERNOUN: Value = Value("ProperNoun")
   val PUNCTUATION: Value = Value("Punctuation")
   val VERB: Value = Value("Verb")
   val OTHER: Value = Value("Other")
