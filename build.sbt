@@ -91,12 +91,13 @@ lazy val playDependencies = Seq(
   dependencies.mockito
 )
 
+lazy val excludeJacksonRule =
+  ExclusionRule(organization = "com.fasterxml.jackson")
+
 lazy val dependencies =
   new {
     val scalatestVersion = "3.2.2"
     val sparkVersion = "2.4.4"
-    val sparkXmlVersion = "0.10.0"
-    val elastic4sVersion = "7.1.0"
 
     val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
     val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion
@@ -110,7 +111,7 @@ lazy val dependencies =
     val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
     val sparkMl =
       "org.apache.spark" %% "spark-mllib" % sparkVersion
-    val sparkXml = "com.databricks" %% "spark-xml" % sparkXmlVersion
+    val sparkXml = "com.databricks" %% "spark-xml" % "0.10.0"
     val sparkNLP =
       "com.johnsnowlabs.nlp" %% "spark-nlp" % "2.6.3"
 
@@ -123,7 +124,7 @@ lazy val dependencies =
       "commons-io" % "commons-io" % "2.4" // required for org.apache.commons.io.Charsets that is used internally
 
     val elasticsearchHighLevelClient =
-      "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "7.9.3"
+      "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "7.9.3" excludeAll (excludeJacksonRule)
 
     val sangria = "org.sangria-graphql" %% "sangria" % "2.0.0"
     val sangriaPlay = "org.sangria-graphql" %% "sangria-play-json" % "2.0.0"
