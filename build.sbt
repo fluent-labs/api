@@ -44,6 +44,7 @@ lazy val domain = project
       dependencies.elastic4s,
       dependencies.elastic4sTestkit,
       dependencies.elastic4sPlay,
+      dependencies.elasticsearchHighLevelClient,
       // Testing
       dependencies.mockito,
       dependencies.scalatestPlay,
@@ -131,6 +132,8 @@ lazy val dependencies =
       "com.sksamuel.elastic4s" %% "elastic4s-client-esjava" % elastic4sVersion
     val elastic4sTestkit =
       "com.sksamuel.elastic4s" %% "elastic4s-testkit" % elastic4sVersion % "test"
+    val elasticsearchHighLevelClient =
+      "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "7.9.3"
 
     val sangria = "org.sangria-graphql" %% "sangria" % "2.0.0"
     val elastic4sPlay =
