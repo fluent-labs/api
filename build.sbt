@@ -24,9 +24,6 @@ lazy val content = project
     settings,
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ Seq(
-      // Used to generate elasticsearch matchers
-      dependencies.elastic4s,
-      dependencies.elastic4sPlay,
       dependencies.scalatestPlay,
       dependencies.opencc4j
     )
@@ -41,9 +38,6 @@ lazy val domain = project
       // Dependency injection
       guice,
       // Used to generate elasticsearch matchers
-      dependencies.elastic4s,
-      dependencies.elastic4sTestkit,
-      dependencies.elastic4sPlay,
       dependencies.elasticsearchHighLevelClient,
       // Testing
       dependencies.mockito,
@@ -128,16 +122,10 @@ lazy val dependencies =
     val apacheCommonsIo =
       "commons-io" % "commons-io" % "2.4" // required for org.apache.commons.io.Charsets that is used internally
 
-    val elastic4s =
-      "com.sksamuel.elastic4s" %% "elastic4s-client-esjava" % elastic4sVersion
-    val elastic4sTestkit =
-      "com.sksamuel.elastic4s" %% "elastic4s-testkit" % elastic4sVersion % "test"
     val elasticsearchHighLevelClient =
       "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "7.9.3"
 
     val sangria = "org.sangria-graphql" %% "sangria" % "2.0.0"
-    val elastic4sPlay =
-      "com.sksamuel.elastic4s" %% "elastic4s-json-play" % elastic4sVersion
     val sangriaPlay = "org.sangria-graphql" %% "sangria-play-json" % "2.0.0"
 
     val googleCloudClient =
