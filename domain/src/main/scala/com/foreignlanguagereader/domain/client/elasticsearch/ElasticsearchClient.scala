@@ -12,13 +12,9 @@ import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.{
 import javax.inject.{Inject, Singleton}
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.index.IndexRequest
-import org.elasticsearch.action.search.{
-  MultiSearchRequest,
-  MultiSearchResponse,
-  SearchRequest
-}
+import org.elasticsearch.action.search.{MultiSearchRequest, SearchRequest}
 import org.elasticsearch.action.{ActionRequest, ActionResponse}
-import play.api.libs.json.Reads
+import play.api.libs.json.{Reads, Writes}
 import play.api.{Configuration, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -49,16 +45,18 @@ class ElasticsearchClient @Inject() (
       requests: List[ElasticsearchSearchRequest[T]]
   )(implicit
       tag: ClassTag[T],
-      reads: Reads[T]
+      reads: Reads[T],
+      writes: Writes[T]
   ): Future[List[List[T]]] = {
     // Fork and join for getting each request
     requests
       .traverse(request =>
-        execute(request.query).value
-          .map {
-            case result: CircuitBreakerResult[MultiSearchResponse] =>
-              ElasticsearchSearchResponse.fromResult(request, result)
-          }
+        withBreakerCurried(
+          s"Error executing elasticearch query: $request due to error"
+        )(client.multisearch(request.query)).value
+          .map(result =>
+            ElasticsearchSearchResponse.fromResult(request, result)
+          )
           // This is where fetchers are called to get results if they aren't in elasticsearch
           // There is also logic to remember what has been fetched from external sources
           // So that we don't try too many times on the same query

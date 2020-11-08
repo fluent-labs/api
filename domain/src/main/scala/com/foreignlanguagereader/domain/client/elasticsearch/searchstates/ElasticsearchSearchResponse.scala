@@ -28,7 +28,7 @@ import scala.reflect.ClassTag
   * @param ec Automatically taken from the implicit val near the caller. This is the thread pool to block on when fetching.
   * @tparam T A case class.
   */
-case class ElasticsearchSearchResponse[T: Writes](
+case class ElasticsearchSearchResponse[T](
     index: String,
     fields: Map[String, String],
     fetcher: () => Future[CircuitBreakerResult[List[T]]],
@@ -37,6 +37,7 @@ case class ElasticsearchSearchResponse[T: Writes](
 )(implicit
     tag: ClassTag[T],
     reads: Reads[T],
+    writes: Writes[T],
     ec: ExecutionContext
 ) {
   val logger: Logger = Logger(this.getClass)
@@ -189,6 +190,7 @@ case class ElasticsearchSearchResponse[T: Writes](
       )
       (0, None)
     } else {
+      attempts.getResponse
       val hit = attempts.getResponse.getHits.getHits.head
       Json.parse(hit.getSourceAsString).validate[LookupAttempt] match {
         case JsSuccess(value, _) => (value.count, Some(hit.getId))
@@ -212,6 +214,7 @@ object ElasticsearchSearchResponse {
       result: CircuitBreakerResult[MultiSearchResponse]
   )(implicit
       read: Reads[T],
+      writes: Writes[T],
       tag: ClassTag[T],
       ec: ExecutionContext
   ): ElasticsearchSearchResponse[T] = {
