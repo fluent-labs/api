@@ -71,6 +71,7 @@ class SparkNLPClient {
     }
   }
 
+  // scalastyle:off cyclomatic.complexity
   def modelPartOfSpeechToDomainPartOfSpeech(pos: String): PartOfSpeech =
     pos match {
       case "ADJ"   => ADJECTIVE
@@ -94,4 +95,5 @@ class SparkNLPClient {
         logger.error(s"Unknown part of speech returned from Spark NLP: $a")
         UNKNOWN
     }
+  // scalastyle:on cyclomatic.complexity
 }

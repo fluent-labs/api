@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.domain.client.spark
 
+import cats.implicits._
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech._
 import org.mockito.MockitoSugar
@@ -19,9 +20,9 @@ class SparkNLPClientTest extends AsyncFunSpec with MockitoSugar {
       val lemmas = result.map(_.lemma)
       val tags = result.map(_.tag)
 
-      assert(tokens == List("看一下是不是一个好句子。"))
-      assert(lemmas == List("看一下是不是一个好句子。"))
-      assert(tags == List(NOUN))
+      assert(tokens === List("看一下是不是一个好句子。"))
+      assert(lemmas === List("看一下是不是一个好句子。"))
+      assert(tags === List(NOUN))
     }
 
     it("can process English") {
@@ -34,10 +35,10 @@ class SparkNLPClientTest extends AsyncFunSpec with MockitoSugar {
       val lemmas = result.map(_.lemma)
       val tags = result.map(_.tag)
 
-      assert(tokens == List(".", "This", "a", "is", "sentence", "test"))
-      assert(lemmas == List(".", "This", "a", "be", "sentence", "test"))
+      assert(tokens === List(".", "This", "a", "is", "sentence", "test"))
+      assert(lemmas === List(".", "This", "a", "be", "sentence", "test"))
       assert(
-        tags == List(PUNCTUATION, PRONOUN, DETERMINER, AUXILIARY, NOUN, NOUN)
+        tags === List(PUNCTUATION, PRONOUN, DETERMINER, AUXILIARY, NOUN, NOUN)
       )
     }
 
@@ -54,7 +55,7 @@ class SparkNLPClientTest extends AsyncFunSpec with MockitoSugar {
       val tags = result.map(_.tag)
 
       assert(
-        tokens ==
+        tokens ===
           List(
             ".",
             "Yo",
@@ -68,7 +69,7 @@ class SparkNLPClientTest extends AsyncFunSpec with MockitoSugar {
           )
       )
       assert(
-        lemmas ==
+        lemmas ===
           List(
             ".",
             "Yo",
@@ -82,7 +83,7 @@ class SparkNLPClientTest extends AsyncFunSpec with MockitoSugar {
           )
       )
       assert(
-        tags == List(
+        tags === List(
           PUNCTUATION,
           PRONOUN,
           ADPOSITION,
