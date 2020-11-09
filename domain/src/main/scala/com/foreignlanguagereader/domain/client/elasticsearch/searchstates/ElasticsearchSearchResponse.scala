@@ -6,10 +6,10 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerNonAttempt,
   CircuitBreakerResult
 }
-import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
+import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchResponseReader
 import org.elasticsearch.action.search.MultiSearchResponse
 import play.api.Logger
-import play.api.libs.json.{JsError, JsSuccess, Json, Reads, Writes}
+import play.api.libs.json.{Reads, Writes}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
@@ -38,21 +38,20 @@ case class ElasticsearchSearchResponse[T](
     tag: ClassTag[T],
     reads: Reads[T],
     writes: Writes[T],
+    reader: ElasticsearchResponseReader,
     ec: ExecutionContext
 ) {
   val logger: Logger = Logger(this.getClass)
 
   val (
-    elasticsearchResult: Option[List[T]],
+    elasticsearchResult: Option[Seq[T]],
     fetchCount: Int,
     lookupId: Option[String],
     queried: Boolean
   ) =
     response match {
       case CircuitBreakerAttempt(r) =>
-        val responses = r.getResponses
-        val result = parseResults(responses.head)
-        val (attempts, id) = parseAttempts(responses.tail.head)
+        val (result, attempts, id) = reader.getResultsFromSearch(r)
         (result, attempts, id, true)
       case _ =>
         (None, 0, None, false)
@@ -68,7 +67,7 @@ case class ElasticsearchSearchResponse[T](
           ElasticsearchSearchResult(
             index = index,
             fields = fields,
-            result = es,
+            result = es.toList,
             fetchCount = fetchCount,
             lookupId = lookupId,
             refetched = false,
@@ -147,65 +146,6 @@ case class ElasticsearchSearchResponse[T](
 
       }
   }
-
-  private[this] def parseResults(
-      results: MultiSearchResponse.Item
-  ): Option[List[T]] =
-    if (results.isFailure) {
-      logger.error(
-        s"Failed to get result from elasticsearch on index $index due to error ${results.getFailureMessage}",
-        results.getFailure
-      )
-      None
-    } else {
-      val r: Array[Option[T]] =
-        results.getResponse.getHits.getHits
-          .map(_.getSourceAsString)
-          .map(source =>
-            Json.parse(source).validate[T] match {
-              case JsSuccess(value, _) => Some(value)
-              case JsError(errors) =>
-                val errs = errors
-                  .map {
-                    case (path, e) => s"At path $path: ${e.mkString(", ")}"
-                  }
-                  .mkString("\n")
-                logger.error(
-                  s"Failed to parse results from elasticsearch on index $index due to errors: $errs"
-                )
-                None
-            }
-          )
-      if (r.nonEmpty && r.forall(_.isDefined)) Some(r.flatten.toList)
-      else None
-    }
-
-  private[this] def parseAttempts(
-      attempts: MultiSearchResponse.Item
-  ): (Int, Option[String]) =
-    if (attempts.isFailure) {
-      logger.error(
-        s"Failed to get request count from elasticsearch on index $index due to error ${attempts.getFailureMessage}",
-        attempts.getFailure
-      )
-      (0, None)
-    } else {
-      attempts.getResponse
-      val hit = attempts.getResponse.getHits.getHits.head
-      Json.parse(hit.getSourceAsString).validate[LookupAttempt] match {
-        case JsSuccess(value, _) => (value.count, Some(hit.getId))
-        case JsError(errors) =>
-          val errs = errors
-            .map {
-              case (path, e) => s"At path $path: ${e.mkString(", ")}"
-            }
-            .mkString("\n")
-          logger.error(
-            s"Failed to parse results from elasticsearch on index $index due to errors: $errs"
-          )
-          (0, None)
-      }
-    }
 }
 
 object ElasticsearchSearchResponse {
@@ -215,6 +155,7 @@ object ElasticsearchSearchResponse {
   )(implicit
       read: Reads[T],
       writes: Writes[T],
+      reader: ElasticsearchResponseReader,
       tag: ClassTag[T],
       ec: ExecutionContext
   ): ElasticsearchSearchResponse[T] = {
