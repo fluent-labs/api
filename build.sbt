@@ -54,7 +54,12 @@ lazy val domain = project
       dependencies.hadoopCommon,
       dependencies.apacheCommonsIo
     ),
-    dependencyOverrides += dependencies.hadoopClient
+    dependencyOverrides ++= Seq(
+      dependencies.hadoopClient,
+      "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.6.7.1",
+      "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.7",
+      "com.fasterxml.jackson.core" % "jackson-core" % "2.6.7"
+    )
   )
   .dependsOn(content)
 
@@ -92,7 +97,7 @@ lazy val playDependencies = Seq(
 )
 
 lazy val excludeJacksonRule =
-  ExclusionRule(organization = "com.fasterxml.jackson")
+  ExclusionRule(organization = "com.fasterxml.jackson.core")
 
 lazy val dependencies =
   new {
@@ -124,7 +129,7 @@ lazy val dependencies =
       "commons-io" % "commons-io" % "2.4" // required for org.apache.commons.io.Charsets that is used internally
 
     val elasticsearchHighLevelClient =
-      "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "7.9.3" excludeAll (excludeJacksonRule)
+      "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "7.9.3"
 
     val sangria = "org.sangria-graphql" %% "sangria" % "2.0.0"
     val sangriaPlay = "org.sangria-graphql" %% "sangria-play-json" % "2.0.0"
