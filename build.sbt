@@ -15,7 +15,8 @@ lazy val api = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies ++ playDependencies
+    libraryDependencies ++= commonDependencies ++ playDependencies,
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(domain)
 
@@ -24,9 +25,6 @@ lazy val content = project
     settings,
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ Seq(
-      // Used to generate elasticsearch matchers
-      dependencies.elastic4s,
-      dependencies.elastic4sPlay,
       dependencies.scalatestPlay,
       dependencies.opencc4j
     )
@@ -41,9 +39,7 @@ lazy val domain = project
       // Dependency injection
       guice,
       // Used to generate elasticsearch matchers
-      dependencies.elastic4s,
-      dependencies.elastic4sTestkit,
-      dependencies.elastic4sPlay,
+      dependencies.elasticsearchHighLevelClient,
       // Testing
       dependencies.mockito,
       dependencies.scalatestPlay,
@@ -59,7 +55,7 @@ lazy val domain = project
       dependencies.hadoopCommon,
       dependencies.apacheCommonsIo
     ),
-    dependencyOverrides += dependencies.hadoopClient
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(content)
 
@@ -77,7 +73,8 @@ lazy val jobs = project
       dependencies.sparkCore % "provided",
       dependencies.sparkSql % "provided",
       dependencies.sparkXml
-    )
+    ),
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(content)
 
@@ -96,12 +93,19 @@ lazy val playDependencies = Seq(
   dependencies.mockito
 )
 
+// Pretty much everything in here is because Spark NLP has versions that conflicts with other dependencies.
+lazy val forcedDependencies = Seq(
+  dependencies.hadoopClient,
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.6.7.1",
+  "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.7",
+  "com.fasterxml.jackson.core" % "jackson-core" % "2.6.7",
+  "org.projectlombok" % "lombok" % "1.18.16"
+)
+
 lazy val dependencies =
   new {
     val scalatestVersion = "3.2.2"
     val sparkVersion = "2.4.4"
-    val sparkXmlVersion = "0.10.0"
-    val elastic4sVersion = "7.1.0"
 
     val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
     val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion
@@ -115,7 +119,7 @@ lazy val dependencies =
     val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
     val sparkMl =
       "org.apache.spark" %% "spark-mllib" % sparkVersion
-    val sparkXml = "com.databricks" %% "spark-xml" % sparkXmlVersion
+    val sparkXml = "com.databricks" %% "spark-xml" % "0.10.0"
     val sparkNLP =
       "com.johnsnowlabs.nlp" %% "spark-nlp" % "2.6.3"
 
@@ -127,14 +131,10 @@ lazy val dependencies =
     val apacheCommonsIo =
       "commons-io" % "commons-io" % "2.4" // required for org.apache.commons.io.Charsets that is used internally
 
-    val elastic4s =
-      "com.sksamuel.elastic4s" %% "elastic4s-client-esjava" % elastic4sVersion
-    val elastic4sTestkit =
-      "com.sksamuel.elastic4s" %% "elastic4s-testkit" % elastic4sVersion % "test"
+    val elasticsearchHighLevelClient =
+      "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "7.9.3"
 
     val sangria = "org.sangria-graphql" %% "sangria" % "2.0.0"
-    val elastic4sPlay =
-      "com.sksamuel.elastic4s" %% "elastic4s-json-play" % elastic4sVersion
     val sangriaPlay = "org.sangria-graphql" %% "sangria-play-json" % "2.0.0"
 
     val googleCloudClient =

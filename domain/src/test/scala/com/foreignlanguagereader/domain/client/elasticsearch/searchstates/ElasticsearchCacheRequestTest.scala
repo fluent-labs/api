@@ -1,26 +1,24 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
+import cats.implicits._
 import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
-import com.sksamuel.elastic4s.ElasticDsl.indexInto
-import com.sksamuel.elastic4s.playjson._
+import com.foreignlanguagereader.domain.util.ElasticsearchTestUtil
 import org.scalatest.funspec.AnyFunSpec
 
 class ElasticsearchCacheRequestTest extends AnyFunSpec {
   describe("an elasticsearch cache request") {
     val indexRequests = (1 to 10)
-      .map(number =>
-        indexInto("attempts")
-          .doc(
-            LookupAttempt(
-              index = "test",
-              fields = Map(
-                s"Field ${1 * number}" -> s"Value ${1 * number}",
-                s"Field ${2 * number}" -> s"Value ${2 * number}"
-              ),
-              count = number
-            )
-          )
-      )
+      .map(number => {
+        val attempt = LookupAttempt(
+          index = "test",
+          fields = Map(
+            s"Field ${1 * number}" -> s"Value ${1 * number}",
+            s"Field ${2 * number}" -> s"Value ${2 * number}"
+          ),
+          count = number
+        )
+        ElasticsearchTestUtil.lookupIndexRequestFrom(attempt).asLeft
+      })
       .toList
     val requests = ElasticsearchCacheRequest.fromRequests(indexRequests)
 

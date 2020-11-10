@@ -47,16 +47,16 @@ trait Circuitbreaker {
       case breaker if breaker.isOpen     => ReadinessStatus.DOWN
     }
 
-  def withBreaker[T](
-      logIfError: String,
+  def withBreaker[T](logIfError: String)(
       body: => Future[T]
   ): Nested[Future, CircuitBreakerResult, T] =
-    withBreaker(logIfError, defaultIsFailure, defaultIsSuccess[T], body)
+    withBreaker(logIfError, defaultIsFailure, defaultIsSuccess[T])(body)
 
   def withBreaker[T](
       logIfError: String,
       isFailure: Throwable => Boolean,
-      isSuccess: T => Boolean,
+      isSuccess: T => Boolean
+  )(
       body: => Future[T]
   ): Nested[Future, CircuitBreakerResult, T] =
     Nested[Future, CircuitBreakerResult, T](

@@ -10,6 +10,7 @@ import javax.inject.Singleton
 
 import scala.collection.JavaConverters._
 
+// $COVERAGE-OFF$
 /**
   * Holder for the google cloud client.
   * Allows us to swap this out for testing
@@ -25,3 +26,4 @@ class GoogleLanguageServiceClientHolder {
   def getTokens(request: AnalyzeSyntaxRequest): List[Token] =
     analyzeSyntax(request).getTokensList.asScala.toList
 }
+// $COVERAGE-ON$

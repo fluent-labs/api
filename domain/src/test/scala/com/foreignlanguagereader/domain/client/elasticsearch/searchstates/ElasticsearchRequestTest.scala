@@ -2,7 +2,9 @@ package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
 import com.foreignlanguagereader.content.types.internal.definition.Definition
 import com.foreignlanguagereader.domain.client.common.CircuitBreakerAttempt
-import com.sksamuel.elastic4s.ElasticDsl.{boolQuery, matchQuery, multi, search}
+import org.elasticsearch.action.search.{MultiSearchRequest, SearchRequest}
+import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.scalatest.funspec.AnyFunSpec
 
 import scala.concurrent.Future
@@ -10,17 +12,27 @@ import scala.concurrent.Future
 class ElasticsearchRequestTest extends AnyFunSpec {
   describe("an elasticsearch request") {
     val index = "test"
-    val searchQuery = boolQuery()
-      .must(
-        matchQuery("field1", "value1"),
-        matchQuery("field2", "value2"),
-        matchQuery("field3", "value 3")
+    val searchQuery = new SearchRequest()
+      .indices(index)
+      .source(
+        new SearchSourceBuilder().query(
+          QueryBuilders
+            .boolQuery()
+            .must(QueryBuilders.matchQuery("field1", "value1"))
+            .must(QueryBuilders.matchQuery("field2", "value2"))
+            .must(QueryBuilders.matchQuery("field3", "value 3"))
+        )
       )
-    val attemptsQuery = boolQuery()
-      .must(
-        matchQuery("fields.field1", "value1"),
-        matchQuery("fields.field2", "value2"),
-        matchQuery("fields.field3", "value 3")
+    val attemptsQuery = new SearchRequest()
+      .indices("attempts")
+      .source(
+        new SearchSourceBuilder().query(
+          QueryBuilders
+            .boolQuery()
+            .must(QueryBuilders.matchQuery("fields.field1", "value1"))
+            .must(QueryBuilders.matchQuery("fields.field2", "value2"))
+            .must(QueryBuilders.matchQuery("fields.field3", "value 3"))
+        )
       )
     val request = ElasticsearchSearchRequest[Definition](
       index,
@@ -36,10 +48,9 @@ class ElasticsearchRequestTest extends AnyFunSpec {
       request.attemptsQuery == attemptsQuery
     }
     it("generates the correct final query") {
-      request.query == multi(
-        search(index).query(searchQuery),
-        search("attempts").query(attemptsQuery)
-      )
+      request.query == new MultiSearchRequest()
+        .add(searchQuery)
+        .add(attemptsQuery)
     }
   }
 }

@@ -1,70 +1,31 @@
 package com.foreignlanguagereader.domain.util
 
 import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
-import com.sksamuel.elastic4s.requests.common.Shards
-import com.sksamuel.elastic4s.requests.searches._
-import com.sksamuel.elastic4s.{Hit, HitReader}
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{mock, when}
-
-import scala.util.{Random, Try}
+import org.elasticsearch.action.index.IndexRequest
+import org.elasticsearch.action.update.UpdateRequest
+import org.elasticsearch.common.xcontent.XContentType
+import play.api.libs.json.{Json, Writes}
 
 /**
   * Helper library to get rid of boilerplate when testing elasticsearch responses
   */
 object ElasticsearchTestUtil {
-  val random = new Random()
-
-  def cacheQueryResponseFrom[T](
-      results: Either[Exception, Seq[T]],
-      attempts: Either[Exception, LookupAttempt]
-  )(implicit
-      hitReader: HitReader[T],
-      attemptsHitReader: HitReader[LookupAttempt]
-  ): MultiSearchResponse = {
-
-    val resultsResponse = results match {
-      case Left(e) =>
-        val result = mock(classOf[SearchError])
-        Left(result)
-      case Right(r) =>
-        val hits = r
-          .map(result => {
-            val hit = mock(classOf[SearchHit])
-            when(hitReader.read(hit)).thenReturn(Try(result))
-            hit
-          })
-          .toArray
-        Right(searchResponseFrom(hits))
-    }
-    val attemptsResponse = attempts match {
-      case Left(e) =>
-        val result = mock(classOf[SearchError])
-        Left(result)
-      case Right(a) =>
-        when(attemptsHitReader.read(any(classOf[Hit]))).thenReturn(Try(a))
-        val hit = mock(classOf[SearchHit])
-        when(hit.id).thenReturn(random.nextString(8))
-        Right(searchResponseFrom(Array(hit)))
-    }
-
-    MultiSearchResponse(
-      List(
-        MultisearchResponseItem(0, 200, resultsResponse),
-        MultisearchResponseItem(0, 200, attemptsResponse)
-      )
-    )
+  def lookupIndexRequestFrom(attempt: LookupAttempt): IndexRequest = {
+    indexRequestFrom("attempts", attempt)
+  }
+  def lookupUpdateRequestFrom(
+      id: String,
+      attempt: LookupAttempt
+  ): UpdateRequest = {
+    new UpdateRequest("attempts", id)
+      .upsert(Json.toJson(attempt).toString(), XContentType.JSON)
   }
 
-  def searchResponseFrom[T](hits: Array[SearchHit]): SearchResponse =
-    SearchResponse(
-      took = 5L,
-      isTimedOut = false,
-      isTerminatedEarly = false,
-      suggest = Map(),
-      Shards(1, 1, 0),
-      None,
-      Map(),
-      SearchHits(Total(value = 5L, relation = ""), maxScore = 4, hits = hits)
-    )
+  def indexRequestFrom[T](index: String, item: T)(implicit
+      writes: Writes[T]
+  ): IndexRequest = {
+    new IndexRequest()
+      .index(index)
+      .source(Json.toJson(item).toString(), XContentType.JSON)
+  }
 }

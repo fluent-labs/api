@@ -3,27 +3,57 @@ package com.foreignlanguagereader.domain.client.elasticsearch
 import java.util.concurrent.ConcurrentLinkedQueue
 
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchCacheRequest
-import com.sksamuel.elastic4s._
-import com.sksamuel.elastic4s.http.JavaClient
 import javax.inject.{Inject, Singleton}
+import org.apache.http.HttpHost
+import org.elasticsearch.action.bulk.{BulkRequest, BulkResponse}
+import org.elasticsearch.action.index.{IndexRequest, IndexResponse}
+import org.elasticsearch.action.search.{
+  MultiSearchRequest,
+  MultiSearchResponse,
+  SearchRequest,
+  SearchResponse
+}
+import org.elasticsearch.client.{
+  RequestOptions,
+  RestClient,
+  RestHighLevelClient
+}
 import play.api.Configuration
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import scala.collection.JavaConverters._
 
-// Holder to enable easy mocking
+// Holder to enable easy mocking.
+// $COVERAGE-OFF$
 @Singleton
 class ElasticsearchClientHolder @Inject() (config: Configuration) {
   val elasticSearchUrl: String = config.get[String]("elasticsearch.url")
-  val client: ElasticClient = ElasticClient(
-    JavaClient(ElasticProperties(elasticSearchUrl))
+
+  val javaClient = new RestHighLevelClient(
+    RestClient.builder(
+      new HttpHost(elasticSearchUrl, 9200, "http")
+    )
   )
 
-  def execute[T, U](request: T)(implicit
-      handler: Handler[T, U],
-      manifest: Manifest[U]
-  ): Future[Response[U]] =
-    client.execute(request)
+  def index(
+      request: IndexRequest
+  )(implicit ec: ExecutionContext): Future[IndexResponse] =
+    Future { javaClient.index(request, RequestOptions.DEFAULT) }
+
+  def bulk(
+      request: BulkRequest
+  )(implicit ec: ExecutionContext): Future[BulkResponse] =
+    Future { javaClient.bulk(request, RequestOptions.DEFAULT) }
+
+  def search(
+      request: SearchRequest
+  )(implicit ec: ExecutionContext): Future[SearchResponse] =
+    Future { javaClient.search(request, RequestOptions.DEFAULT) }
+
+  def multisearch(
+      request: MultiSearchRequest
+  )(implicit ec: ExecutionContext): Future[MultiSearchResponse] =
+    Future { javaClient.msearch(request, RequestOptions.DEFAULT) }
 
   // Handles retrying of queue
 
@@ -45,10 +75,8 @@ class ElasticsearchClientHolder @Inject() (config: Configuration) {
     new ConcurrentLinkedQueue()
 
   def nextInsert(): Option[ElasticsearchCacheRequest] =
-    insertionQueue.poll() match {
-      case null                            => None // scalastyle:off
-      case item: ElasticsearchCacheRequest => Some(item)
-    }
+    Option.apply(insertionQueue.poll())
 
   def hasMore: Boolean = !insertionQueue.isEmpty
 }
+// $COVERAGE-ON$

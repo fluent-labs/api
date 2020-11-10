@@ -9,18 +9,21 @@ import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.{
   ElasticsearchSearchRequest,
   ElasticsearchSearchResponse
 }
-import com.sksamuel.elastic4s.ElasticDsl._
-import com.sksamuel.elastic4s._
 import javax.inject.{Inject, Singleton}
-import play.api.{Configuration, Logger}
+import org.elasticsearch.action.bulk.BulkRequest
+import org.elasticsearch.action.index.IndexRequest
+import org.elasticsearch.action.search.{MultiSearchRequest, SearchRequest}
+import org.elasticsearch.action.{ActionRequest, ActionResponse}
+import play.api.Logger
+import play.api.libs.json._
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
 
 @Singleton
 class ElasticsearchClient @Inject() (
-    config: Configuration,
     val client: ElasticsearchClientHolder,
+    implicit val responseReader: ElasticsearchResponseReader,
     val system: ActorSystem
 ) extends Circuitbreaker {
   override val logger: Logger = Logger(this.getClass)
@@ -34,22 +37,24 @@ class ElasticsearchClient @Inject() (
     * and puts a limit on the number of times we will retry a search that hasn't given us results before.
     *
     * @param requests The search requests to cache.
-    * @param hitReader Automatically generated from Reads[T]
     * @param tag The class of T, captured at runtime. This is needed to make a Seq of an arbitrary type due to JVM type erasure.
     * @tparam T A case class with Reads[T] and Writes[T]
     * @return
     */
-  def findFromCacheOrRefetch[T: Indexable](
+  def findFromCacheOrRefetch[T](
       requests: List[ElasticsearchSearchRequest[T]]
   )(implicit
-      hitReader: HitReader[T],
-      attemptsHitReader: HitReader[LookupAttempt],
-      tag: ClassTag[T]
+      tag: ClassTag[T],
+      reads: Reads[T],
+      writes: Writes[T]
   ): Future[List[List[T]]] = {
+
     // Fork and join for getting each request
     requests
       .traverse(request =>
-        execute(request.query).value
+        withBreaker(
+          s"Error executing elasticearch query: $request due to error"
+        )(client.multisearch(request.query)).value
           .map(result =>
             ElasticsearchSearchResponse.fromResult(request, result)
           )
@@ -97,7 +102,16 @@ class ElasticsearchClient @Inject() (
 
   def save(request: ElasticsearchCacheRequest): Future[Unit] = {
     logger.info(s"Saving to elasticsearch: $request")
-    val result = execute(bulk(request.requests))
+    val bulkRequest = request.requests.foldLeft(new BulkRequest()) {
+      case (acc, req) =>
+        // A little clumsy but we need to preserve whether this is an index or an update to compile.
+        // Either way, the action needed is the same.
+        req match {
+          case Left(i)  => acc.add(i)
+          case Right(u) => acc.add(u)
+        }
+    }
+    val result = execute(bulkRequest)
     val searchValue = result.value
     searchValue.map {
       case CircuitBreakerAttempt(_) =>
@@ -129,17 +143,19 @@ class ElasticsearchClient @Inject() (
   // Common wrappers for all requests below here
 
   // Unwraps all elasticsearch requests so there can be a single failure path
-  private[this] def execute[T, U](request: T)(implicit
-      handler: Handler[T, U],
-      manifest: Manifest[U]
-  ): Nested[Future, CircuitBreakerResult, U] =
+  private[this] def execute(
+      request: ActionRequest
+  ): Nested[Future, CircuitBreakerResult, ActionResponse] =
     withBreaker(
-      s"Error executing elasticearch query: $request due to error",
-      client.execute(request) map {
-        case RequestSuccess(_, _, _, result) => result
-        case RequestFailure(_, _, _, error)  => throw error.asException
+      s"Error executing elasticearch query: $request due to error"
+    ) {
+      request match {
+        case b: BulkRequest        => client.bulk(b)
+        case i: IndexRequest       => client.index(i)
+        case m: MultiSearchRequest => client.multisearch(m)
+        case s: SearchRequest      => client.search(s)
       }
-    )
+    }
 
   // Circuit breaker stuff below here
 
@@ -147,18 +163,4 @@ class ElasticsearchClient @Inject() (
     logger.info("Retrying inserts because elasticsearch is healthy again.")
     val _ = Future.apply(startInserting())
   })
-
-  /**
-    * This makes the circuitbreaker know when elasticsearch requests are failing
-    * Without this, errors show up as successes.
-    * @param result The result to work with
-    * @tparam T Whatever the request is. Doesn't matter for this one
-    * @return Was it a failure?
-    */
-  override def defaultIsSuccess[T](result: T): Boolean =
-    result match {
-      case RequestSuccess(_, _, _, _) => true
-      case RequestFailure(_, _, _, _) => false
-      case _                          => true
-    }
 }

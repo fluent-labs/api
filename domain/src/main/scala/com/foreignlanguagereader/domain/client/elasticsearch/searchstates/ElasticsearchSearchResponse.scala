@@ -1,20 +1,15 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
-import cats.implicits._
 import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,
   CircuitBreakerNonAttempt,
   CircuitBreakerResult
 }
-import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
-import com.sksamuel.elastic4s.requests.searches.{
-  MultiSearchResponse,
-  SearchError,
-  SearchResponse
-}
-import com.sksamuel.elastic4s.{HitReader, Indexable}
+import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchResponseReader
+import org.elasticsearch.action.search.MultiSearchResponse
 import play.api.Logger
+import play.api.libs.json.{Reads, Writes}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
@@ -29,37 +24,40 @@ import scala.reflect.ClassTag
   * @param fetcher A function to be called if results are not in elasticsearch, which can try to get the results again.
   * @param maxFetchAttempts If we don't have any results, how many times should we search for this? Highly source dependent.
   * @param response The elasticsearch response created by using the query in ElasticsearchRequest
-  * @param hitReader Automatically generated if Writes[T] is defined
-  * @param attemptsHitReader Automatically generated from lookup attempts
   * @param tag The class of T so that sequences can be initialized. Automatically given.
   * @param ec Automatically taken from the implicit val near the caller. This is the thread pool to block on when fetching.
-  * @tparam T A case class with Reads[T] and Writes[T] defined.
+  * @tparam T A case class.
   */
-case class ElasticsearchSearchResponse[T: Indexable](
+case class ElasticsearchSearchResponse[T](
     index: String,
     fields: Map[String, String],
     fetcher: () => Future[CircuitBreakerResult[List[T]]],
     maxFetchAttempts: Int,
     response: CircuitBreakerResult[MultiSearchResponse]
 )(implicit
-    hitReader: HitReader[T],
-    attemptsHitReader: HitReader[LookupAttempt],
     tag: ClassTag[T],
+    reads: Reads[T],
+    writes: Writes[T],
+    reader: ElasticsearchResponseReader,
     ec: ExecutionContext
 ) {
   val logger: Logger = Logger(this.getClass)
 
   val (
-    elasticsearchResult: Option[List[T]],
+    elasticsearchResult: Option[Seq[T]],
     fetchCount: Int,
     lookupId: Option[String],
     queried: Boolean
   ) =
     response match {
       case CircuitBreakerAttempt(r) =>
-        val result = parseResults(r.items.head.response)
-        val (attempts, id) = parseAttempts(r.items(1).response)
-        (result, attempts, id, true)
+        val (results, attempts, id) = reader.getResultsFromSearch(r)
+        // Done to make us refetch
+        val actualResults = results match {
+          case Some(r) if r.nonEmpty => Some(r)
+          case _                     => None
+        }
+        (actualResults, attempts, id, true)
       case _ =>
         (None, 0, None, false)
     }
@@ -74,7 +72,7 @@ case class ElasticsearchSearchResponse[T: Indexable](
           ElasticsearchSearchResult(
             index = index,
             fields = fields,
-            result = es,
+            result = es.toList,
             fetchCount = fetchCount,
             lookupId = lookupId,
             refetched = false,
@@ -153,44 +151,16 @@ case class ElasticsearchSearchResponse[T: Indexable](
 
       }
   }
-
-  private[this] def parseResults(
-      results: Either[SearchError, SearchResponse]
-  ): Option[List[T]] =
-    results match {
-      case Left(error) =>
-        logger.error(
-          s"Failed to get result from elasticsearch on index $index due to error ${error.reason}"
-        )
-        None
-      case Right(response) =>
-        val results = response.hits.hits.map(_.to[T])
-        if (results.nonEmpty) results.toList.some else None
-    }
-
-  private[this] def parseAttempts(
-      attempts: Either[SearchError, SearchResponse]
-  ): (Int, Option[String]) =
-    attempts match {
-      case Left(error) =>
-        logger.error(
-          s"Failed to get request count from elasticsearch on index $index due to error ${error.reason}"
-        )
-        (0, None)
-      case Right(response) =>
-        val hit = response.hits.hits(0)
-        val attempt = hit.to[LookupAttempt]
-        (attempt.count, Some(hit.id))
-    }
 }
 
 object ElasticsearchSearchResponse {
-  def fromResult[T: Indexable](
+  def fromResult[T](
       request: ElasticsearchSearchRequest[T],
       result: CircuitBreakerResult[MultiSearchResponse]
   )(implicit
-      hitReader: HitReader[T],
-      attemptsHitReader: HitReader[LookupAttempt],
+      read: Reads[T],
+      writes: Writes[T],
+      reader: ElasticsearchResponseReader,
       tag: ClassTag[T],
       ec: ExecutionContext
   ): ElasticsearchSearchResponse[T] = {

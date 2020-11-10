@@ -7,8 +7,6 @@ import com.foreignlanguagereader.content.types.internal.definition.DefinitionSou
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.content.util.JsonSequenceHelper
 import com.foreignlanguagereader.dto.v1.definition.DefinitionDTO
-import com.sksamuel.elastic4s.playjson._
-import com.sksamuel.elastic4s.{HitReader, Indexable}
 import play.api.libs.json._
 
 trait Definition {
@@ -75,8 +73,4 @@ object Definition {
     }
   implicit val helper: JsonSequenceHelper[Definition] =
     new JsonSequenceHelper[Definition]
-
-  // Elasticsearch
-  implicit val hitReader: HitReader[Definition] = playJsonHitReader[Definition]
-  implicit val indexable: Indexable[Definition] = playJsonIndexable[Definition]
 }

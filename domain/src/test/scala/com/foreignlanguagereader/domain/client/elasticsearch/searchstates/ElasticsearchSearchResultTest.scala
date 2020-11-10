@@ -9,14 +9,15 @@ import com.foreignlanguagereader.content.types.internal.definition.{
 }
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
-import com.sksamuel.elastic4s.ElasticDsl.{indexInto, updateById}
-import com.sksamuel.elastic4s.playjson._
+import com.foreignlanguagereader.domain.util.ElasticsearchTestUtil
+import org.elasticsearch.action.index.IndexRequest
 import org.scalatest.funspec.AnyFunSpec
 
 class ElasticsearchSearchResultTest extends AnyFunSpec {
   val index: String = "definition"
   val fields: Map[String, String] =
     Map("field1" -> "value1", "field2" -> "value2", "field3" -> "value3")
+
   describe("an elasticsearch result") {
     describe("where nothing was refetched") {
       it("does not persist anything to elasticsearch") {
@@ -47,16 +48,20 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
         queried = true
       )
       val attemptsQuery =
-        indexInto("attempts").doc(LookupAttempt(index, fields, 5))
+        ElasticsearchTestUtil.lookupIndexRequestFrom(
+          LookupAttempt(index, fields, 5)
+        )
       it("correctly saves fetch attempts to elasticsearch") {
-        assert(result.updateAttemptsQuery.contains(attemptsQuery))
+        assert(
+          result.updateAttemptsQuery.isDefined && result.updateAttemptsQuery.get.isLeft
+        )
+        val updateQuery = result.updateAttemptsQuery.get.left.get
+        assert(updateQuery.indices().contains("attempts"))
+        assert(updateQuery.sourceAsMap() == attemptsQuery.sourceAsMap())
       }
       it("does not cache anything") {
         assert(result.cacheQueries.isEmpty)
-        assert(
-          result.toIndex
-            .contains(List(ElasticsearchCacheRequest(List(attemptsQuery))))
-        )
+        assert(result.toIndex.isDefined && result.toIndex.get.length == 1)
       }
     }
 
@@ -82,6 +87,11 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
       token = "anything"
     )
 
+    val chineseDefinitionRequest =
+      ElasticsearchTestUtil.indexRequestFrom(index, dummyChineseDefinition)
+    val genericDefinitionRequest =
+      ElasticsearchTestUtil.indexRequestFrom(index, dummyGenericDefinition)
+
     describe("on a previously untried query") {
       val result = ElasticsearchSearchResult[Definition](
         index = index,
@@ -93,21 +103,49 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
         queried = true
       )
       val attemptsQuery =
-        indexInto("attempts").doc(LookupAttempt(index, fields, 1))
-      val indexQuery = List(
-        indexInto(index).doc(dummyChineseDefinition),
-        indexInto(index).doc(dummyGenericDefinition)
-      )
+        ElasticsearchTestUtil.lookupIndexRequestFrom(
+          LookupAttempt(index, fields, 1)
+        )
+
       it("creates a new fetch attempt in elasticsearch") {
-        assert(result.updateAttemptsQuery.contains(attemptsQuery))
+        assert(result.updateAttemptsQuery.isDefined)
+        assert(result.updateAttemptsQuery.get.isLeft)
+
+        val fetchAttempt: IndexRequest = result.updateAttemptsQuery.get.left.get
+        assert(fetchAttempt.indices().contains("attempts"))
+        assert(fetchAttempt.sourceAsMap() == attemptsQuery.sourceAsMap())
       }
+
       it("caches search results to elasticsearch") {
-        assert(result.cacheQueries.contains(indexQuery))
+        assert(result.cacheQueries.isDefined)
+        val cacheQueriesEither = result.cacheQueries.get
+
+        assert(cacheQueriesEither.forall(_.isLeft))
+        val cacheQueries = cacheQueriesEither.map(_.left.get)
+
+        assert(cacheQueries.forall(_.indices().contains(index)))
         assert(
-          result.toIndex
-            .contains(
-              List(ElasticsearchCacheRequest(attemptsQuery :: indexQuery))
-            )
+          cacheQueries
+            .exists(_.sourceAsMap() == chineseDefinitionRequest.sourceAsMap())
+        )
+        assert(
+          cacheQueries
+            .exists(_.sourceAsMap() == genericDefinitionRequest.sourceAsMap())
+        )
+
+        val indexQueries: Seq[IndexRequest] =
+          result.toIndex.get.flatMap(a => a.requests).map(_.left.get)
+        assert(indexQueries.length == 3)
+        assert(
+          indexQueries.exists(_.sourceAsMap() == attemptsQuery.sourceAsMap())
+        )
+        assert(
+          indexQueries
+            .exists(_.sourceAsMap() == chineseDefinitionRequest.sourceAsMap())
+        )
+        assert(
+          indexQueries
+            .exists(_.sourceAsMap() == genericDefinitionRequest.sourceAsMap())
         )
       }
     }
@@ -126,24 +164,64 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
         queried = true
       )
       val attemptsQuery =
-        updateById("attempts", attemptsId)
-          .doc(LookupAttempt(index = index, fields = fields, count = 2))
+        ElasticsearchTestUtil
+          .lookupUpdateRequestFrom(
+            attemptsId,
+            LookupAttempt(index = index, fields = fields, count = 2)
+          )
 
-      val indexQuery = List(
-        indexInto(index).doc(dummyChineseDefinition),
-        indexInto(index).doc(dummyGenericDefinition)
-      )
       it("updates the previous fetch attempt in elasticsearch") {
-        assert(result.updateAttemptsQuery.contains(attemptsQuery))
+        assert(
+          result.updateAttemptsQuery.isDefined && result.updateAttemptsQuery.get.isRight
+        )
+        val updateQuery = result.updateAttemptsQuery.get.right.get
+        assert(updateQuery.indices().contains("attempts"))
+        assert(
+          updateQuery.upsertRequest().sourceAsMap() == attemptsQuery
+            .upsertRequest()
+            .sourceAsMap()
+        )
       }
       it("caches search results to elasticsearch") {
-        assert(result.cacheQueries.contains(indexQuery))
+        assert(result.cacheQueries.isDefined)
+        val cacheQueriesEither = result.cacheQueries.get
+
+        assert(cacheQueriesEither.forall(_.isLeft))
+        val cacheQueries = cacheQueriesEither.map(_.left.get)
+
+        assert(cacheQueries.forall(_.indices().contains(index)))
         assert(
-          result.toIndex
-            .contains(
-              List(ElasticsearchCacheRequest(attemptsQuery :: indexQuery))
-            )
+          cacheQueries
+            .exists(_.sourceAsMap() == chineseDefinitionRequest.sourceAsMap())
         )
+        assert(
+          cacheQueries
+            .exists(_.sourceAsMap() == genericDefinitionRequest.sourceAsMap())
+        )
+
+        val (indexQueries, updateQueries) = {
+          val (i, u) = result.toIndex.get
+            .flatMap(a => a.requests)
+            .partition(_.isLeft)
+          (i.map(_.left.get), u.map(_.right.get))
+        }
+        assert(indexQueries.length == 2)
+        assert(
+          indexQueries
+            .exists(_.sourceAsMap() == chineseDefinitionRequest.sourceAsMap())
+        )
+        assert(
+          indexQueries
+            .exists(_.sourceAsMap() == genericDefinitionRequest.sourceAsMap())
+        )
+
+        assert(updateQueries.length == 1)
+        assert(
+          updateQueries.head.upsertRequest().sourceAsMap() == attemptsQuery
+            .upsertRequest()
+            .sourceAsMap()
+        )
+
       }
     }
   }

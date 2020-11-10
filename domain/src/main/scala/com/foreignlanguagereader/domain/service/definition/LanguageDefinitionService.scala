@@ -17,7 +17,6 @@ import com.foreignlanguagereader.content.types.internal.definition.{
 }
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.domain.client.LanguageServiceClient
-import com.sksamuel.elastic4s.playjson._
 import play.api.Logger
 
 import scala.concurrent.{ExecutionContext, Future}
