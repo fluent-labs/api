@@ -43,6 +43,7 @@ lazy val domain = project
       // Testing
       dependencies.mockito,
       dependencies.scalatestPlay,
+      dependencies.elasticsearchContainer,
       // Clients
       dependencies.opencc4j,
       dependencies.googleCloudClient,
@@ -112,6 +113,8 @@ lazy val dependencies =
     val scalatestPlay =
       "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.0" % Test
     val mockito = "org.mockito" %% "mockito-scala" % "1.16.0" % Test
+    val elasticsearchContainer =
+      "org.testcontainers" % "elasticsearch" % "1.15.0"
 
     val cats = "org.typelevel" %% "cats-core" % "2.0.0"
 
