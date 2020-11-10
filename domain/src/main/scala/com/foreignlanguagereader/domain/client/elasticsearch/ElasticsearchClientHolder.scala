@@ -13,6 +13,7 @@ import org.elasticsearch.action.search.{
   SearchRequest,
   SearchResponse
 }
+import org.elasticsearch.client.indices.CreateIndexRequest
 import org.elasticsearch.client.{
   RequestOptions,
   RestClient,
@@ -45,6 +46,14 @@ class ElasticsearchClientHolder @Inject() (config: Configuration) {
   val javaClient = new RestHighLevelClient(
     RestClient.builder(httpHost)
   )
+
+  if (isLocal) {
+    List("attempts", "definitions")
+      .map(index => new CreateIndexRequest(index))
+      .foreach(request =>
+        javaClient.indices().create(request, RequestOptions.DEFAULT)
+      )
+  }
 
   def index(
       request: IndexRequest
