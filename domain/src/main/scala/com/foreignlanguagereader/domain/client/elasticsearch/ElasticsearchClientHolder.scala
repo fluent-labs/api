@@ -18,6 +18,7 @@ import org.elasticsearch.client.{
   RestClient,
   RestHighLevelClient
 }
+import org.testcontainers.elasticsearch.ElasticsearchContainer
 import play.api.Configuration
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -27,12 +28,22 @@ import scala.collection.JavaConverters._
 // $COVERAGE-OFF$
 @Singleton
 class ElasticsearchClientHolder @Inject() (config: Configuration) {
-  val elasticSearchUrl: String = config.get[String]("elasticsearch.url")
+  val isLocal: Boolean = config.get[Boolean]("local")
+  val httpHost: HttpHost = if (isLocal) {
+    val container = new ElasticsearchContainer(
+      "docker.elastic.co/elasticsearch/elasticsearch:7.9.3"
+    )
+    container.start()
+    HttpHost.create(container.getHttpHostAddress)
+  } else {
+    val scheme = config.get[String]("elasticsearch.scheme")
+    val url = config.get[String]("elasticsearch.url")
+    val port = config.get[Int]("elasticsearch.port")
+    new HttpHost(url, port, scheme)
+  }
 
   val javaClient = new RestHighLevelClient(
-    RestClient.builder(
-      new HttpHost(elasticSearchUrl, 9200, "http")
-    )
+    RestClient.builder(httpHost)
   )
 
   def index(
@@ -50,7 +61,7 @@ class ElasticsearchClientHolder @Inject() (config: Configuration) {
   )(implicit ec: ExecutionContext): Future[SearchResponse] =
     Future { javaClient.search(request, RequestOptions.DEFAULT) }
 
-  def multisearch(
+  def multiSearch(
       request: MultiSearchRequest
   )(implicit ec: ExecutionContext): Future[MultiSearchResponse] =
     Future { javaClient.msearch(request, RequestOptions.DEFAULT) }
