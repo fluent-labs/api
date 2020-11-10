@@ -14,16 +14,16 @@ import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.{MultiSearchRequest, SearchRequest}
 import org.elasticsearch.action.{ActionRequest, ActionResponse}
+import play.api.Logger
 import play.api.libs.json._
-import play.api.{Configuration, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
 
 @Singleton
 class ElasticsearchClient @Inject() (
-    config: Configuration,
     val client: ElasticsearchClientHolder,
+    implicit val responseReader: ElasticsearchResponseReader,
     val system: ActorSystem
 ) extends Circuitbreaker {
   override val logger: Logger = Logger(this.getClass)
@@ -48,8 +48,6 @@ class ElasticsearchClient @Inject() (
       reads: Reads[T],
       writes: Writes[T]
   ): Future[List[List[T]]] = {
-    implicit val reader: ElasticsearchResponseReader =
-      new ElasticsearchResponseReader()
 
     // Fork and join for getting each request
     requests
