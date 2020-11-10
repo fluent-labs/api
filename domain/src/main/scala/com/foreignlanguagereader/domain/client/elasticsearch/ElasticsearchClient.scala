@@ -54,7 +54,7 @@ class ElasticsearchClient @Inject() (
       .traverse(request =>
         withBreaker(
           s"Error executing elasticearch query: $request due to error"
-        )(client.multisearch(request.query)).value
+        )(client.multiSearch(request.query)).value
           .map(result =>
             ElasticsearchSearchResponse.fromResult(request, result)
           )
@@ -152,7 +152,7 @@ class ElasticsearchClient @Inject() (
       request match {
         case b: BulkRequest        => client.bulk(b)
         case i: IndexRequest       => client.index(i)
-        case m: MultiSearchRequest => client.multisearch(m)
+        case m: MultiSearchRequest => client.multiSearch(m)
         case s: SearchRequest      => client.search(s)
       }
     }

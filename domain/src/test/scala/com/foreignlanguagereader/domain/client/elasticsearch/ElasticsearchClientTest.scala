@@ -62,7 +62,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
   describe("an elasticsearch client") {
     it("can fetch results from a cache") {
       when(
-        holder.multisearch(any(classOf[MultiSearchRequest]))(
+        holder.multiSearch(any(classOf[MultiSearchRequest]))(
           any(classOf[ExecutionContext])
         )
       ).thenReturn(Future.successful(dummyMultisearchResponse))
@@ -93,7 +93,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
     }
     it("can handle cache misses") {
       when(
-        holder.multisearch(any(classOf[MultiSearchRequest]))(
+        holder.multiSearch(any(classOf[MultiSearchRequest]))(
           any(classOf[ExecutionContext])
         )
       ).thenReturn(Future.successful(dummyMultisearchResponse))
@@ -126,7 +126,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
     describe("gracefully handles failures") {
       it("can handle failures when searching from elasticsearch") {
         when(
-          holder.multisearch(any(classOf[MultiSearchRequest]))(
+          holder.multiSearch(any(classOf[MultiSearchRequest]))(
             any(classOf[ExecutionContext])
           )
         ).thenThrow(new IllegalStateException("Uh oh"))
