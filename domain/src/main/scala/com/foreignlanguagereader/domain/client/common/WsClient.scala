@@ -27,7 +27,8 @@ trait WsClient extends Circuitbreaker {
     withBreaker(
       s"Failed to get $typeName from $url",
       isFailure,
-      defaultIsSuccess[T],
+      defaultIsSuccess[T]
+    )(
       ws.url(url)
         // Doubled so that the circuit breaker will handle it.
         .withRequestTimeout(timeout * 2)

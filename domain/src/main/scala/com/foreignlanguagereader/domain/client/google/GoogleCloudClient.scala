@@ -65,8 +65,7 @@ class GoogleCloudClient @Inject() (
       .setEncodingType(EncodingType.UTF16)
       .build
 
-    withBreaker(
-      s"Failed to get tokens from google cloud",
+    withBreaker(s"Failed to get tokens from google cloud")(
       Future {
         gcloud.getTokens(request)
       }

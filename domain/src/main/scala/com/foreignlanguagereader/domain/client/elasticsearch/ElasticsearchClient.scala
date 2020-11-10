@@ -52,7 +52,7 @@ class ElasticsearchClient @Inject() (
     // Fork and join for getting each request
     requests
       .traverse(request =>
-        withBreakerCurried(
+        withBreaker(
           s"Error executing elasticearch query: $request due to error"
         )(client.multisearch(request.query)).value
           .map(result =>
@@ -146,7 +146,7 @@ class ElasticsearchClient @Inject() (
   private[this] def execute(
       request: ActionRequest
   ): Nested[Future, CircuitBreakerResult, ActionResponse] =
-    withBreakerCurried(
+    withBreaker(
       s"Error executing elasticearch query: $request due to error"
     ) {
       request match {
