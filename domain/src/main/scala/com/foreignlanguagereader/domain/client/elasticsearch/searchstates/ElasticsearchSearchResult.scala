@@ -59,7 +59,7 @@ case class ElasticsearchSearchResult[T: Writes](
         case None =>
           new IndexRequest()
             .source(Json.toJson(attempt).toString(), XContentType.JSON)
-            .index(index)
+            .index(attemptsIndex)
             .asLeft
             .some
       }
