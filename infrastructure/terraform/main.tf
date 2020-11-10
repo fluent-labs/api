@@ -77,13 +77,6 @@ module "api_qa" {
   max_replicas  = 1
 }
 
-module "language_service_qa" {
-  source       = "./language_service"
-  env          = "qa"
-  min_replicas = 1
-  max_replicas = 1
-}
-
 # Production environment
 
 resource "kubernetes_namespace" "prod" {
@@ -103,13 +96,6 @@ module "api" {
   env           = "prod"
   min_replicas  = 2
   max_replicas  = 10
-}
-
-module "language_service" {
-  source       = "./language_service"
-  env          = "prod"
-  min_replicas = 2
-  max_replicas = 10
 }
 
 # Content infrastructure
@@ -133,7 +119,7 @@ module "monitoring" {
 module "nginx_ingress" {
   source          = "./nginx_ingress"
   domain          = digitalocean_domain.main.name
-  subdomains      = ["api", "kibana", "language"]
+  subdomains      = ["api", "kibana"]
   private_key_pem = acme_certificate.certificate.private_key_pem
   certificate_pem = acme_certificate.certificate.certificate_pem
   issuer_pem      = acme_certificate.certificate.issuer_pem
@@ -160,18 +146,6 @@ resource "kubernetes_ingress" "foreign_language_reader_ingress" {
           backend {
             service_name = "api"
             service_port = 4000
-          }
-        }
-      }
-    }
-
-    rule {
-      host = "language.foreignlanguagereader.com"
-      http {
-        path {
-          backend {
-            service_name = "language-service"
-            service_port = 8000
           }
         }
       }
