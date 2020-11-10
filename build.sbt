@@ -15,7 +15,8 @@ lazy val api = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies ++ playDependencies
+    libraryDependencies ++= commonDependencies ++ playDependencies,
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(domain)
 
@@ -54,12 +55,7 @@ lazy val domain = project
       dependencies.hadoopCommon,
       dependencies.apacheCommonsIo
     ),
-    dependencyOverrides ++= Seq(
-      dependencies.hadoopClient,
-      "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.6.7.1",
-      "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.7",
-      "com.fasterxml.jackson.core" % "jackson-core" % "2.6.7"
-    )
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(content)
 
@@ -77,7 +73,8 @@ lazy val jobs = project
       dependencies.sparkCore % "provided",
       dependencies.sparkSql % "provided",
       dependencies.sparkXml
-    )
+    ),
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(content)
 
@@ -96,8 +93,14 @@ lazy val playDependencies = Seq(
   dependencies.mockito
 )
 
-lazy val excludeJacksonRule =
-  ExclusionRule(organization = "com.fasterxml.jackson.core")
+// Pretty much everything in here is because Spark NLP has versions that conflicts with other dependencies.
+lazy val forcedDependencies = Seq(
+  dependencies.hadoopClient,
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.6.7.1",
+  "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.7",
+  "com.fasterxml.jackson.core" % "jackson-core" % "2.6.7",
+  "org.projectlombok" % "lombok" % "1.18.16"
+)
 
 lazy val dependencies =
   new {
