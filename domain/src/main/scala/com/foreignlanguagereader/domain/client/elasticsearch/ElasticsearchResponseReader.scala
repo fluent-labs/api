@@ -24,13 +24,19 @@ class ElasticsearchResponseReader {
         })
       case Right(_) => None
     }
-    val (attemptsCount, attemptsId) =
-      getResultsFromMultisearchItem[LookupAttempt](responses.tail.head) match {
-        case Left(a) =>
-          val (id, attempt) = a.head
-          (attempt.count, Some(id))
-        case Right(_) => (0, None)
+    val (attemptsCount, attemptsId) = {
+      val secondSearch = responses.tail
+      if (secondSearch.nonEmpty) {
+        getResultsFromMultisearchItem[LookupAttempt](secondSearch.head) match {
+          case Left(a) if a.nonEmpty =>
+            val (id, attempt) = a.head
+            (attempt.count, Some(id))
+          case _ => (0, None)
+        }
+      } else {
+        (0, None)
       }
+    }
 
     (results, attemptsCount, attemptsId)
   }

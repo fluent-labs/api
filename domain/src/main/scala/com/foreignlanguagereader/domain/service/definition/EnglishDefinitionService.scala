@@ -32,7 +32,6 @@ class EnglishDefinitionService @Inject() (
   override val sources: List[DefinitionSource] =
     List(
       DefinitionSource.MIRRIAM_WEBSTER_LEARNERS,
-      DefinitionSource.MIRRIAM_WEBSTER_SPANISH,
       DefinitionSource.WIKTIONARY
     )
 
