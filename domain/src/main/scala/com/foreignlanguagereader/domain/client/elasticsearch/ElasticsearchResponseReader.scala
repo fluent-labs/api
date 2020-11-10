@@ -5,6 +5,11 @@ import org.elasticsearch.action.search.{MultiSearchResponse, SearchResponse}
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Json, Reads}
 
+// $COVERAGE-OFF$
+// This class exists to mock results from the elasticsearch client,
+// which has been created in a way that prevents mocking.
+// The scenarios we care about is how we react to elasticsearch results,
+// not the details of the fetching
 class ElasticsearchResponseReader {
   val logger: Logger = Logger(this.getClass)
 
@@ -74,3 +79,4 @@ class ElasticsearchResponseReader {
     else { None }
   }
 }
+// $COVERAGE-ON$

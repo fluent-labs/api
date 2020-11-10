@@ -23,7 +23,8 @@ import play.api.Configuration
 import scala.concurrent.{ExecutionContext, Future}
 import scala.collection.JavaConverters._
 
-// Holder to enable easy mocking
+// Holder to enable easy mocking.
+// $COVERAGE-OFF$
 @Singleton
 class ElasticsearchClientHolder @Inject() (config: Configuration) {
   val elasticSearchUrl: String = config.get[String]("elasticsearch.url")
@@ -74,10 +75,8 @@ class ElasticsearchClientHolder @Inject() (config: Configuration) {
     new ConcurrentLinkedQueue()
 
   def nextInsert(): Option[ElasticsearchCacheRequest] =
-    insertionQueue.poll() match {
-      case null                            => None // scalastyle:off
-      case item: ElasticsearchCacheRequest => Some(item)
-    }
+    Option.apply(insertionQueue.poll())
 
   def hasMore: Boolean = !insertionQueue.isEmpty
 }
+// $COVERAGE-ON$
