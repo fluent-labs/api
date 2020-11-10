@@ -51,8 +51,13 @@ case class ElasticsearchSearchResponse[T](
   ) =
     response match {
       case CircuitBreakerAttempt(r) =>
-        val (result, attempts, id) = reader.getResultsFromSearch(r)
-        (result, attempts, id, true)
+        val (results, attempts, id) = reader.getResultsFromSearch(r)
+        // Done to make us refetch
+        val actualResults = results match {
+          case Some(r) if r.nonEmpty => Some(r)
+          case _                     => None
+        }
+        (actualResults, attempts, id, true)
       case _ =>
         (None, 0, None, false)
     }
