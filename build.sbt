@@ -6,7 +6,17 @@ scalaVersion in ThisBuild := "2.11.12"
 
 lazy val global = project
   .in(file("."))
-  .settings(settings)
+  .configs(IntegrationTest)
+  .settings(
+    settings,
+    testOptions in Test := Seq(
+      Tests.Argument("-l", "com.foreignlanguagereader.tags.Integration")
+    ),
+    inConfig(IntegrationTest)(Defaults.testTasks),
+    testOptions in IntegrationTest := Seq(
+      Tests.Argument("-n", "com.foreignlanguagereader.tags.Integration")
+    )
+  )
   .disablePlugins(AssemblyPlugin)
   .aggregate(api, content, domain, dto, jobs)
 
@@ -78,6 +88,8 @@ lazy val jobs = project
     dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(content)
+
+lazy val IntegrationTest = config("integration") extend Test
 
 lazy val commonDependencies = Seq(
   dependencies.scalatest % "test",
