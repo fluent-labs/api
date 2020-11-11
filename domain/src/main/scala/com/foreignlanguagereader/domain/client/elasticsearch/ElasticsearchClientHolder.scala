@@ -12,13 +12,7 @@ import org.elasticsearch.action.search.{
   SearchRequest,
   SearchResponse
 }
-import org.elasticsearch.client.indices.CreateIndexRequest
-import org.elasticsearch.client.{
-  RequestOptions,
-  RestClient,
-  RestHighLevelClient
-}
-import play.api.Configuration
+import org.elasticsearch.client.{RequestOptions, RestHighLevelClient}
 
 import scala.collection.JavaConverters._
 import scala.concurrent.{ExecutionContext, Future}

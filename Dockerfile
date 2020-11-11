@@ -29,5 +29,5 @@ FROM openjdk:8-jdk-alpine as final
 WORKDIR /app
 RUN apk add bash
 EXPOSE 9000
-CMD ["/app/bin/api"]
+CMD ["/app/bin/api", "-Dconfig.resource=production.conf"]
 COPY --from=builder /app/api-0.1.0-SNAPSHOT /app

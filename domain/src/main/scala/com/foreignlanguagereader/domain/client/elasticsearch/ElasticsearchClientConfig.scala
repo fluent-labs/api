@@ -15,12 +15,13 @@ import play.api.Configuration
 
 import scala.concurrent.{ExecutionContext, Future}
 
+// $COVERAGE-OFF$
 /**
   * Class to automatically configure an elasticsearch client. That's it.
   *
-  * @param config
-  * @param cs
-  * @param ec
+  * @param config Config properties
+  * @param cs Shutdown hook for akka, to shut down the server when this server quits
+  * @param ec Where to run futures.
   */
 class ElasticsearchClientConfig @Inject() (
     config: Configuration,
@@ -77,3 +78,4 @@ class ElasticsearchClientConfig @Inject() (
       )
   }
 }
+// $COVERAGE-ON$
