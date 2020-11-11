@@ -108,11 +108,13 @@ class ElasticsearchClient @Inject() (
 
   private[this] def getResultsFromSearchResponse[T](
       response: SearchResponse
-  )(implicit reads: Reads[T]): Map[String, T] =
-    response.getHits.getHits
-      .map(hit => getResultsFromSearchHit(hit))
-      .flatten
-      .toMap
+  )(implicit reads: Reads[T]): Map[String, T] = {
+    val hits = response.getHits.getHits.toList
+    val mappedHits = hits.map(hit => getResultsFromSearchHit(hit))
+    val flattened = mappedHits.flatten
+    val asMap = flattened.toMap
+    asMap
+  }
 
   def onClose(body: => Unit): Unit = breaker.onClose(body)
 }

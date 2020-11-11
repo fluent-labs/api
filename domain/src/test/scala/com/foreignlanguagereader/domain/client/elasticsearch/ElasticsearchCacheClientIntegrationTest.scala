@@ -47,22 +47,25 @@ class ElasticsearchCacheClientIntegrationTest
         .source(new SearchSourceBuilder().query(query))
         .indices("attempts")
 
-      client.index(indexRequest).value.flatMap {
-        case CircuitBreakerNonAttempt() =>
-          fail("Indexing failed because circuit breaker was closed")
-        case CircuitBreakerFailedAttempt(e) =>
-          fail(s"Indexing failed because of error: ${e.getMessage}", e)
-        case CircuitBreakerAttempt(indexResult) =>
-          client.search[LookupAttempt](searchRequest).value.map {
-            case CircuitBreakerNonAttempt() =>
-              fail("Searching failed because circuit breaker was closed")
-            case CircuitBreakerFailedAttempt(e) =>
-              fail(s"Searching failed because of error: ${e.getMessage}", e)
-            case CircuitBreakerAttempt(result) =>
-              assert(result.size == 1)
-              assert(result.values.head == attempt)
-          }
-      }
+      client
+        .index(indexRequest)
+        .value
+        .flatMap {
+          case CircuitBreakerNonAttempt() =>
+            fail("Indexing failed because circuit breaker was closed")
+          case CircuitBreakerFailedAttempt(e) =>
+            fail(s"Indexing failed because of error: ${e.getMessage}", e)
+          case CircuitBreakerAttempt(_) =>
+            client.search[LookupAttempt](searchRequest).value.map {
+              case CircuitBreakerNonAttempt() =>
+                fail("Searching failed because circuit breaker was closed")
+              case CircuitBreakerFailedAttempt(e) =>
+                fail(s"Searching failed because of error: ${e.getMessage}", e)
+              case CircuitBreakerAttempt(result) =>
+                assert(result.size == 1)
+                assert(result.values.head == attempt)
+            }
+        }
     }
   }
 }
