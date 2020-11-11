@@ -16,7 +16,7 @@ import com.foreignlanguagereader.content.types.internal.word.{
 }
 import com.foreignlanguagereader.domain.client.LanguageServiceClient
 import com.foreignlanguagereader.domain.client.common.CircuitBreakerResult
-import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchClient
+import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchSearchRequest
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar
@@ -37,7 +37,8 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       wordLanguage = Language.ENGLISH,
       token = "test"
     )
-  val elasticsearchClientMock: ElasticsearchClient = mock[ElasticsearchClient]
+  val elasticsearchClientMock: ElasticsearchCacheClient =
+    mock[ElasticsearchCacheClient]
   val languageServiceClientMock: LanguageServiceClient =
     mock[LanguageServiceClient]
 
@@ -46,7 +47,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
   describe("A default language definition service") {
     class DefaultLanguageDefinitionService() extends LanguageDefinitionService {
-      val elasticsearch: ElasticsearchClient = elasticsearchClientMock
+      val elasticsearch: ElasticsearchCacheClient = elasticsearchClientMock
       override val languageServiceClient: LanguageServiceClient =
         languageServiceClientMock
       implicit val ec: ExecutionContext =
@@ -167,7 +168,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
     class CustomizedLanguageDefinitionService()
         extends LanguageDefinitionService {
-      val elasticsearch: ElasticsearchClient = elasticsearchClientMock
+      val elasticsearch: ElasticsearchCacheClient = elasticsearchClientMock
       override val languageServiceClient: LanguageServiceClient =
         languageServiceClientMock
       implicit val ec: ExecutionContext =
