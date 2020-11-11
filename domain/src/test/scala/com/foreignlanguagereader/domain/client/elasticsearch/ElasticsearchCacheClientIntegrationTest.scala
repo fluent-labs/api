@@ -56,6 +56,7 @@ class ElasticsearchCacheClientIntegrationTest
           case CircuitBreakerFailedAttempt(e) =>
             fail(s"Indexing failed because of error: ${e.getMessage}", e)
           case CircuitBreakerAttempt(_) =>
+            Thread.sleep(5000)
             client.search[LookupAttempt](searchRequest).value.map {
               case CircuitBreakerNonAttempt() =>
                 fail("Searching failed because circuit breaker was closed")
