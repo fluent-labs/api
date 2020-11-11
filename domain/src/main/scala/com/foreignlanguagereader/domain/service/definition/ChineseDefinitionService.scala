@@ -7,7 +7,7 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerNonAttempt,
   CircuitBreakerResult
 }
-import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchClient
+import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.content.enrichers.chinese.SimplifiedTraditionalConverter
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.word.Word
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
   * In particular, CEDICT has a minimum level of quality, but doesn't have as many definitions.
   */
 class ChineseDefinitionService @Inject() (
-    val elasticsearch: ElasticsearchClient,
+    val elasticsearch: ElasticsearchCacheClient,
     val languageServiceClient: LanguageServiceClient,
     implicit val ec: ExecutionContext
 ) extends LanguageDefinitionService {

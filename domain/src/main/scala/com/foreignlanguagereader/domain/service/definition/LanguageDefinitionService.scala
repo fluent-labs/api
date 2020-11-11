@@ -6,7 +6,7 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerNonAttempt,
   CircuitBreakerResult
 }
-import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchClient
+import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchSearchRequest
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.word.Word
@@ -45,7 +45,7 @@ trait LanguageDefinitionService {
   // These are required fields for implementers
   implicit val ec: ExecutionContext
   val logger: Logger = Logger(this.getClass)
-  val elasticsearch: ElasticsearchClient
+  val elasticsearch: ElasticsearchCacheClient
   val languageServiceClient: LanguageServiceClient
   val wordLanguage: Language
   val sources: List[DefinitionSource]

@@ -5,7 +5,7 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerNonAttempt,
   CircuitBreakerResult
 }
-import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchClient
+import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.client.{
   LanguageServiceClient,
   MirriamWebsterClient
@@ -23,7 +23,7 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class EnglishDefinitionService @Inject() (
-    val elasticsearch: ElasticsearchClient,
+    val elasticsearch: ElasticsearchCacheClient,
     val languageServiceClient: LanguageServiceClient,
     val websterClient: MirriamWebsterClient,
     implicit val ec: ExecutionContext
