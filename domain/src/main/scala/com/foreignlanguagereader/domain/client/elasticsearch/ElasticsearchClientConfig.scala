@@ -2,14 +2,15 @@ package com.foreignlanguagereader.domain.client.elasticsearch
 
 import akka.Done
 import akka.actor.CoordinatedShutdown
+import com.google.inject.Provider
 import javax.inject.Inject
 import org.apache.http.HttpHost
+import org.elasticsearch.client.indices.CreateIndexRequest
 import org.elasticsearch.client.{
   RequestOptions,
   RestClient,
   RestHighLevelClient
 }
-import org.elasticsearch.client.indices.CreateIndexRequest
 import org.testcontainers.elasticsearch.ElasticsearchContainer
 import play.api.Configuration
 
@@ -27,7 +28,7 @@ class ElasticsearchClientConfig @Inject() (
     config: Configuration,
     cs: CoordinatedShutdown,
     implicit val ec: ExecutionContext
-) {
+) extends Provider[RestHighLevelClient] {
   val isLocal: Boolean = config.get[Boolean]("local")
   val scheme: String = config.get[String]("elasticsearch.scheme")
   val url: String = config.get[String]("elasticsearch.url")
@@ -39,13 +40,10 @@ class ElasticsearchClientConfig @Inject() (
     new HttpHost(url, port, scheme)
   }
 
-  val javaClient = new RestHighLevelClient(
-    RestClient.builder(httpHost)
-  )
-
-  if (isLocal) {
-    createElasticsearchIndexes(javaClient, List("attempts", "definitions"))
-  }
+  override def get(): RestHighLevelClient =
+    new RestHighLevelClient(
+      RestClient.builder(httpHost)
+    )
 
   def createLocalElasticsearch(): HttpHost = {
     // Launches a dockerized elasticsearch process

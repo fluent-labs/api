@@ -21,18 +21,16 @@ import play.api.libs.json.{JsError, JsSuccess, Json, Reads}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-// $COVERAGE-OFF$
 /**
   * Lower level elasticsearch client. We implement other logic on top of this.
-  * @param clientConfig An already configured elasticsearch client.
+  * @param javaClient An already configured elasticsearch client.
   * @param system Thread pool setup for client
   */
 @Singleton
 class ElasticsearchClient @Inject() (
-    clientConfig: ElasticsearchClientConfig,
+    javaClient: RestHighLevelClient,
     val system: ActorSystem
 ) extends Circuitbreaker {
-  val javaClient: RestHighLevelClient = clientConfig.javaClient
   implicit val ec: ExecutionContext =
     system.dispatchers.lookup("elasticsearch-context")
 
@@ -109,13 +107,10 @@ class ElasticsearchClient @Inject() (
   private[this] def getResultsFromSearchResponse[T](
       response: SearchResponse
   )(implicit reads: Reads[T]): Map[String, T] = {
-    val hits = response.getHits.getHits.toList
-    val mappedHits = hits.map(hit => getResultsFromSearchHit(hit))
-    val flattened = mappedHits.flatten
-    val asMap = flattened.toMap
-    asMap
+    val hits =
+      response.getHits.getHits.toList.map(hit => getResultsFromSearchHit(hit))
+    hits.flatten.toMap
   }
 
   def onClose(body: => Unit): Unit = breaker.onClose(body)
 }
-// $COVERAGE-ON$

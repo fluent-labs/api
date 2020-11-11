@@ -5,6 +5,7 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerFailedAttempt,
   CircuitBreakerNonAttempt
 }
+import com.foreignlanguagereader.domain.tag.Integration
 import com.typesafe.config.ConfigFactory
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchRequest
@@ -32,9 +33,9 @@ class ElasticsearchCacheClientIntegrationTest
       application.coordinatedShutdown,
       scala.concurrent.ExecutionContext.Implicits.global
     )
-    val client = new ElasticsearchClient(config, application.actorSystem)
+    val client = new ElasticsearchClient(config.get(), application.actorSystem)
 
-    it("can index documents") {
+    it("can index documents", Integration) {
       val attempt = LookupAttempt("definitions", Map("field1" -> "value1"), 1)
       val indexRequest = new IndexRequest()
         .source(Json.toJson(attempt).toString(), XContentType.JSON)
@@ -56,6 +57,7 @@ class ElasticsearchCacheClientIntegrationTest
           case CircuitBreakerFailedAttempt(e) =>
             fail(s"Indexing failed because of error: ${e.getMessage}", e)
           case CircuitBreakerAttempt(_) =>
+            // Give elasticsearch five seconds to finish indexing before we search
             Thread.sleep(5000)
             client.search[LookupAttempt](searchRequest).value.map {
               case CircuitBreakerNonAttempt() =>
