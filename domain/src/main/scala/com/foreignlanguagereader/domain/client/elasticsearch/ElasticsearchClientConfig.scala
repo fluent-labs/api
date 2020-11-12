@@ -5,12 +5,6 @@ import akka.actor.CoordinatedShutdown
 import com.google.inject.Provider
 import javax.inject.Inject
 import org.apache.http.HttpHost
-import org.elasticsearch.client.indices.CreateIndexRequest
-import org.elasticsearch.client.{
-  RequestOptions,
-  RestClient,
-  RestHighLevelClient
-}
 import org.testcontainers.elasticsearch.ElasticsearchContainer
 import play.api.Configuration
 
@@ -28,7 +22,7 @@ class ElasticsearchClientConfig @Inject() (
     config: Configuration,
     cs: CoordinatedShutdown,
     implicit val ec: ExecutionContext
-) extends Provider[RestHighLevelClient] {
+) extends Provider[HttpHost] {
   val isLocal: Boolean = config.get[Boolean]("local")
   val scheme: String = config.get[String]("elasticsearch.scheme")
   val url: String = config.get[String]("elasticsearch.url")
@@ -40,10 +34,7 @@ class ElasticsearchClientConfig @Inject() (
     new HttpHost(url, port, scheme)
   }
 
-  override def get(): RestHighLevelClient =
-    new RestHighLevelClient(
-      RestClient.builder(httpHost)
-    )
+  override def get(): HttpHost = httpHost
 
   def createLocalElasticsearch(): HttpHost = {
     // Launches a dockerized elasticsearch process
@@ -63,17 +54,6 @@ class ElasticsearchClientConfig @Inject() (
 
     // Gives connection details - they are randomized to prevent conflicts
     HttpHost.create(container.getHttpHostAddress)
-  }
-
-  def createElasticsearchIndexes(
-      client: RestHighLevelClient,
-      indexes: List[String]
-  ): Unit = {
-    indexes
-      .map(index => new CreateIndexRequest(index))
-      .foreach(request =>
-        client.indices().create(request, RequestOptions.DEFAULT)
-      )
   }
 }
 // $COVERAGE-ON$

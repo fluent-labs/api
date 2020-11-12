@@ -34,19 +34,20 @@ class ElasticsearchCacheClientIntegrationTest
       scala.concurrent.ExecutionContext.Implicits.global
     )
     val client = new ElasticsearchClient(config.get(), application.actorSystem)
+    client.createIndex("indexTest")
 
     it("can index documents", Integration) {
       val attempt = LookupAttempt("definitions", Map("field1" -> "value1"), 1)
       val indexRequest = new IndexRequest()
         .source(Json.toJson(attempt).toString(), XContentType.JSON)
-        .index("attempts")
+        .index("indexTest")
 
       val query = QueryBuilders
         .boolQuery()
         .must(QueryBuilders.matchQuery("fields.field1", "value1"))
       val searchRequest = new SearchRequest()
         .source(new SearchSourceBuilder().query(query))
-        .indices("attempts")
+        .indices("indexTest")
 
       client
         .index(indexRequest)

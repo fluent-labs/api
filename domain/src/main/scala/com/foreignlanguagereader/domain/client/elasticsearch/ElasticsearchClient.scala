@@ -8,6 +8,7 @@ import com.foreignlanguagereader.domain.client.common.{
   Circuitbreaker
 }
 import javax.inject.{Inject, Singleton}
+import org.apache.http.HttpHost
 import org.elasticsearch.action.bulk.{BulkRequest, BulkResponse}
 import org.elasticsearch.action.index.{IndexRequest, IndexResponse}
 import org.elasticsearch.action.search.{
@@ -15,7 +16,12 @@ import org.elasticsearch.action.search.{
   SearchRequest,
   SearchResponse
 }
-import org.elasticsearch.client.{RequestOptions, RestHighLevelClient}
+import org.elasticsearch.client.indices.CreateIndexRequest
+import org.elasticsearch.client.{
+  RequestOptions,
+  RestClient,
+  RestHighLevelClient
+}
 import org.elasticsearch.search.SearchHit
 import play.api.libs.json.{JsError, JsSuccess, Json, Reads}
 
@@ -23,16 +29,19 @@ import scala.concurrent.{ExecutionContext, Future}
 
 /**
   * Lower level elasticsearch client. We implement other logic on top of this.
-  * @param javaClient An already configured elasticsearch client.
+  * @param host An already configured elasticsearch client.
   * @param system Thread pool setup for client
   */
 @Singleton
 class ElasticsearchClient @Inject() (
-    javaClient: RestHighLevelClient,
+    host: HttpHost,
     val system: ActorSystem
 ) extends Circuitbreaker {
   implicit val ec: ExecutionContext =
     system.dispatchers.lookup("elasticsearch-context")
+  val javaClient: RestHighLevelClient = new RestHighLevelClient(
+    RestClient.builder(host)
+  )
 
   def index(
       request: IndexRequest
@@ -84,6 +93,14 @@ class ElasticsearchClient @Inject() (
         Some((first, second))
       } else { None }
     })
+
+  def createIndex(index: String): Unit = {
+    javaClient
+      .indices()
+      .create(new CreateIndexRequest(index), RequestOptions.DEFAULT)
+  }
+
+  def createIndexes(indexes: List[String]): Unit = indexes.foreach(createIndex)
 
   // Parses responses from elasticsearch
 
