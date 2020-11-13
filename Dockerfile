@@ -1,5 +1,5 @@
 FROM openjdk:8-jdk-alpine as builder
-MAINTAINER lucas@lucaskjaerozhang.com
+MAINTAINER reader@lucaskjaerozhang.com
 
 ENV SBT_VERSION 1.4.0
 ENV INSTALL_DIR /usr/local
