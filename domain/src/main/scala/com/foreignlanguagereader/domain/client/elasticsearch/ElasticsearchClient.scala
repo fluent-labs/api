@@ -26,6 +26,7 @@ import play.api.libs.json.{JsError, JsSuccess, Json, Reads}
 
 import scala.concurrent.{ExecutionContext, Future}
 
+// $COVERAGE-OFF$
 /**
   * Lower level elasticsearch client. We implement other logic on top of this.
   * @param config An already configured elasticsearch client.
@@ -130,3 +131,4 @@ class ElasticsearchClient @Inject() (
 
   def onClose(body: => Unit): Unit = breaker.onClose(body)
 }
+// $COVERAGE-ON$
