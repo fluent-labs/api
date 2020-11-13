@@ -3,14 +3,12 @@ name: Scala code test
 on:
   pull_request:
     paths:
-      - "api-v2/*"
-      - "api-v2/**/*"
-      - "content/"
-      - "content/*"
-      - "domain/*"
-      - "domain/**/*"
-      - "dto/*"
-      - "dto/**/*"
+      - "*.scala"
+      - "**/*.scala"
+      - "*.sbt"
+      - "**/*.sbt"
+      - "*.conf"
+      - "**/*.conf"
 
 jobs:
   test:
