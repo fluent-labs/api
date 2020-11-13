@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.domain.client.elasticsearch
 
-import akka.actor.ActorSystem
+import cats.data.Nested
 import cats.implicits._
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.definition.{
@@ -9,24 +9,27 @@ import com.foreignlanguagereader.content.types.internal.definition.{
   GenericDefinition
 }
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
-import com.foreignlanguagereader.domain.client.common.CircuitBreakerAttempt
+import com.foreignlanguagereader.domain.client.common.{
+  CircuitBreakerAttempt,
+  CircuitBreakerFailedAttempt,
+  CircuitBreakerResult
+}
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.{
   ElasticsearchCacheRequest,
   ElasticsearchSearchRequest
 }
 import com.foreignlanguagereader.domain.util.ElasticsearchTestUtil
-import com.typesafe.config.ConfigFactory
 import org.elasticsearch.action.bulk.{BulkRequest, BulkResponse}
 import org.elasticsearch.action.search.{MultiSearchRequest, MultiSearchResponse}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.{Mockito, MockitoSugar}
 import org.scalatest.FutureOutcome
 import org.scalatest.funspec.AsyncFunSpec
-import play.api.Configuration
+import play.api.libs.json.Reads
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
+class ElasticsearchCacheClientTest extends AsyncFunSpec with MockitoSugar {
   val index = "definition"
   val fields: Map[String, String] =
     Map("field1" -> "value1", "field2" -> "value2", "field3" -> "value3")
@@ -42,36 +45,47 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
     "refetched"
   )
 
-  val holder: ElasticsearchClientHolder = mock[ElasticsearchClientHolder]
-  val responseReader: ElasticsearchResponseReader =
-    mock[ElasticsearchResponseReader]
-
-  val client = new ElasticsearchClient(
-    holder,
-    responseReader,
-    ActorSystem("testActorSystem", ConfigFactory.load())
-  )
+  val baseClient: ElasticsearchClient = mock[ElasticsearchClient]
+  val queue: CacheQueue = mock[CacheQueue]
+  val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
+  val cacheClient = new ElasticsearchCacheClient(baseClient, queue, ec)
 
   val dummyMultisearchResponse = new MultiSearchResponse(Array(), 2L)
 
   override def withFixture(test: NoArgAsyncTest): FutureOutcome = {
-    Mockito.reset(holder)
+    Mockito.reset(queue)
+    Mockito.reset(baseClient)
     super.withFixture(test)
   }
 
-  describe("an elasticsearch client") {
+  def makeDoubleSearchResponse(
+      definitions: Seq[Definition],
+      attempts: LookupAttempt
+  ): Nested[Future, CircuitBreakerResult, Option[
+    (Map[String, Definition], Map[String, LookupAttempt])
+  ]] = {
+    val defs = definitions.map(d => d.token -> d).toMap
+    val attempt = Map("dummyId" -> attempts)
+    Nested(Future.apply(CircuitBreakerAttempt(Some((defs, attempt)))))
+  }
+
+  describe("an elasticsearch caching client") {
     it("can fetch results from a cache") {
       when(
-        holder.multisearch(any(classOf[MultiSearchRequest]))(
-          any(classOf[ExecutionContext])
+        baseClient.doubleSearch[Definition, LookupAttempt](
+          any(classOf[MultiSearchRequest])
+        )(
+          any(classOf[Reads[Definition]]),
+          any(classOf[Reads[LookupAttempt]])
         )
-      ).thenReturn(Future.successful(dummyMultisearchResponse))
-      when(
-        responseReader
-          .getResultsFromSearch[Definition](dummyMultisearchResponse)
-      ).thenReturn((Some(List(fetchedDefinition)), 4, Some("dummyId")))
+      ).thenReturn(
+        makeDoubleSearchResponse(
+          List(fetchedDefinition),
+          LookupAttempt("definitions", Map(), 4)
+        )
+      )
 
-      client
+      cacheClient
         .findFromCacheOrRefetch[Definition](
           List(
             ElasticsearchSearchRequest(
@@ -84,25 +98,30 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
           )
         )
         .map(results => {
-          verify(holder, never)
+          verify(queue, never)
             .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
 
           val result = results.head
           assert(result.contains(fetchedDefinition))
         })
     }
+
     it("can handle cache misses") {
       when(
-        holder.multisearch(any(classOf[MultiSearchRequest]))(
-          any(classOf[ExecutionContext])
+        baseClient.doubleSearch[Definition, LookupAttempt](
+          any(classOf[MultiSearchRequest])
+        )(
+          any(classOf[Reads[Definition]]),
+          any(classOf[Reads[LookupAttempt]])
         )
-      ).thenReturn(Future.successful(dummyMultisearchResponse))
-      when(
-        responseReader
-          .getResultsFromSearch[Definition](dummyMultisearchResponse)
-      ).thenReturn((Some(List()), 4, Some("dummyId")))
+      ).thenReturn(
+        makeDoubleSearchResponse(
+          List(),
+          LookupAttempt("definitions", Map(), 4)
+        )
+      )
 
-      client
+      cacheClient
         .findFromCacheOrRefetch[Definition](
           List(
             ElasticsearchSearchRequest(
@@ -116,22 +135,34 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
           )
         )
         .map(results => {
-          verify(holder)
+          verify(queue)
             .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
 
           val result = results.head
           assert(result.contains(fetchedDefinition))
         })
     }
+
     describe("gracefully handles failures") {
       it("can handle failures when searching from elasticsearch") {
         when(
-          holder.multisearch(any(classOf[MultiSearchRequest]))(
-            any(classOf[ExecutionContext])
+          baseClient.doubleSearch[Definition, LookupAttempt](
+            any(classOf[MultiSearchRequest])
+          )(
+            any(classOf[Reads[Definition]]),
+            any(classOf[Reads[LookupAttempt]])
           )
-        ).thenThrow(new IllegalStateException("Uh oh"))
+        ).thenReturn(
+          Nested(
+            Future.apply(
+              CircuitBreakerFailedAttempt(
+                new IllegalStateException("Uh oh")
+              )
+            )
+          )
+        )
 
-        client
+        cacheClient
           .findFromCacheOrRefetch[Definition](
             List(
               ElasticsearchSearchRequest(
@@ -145,7 +176,7 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
             )
           )
           .map(results => {
-            verify(holder, never)
+            verify(queue, never)
               .addInsertsToQueue(any(classOf[Seq[ElasticsearchCacheRequest]]))
 
             val result = results.head
@@ -175,30 +206,38 @@ class ElasticsearchClientTest extends AsyncFunSpec with MockitoSugar {
 
       it("can save correctly") {
         when(
-          holder.bulk(any(classOf[BulkRequest]))(any(classOf[ExecutionContext]))
+          baseClient.bulk(any(classOf[BulkRequest]))
         ).thenReturn(
-          Future.successful(mock[BulkResponse])
+          Nested(Future.successful(CircuitBreakerAttempt(mock[BulkResponse])))
         )
 
-        client
+        cacheClient
           .save(request)
           .map(_ => {
-            verify(holder, never)
+            verify(queue, never)
               .addInsertsToQueue(request.retries.getOrElse(List()))
             succeed
           })
       }
-      ignore("retries requests one by one if bulk requests failed") {
+      it("retries requests one by one if bulk requests failed") {
         when(
-          holder.bulk(
+          baseClient.bulk(
             any(classOf[BulkRequest])
           )
-        ).thenThrow(new IllegalStateException("Please try again"))
+        ).thenReturn(
+          Nested(
+            Future.apply(
+              CircuitBreakerFailedAttempt(
+                new IllegalStateException("Please try again")
+              )
+            )
+          )
+        )
 
-        client
+        cacheClient
           .save(request)
           .map(_ => {
-            verify(holder)
+            verify(queue)
               .addInsertsToQueue(request.retries.getOrElse(List()))
             succeed
           })

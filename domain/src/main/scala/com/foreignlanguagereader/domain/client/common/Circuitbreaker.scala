@@ -75,11 +75,12 @@ trait Circuitbreaker {
         }
     )
 
+  // This should return true if failure count should increase
   private[this] def makeFailureFunction[T](
       isFailure: Throwable => Boolean,
       isSuccess: T => Boolean
   ): Try[T] => Boolean = {
-    case Success(result)    => isSuccess(result)
+    case Success(result)    => !isSuccess(result)
     case Failure(exception) => isFailure(exception)
   }
 }

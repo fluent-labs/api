@@ -6,8 +6,7 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerNonAttempt,
   CircuitBreakerResult
 }
-import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchResponseReader
-import org.elasticsearch.action.search.MultiSearchResponse
+import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
 import play.api.Logger
 import play.api.libs.json.{Reads, Writes}
 
@@ -33,12 +32,13 @@ case class ElasticsearchSearchResponse[T](
     fields: Map[String, String],
     fetcher: () => Future[CircuitBreakerResult[List[T]]],
     maxFetchAttempts: Int,
-    response: CircuitBreakerResult[MultiSearchResponse]
+    response: CircuitBreakerResult[
+      Option[(Map[String, T], Map[String, LookupAttempt])]
+    ]
 )(implicit
     tag: ClassTag[T],
     reads: Reads[T],
     writes: Writes[T],
-    reader: ElasticsearchResponseReader,
     ec: ExecutionContext
 ) {
   val logger: Logger = Logger(this.getClass)
@@ -50,13 +50,19 @@ case class ElasticsearchSearchResponse[T](
     queried: Boolean
   ) =
     response match {
-      case CircuitBreakerAttempt(r) =>
-        val (results, attempts, id) = reader.getResultsFromSearch(r)
-        // Done to make us refetch
-        val actualResults = results match {
-          case Some(r) if r.nonEmpty => Some(r)
-          case _                     => None
-        }
+      case CircuitBreakerAttempt(Some(r)) =>
+        val (results, attemptsResult) = r
+
+        // Done to force us to refetch
+        val actualResults = if (results.nonEmpty) {
+          Some(results.values.toSeq)
+        } else { None }
+
+        val (id, attempts) = if (attemptsResult.nonEmpty) {
+          val (docId, a) = attemptsResult.head
+          (Some(docId), a.count)
+        } else { (None, 0) }
+
         (actualResults, attempts, id, true)
       case _ =>
         (None, 0, None, false)
@@ -156,11 +162,12 @@ case class ElasticsearchSearchResponse[T](
 object ElasticsearchSearchResponse {
   def fromResult[T](
       request: ElasticsearchSearchRequest[T],
-      result: CircuitBreakerResult[MultiSearchResponse]
+      result: CircuitBreakerResult[
+        Option[(Map[String, T], Map[String, LookupAttempt])]
+      ]
   )(implicit
       read: Reads[T],
       writes: Writes[T],
-      reader: ElasticsearchResponseReader,
       tag: ClassTag[T],
       ec: ExecutionContext
   ): ElasticsearchSearchResponse[T] = {

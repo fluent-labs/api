@@ -12,7 +12,7 @@ import com.foreignlanguagereader.content.types.internal.word.{
   Word
 }
 import com.foreignlanguagereader.domain.client.LanguageServiceClient
-import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchClient
+import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchSearchRequest
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar
@@ -23,7 +23,8 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
 
 class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
-  val elasticsearchClientMock: ElasticsearchClient = mock[ElasticsearchClient]
+  val elasticsearchClientMock: ElasticsearchCacheClient =
+    mock[ElasticsearchCacheClient]
   val languageServiceClientMock: LanguageServiceClient =
     mock[LanguageServiceClient]
   val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
