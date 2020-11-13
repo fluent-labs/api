@@ -25,6 +25,4 @@ class CacheQueue {
 
   def nextInsert(): Option[ElasticsearchCacheRequest] =
     Option.apply(insertionQueue.poll())
-
-  def hasMore: Boolean = !insertionQueue.isEmpty
 }

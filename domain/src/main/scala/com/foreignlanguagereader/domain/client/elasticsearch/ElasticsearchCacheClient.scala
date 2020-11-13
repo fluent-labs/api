@@ -69,7 +69,7 @@ class ElasticsearchCacheClient @Inject() (
 
           // Spin up a thread to work on the queue
           // And return to user without waiting for it to finish
-          val _ = startInserting()
+          startInserting()
           logger.info(s"Saving results back to elasticsearch")
         }
 
@@ -115,25 +115,25 @@ class ElasticsearchCacheClient @Inject() (
     }
   }
 
-  // The breaker guard is pretty important, or else we just infinitely retry insertions
-  // That will quickly consume the thread pool.
-  def startInserting(): Future[Unit] =
-    Future.apply {
-      while (client.breaker.isClosed && queue.hasMore) {
-        // We could rely on the check for queue emptiness but that opens us up to race conditions.
-        //  Removing and checking is atomic, and the queue is thread safe, so we are protected.
+  def startInserting(): Unit = {
+    val _ = Future.apply {
+      // The breaker guard is pretty important, or else we just infinitely retry insertions
+      // That will quickly consume the thread pool
+      if (client.breaker.isClosed) {
         queue.nextInsert() match {
           case Some(item) =>
             save(item)
+            startInserting()
           case None =>
             logger.info("Finished inserting")
         }
       }
     }
+  }
 
   // Restart the queue when the circuit breaker starts working again.
   client.onClose({
     logger.info("Retrying inserts because elasticsearch is healthy again.")
-    val _ = Future.apply(startInserting())
+    startInserting()
   })
 }
