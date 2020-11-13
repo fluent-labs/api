@@ -8,7 +8,6 @@ import com.foreignlanguagereader.domain.client.common.{
   Circuitbreaker
 }
 import javax.inject.{Inject, Singleton}
-import org.apache.http.HttpHost
 import org.elasticsearch.action.bulk.{BulkRequest, BulkResponse}
 import org.elasticsearch.action.index.{IndexRequest, IndexResponse}
 import org.elasticsearch.action.search.{
@@ -29,18 +28,18 @@ import scala.concurrent.{ExecutionContext, Future}
 
 /**
   * Lower level elasticsearch client. We implement other logic on top of this.
-  * @param host An already configured elasticsearch client.
+  * @param config An already configured elasticsearch client.
   * @param system Thread pool setup for client
   */
 @Singleton
 class ElasticsearchClient @Inject() (
-    host: HttpHost,
+    config: ElasticsearchClientConfig,
     val system: ActorSystem
 ) extends Circuitbreaker {
   implicit val ec: ExecutionContext =
     system.dispatchers.lookup("elasticsearch-context")
   val javaClient: RestHighLevelClient = new RestHighLevelClient(
-    RestClient.builder(host)
+    RestClient.builder(config.getHost())
   )
 
   def index(

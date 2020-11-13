@@ -2,7 +2,7 @@ package com.foreignlanguagereader.domain.client.elasticsearch
 
 import akka.Done
 import akka.actor.CoordinatedShutdown
-import com.google.inject.Provider
+import javax.inject
 import javax.inject.Inject
 import org.apache.http.HttpHost
 import org.testcontainers.elasticsearch.ElasticsearchContainer
@@ -18,11 +18,12 @@ import scala.concurrent.{ExecutionContext, Future}
   * @param cs Shutdown hook for akka, to shut down the server when this server quits
   * @param ec Where to run futures.
   */
+@inject.Singleton
 class ElasticsearchClientConfig @Inject() (
     config: Configuration,
     cs: CoordinatedShutdown,
     implicit val ec: ExecutionContext
-) extends Provider[HttpHost] {
+) {
   val isLocal: Boolean = config.get[Boolean]("local")
   val scheme: String = config.get[String]("elasticsearch.scheme")
   val url: String = config.get[String]("elasticsearch.url")
@@ -34,7 +35,7 @@ class ElasticsearchClientConfig @Inject() (
     new HttpHost(url, port, scheme)
   }
 
-  override def get(): HttpHost = httpHost
+  def getHost(): HttpHost = httpHost
 
   def createLocalElasticsearch(): HttpHost = {
     // Launches a dockerized elasticsearch process
