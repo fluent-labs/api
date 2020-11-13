@@ -3,12 +3,18 @@ name: API PR Review
 on:
   pull_request:
     paths:
+      - "build.sbt"
       - "api/*"
       - "api/**/*"
+      - "content/*"
+      - "content/**/*"
       - "domain/*"
       - "domain/**/*"
       - "dto/*"
       - "dto/**/*"
+      - "project/**/*"
+      - "project/*"
+      - "Dockerfile"
 
 jobs:
   build:
@@ -17,4 +23,18 @@ jobs:
     - uses: actions/checkout@v1
 
     - name: Build container
-      run: docker build .
+      run: docker build . -t api
+
+    - name: Container security scan
+      id: scan
+      uses: anchore/scan-action@v2
+      with:
+        image: "api:latest"
+        fail-build: true
+        acs-report-enable: true
+
+    - name: Upload scan report
+      if: ${{ always() }}
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: ${{ steps.scan.outputs.sarif }}
