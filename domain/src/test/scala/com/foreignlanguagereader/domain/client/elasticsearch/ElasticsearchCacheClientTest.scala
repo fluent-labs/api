@@ -54,6 +54,7 @@ class ElasticsearchCacheClientTest extends AsyncFunSpec with MockitoSugar {
 
   override def withFixture(test: NoArgAsyncTest): FutureOutcome = {
     Mockito.reset(queue)
+    Mockito.reset(baseClient)
     super.withFixture(test)
   }
 
