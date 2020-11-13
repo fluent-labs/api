@@ -22,4 +22,7 @@ jobs:
       run: docker build . -t api
 
     - name: Container security scan
-      run: docker scan api
+      uses: anchore/scan-action@v2
+      with:
+        image: "api:latest"
+        fail-build: true
