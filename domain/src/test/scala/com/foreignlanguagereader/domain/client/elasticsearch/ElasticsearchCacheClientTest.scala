@@ -69,7 +69,7 @@ class ElasticsearchCacheClientTest extends AsyncFunSpec with MockitoSugar {
   }
 
   describe("an elasticsearch caching client") {
-    it("can fetch results from a cache") {
+    ignore("can fetch results from a cache") {
       when(
         baseClient.doubleSearch[Definition, LookupAttempt](
           any(classOf[MultiSearchRequest])
