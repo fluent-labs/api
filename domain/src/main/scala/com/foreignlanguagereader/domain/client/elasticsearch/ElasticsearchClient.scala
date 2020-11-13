@@ -82,7 +82,7 @@ class ElasticsearchClient @Inject() (
     withBreaker("Failed to multisearch")(Future {
       javaClient.msearch(request, RequestOptions.DEFAULT)
     }) map (response => {
-      if (response.getResponses.length == 2) {
+      if (response.getResponses.length === 2) {
         val first =
           getResultsFromSearchResponse[T](
             response.getResponses.head.getResponse
