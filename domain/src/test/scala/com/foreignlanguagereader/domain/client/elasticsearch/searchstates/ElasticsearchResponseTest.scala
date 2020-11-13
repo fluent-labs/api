@@ -161,15 +161,6 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
         })
       }
 
-//      it("gracefully handles when elasticsearch fails") {
-//        when(reader.getResultsFromSearch[Definition](dummyMultisearchResponse))
-//          .thenReturn((None, 4, Some("dummyId")))
-//        val response = responseBase.copy(response =
-//          CircuitBreakerAttempt(dummyMultisearchResponse)
-//        )
-//        assert(response.elasticsearchResult.isEmpty)
-//      }
-
       it("gracefully handles when elasticsearch is completely unavailable") {
         assert(responseBase.elasticsearchResult.isEmpty)
 

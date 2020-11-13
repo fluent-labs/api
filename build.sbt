@@ -6,7 +6,6 @@ scalaVersion in ThisBuild := "2.11.12"
 
 lazy val global = project
   .in(file("."))
-  .configs(IntegrationTest)
   .settings(
     settings
   )
@@ -81,8 +80,6 @@ lazy val jobs = project
     dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(content)
-
-lazy val IntegrationTest = config("integration") extend Test
 
 lazy val commonDependencies = Seq(
   dependencies.scalatest % "test",
