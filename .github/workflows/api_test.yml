@@ -30,7 +30,6 @@ jobs:
       uses: anchore/scan-action@v2
       with:
         image: "api:latest"
-        fail-build: true
 
     - name: Upload scan report
       uses: github/codeql-action/upload-sarif@v1
