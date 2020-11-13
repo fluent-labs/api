@@ -22,13 +22,19 @@ trait WsClient extends Circuitbreaker {
       url: String,
       isFailure: Throwable => Boolean = _ => true
   )(implicit reads: Reads[T]): Nested[Future, CircuitBreakerResult, T] = {
+    val typeName = implicitly[ClassTag[T]].runtimeClass.getSimpleName
+    val message = s"Failed to get $typeName from $url"
+    get(url, message, isFailure)
+  }
+
+  def get[T: ClassTag](
+      url: String,
+      logIfError: String,
+      isFailure: Throwable => Boolean = _ => true
+  )(implicit reads: Reads[T]): Nested[Future, CircuitBreakerResult, T] = {
     logger.info(s"Calling url $url")
     val typeName = implicitly[ClassTag[T]].runtimeClass.getSimpleName
-    withBreaker(
-      s"Failed to get $typeName from $url",
-      isFailure,
-      defaultIsSuccess[T]
-    )(
+    withBreaker(logIfError, isFailure, defaultIsSuccess[T]) {
       ws.url(url)
         // Doubled so that the circuit breaker will handle it.
         .withRequestTimeout(timeout * 2)
@@ -42,6 +48,6 @@ trait WsClient extends Circuitbreaker {
             logger.error(error)
             throw new IllegalArgumentException(error)
         }
-    )
+    }
   }
 }
