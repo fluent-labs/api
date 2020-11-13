@@ -36,7 +36,7 @@ class ElasticsearchCacheClientIntegrationTest
       )
 
       val client =
-        new ElasticsearchClient(config.get(), application.actorSystem)
+        new ElasticsearchClient(config, application.actorSystem)
       client.createIndex("indexTest")
 
       val attempt = LookupAttempt("definitions", Map("field1" -> "value1"), 1)
