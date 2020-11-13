@@ -5,7 +5,6 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerFailedAttempt,
   CircuitBreakerNonAttempt
 }
-import com.foreignlanguagereader.domain.tag.Integration
 import com.typesafe.config.ConfigFactory
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchRequest
@@ -14,10 +13,12 @@ import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
+import org.scalatest.tags.Slow
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import play.api.{Application, Configuration}
 
+@Slow
 class ElasticsearchCacheClientIntegrationTest
     extends AsyncFunSpec
     with MockitoSugar {
@@ -27,16 +28,17 @@ class ElasticsearchCacheClientIntegrationTest
     .build()
 
   describe("an elasticsearch client") {
+    ignore("can index documents") {
+      val config = new ElasticsearchClientConfig(
+        playConfig,
+        application.coordinatedShutdown,
+        scala.concurrent.ExecutionContext.Implicits.global
+      )
 
-    val config = new ElasticsearchClientConfig(
-      playConfig,
-      application.coordinatedShutdown,
-      scala.concurrent.ExecutionContext.Implicits.global
-    )
-    val client = new ElasticsearchClient(config.get(), application.actorSystem)
-    client.createIndex("indexTest")
+      val client =
+        new ElasticsearchClient(config.get(), application.actorSystem)
+      client.createIndex("indexTest")
 
-    it("can index documents", Integration) {
       val attempt = LookupAttempt("definitions", Map("field1" -> "value1"), 1)
       val indexRequest = new IndexRequest()
         .source(Json.toJson(attempt).toString(), XContentType.JSON)

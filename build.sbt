@@ -8,14 +8,7 @@ lazy val global = project
   .in(file("."))
   .configs(IntegrationTest)
   .settings(
-    settings,
-    testOptions in Test := Seq(
-      Tests.Argument("-l", "com.foreignlanguagereader.domain.tag.Integration")
-    ),
-    inConfig(IntegrationTest)(Defaults.testTasks),
-    testOptions in IntegrationTest := Seq(
-      Tests.Argument("-n", "com.foreignlanguagereader.domain.tag.Integration")
-    )
+    settings
   )
   .disablePlugins(AssemblyPlugin)
   .aggregate(api, content, domain, dto, jobs)
@@ -66,10 +59,7 @@ lazy val domain = project
       dependencies.hadoopCommon,
       dependencies.apacheCommonsIo
     ),
-    dependencyOverrides ++= forcedDependencies,
-    testOptions in Test := Seq(
-      Tests.Argument("-l", "com.foreignlanguagereader.domain.tag.Integration")
-    )
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(content)
 
