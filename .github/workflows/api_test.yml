@@ -5,6 +5,8 @@ on:
     paths:
       - "api/*"
       - "api/**/*"
+      - "content/*"
+      - "content/**/*"
       - "domain/*"
       - "domain/**/*"
       - "dto/*"
