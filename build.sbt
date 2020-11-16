@@ -107,7 +107,7 @@ lazy val dependencies =
   new {
     val scalatestVersion = "3.2.2"
     val sparkVersion = "2.4.4"
-    val jacksonVersion = "2.9.10"
+    val jacksonVersion = "2.11.3"
 
     val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
     val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion
