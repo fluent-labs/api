@@ -97,9 +97,9 @@ lazy val playDependencies = Seq(
 // Pretty much everything in here is because Spark NLP has versions that conflicts with other dependencies.
 lazy val forcedDependencies = Seq(
   dependencies.hadoopClient,
-  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.6.7.1",
-  "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.7",
-  "com.fasterxml.jackson.core" % "jackson-core" % "2.6.7",
+  dependencies.jacksonScala,
+  dependencies.jacksonDatabind,
+  dependencies.jacksonCore,
   "org.projectlombok" % "lombok" % "1.18.16"
 )
 
@@ -107,6 +107,7 @@ lazy val dependencies =
   new {
     val scalatestVersion = "3.2.2"
     val sparkVersion = "2.4.4"
+    val jacksonVersion = "2.11.3"
 
     val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
     val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion
@@ -145,6 +146,13 @@ lazy val dependencies =
 
     // Chinese language processing untilities.
     val opencc4j = "com.github.houbb" % "opencc4j" % "1.6.0"
+
+    val jacksonScala =
+      "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonVersion
+    val jacksonDatabind =
+      "com.fasterxml.jackson.core" % "jackson-databind" % jacksonVersion
+    val jacksonCore =
+      "com.fasterxml.jackson.core" % "jackson-core" % jacksonVersion
   }
 
 lazy val settings = Seq(
