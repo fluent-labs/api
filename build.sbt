@@ -105,6 +105,8 @@ lazy val forcedDependencies = Seq(
   "org.apache.hadoop" % "hadoop-common" % "2.10.1"
 )
 
+// Htrace is abandoned and has security vulnerabilities.
+val htraceExclusion = ExclusionRule(organization = "org.apache.htrace")
 lazy val dependencies =
   new {
     val scalatestVersion = "3.2.2"
@@ -121,7 +123,8 @@ lazy val dependencies =
 
     val cats = "org.typelevel" %% "cats-core" % "2.0.0"
 
-    val sparkCore = "org.apache.spark" %% "spark-core" % sparkVersion
+    val sparkCore =
+      "org.apache.spark" %% "spark-core" % sparkVersion excludeAll (htraceExclusion)
     val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
     val sparkMl =
       "org.apache.spark" %% "spark-mllib" % sparkVersion
