@@ -52,6 +52,7 @@ lazy val domain = project
       dependencies.sparkSql,
       dependencies.sparkNLP,
       dependencies.sparkMl,
+      dependencies.tensorflow,
       // Handles breaking guava changes https://stackoverflow.com/questions/36427291/illegalaccesserror-to-guavas-stopwatch-from-org-apache-hadoop-mapreduce-lib-inp
       dependencies.hadoopCommon,
       dependencies.apacheCommonsIo
@@ -124,19 +125,21 @@ lazy val dependencies =
     val cats = "org.typelevel" %% "cats-core" % "2.0.0"
 
     val sparkCore =
-      "org.apache.spark" %% "spark-core" % sparkVersion excludeAll (htraceExclusion)
+      "org.apache.spark" %% "spark-core" % sparkVersion
     val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
     val sparkMl =
       "org.apache.spark" %% "spark-mllib" % sparkVersion
     val sparkXml = "com.databricks" %% "spark-xml" % "0.10.0"
+
     val sparkNLP =
-      "com.johnsnowlabs.nlp" %% "spark-nlp" % "2.6.3"
+      "com.johnsnowlabs.nlp" %% "spark-nlp" % "2.6.3" exclude ("org.tensorflow", "tensorflow")
+    val tensorflow = "org.tensorflow" % "tensorflow-core-platform" % "0.2.0"
 
     // Hacks for guava incompatibility
     val hadoopClient =
       "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "2.7.2"
     val hadoopCommon =
-      "org.apache.hadoop" % "hadoop-common" % "2.7.2" // required for org.apache.hadoop.util.StopWatch
+      "org.apache.hadoop" % "hadoop-common" % "2.10.1" // required for org.apache.hadoop.util.StopWatch
     val apacheCommonsIo =
       "commons-io" % "commons-io" % "2.4" // required for org.apache.commons.io.Charsets that is used internally
 
