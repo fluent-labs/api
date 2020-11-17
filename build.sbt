@@ -101,7 +101,8 @@ lazy val forcedDependencies = Seq(
   dependencies.jacksonDatabind,
   dependencies.jacksonCore,
   "org.projectlombok" % "lombok" % "1.18.16",
-  "org.apache.htrace" % "htrace-core" % "4.0.0-incubating"
+  "org.apache.htrace" % "htrace-core" % "4.0.0-incubating",
+  "org.apache.hadoop" % "hadoop-common" % "2.10.1"
 )
 
 lazy val dependencies =
