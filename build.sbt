@@ -16,7 +16,8 @@ lazy val api = project
     settings,
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ playDependencies,
-    dependencyOverrides ++= forcedDependencies
+    dependencyOverrides ++= forcedDependencies,
+    excludeDependencies ++= forcedExclusions
   )
   .dependsOn(domain)
 
@@ -27,7 +28,8 @@ lazy val content = project
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.scalatestPlay,
       dependencies.opencc4j
-    )
+    ),
+    excludeDependencies ++= forcedExclusions
   )
   .dependsOn(dto)
 
@@ -57,7 +59,8 @@ lazy val domain = project
       dependencies.hadoopCommon,
       dependencies.apacheCommonsIo
     ),
-    dependencyOverrides ++= forcedDependencies
+    dependencyOverrides ++= forcedDependencies,
+    excludeDependencies ++= forcedExclusions
   )
   .dependsOn(content)
 
@@ -65,7 +68,8 @@ lazy val dto = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies
+    libraryDependencies ++= commonDependencies,
+    excludeDependencies ++= forcedExclusions
   )
 
 lazy val jobs = project
@@ -76,11 +80,13 @@ lazy val jobs = project
       dependencies.sparkSql % "provided",
       dependencies.sparkXml
     ),
-    dependencyOverrides ++= forcedDependencies
+    dependencyOverrides ++= forcedDependencies,
+    excludeDependencies ++= forcedExclusions
   )
   .dependsOn(content)
 
 lazy val commonDependencies = Seq(
+  dependencies.log4j,
   dependencies.scalatest % "test",
   dependencies.scalactic,
   dependencies.cats,
@@ -106,13 +112,18 @@ lazy val forcedDependencies = Seq(
   "org.apache.hadoop" % "hadoop-common" % "2.10.1"
 )
 
-// Htrace is abandoned and has security vulnerabilities.
-val htraceExclusion = ExclusionRule(organization = "org.apache.htrace")
+lazy val forcedExclusions = Seq(
+  // This log4j is abandoned, current has new coordinates
+  ExclusionRule("log4j", "log4j")
+)
+
 lazy val dependencies =
   new {
     val scalatestVersion = "3.2.2"
     val sparkVersion = "2.4.7"
     val jacksonVersion = "2.11.3"
+
+    val log4j = "org.apache.logging.log4j" % "log4j-core" % "2.14.0"
 
     val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
     val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion
