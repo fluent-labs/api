@@ -16,8 +16,7 @@ lazy val api = project
     settings,
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ playDependencies,
-    dependencyOverrides ++= forcedDependencies,
-    excludeDependencies ++= forcedExclusions
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(domain)
 
@@ -28,8 +27,7 @@ lazy val content = project
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.scalatestPlay,
       dependencies.opencc4j
-    ),
-    excludeDependencies ++= forcedExclusions
+    )
   )
   .dependsOn(dto)
 
@@ -59,8 +57,7 @@ lazy val domain = project
       dependencies.hadoopCommon,
       dependencies.apacheCommonsIo
     ),
-    dependencyOverrides ++= forcedDependencies,
-    excludeDependencies ++= forcedExclusions
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(content)
 
@@ -68,8 +65,7 @@ lazy val dto = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies,
-    excludeDependencies ++= forcedExclusions
+    libraryDependencies ++= commonDependencies
   )
 
 lazy val jobs = project
@@ -80,13 +76,11 @@ lazy val jobs = project
       dependencies.sparkSql % "provided",
       dependencies.sparkXml
     ),
-    dependencyOverrides ++= forcedDependencies,
-    excludeDependencies ++= forcedExclusions
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(content)
 
 lazy val commonDependencies = Seq(
-//  dependencies.log4j,
   dependencies.scalatest % "test",
   dependencies.scalactic,
   dependencies.cats,
@@ -106,15 +100,10 @@ lazy val forcedDependencies = Seq(
   dependencies.jacksonScala,
   dependencies.jacksonDatabind,
   dependencies.jacksonCore,
-  "org.projectlombok" % "lombok" % "1.18.16",
-  "org.apache.htrace" % "htrace-core" % "4.0.0-incubating",
-  "org.apache.hadoop" % "hadoop-common" % "2.10.1",
-  "org.apache.avro" % "avro" % "1.10.0"
-)
-
-lazy val forcedExclusions = Seq(
-  // This log4j is abandoned, current has new coordinates
-//  ExclusionRule("log4j", "log4j")
+  dependencies.lombok,
+  dependencies.htrace,
+  dependencies.hadoop,
+  dependencies.avro
 )
 
 lazy val dependencies =
@@ -123,8 +112,7 @@ lazy val dependencies =
     val sparkVersion = "2.4.7"
     val jacksonVersion = "2.11.3"
 
-    val log4j = "org.apache.logging.log4j" % "log4j-core" % "2.14.0"
-
+    // Testing
     val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
     val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion
     val scalatestPlay =
@@ -135,6 +123,7 @@ lazy val dependencies =
 
     val cats = "org.typelevel" %% "cats-core" % "2.0.0"
 
+    // Spark
     val sparkCore =
       "org.apache.spark" %% "spark-core" % sparkVersion
     val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
@@ -142,9 +131,21 @@ lazy val dependencies =
       "org.apache.spark" %% "spark-mllib" % sparkVersion
     val sparkXml = "com.databricks" %% "spark-xml" % "0.10.0"
 
+    // NLP tools
+    val opencc4j = "com.github.houbb" % "opencc4j" % "1.6.0"
     val sparkNLP =
       "com.johnsnowlabs.nlp" %% "spark-nlp" % "2.6.3" exclude ("org.tensorflow", "tensorflow")
     val tensorflow = "org.tensorflow" % "tensorflow-core-platform" % "0.2.0"
+
+    // Graphql
+    val sangria = "org.sangria-graphql" %% "sangria" % "2.0.0"
+    val sangriaPlay = "org.sangria-graphql" %% "sangria-play-json" % "2.0.0"
+
+    // External clients
+    val elasticsearchHighLevelClient =
+      "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "7.9.3"
+    val googleCloudClient =
+      "com.google.cloud" % "google-cloud-language" % "1.100.0"
 
     // Hacks for guava incompatibility
     val hadoopClient =
@@ -154,24 +155,17 @@ lazy val dependencies =
     val apacheCommonsIo =
       "commons-io" % "commons-io" % "2.4" // required for org.apache.commons.io.Charsets that is used internally
 
-    val elasticsearchHighLevelClient =
-      "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "7.9.3"
-
-    val sangria = "org.sangria-graphql" %% "sangria" % "2.0.0"
-    val sangriaPlay = "org.sangria-graphql" %% "sangria-play-json" % "2.0.0"
-
-    val googleCloudClient =
-      "com.google.cloud" % "google-cloud-language" % "1.100.0"
-
-    // Chinese language processing untilities.
-    val opencc4j = "com.github.houbb" % "opencc4j" % "1.6.0"
-
+    // Security related dependency upgrades below here
     val jacksonScala =
       "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonVersion
     val jacksonDatabind =
       "com.fasterxml.jackson.core" % "jackson-databind" % jacksonVersion
     val jacksonCore =
       "com.fasterxml.jackson.core" % "jackson-core" % jacksonVersion
+    val lombok = "org.projectlombok" % "lombok" % "1.18.16"
+    val htrace = "org.apache.htrace" % "htrace-core" % "4.0.0-incubating"
+    val hadoop = "org.apache.hadoop" % "hadoop-common" % "2.10.1"
+    val avro = "org.apache.avro" % "avro" % "1.10.0"
   }
 
 lazy val settings = Seq(
