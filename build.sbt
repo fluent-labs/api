@@ -86,7 +86,7 @@ lazy val jobs = project
   .dependsOn(content)
 
 lazy val commonDependencies = Seq(
-  dependencies.log4j,
+//  dependencies.log4j,
   dependencies.scalatest % "test",
   dependencies.scalactic,
   dependencies.cats,
@@ -114,7 +114,7 @@ lazy val forcedDependencies = Seq(
 
 lazy val forcedExclusions = Seq(
   // This log4j is abandoned, current has new coordinates
-  ExclusionRule("log4j", "log4j")
+//  ExclusionRule("log4j", "log4j")
 )
 
 lazy val dependencies =
