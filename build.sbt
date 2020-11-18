@@ -101,7 +101,6 @@ lazy val playDependencies = Seq(
   dependencies.mockito
 )
 
-// Pretty much everything in here is because Spark NLP has versions that conflicts with other dependencies.
 lazy val forcedDependencies = Seq(
   dependencies.hadoopClient,
   dependencies.jacksonScala,
@@ -109,7 +108,8 @@ lazy val forcedDependencies = Seq(
   dependencies.jacksonCore,
   "org.projectlombok" % "lombok" % "1.18.16",
   "org.apache.htrace" % "htrace-core" % "4.0.0-incubating",
-  "org.apache.hadoop" % "hadoop-common" % "2.10.1"
+  "org.apache.hadoop" % "hadoop-common" % "2.10.1",
+  "org.apache.avro" % "avro" % "1.10.0"
 )
 
 lazy val forcedExclusions = Seq(
