@@ -107,7 +107,7 @@ lazy val forcedDependencies = Seq(
 lazy val dependencies =
   new {
     val scalatestVersion = "3.2.2"
-    val sparkVersion = "2.4.7"
+    val sparkVersion = "3.0.1"
     val jacksonVersion = "2.11.3"
 
     // Testing
