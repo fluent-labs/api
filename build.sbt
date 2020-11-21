@@ -116,15 +116,10 @@ lazy val dependencies =
     val sparkCore =
       "org.apache.spark" %% "spark-core" % sparkVersion
     val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
-    val sparkMl =
-      "org.apache.spark" %% "spark-mllib" % sparkVersion
     val sparkXml = "com.databricks" %% "spark-xml" % "0.10.0"
 
     // NLP tools
     val opencc4j = "com.github.houbb" % "opencc4j" % "1.6.0"
-    val sparkNLP =
-      "com.johnsnowlabs.nlp" %% "spark-nlp" % "2.6.3" exclude ("org.tensorflow", "tensorflow")
-    val tensorflow = "org.tensorflow" % "tensorflow-core-platform" % "0.2.0"
 
     // Graphql
     val sangria = "org.sangria-graphql" %% "sangria" % "2.0.0"
@@ -139,10 +134,6 @@ lazy val dependencies =
     // Hacks for guava incompatibility
     val hadoopClient =
       "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "2.7.2"
-    val hadoopCommon =
-      "org.apache.hadoop" % "hadoop-common" % "2.10.1" // required for org.apache.hadoop.util.StopWatch
-    val apacheCommonsIo =
-      "commons-io" % "commons-io" % "2.4" // required for org.apache.commons.io.Charsets that is used internally
 
     // Security related dependency upgrades below here
     val jacksonScala =
@@ -167,8 +158,7 @@ lazy val compilerOptions = Seq(
   "-deprecation",
   "-feature",
   "-unchecked",
-  "-Xfatal-warnings",
-  "-Ypartial-unification" // Remove me in scala 2.13
+  "-Xfatal-warnings"
 )
 // Add these back in when we can get to scala 2.13
 //  "-Wdead-code",
