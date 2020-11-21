@@ -46,15 +46,6 @@ lazy val domain = project
       // Clients
       dependencies.opencc4j,
       dependencies.googleCloudClient
-      // Spark NLP
-//      dependencies.sparkCore,
-//      dependencies.sparkSql,
-//      dependencies.sparkNLP,
-//      dependencies.sparkMl,
-//      dependencies.tensorflow,
-//      // Handles breaking guava changes https://stackoverflow.com/questions/36427291/illegalaccesserror-to-guavas-stopwatch-from-org-apache-hadoop-mapreduce-lib-inp
-//      dependencies.hadoopCommon,
-//      dependencies.apacheCommonsIo
     )
   )
   .dependsOn(content)
