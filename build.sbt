@@ -15,8 +15,7 @@ lazy val api = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies ++ playDependencies,
-    dependencyOverrides ++= forcedDependencies
+    libraryDependencies ++= commonDependencies ++ playDependencies
   )
   .dependsOn(domain)
 
@@ -46,18 +45,17 @@ lazy val domain = project
       dependencies.elasticsearchContainer,
       // Clients
       dependencies.opencc4j,
-      dependencies.googleCloudClient,
+      dependencies.googleCloudClient
       // Spark NLP
-      dependencies.sparkCore,
-      dependencies.sparkSql,
-      dependencies.sparkNLP,
-      dependencies.sparkMl,
-      dependencies.tensorflow,
-      // Handles breaking guava changes https://stackoverflow.com/questions/36427291/illegalaccesserror-to-guavas-stopwatch-from-org-apache-hadoop-mapreduce-lib-inp
-      dependencies.hadoopCommon,
-      dependencies.apacheCommonsIo
-    ),
-    dependencyOverrides ++= forcedDependencies
+//      dependencies.sparkCore,
+//      dependencies.sparkSql,
+//      dependencies.sparkNLP,
+//      dependencies.sparkMl,
+//      dependencies.tensorflow,
+//      // Handles breaking guava changes https://stackoverflow.com/questions/36427291/illegalaccesserror-to-guavas-stopwatch-from-org-apache-hadoop-mapreduce-lib-inp
+//      dependencies.hadoopCommon,
+//      dependencies.apacheCommonsIo
+    )
   )
   .dependsOn(content)
 

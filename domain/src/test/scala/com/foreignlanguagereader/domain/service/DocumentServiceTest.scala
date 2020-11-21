@@ -17,7 +17,6 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerNonAttempt
 }
 import com.foreignlanguagereader.domain.client.google.GoogleCloudClient
-import com.foreignlanguagereader.domain.client.spark.SparkNLPClient
 import com.foreignlanguagereader.domain.service.definition.DefinitionService
 import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
@@ -27,8 +26,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
   val mockGoogleCloudClient: GoogleCloudClient =
     mock[GoogleCloudClient]
-  val mockSparkClient: SparkNLPClient =
-    mock[SparkNLPClient]
   val mockDefinitionService: DefinitionService =
     mock[DefinitionService]
   val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
@@ -36,7 +33,6 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
   val documentService =
     new DocumentService(
       mockGoogleCloudClient,
-      mockSparkClient,
       mockDefinitionService,
       ec
     )
@@ -115,9 +111,11 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         processedToken = "phrase"
       )
       when(
-        mockSparkClient
-          .lemmatize(Language.ENGLISH, "test phrase")
-      ).thenReturn(Set(testWord, phraseWord))
+        mockGoogleCloudClient
+          .getWordsForDocument(Language.ENGLISH, "test phrase")
+      ).thenReturn(
+        Nested(Future.apply(CircuitBreakerAttempt(Set(testWord, phraseWord))))
+      )
 
       val testDefinition = Definition(
         subdefinitions = List("test"),

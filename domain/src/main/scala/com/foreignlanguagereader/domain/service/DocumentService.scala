@@ -1,20 +1,15 @@
 package com.foreignlanguagereader.domain.service
 
 import cats.implicits._
+import com.foreignlanguagereader.content.types.Language.Language
+import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,
   CircuitBreakerNonAttempt
 }
 import com.foreignlanguagereader.domain.client.google.GoogleCloudClient
-import com.foreignlanguagereader.content.types.Language.{
-  CHINESE,
-  CHINESE_TRADITIONAL,
-  Language
-}
 import com.foreignlanguagereader.domain.service.definition.DefinitionService
-import com.foreignlanguagereader.content.types.internal.word.Word
-import com.foreignlanguagereader.domain.client.spark.SparkNLPClient
 import com.google.inject.Inject
 import javax.inject
 import play.api.Logger
@@ -24,7 +19,6 @@ import scala.concurrent.{ExecutionContext, Future}
 @inject.Singleton
 class DocumentService @Inject() (
     val googleCloudClient: GoogleCloudClient,
-    val sparkClient: SparkNLPClient,
     val definitionService: DefinitionService,
     implicit val ec: ExecutionContext
 ) {
@@ -50,14 +44,7 @@ class DocumentService @Inject() (
   def tokenizeDocument(
       language: Language,
       document: String
-  ): Future[Set[Word]] =
-    language match {
-      // Spark NLP currently doesn't have a good way to tokenize Chinese
-      // So we fall back to Google cloud
-      case CHINESE             => getWordsFromGoogleCloud(language, document)
-      case CHINESE_TRADITIONAL => getWordsFromGoogleCloud(language, document)
-      case _                   => Future.apply(sparkClient.lemmatize(language, document))
-    }
+  ): Future[Set[Word]] = getWordsFromGoogleCloud(language, document)
 
   def getWordsFromGoogleCloud(
       language: Language,
