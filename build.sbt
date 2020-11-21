@@ -2,7 +2,7 @@ name := "foreign-language-reader-parent"
 organization := "com.foreignlanguagereader"
 version := "1.0-SNAPSHOT"
 
-scalaVersion in ThisBuild := "2.11.12"
+scalaVersion in ThisBuild := "2.13.4"
 
 lazy val global = project
   .in(file("."))
