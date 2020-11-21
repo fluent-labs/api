@@ -143,7 +143,7 @@ lazy val dependencies =
     val elasticsearchHighLevelClient =
       "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "7.9.3"
     val googleCloudClient =
-      "com.google.cloud" % "google-cloud-language" % "1.100.0"
+      "com.google.cloud" % "google-cloud-language" % "1.101.6"
 
     // Hacks for guava incompatibility
     val hadoopClient =
