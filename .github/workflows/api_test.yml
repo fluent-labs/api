@@ -28,10 +28,9 @@ jobs:
     - name: Container security scan
       id: scan
       uses: anchore/scan-action@v2
-      with:
+      with:s
         image: "api:latest"
-#        TODO Enable me after spark NLP is gone
-#        fail-build: true
+        fail-build: true
         acs-report-enable: true
 
     - name: Upload scan report
