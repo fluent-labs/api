@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine as builder
+FROM openjdk:14-jdk-alpine3.10 as builder
 MAINTAINER reader@lucaskjaerozhang.com
 
 ENV SBT_VERSION 1.4.0
@@ -26,7 +26,7 @@ RUN unzip /app/api/target/universal/api-0.1.0-SNAPSHOT.zip
 ## Changes to string methods between versions has burned us before
  RUN sbt test
 
-FROM openjdk:8-jdk-alpine as final
+FROM openjdk:14-jdk-alpine3.10 as final
 WORKDIR /app
 RUN apk add bash
 EXPOSE 9000
