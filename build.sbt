@@ -85,14 +85,9 @@ lazy val playDependencies = Seq(
 )
 
 lazy val forcedDependencies = Seq(
-  dependencies.hadoopClient,
   dependencies.jacksonScala,
   dependencies.jacksonDatabind,
-  dependencies.jacksonCore,
-  dependencies.lombok,
-  dependencies.htrace,
-  dependencies.hadoop,
-  dependencies.avro
+  dependencies.jacksonCore
 )
 
 lazy val dependencies =
@@ -131,9 +126,7 @@ lazy val dependencies =
     val googleCloudClient =
       "com.google.cloud" % "google-cloud-language" % "1.101.6"
 
-    // Hacks for guava incompatibility
-    val hadoopClient =
-      "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "2.7.2"
+    val h2 = "com.h2database" % "h2" % "1.4.192"
 
     // Security related dependency upgrades below here
     val jacksonScala =
@@ -142,10 +135,6 @@ lazy val dependencies =
       "com.fasterxml.jackson.core" % "jackson-databind" % jacksonVersion
     val jacksonCore =
       "com.fasterxml.jackson.core" % "jackson-core" % jacksonVersion
-    val lombok = "org.projectlombok" % "lombok" % "1.18.16"
-    val htrace = "org.apache.htrace" % "htrace-core" % "4.0.0-incubating"
-    val hadoop = "org.apache.hadoop" % "hadoop-common" % "2.10.1"
-    val avro = "org.apache.avro" % "avro" % "1.10.0"
   }
 
 lazy val settings = Seq(
