@@ -15,7 +15,9 @@ lazy val api = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies ++ playDependencies
+    libraryDependencies ++= commonDependencies ++ playDependencies ++ Seq(
+      dependencies.h2
+    )
   )
   .dependsOn(domain)
 
@@ -81,7 +83,8 @@ lazy val playDependencies = Seq(
   dependencies.scalatestPlay,
   dependencies.sangria,
   dependencies.sangriaPlay,
-  dependencies.mockito
+  dependencies.mockito,
+  jdbc
 )
 
 lazy val forcedDependencies = Seq(
