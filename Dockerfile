@@ -24,7 +24,7 @@ RUN unzip /app/api/target/universal/api-0.1.0-SNAPSHOT.zip
 
 ## Make sure tests are run on the correct JVM
 ## Changes to string methods between versions has burned us before
- RUN sbt test
+RUN sbt test
 
 FROM openjdk:14-jdk-alpine3.10 as final
 WORKDIR /app

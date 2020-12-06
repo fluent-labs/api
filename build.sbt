@@ -45,7 +45,12 @@ lazy val domain = project
       dependencies.elasticsearchContainer,
       // Clients
       dependencies.opencc4j,
-      dependencies.googleCloudClient
+      dependencies.googleCloudClient,
+      // NLP
+      dependencies.coreNLP,
+      dependencies.coreNLPChinese,
+      dependencies.coreNLPEnglish,
+      dependencies.coreNLPSpanish
     )
   )
   .dependsOn(content)
@@ -100,6 +105,7 @@ lazy val dependencies =
     val scalatestVersion = "3.2.2"
     val sparkVersion = "3.0.1"
     val jacksonVersion = "2.11.3"
+    val coreNLPVersion = "4.0.0"
 
     // Testing
     val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
@@ -120,6 +126,10 @@ lazy val dependencies =
 
     // NLP tools
     val opencc4j = "com.github.houbb" % "opencc4j" % "1.6.0"
+    val coreNLP = "edu.stanford.nlp" % "stanford-corenlp" % coreNLPVersion
+    val coreNLPChinese = "edu.stanford.nlp" % "models-chinese" % coreNLPVersion
+    val coreNLPEnglish = "edu.stanford.nlp" % "models-english" % coreNLPVersion
+    val coreNLPSpanish = "edu.stanford.nlp" % "models-spanish" % coreNLPVersion
 
     // Graphql
     val sangria = "org.sangria-graphql" %% "sangria" % "2.0.0"
