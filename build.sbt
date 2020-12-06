@@ -48,6 +48,7 @@ lazy val domain = project
       dependencies.googleCloudClient,
       // NLP
       dependencies.coreNLP,
+      dependencies.coreNLPModels,
       dependencies.coreNLPChinese,
       dependencies.coreNLPEnglish,
       dependencies.coreNLPSpanish
@@ -105,7 +106,7 @@ lazy val dependencies =
     val scalatestVersion = "3.2.2"
     val sparkVersion = "3.0.1"
     val jacksonVersion = "2.11.3"
-    val coreNLPVersion = "4.0.0"
+    val coreNLPVersion = "4.2.0"
 
     // Testing
     val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
@@ -127,9 +128,14 @@ lazy val dependencies =
     // NLP tools
     val opencc4j = "com.github.houbb" % "opencc4j" % "1.6.0"
     val coreNLP = "edu.stanford.nlp" % "stanford-corenlp" % coreNLPVersion
-    val coreNLPChinese = "edu.stanford.nlp" % "models-chinese" % coreNLPVersion
-    val coreNLPEnglish = "edu.stanford.nlp" % "models-english" % coreNLPVersion
-    val coreNLPSpanish = "edu.stanford.nlp" % "models-spanish" % coreNLPVersion
+    val coreNLPModels =
+      "edu.stanford.nlp" % "stanford-corenlp" % coreNLPVersion classifier "models"
+    val coreNLPChinese =
+      "edu.stanford.nlp" % "stanford-corenlp" % coreNLPVersion classifier "models-chinese"
+    val coreNLPEnglish =
+      "edu.stanford.nlp" % "stanford-corenlp" % coreNLPVersion classifier "models-english"
+    val coreNLPSpanish =
+      "edu.stanford.nlp" % "stanford-corenlp" % coreNLPVersion classifier "models-spanish"
 
     // Graphql
     val sangria = "org.sangria-graphql" %% "sangria" % "2.0.0"
