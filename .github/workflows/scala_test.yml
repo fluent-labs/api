@@ -26,7 +26,7 @@ jobs:
     - name: Build API
       run: sbt api/dist
     - name: Build jobs
-      run: sbt jobs/assemble
+      run: sbt jobs/assembly
 
   test:
     runs-on: ubuntu-latest
