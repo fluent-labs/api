@@ -9,6 +9,7 @@ scalaVersion in ThisBuild := "2.12.12"
 
 lazy val global = project
   .in(file("."))
+  .disablePlugins(AssemblyPlugin)
   .settings(settings)
   .aggregate(api, content, domain, dto, jobs)
 
@@ -60,8 +61,9 @@ lazy val dto = project
   )
 
 lazy val jobs = project
+  .enablePlugins(AssemblyPlugin)
   .settings(
-    assemblySettings,
+    assemblySettings ++ Seq(assemblyJarName in assembly := name.value + ".jar"),
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.sparkCore % "provided",
       dependencies.sparkSql % "provided",
