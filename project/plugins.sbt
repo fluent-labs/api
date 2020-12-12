@@ -3,6 +3,9 @@ addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.6.1")
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.15.0")
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.10.0-RC1")
 
+// Sharing code between jvm projects
+addSbtPlugin("com.codecommit" % "sbt-github-packages" % "0.5.2")
+
 // Api
 // Workaround for missing npm sources
 addSbtPlugin(

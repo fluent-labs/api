@@ -2,6 +2,12 @@ name := "foreign-language-reader-parent"
 organization := "com.foreignlanguagereader"
 version := "1.0-SNAPSHOT"
 
+// Github package information
+githubOwner := "lucaskjaero"
+githubRepository := "foreign-language-reader"
+githubTokenSource := TokenSource.Environment("GITHUB_TOKEN")
+publishTo := githubPublishTo.value
+
 scalaVersion in ThisBuild := "2.12.12"
 
 lazy val global = project
