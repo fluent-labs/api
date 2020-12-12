@@ -192,7 +192,6 @@ lazy val compilerOptions = Seq(
  * Release
  */
 
-releaseIgnoreUntrackedFiles := true
 githubTokenSource := TokenSource.Environment("GITHUB_TOKEN")
 publishTo := githubPublishTo.value
 
