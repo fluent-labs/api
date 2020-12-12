@@ -10,7 +10,6 @@ scalaVersion in ThisBuild := "2.12.12"
 lazy val global = project
   .in(file("."))
   .settings(settings)
-  .disablePlugins(AssemblyPlugin)
   .aggregate(api, content, domain, dto, jobs)
 
 lazy val api = project
