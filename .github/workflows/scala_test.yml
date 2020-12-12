@@ -25,10 +25,6 @@ jobs:
       uses: coursier/cache-action@v3
     - name: Build
       run: sbt dist
-#    - name: Publish
-#      run: sbt publish
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   test:
     runs-on: ubuntu-latest
