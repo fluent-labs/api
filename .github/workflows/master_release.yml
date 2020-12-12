@@ -35,9 +35,9 @@ jobs:
         project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
         coverage-reports: api/target/scala-2.12/coverage-report/cobertura.xml, content/target/scala-2.12/coverage-report/cobertura.xml, domain/target/scala-2.12/coverage-report/cobertura.xml, jobs/target/scala-2.12/coverage-report/cobertura.xml
 
-  api:
+  security:
     runs-on: ubuntu-latest
-    name: API security scan
+    name: Security scan
     steps:
       - uses: actions/checkout@v1
 
@@ -61,6 +61,7 @@ jobs:
   publish:
     name: Publish packages
     runs-on: ubuntu-latest
+    needs: [coverage, security]
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
