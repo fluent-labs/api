@@ -168,7 +168,6 @@ lazy val compilerOptions = Seq(
 //  "-Wvalue-discard",
 
 lazy val assemblySettings = Seq(
-  assemblyJarName in assembly := name.value + ".jar",
   organization := "com.foreignlanguagereader",
   githubOwner := "lucaskjaero",
   githubRepository := "foreign-language-reader"
