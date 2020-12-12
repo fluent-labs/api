@@ -1,6 +1,4 @@
 name := "foreign-language-reader-parent"
-version := "1.0-SNAPSHOT"
-
 scalaVersion in ThisBuild := "2.12.12"
 
 /*
