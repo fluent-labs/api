@@ -205,7 +205,6 @@ lazy val compilerOptions = Seq(
 
 githubTokenSource := TokenSource.Environment("GITHUB_TOKEN")
 publishTo := githubPublishTo.value
-releaseIgnoreUntrackedFiles := true
 
 lazy val assemblySettings = Seq(
   organization := "com.foreignlanguagereader",
