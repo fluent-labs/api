@@ -1,16 +1,24 @@
 name := "foreign-language-reader-parent"
 version := "1.0-SNAPSHOT"
 
-// Github package information
-githubTokenSource := TokenSource.Environment("GITHUB_TOKEN")
-publishTo := githubPublishTo.value
-
 scalaVersion in ThisBuild := "2.12.12"
+
+/*
+ * Project Setup
+ */
+
+lazy val settings = Seq(
+  scalacOptions ++= compilerOptions
+)
 
 lazy val global = project
   .in(file("."))
   .disablePlugins(AssemblyPlugin)
-  .settings(settings)
+  .settings(
+    settings,
+    assemblySettings,
+    dependencyOverrides ++= forcedDependencies
+  )
   .aggregate(api, content, domain, dto, jobs)
 
 lazy val api = project
@@ -18,7 +26,7 @@ lazy val api = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies ++ playDependencies
+    libraryDependencies ++= apiDependencies
   )
   .dependsOn(domain)
 
@@ -26,10 +34,7 @@ lazy val content = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies ++ Seq(
-      dependencies.scalatestPlay,
-      dependencies.opencc4j
-    )
+    libraryDependencies ++= contentDependencies
   )
   .dependsOn(dto)
 
@@ -37,19 +42,7 @@ lazy val domain = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies ++ Seq(
-      // Dependency injection
-      guice,
-      // Used to generate elasticsearch matchers
-      dependencies.elasticsearchHighLevelClient,
-      // Testing
-      dependencies.mockito,
-      dependencies.scalatestPlay,
-      dependencies.elasticsearchContainer,
-      // Clients
-      dependencies.opencc4j,
-      dependencies.googleCloudClient
-    )
+    libraryDependencies ++= domainDependencies
   )
   .dependsOn(content)
 
@@ -57,47 +50,20 @@ lazy val dto = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies
+    libraryDependencies ++= dtoDependencies
   )
 
 lazy val jobs = project
   .enablePlugins(AssemblyPlugin)
   .settings(
     assemblySettings ++ Seq(assemblyJarName in assembly := name.value + ".jar"),
-    libraryDependencies ++= commonDependencies ++ Seq(
-      dependencies.sparkCore % "provided",
-      dependencies.sparkSql % "provided",
-      dependencies.sparkXml
-    ),
-    dependencyOverrides ++= forcedDependencies
+    libraryDependencies ++= jobsDependencies
   )
   .dependsOn(content)
 
-lazy val commonDependencies = Seq(
-  dependencies.scalatest % "test",
-  dependencies.scalactic,
-  dependencies.cats,
-  ws,
-  dependencies.sangria
-)
-
-lazy val playDependencies = Seq(
-  dependencies.scalatestPlay,
-  dependencies.sangria,
-  dependencies.sangriaPlay,
-  dependencies.mockito
-)
-
-lazy val forcedDependencies = Seq(
-  dependencies.hadoopClient,
-  dependencies.jacksonScala,
-  dependencies.jacksonDatabind,
-  dependencies.jacksonCore,
-  dependencies.lombok,
-  dependencies.htrace,
-  dependencies.hadoop,
-  dependencies.avro
-)
+/*
+ * Dependencies
+ */
 
 lazy val dependencies =
   new {
@@ -152,9 +118,64 @@ lazy val dependencies =
     val avro = "org.apache.avro" % "avro" % "1.10.0"
   }
 
-lazy val settings = Seq(
-  scalacOptions ++= compilerOptions
+lazy val commonDependencies = Seq(
+  dependencies.scalatest % "test",
+  dependencies.scalactic,
+  dependencies.cats,
+  ws,
+  dependencies.sangria
 )
+
+lazy val playDependencies = Seq(
+  dependencies.scalatestPlay,
+  dependencies.sangria,
+  dependencies.sangriaPlay,
+  dependencies.mockito
+)
+
+lazy val forcedDependencies = Seq(
+  dependencies.hadoopClient,
+  dependencies.jacksonScala,
+  dependencies.jacksonDatabind,
+  dependencies.jacksonCore,
+  dependencies.lombok,
+  dependencies.htrace,
+  dependencies.hadoop,
+  dependencies.avro
+)
+
+lazy val apiDependencies = commonDependencies ++ playDependencies
+
+lazy val contentDependencies = commonDependencies ++ Seq(
+  dependencies.scalatestPlay,
+  dependencies.opencc4j
+)
+
+lazy val domainDependencies = commonDependencies ++ Seq(
+  // Dependency injection
+  guice,
+  // Used to generate elasticsearch matchers
+  dependencies.elasticsearchHighLevelClient,
+  // Testing
+  dependencies.mockito,
+  dependencies.scalatestPlay,
+  dependencies.elasticsearchContainer,
+  // Clients
+  dependencies.opencc4j,
+  dependencies.googleCloudClient
+)
+
+lazy val dtoDependencies = commonDependencies
+
+lazy val jobsDependencies = commonDependencies ++ Seq(
+  dependencies.sparkCore % "provided",
+  dependencies.sparkSql % "provided",
+  dependencies.sparkXml
+)
+
+/*
+ * Build
+ */
 
 lazy val compilerOptions = Seq(
   "-encoding",
@@ -169,11 +190,23 @@ lazy val compilerOptions = Seq(
 //  "-Wdead-code",
 //  "-Wvalue-discard",
 
+/*
+ * Release
+ */
+
+releaseIgnoreUntrackedFiles := true
+githubTokenSource := TokenSource.Environment("GITHUB_TOKEN")
+publishTo := githubPublishTo.value
+
 lazy val assemblySettings = Seq(
   organization := "com.foreignlanguagereader",
   githubOwner := "lucaskjaero",
   githubRepository := "foreign-language-reader"
 )
+
+/*
+ * Quality
+ */
 
 // Code coverage settings
 coverageMinimum := 70
