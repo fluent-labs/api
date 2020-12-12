@@ -6,6 +6,9 @@ ENV INSTALL_DIR /usr/local
 ENV SBT_HOME /usr/local/sbt
 ENV PATH ${PATH}:${SBT_HOME}/bin
 
+# Sadly needed because package publishing requires this for all lifecycle steps.
+GITHUB_TOKEN faketoken
+
 # Install sbt
 RUN apk add --no-cache --update bash wget && mkdir -p "$SBT_HOME" && \
     wget -qO - --no-check-certificate "https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz" |  tar xz -C $INSTALL_DIR && \
