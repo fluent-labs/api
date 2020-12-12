@@ -24,7 +24,8 @@ lazy val api = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= apiDependencies
+    libraryDependencies ++= apiDependencies,
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(domain)
 
@@ -32,7 +33,8 @@ lazy val content = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= contentDependencies
+    libraryDependencies ++= contentDependencies,
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(dto)
 
@@ -40,7 +42,8 @@ lazy val domain = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= domainDependencies
+    libraryDependencies ++= domainDependencies,
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(content)
 
@@ -48,7 +51,8 @@ lazy val dto = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= dtoDependencies
+    libraryDependencies ++= dtoDependencies,
+    dependencyOverrides ++= forcedDependencies
   )
 
 lazy val jobs = project
@@ -61,7 +65,8 @@ lazy val jobs = project
         case _                                   => MergeStrategy.first
       }
     ),
-    libraryDependencies ++= jobsDependencies
+    libraryDependencies ++= jobsDependencies,
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(content)
 
