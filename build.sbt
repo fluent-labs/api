@@ -1,5 +1,4 @@
 name := "foreign-language-reader-parent"
-organization := "com.foreignlanguagereader"
 version := "1.0-SNAPSHOT"
 
 // Github package information
@@ -171,6 +170,7 @@ lazy val compilerOptions = Seq(
 
 lazy val assemblySettings = Seq(
   assemblyJarName in assembly := name.value + ".jar",
+  organization := "com.foreignlanguagereader",
   githubOwner := "lucaskjaero",
   githubRepository := "foreign-language-reader"
 )
