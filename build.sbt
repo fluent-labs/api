@@ -3,8 +3,6 @@ organization := "com.foreignlanguagereader"
 version := "1.0-SNAPSHOT"
 
 // Github package information
-githubOwner := "lucaskjaero"
-githubRepository := "foreign-language-reader"
 githubTokenSource := TokenSource.Environment("GITHUB_TOKEN")
 publishTo := githubPublishTo.value
 
@@ -172,7 +170,9 @@ lazy val compilerOptions = Seq(
 //  "-Wvalue-discard",
 
 lazy val assemblySettings = Seq(
-  assemblyJarName in assembly := name.value + ".jar"
+  assemblyJarName in assembly := name.value + ".jar",
+  githubOwner := "lucaskjaero",
+  githubRepository := "foreign-language-reader"
 )
 
 // Code coverage settings
