@@ -21,8 +21,12 @@ jobs:
         java-version: 14.0.1
     - name: Load SBT cache
       uses: coursier/cache-action@v3
-    - name: Publish
+    - name: Build
       run: sbt dist
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Publish
+      run: sbt publish
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
