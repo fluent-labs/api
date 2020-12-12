@@ -54,7 +54,12 @@ lazy val dto = project
 lazy val jobs = project
   .enablePlugins(AssemblyPlugin)
   .settings(
-    assemblySettings ++ Seq(assemblyJarName in assembly := name.value + ".jar"),
+    assemblySettings ++ Seq(
+      assemblyJarName in assembly := name.value + ".jar",
+      assemblyMergeStrategy in assembly := { _ =>
+        MergeStrategy.first
+      }
+    ),
     libraryDependencies ++= jobsDependencies
   )
   .dependsOn(content)
