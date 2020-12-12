@@ -56,8 +56,9 @@ lazy val jobs = project
   .settings(
     assemblySettings ++ Seq(
       assemblyJarName in assembly := name.value + ".jar",
-      assemblyMergeStrategy in assembly := { _ =>
-        MergeStrategy.first
+      assemblyMergeStrategy in assembly := {
+        case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
+        case _                                   => MergeStrategy.first
       }
     ),
     libraryDependencies ++= jobsDependencies
