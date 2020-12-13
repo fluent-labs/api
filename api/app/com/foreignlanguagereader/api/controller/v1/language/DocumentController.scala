@@ -35,11 +35,9 @@ class DocumentController @Inject() (
               definitionLanguage,
               documentRequest.getText
             )
-            .map {
-              case List() => NoContent
-              case words =>
-                Ok(JavaJson.stringify(JavaJson.toJson(words.map(_.toDTO))))
-            }
+            .map(words =>
+              Ok(JavaJson.stringify(JavaJson.toJson(words.map(_.toDTO))))
+            )
             .recover {
               case error: Throwable =>
                 val message =
