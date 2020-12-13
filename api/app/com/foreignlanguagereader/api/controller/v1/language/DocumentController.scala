@@ -2,7 +2,7 @@ package com.foreignlanguagereader.api.controller.v1.language
 
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.domain.service.DocumentService
-import com.foreignlanguagereader.dto.v1.Serializers._
+import com.foreignlanguagereader.dto.v1.serializers.Serializers._
 import com.foreignlanguagereader.dto.v1.document.DocumentRequest
 import javax.inject._
 import play.api.Logger

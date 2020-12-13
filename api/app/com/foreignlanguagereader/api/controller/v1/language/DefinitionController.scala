@@ -5,7 +5,7 @@ import com.foreignlanguagereader.domain.service.definition.DefinitionService
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.definition.Definition
 import com.foreignlanguagereader.content.types.internal.word.Word
-import com.foreignlanguagereader.dto.v1.Serializers._
+import com.foreignlanguagereader.dto.v1.serializers.Serializers._
 import javax.inject._
 import play.api.Logger
 import play.api.libs.json.Json
