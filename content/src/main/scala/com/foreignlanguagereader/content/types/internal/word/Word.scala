@@ -6,7 +6,8 @@ import com.foreignlanguagereader.content.types.internal.word.Count.Count
 import com.foreignlanguagereader.content.types.internal.word.GrammaticalGender.GrammaticalGender
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.WordTense.WordTense
-import com.foreignlanguagereader.dto.v1.document.WordDTO
+import com.foreignlanguagereader.dto.v1.word.WordDTO
+import scala.collection.JavaConverters._
 
 case class Word(
     language: Language,
@@ -22,7 +23,7 @@ case class Word(
 ) {
   lazy val toDTO: WordDTO = {
     val defs = definitions.map(_.toDTO)
-    WordDTO(token, tag.toString, lemma, defs)
+    new WordDTO(token, tag.toString, lemma, defs.asJava)
   }
 }
 object Word {

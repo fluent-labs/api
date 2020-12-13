@@ -1,7 +1,6 @@
 package com.foreignlanguagereader.content.types.internal.word
 
 import com.foreignlanguagereader.dto.v1.word.PartOfSpeechDTO
-import com.foreignlanguagereader.dto.v1.word.PartOfSpeechDTO.PartOfSpeechDTO
 import play.api.libs.json.{Reads, Writes}
 
 /**

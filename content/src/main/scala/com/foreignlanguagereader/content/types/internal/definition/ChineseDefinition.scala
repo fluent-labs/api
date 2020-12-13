@@ -11,13 +11,14 @@ import com.foreignlanguagereader.content.types.internal.definition.DefinitionSou
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.dto.v1.definition.ChineseDefinitionDTO
-import com.foreignlanguagereader.dto.v1.definition.chinese.HskLevel.HSKLevel
 import com.foreignlanguagereader.dto.v1.definition.chinese.{
   ChinesePronunciation,
-  HskLevel
+  HSKLevel
 }
 import com.github.houbb.opencc4j.util.ZhConverterUtil
 import play.api.libs.json._
+import scala.collection.JavaConverters._
+import scala.compat.java8.OptionConverters._
 
 case class ChineseDefinition(
     override val subdefinitions: List[String],
@@ -57,19 +58,19 @@ case class ChineseDefinition(
 
   val hsk: HSKLevel = simplified match {
     case Some(s) => HSKLevelFinder.getHSK(s)
-    case None    => HskLevel.NONE
+    case None    => HSKLevel.NONE
   }
 
   lazy val toDTO: ChineseDefinitionDTO =
-    ChineseDefinitionDTO(
-      id = id,
-      subdefinitions = subdefinitions,
-      tag = PartOfSpeech.toDTO(tag),
-      examples = examples,
-      simplified = simplified,
-      traditional = traditional,
-      pronunciation = pronunciation,
-      hsk = hsk
+    new ChineseDefinitionDTO(
+      id,
+      subdefinitions.asJava,
+      PartOfSpeech.toDTO(tag),
+      examples.getOrElse(List()).asJava,
+      simplified.asJava,
+      traditional.map(_.asJava).asJava,
+      pronunciation.pinyin,
+      hsk
     )
 }
 object ChineseDefinition {

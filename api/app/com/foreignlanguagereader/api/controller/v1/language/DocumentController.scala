@@ -1,8 +1,9 @@
 package com.foreignlanguagereader.api.controller.v1.language
 
 import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.dto.v1.document.DocumentRequest
 import com.foreignlanguagereader.domain.service.DocumentService
+import com.foreignlanguagereader.dto.v1.Serializers._
+import com.foreignlanguagereader.dto.v1.document.DocumentRequest
 import javax.inject._
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
@@ -29,7 +30,7 @@ class DocumentController @Inject() (
             .getWordsForDocument(
               wordLanguage,
               definitionLanguage,
-              documentRequest.text
+              documentRequest.getText
             )
             .map {
               case List() => NoContent

@@ -3,8 +3,10 @@ package com.foreignlanguagereader.content.types.internal.definition
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.dto.v1.definition.ChineseDefinitionDTO
-import com.foreignlanguagereader.dto.v1.definition.chinese.HskLevel
+import com.foreignlanguagereader.dto.v1.definition.chinese.HSKLevel
 import org.scalatest.funspec.AnyFunSpec
+import scala.collection.JavaConverters._
+import scala.compat.java8.OptionConverters._
 
 class ChineseDefinitionTest extends AnyFunSpec {
   val example: ChineseDefinition = ChineseDefinition(
@@ -80,23 +82,23 @@ class ChineseDefinitionTest extends AnyFunSpec {
     describe("when getting HSK level") {
       it("can get HSK level") {
         val withHSK = example.copy(inputSimplified = Some("好"))
-        assert(withHSK.hsk == HskLevel.ONE)
+        assert(withHSK.hsk == HSKLevel.ONE)
       }
 
       it("does not break if there is no HSK level") {
-        assert(example.hsk == HskLevel.NONE)
+        assert(example.hsk == HSKLevel.NONE)
       }
     }
 
     it("can convert itself to a DTO") {
-      val compareAgainst = ChineseDefinitionDTO(
+      val compareAgainst = new ChineseDefinitionDTO(
         example.id,
-        example.subdefinitions,
+        example.subdefinitions.asJava,
         PartOfSpeech.toDTO(example.tag),
-        example.examples,
-        example.simplified,
-        example.traditional,
-        example.pronunciation,
+        example.examples.getOrElse(List()).asJava,
+        example.simplified.asJava,
+        example.traditional.map(_.asJava).asJava,
+        example.pronunciation.pinyin,
         example.hsk
       )
       assert(example.toDTO == compareAgainst)
