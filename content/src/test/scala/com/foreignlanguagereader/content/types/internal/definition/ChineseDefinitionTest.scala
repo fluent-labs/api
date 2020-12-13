@@ -91,17 +91,17 @@ class ChineseDefinitionTest extends AnyFunSpec {
     }
 
     it("can convert itself to a DTO") {
-      val compareAgainst = new ChineseDefinitionDTO(
-        example.id,
-        example.subdefinitions.asJava,
-        PartOfSpeech.toDTO(example.tag),
-        example.examples.getOrElse(List()).asJava,
-        example.simplified.asJava,
-        example.traditional.map(_.asJava).asJava,
-        example.pronunciation.pinyin,
-        example.hsk
+      val converted = example.toDTO
+      assert(example.id == converted.getId)
+      assert(example.subdefinitions == converted.getSubdefinitions.asScala)
+      assert(PartOfSpeech.toDTO(example.tag) == converted.getTag)
+      assert(example.examples.contains(converted.getExamples.asScala))
+      assert(example.simplified == converted.getSimplified.asScala)
+      assert(
+        example.traditional == converted.getTraditional.asScala.map(_.asScala)
       )
-      assert(example.toDTO == compareAgainst)
+      assert(example.pronunciation.pinyin == converted.getPronunciation)
+      assert(example.hsk == converted.getHsk)
     }
   }
 }
