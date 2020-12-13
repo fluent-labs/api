@@ -11,23 +11,6 @@ on:
       - "**/*.conf"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 14
-      uses: actions/setup-java@v1
-      with:
-        java-version: 14.0.1
-    - name: Load SBT cache
-      uses: coursier/cache-action@v3
-    - name: Build API
-      run: sbt api/dist
-    - name: Build jobs
-      run: sbt jobs/assembly
-
   test:
     runs-on: ubuntu-latest
     env:
