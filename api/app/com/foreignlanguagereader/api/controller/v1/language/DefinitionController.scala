@@ -44,16 +44,13 @@ class DefinitionController @Inject() (
         definitionLanguage,
         Word.fromToken(word, wordLanguage)
       )
-      .map {
-        case List() =>
-          NotFound(s"Definition for $word in $wordLanguage not found")
-        case definitions =>
-          Ok(
-            JavaJson.stringify(
-              JavaJson
-                .toJson(definitions.map(_.toDTO))
-            )
+      .map { definitions =>
+        Ok(
+          JavaJson.stringify(
+            JavaJson
+              .toJson(definitions.map(_.toDTO))
           )
+        )
       }
       .recover {
         case error: Throwable =>
