@@ -136,15 +136,15 @@ lazy val commonDependencies = Seq(
   dependencies.scalatest % "test",
   dependencies.scalactic,
   dependencies.cats,
-  dependencies.sangria,
-  ws
+  ws,
+  dependencies.sangria
 )
 
 lazy val playDependencies = Seq(
   dependencies.scalatestPlay,
-  dependencies.mockito,
   dependencies.sangria,
-  dependencies.sangriaPlay
+  dependencies.sangriaPlay,
+  dependencies.mockito
 )
 
 lazy val forcedDependencies = Seq(
