@@ -105,6 +105,10 @@ lazy val dependencies =
     // NLP tools
     val opencc4j = "com.github.houbb" % "opencc4j" % "1.6.0"
 
+    // Graphql
+    val sangria = "org.sangria-graphql" %% "sangria" % "2.0.0"
+    val sangriaPlay = "org.sangria-graphql" %% "sangria-play-json" % "2.0.0"
+
     // External clients
     val elasticsearchHighLevelClient =
       "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "7.9.3"
@@ -132,12 +136,15 @@ lazy val commonDependencies = Seq(
   dependencies.scalatest % "test",
   dependencies.scalactic,
   dependencies.cats,
+  dependencies.sangria,
   ws
 )
 
 lazy val playDependencies = Seq(
   dependencies.scalatestPlay,
-  dependencies.mockito
+  dependencies.mockito,
+  dependencies.sangria,
+  dependencies.sangriaPlay
 )
 
 lazy val forcedDependencies = Seq(
