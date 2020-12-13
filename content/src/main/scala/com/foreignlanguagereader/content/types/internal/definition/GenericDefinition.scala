@@ -4,11 +4,9 @@ import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
-import com.foreignlanguagereader.dto.v1.definition.{
-  DefinitionDTO,
-  GenericDefinitionDTO
-}
+import com.foreignlanguagereader.dto.v1.definition.DefinitionDTO
 import play.api.libs.json.{Format, Json}
+import scala.collection.JavaConverters._
 
 case class GenericDefinition(
     subdefinitions: List[String],
@@ -25,11 +23,11 @@ case class GenericDefinition(
   val id: String = generateId()
 
   override lazy val toDTO: DefinitionDTO =
-    GenericDefinitionDTO(
-      id = id,
-      subdefinitions = subdefinitions,
-      tag = PartOfSpeech.toDTO(tag),
-      examples = examples
+    new DefinitionDTO(
+      id,
+      subdefinitions.asJava,
+      PartOfSpeech.toDTO(tag),
+      examples.getOrElse(List()).asJava
     )
 }
 object GenericDefinition {

@@ -2,11 +2,10 @@ package com.foreignlanguagereader.api.controller.v1.language
 
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.domain.service.DocumentService
-import com.foreignlanguagereader.dto.v1.serializers.Serializers._
 import com.foreignlanguagereader.dto.v1.document.DocumentRequest
 import javax.inject._
 import play.api.Logger
-import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
+import play.api.libs.json._
 import play.api.mvc._
 import play.libs.{Json => JavaJson}
 
@@ -19,6 +18,9 @@ class DocumentController @Inject() (
     implicit val ec: ExecutionContext
 ) extends BaseController {
   val logger: Logger = Logger(this.getClass)
+
+  implicit val documentRequestReader: Reads[DocumentRequest] =
+    (JsPath \ "text").read[String].map(text => new DocumentRequest(text))
 
   def definition(
       wordLanguage: Language,
