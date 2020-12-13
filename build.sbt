@@ -94,7 +94,9 @@ lazy val dependencies =
     val elasticsearchContainer =
       "org.testcontainers" % "elasticsearch" % "1.15.0"
 
+    // Language helpers
     val cats = "org.typelevel" %% "cats-core" % "2.0.0"
+    val lombok = "org.projectlombok" % "lombok" % "1.18.16"
 
     // Spark
     val sparkCore =
@@ -126,7 +128,6 @@ lazy val dependencies =
       "com.fasterxml.jackson.core" % "jackson-databind" % jacksonVersion
     val jacksonCore =
       "com.fasterxml.jackson.core" % "jackson-core" % jacksonVersion
-    val lombok = "org.projectlombok" % "lombok" % "1.18.16"
     val htrace = "org.apache.htrace" % "htrace-core" % "4.0.0-incubating"
     val hadoop = "org.apache.hadoop" % "hadoop-common" % "2.10.1"
     val avro = "org.apache.avro" % "avro" % "1.10.0"
@@ -179,7 +180,9 @@ lazy val domainDependencies = commonDependencies ++ Seq(
   dependencies.googleCloudClient
 )
 
-lazy val dtoDependencies = commonDependencies
+lazy val dtoDependencies = commonDependencies ++ Seq(
+  dependencies.lombok
+)
 
 lazy val jobsDependencies = commonDependencies ++ Seq(
   dependencies.sparkCore % "provided",
