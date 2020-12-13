@@ -6,7 +6,11 @@ scalaVersion in ThisBuild := "2.12.12"
  */
 
 lazy val settings = Seq(
-  scalacOptions ++= compilerOptions
+  scalacOptions ++= compilerOptions,
+  githubTokenSource := TokenSource.Or(
+    TokenSource.Environment("GITHUB_TOKEN"),
+    TokenSource.GitConfig("github.token")
+  )
 )
 
 lazy val global = project
@@ -58,6 +62,7 @@ lazy val dto = project
 lazy val jobs = project
   .enablePlugins(AssemblyPlugin)
   .settings(
+    settings,
     assemblySettings ++ Seq(
       assemblyJarName in assembly := name.value + ".jar",
       assemblyMergeStrategy in assembly := {
@@ -195,9 +200,6 @@ lazy val compilerOptions = Seq(
 /*
  * Release
  */
-
-githubTokenSource := TokenSource.Environment("GITHUB_TOKEN")
-publishTo := githubPublishTo.value
 
 lazy val assemblySettings = Seq(
   organization := "com.foreignlanguagereader",
