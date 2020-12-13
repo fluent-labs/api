@@ -1,11 +1,9 @@
 package com.foreignlanguagereader.dto.v1.word;
 
 import com.foreignlanguagereader.dto.v1.definition.DefinitionDTO;
-import lombok.Data;
 
 import java.util.List;
 
-@Data
 public class WordDTO {
     private String token;
     private String tag;

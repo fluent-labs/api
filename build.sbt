@@ -180,9 +180,7 @@ lazy val domainDependencies = commonDependencies ++ Seq(
   dependencies.googleCloudClient
 )
 
-lazy val dtoDependencies = commonDependencies ++ Seq(
-  dependencies.lombok
-)
+lazy val dtoDependencies = commonDependencies
 
 lazy val jobsDependencies = commonDependencies ++ Seq(
   dependencies.sparkCore % "provided",
