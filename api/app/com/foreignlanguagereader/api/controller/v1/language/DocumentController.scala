@@ -8,6 +8,7 @@ import javax.inject._
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc._
+import play.libs.{Json => JavaJson}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -34,7 +35,8 @@ class DocumentController @Inject() (
             )
             .map {
               case List() => NoContent
-              case words  => Ok(Json.toJson(words.map(_.toDTO)))
+              case words =>
+                Ok(JavaJson.stringify(JavaJson.toJson(words.map(_.toDTO))))
             }
             .recover {
               case error: Throwable =>

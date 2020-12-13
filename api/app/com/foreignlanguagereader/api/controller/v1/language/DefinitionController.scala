@@ -1,15 +1,13 @@
 package com.foreignlanguagereader.api.controller.v1.language
 
-import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.domain.service.definition.DefinitionService
 import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.internal.definition.Definition
+import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.internal.word.Word
-import com.foreignlanguagereader.dto.v1.serializers.Serializers._
+import com.foreignlanguagereader.domain.service.definition.DefinitionService
 import javax.inject._
 import play.api.Logger
-import play.api.libs.json.Json
 import play.api.mvc._
+import play.libs.{Json => JavaJson}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -51,8 +49,10 @@ class DefinitionController @Inject() (
           NotFound(s"Definition for $word in $wordLanguage not found")
         case definitions =>
           Ok(
-            Json
-              .toJson(Definition.definitionListToDefinitionDTOList(definitions))
+            JavaJson.stringify(
+              JavaJson
+                .toJson(definitions.map(_.toDTO))
+            )
           )
       }
       .recover {
