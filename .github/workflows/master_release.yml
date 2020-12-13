@@ -17,8 +17,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 14.0.1
-    - name: Load SBT cache
-      uses: coursier/cache-action@v3
     - name: Compile
       run: sbt compile
     - name: Run tests
