@@ -12,10 +12,10 @@ ENV PATH ${PATH}:${SBT_HOME}/bin
 ENV GITHUB_TOKEN faketoken
 
 # Install sbt
-RUN apk add --update bash=BASH_VERSION wget=1.20.3-r0 && \
+RUN apk add --no-cache bash=BASH_VERSION wget=1.20.3-r0 && \
     mkdir -p "$SBT_HOME" && \
     wget -qO - --no-check-certificate "https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz" |  tar xz -C $INSTALL_DIR && \
-    echo "- with sbt $SBT_VERSION\n" >> /root/.built
+    echo "- with sbt $SBT_VERSION" >> /root/.built
 
 # Cache dependencies
 WORKDIR /app
@@ -34,7 +34,7 @@ RUN sbt test
 
 FROM openjdk:14-jdk-alpine3.10 as final
 WORKDIR /app
-RUN apk add bash=BASH_VERSION
+RUN apk add --no-cache bash=BASH_VERSION
 EXPOSE 9000
 CMD ["/app/bin/api", "-Dconfig.resource=production.conf"]
 COPY --from=builder /app/api /app
