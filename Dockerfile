@@ -1,5 +1,5 @@
 FROM openjdk:14-jdk-alpine3.10 as builder
-MAINTAINER reader@lucaskjaerozhang.com
+LABEL maintainer="reader@lucaskjaerozhang.com"
 
 ENV SBT_VERSION 1.4.0
 ENV INSTALL_DIR /usr/local
@@ -12,7 +12,7 @@ ENV GITHUB_TOKEN faketoken
 # Install sbt
 RUN apk add --no-cache --update bash wget && mkdir -p "$SBT_HOME" && \
     wget -qO - --no-check-certificate "https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz" |  tar xz -C $INSTALL_DIR && \
-    echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
+    echo "- with sbt $SBT_VERSION\n" >> /root/.built
 
 # Cache dependencies
 WORKDIR /app
