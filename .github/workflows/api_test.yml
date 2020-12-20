@@ -1,20 +1,6 @@
 name: API PR Review
 
-on:
-  pull_request:
-    paths:
-      - "build.sbt"
-      - "api/*"
-      - "api/**/*"
-      - "content/*"
-      - "content/**/*"
-      - "domain/*"
-      - "domain/**/*"
-      - "dto/*"
-      - "dto/**/*"
-      - "project/**/*"
-      - "project/*"
-      - "Dockerfile"
+on: [pull_request]
 
 jobs:
   build:
