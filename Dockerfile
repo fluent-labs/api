@@ -11,6 +11,9 @@ ENV PATH ${PATH}:${SBT_HOME}/bin
 # Sadly needed because package publishing requires this for all lifecycle steps.
 ENV GITHUB_TOKEN faketoken
 
+# Keep failing pipe command from reporting success to the build.
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+
 # Install sbt
 RUN apk add --no-cache bash=BASH_VERSION wget=1.20.3-r0 && \
     mkdir -p "$SBT_HOME" && \
