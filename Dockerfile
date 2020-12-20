@@ -1,9 +1,7 @@
 FROM openjdk:14-jdk-alpine3.10 as builder
 LABEL maintainer="reader@lucaskjaerozhang.com"
 
-ENV BASH_VERSION 5.0.0-r0
 ENV SBT_VERSION 1.4.0
-
 ENV INSTALL_DIR /usr/local
 ENV SBT_HOME /usr/local/sbt
 ENV PATH ${PATH}:${SBT_HOME}/bin
@@ -15,7 +13,7 @@ ENV GITHUB_TOKEN faketoken
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
 # Install sbt
-RUN apk add --no-cache bash=$BASH_VERSION wget=1.20.3-r0 && \
+RUN apk add --no-cache bash=5.0.0-r0 wget=1.20.3-r0 && \
     mkdir -p "$SBT_HOME" && \
     wget -qO - --no-check-certificate "https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz" |  tar xz -C $INSTALL_DIR && \
     echo "- with sbt $SBT_VERSION" >> /root/.built
@@ -37,8 +35,7 @@ RUN sbt test
 
 FROM openjdk:14-jdk-alpine3.10 as final
 WORKDIR /app
-# hadolint ignore=SC2086
-RUN apk add --no-cache bash=$BASH_VERSION
+RUN apk add --no-cache bash=5.0.0-r0
 EXPOSE 9000
 CMD ["/app/bin/api", "-Dconfig.resource=production.conf"]
 COPY --from=builder /app/api /app
