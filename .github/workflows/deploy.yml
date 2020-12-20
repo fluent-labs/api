@@ -29,41 +29,40 @@ jobs:
     steps:
     - uses: actions/checkout@v2.3.4
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-west-2
-
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-
-    - name: Build, tag, and push image to Amazon ECR
-      id: build-image
+    - name: Save DigitalOcean kubeconfig
+      uses: digitalocean/action-doctl@v2.1.0
       env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: foreign-language-reader-api
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY
-        docker tag $ECR_REGISTRY/$ECR_REPOSITORY $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-        echo "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" > api.txt
+        DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    
+    - name: Build container
+      run: docker build . -t api
 
-    - uses: actions/upload-artifact@master
-      name: Upload container address
+    - name: Enforce security rules
+      id: scan
+      uses: anchore/scan-action@v2
       with:
-        name: api.txt
-        path: api.txt
+        image: "api:latest"
+        fail-build: true
+        acs-report-enable: true
 
-  deploy-api:
+    - name: Log into docker
+      run: doctl registry login
+
+    - name: Push container
+      run: |
+        docker tag api:latest registry.digitalocean.com/foreign-language-reader-api/api:latest
+        docker push registry.digitalocean.com/foreign-language-reader-api/api:latest
+
+    - name: Upload security scan report
+      if: ${{ always() }}
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: ${{ steps.scan.outputs.sarif }}
+
+  deploy:
     name: Deploy API
     runs-on: ubuntu-latest
-    needs: [build-api]
+    needs: [build]
     steps:
       - uses: actions/checkout@v2.3.4
 
@@ -73,17 +72,6 @@ jobs:
           DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
         with:
           args: kubernetes cluster kubeconfig show foreign-language-reader > $GITHUB_WORKSPACE/.kubeconfig
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Update image in K8s
         env:
