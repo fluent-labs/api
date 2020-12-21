@@ -10,6 +10,7 @@ addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.13")
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "1.0.0")
 addSbtPlugin("org.scala-sbt" % "sbt-autoversion" % "1.0.0")
 addSbtPlugin("com.codecommit" % "sbt-github-packages" % "0.5.2")
+addSbtPlugin("ohnosequences" % "sbt-github-release" % "0.7.1")
 
 // Api
 // Workaround for missing npm sources

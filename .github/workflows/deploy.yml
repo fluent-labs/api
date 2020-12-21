@@ -22,7 +22,7 @@ jobs:
           git config --local user.email "release@foreignlanguagereader.com"
           git config --local user.name "Release"
       - name: Publish
-        run: sbt "release with-defaults"
+        run: sbt githubRelease
 
   build:
     runs-on: ubuntu-latest
