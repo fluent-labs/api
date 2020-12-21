@@ -211,8 +211,8 @@ lazy val compilerOptions = Seq(
 
 lazy val assemblySettings = Seq(
   organization := "com.foreignlanguagereader",
-  githubOwner := "lucaskjaero",
-  githubRepository := "foreign-language-reader"
+  githubOwner := "foreign-language-reader",
+  githubRepository := "api"
 )
 
 /*
