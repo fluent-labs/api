@@ -54,12 +54,6 @@ jobs:
         docker tag api:latest registry.digitalocean.com/foreign-language-reader-api/api:latest
         docker push registry.digitalocean.com/foreign-language-reader-api/api:latest
 
-    - name: Upload security scan report
-      if: ${{ always() }}
-      uses: github/codeql-action/upload-sarif@v1
-      with:
-        sarif_file: ${{ steps.scan.outputs.sarif }}
-
   deploy:
     name: Deploy API
     runs-on: ubuntu-latest
