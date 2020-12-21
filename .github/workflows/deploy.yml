@@ -27,8 +27,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: Build API
+    needs: [publish]
     steps:
     - uses: actions/checkout@v2.3.4
+
+    - name: Get release version
+      run: echo ::set-env name=RELEASE_VERSION::$(cat version.sbt | grep -Eo "[0-9\.]+")
+    
+    - name: Print release version
+      run: echo $RELEASE_VERSIONs
 
     - name: Save DigitalOcean kubeconfig
       uses: digitalocean/action-doctl@v2.1.0
@@ -51,8 +58,8 @@ jobs:
 
     - name: Push container
       run: |
-        docker tag api:latest registry.digitalocean.com/foreign-language-reader/api:latest
-        docker push registry.digitalocean.com/foreign-language-reader/api:latest
+        docker tag api:$RELEASE_VERSION registry.digitalocean.com/foreign-language-reader/api:$RELEASE_VERSION
+        docker push registry.digitalocean.com/foreign-language-reader/api:$RELEASE_VERSION
 
   deploy:
     name: Deploy API
