@@ -51,8 +51,8 @@ jobs:
 
     - name: Push container
       run: |
-        docker tag api:latest registry.digitalocean.com/foreign-language-reader-api/api:latest
-        docker push registry.digitalocean.com/foreign-language-reader-api/api:latest
+        docker tag api:latest registry.digitalocean.com/foreign-language-reader/api:latest
+        docker push registry.digitalocean.com/foreign-language-reader/api:latest
 
   deploy:
     name: Deploy API
