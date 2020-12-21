@@ -10,7 +10,9 @@ lazy val settings = Seq(
   githubTokenSource := TokenSource.Or(
     TokenSource.Environment("GITHUB_TOKEN"),
     TokenSource.GitConfig("github.token")
-  )
+  ),
+  minorRegexes := "\\[?minor\\]?.*",
+  bugfixRegexes := ".*"
 )
 
 lazy val global = project
