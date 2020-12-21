@@ -81,7 +81,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
-            set image deployment/api api=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --record
+            set image deployment/api api=registry.digitalocean.com/foreign-language-reader/api:$RELEASE_VERSION --record
 
       - name: Wait for deployment to finish
         run: |
