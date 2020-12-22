@@ -18,25 +18,26 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 15.0.1
-      
+
       - name: Configure git
         run: |
           git config --local user.email "release@foreignlanguagereader.com"
           git config --local user.name "Release"
-      
+
       - name: Publish
         run: sbt "release with-defaults"
-      
+
       - name: Get release version
-        run: echo "RELEASE_VERSION=`cat version.sbt | grep -Eo "[0-9\.]+"`" >> $GITHUB_ENV
-      
+        id: version
+        uses: WyriHaximus/github-action-get-previous-tag@1.0.0
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "v${{ env.RELEASE_VERSION }}"
+          tag_name: ${{ steps.version.outputs.tag }}
           release_name: "${{ env.RELEASE_VERSION }}: ${{ github.event.pull_request.title }}"
           body: ${{ github.event.pull_request.body }}
 
@@ -52,13 +53,13 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    
+
     - name: Pull and rebuild dependencies image
       run: |
         docker pull lkjaero/foreign-language-reader-api:builder
         docker build . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
         docker push lkjaero/foreign-language-reader-api:builder
-    
+
     - name: Build container
       run: docker build . -t lkjaero/foreign-language-reader-api:LATEST
 
@@ -69,14 +70,15 @@ jobs:
         image: "lkjaero/foreign-language-reader-api:LATEST"
         fail-build: true
         acs-report-enable: true
-    
+
     - name: Get release version
-      run: echo "RELEASE_VERSION=`cat version.sbt | grep -Eo "[0-9\.]+"`" >> $GITHUB_ENV
+      id: version
+      uses: WyriHaximus/github-action-get-previous-tag@1.0.0
 
     - name: Push container
       run: |
-        docker tag lkjaero/foreign-language-reader-api:LATEST lkjaero/foreign-language-reader-api:$RELEASE_VERSION
-        docker push lkjaero/foreign-language-reader-api:$RELEASE_VERSION
+        docker tag lkjaero/foreign-language-reader-api:LATEST lkjaero/foreign-language-reader-api:${{ steps.version.outputs.tag }}
+        docker push lkjaero/foreign-language-reader-api:${{ steps.version.outputs.tag }}
         docker push lkjaero/foreign-language-reader-api:LATEST
 
   deploy:
@@ -93,14 +95,15 @@ jobs:
 
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig show foreign-language-reader > $GITHUB_WORKSPACE/.kubeconfig
-      
+
       - name: Get release version
-        run: echo "RELEASE_VERSION=`cat version.sbt | grep -Eo "[0-9\.]+"`" >> $GITHUB_ENV
+        id: version
+        uses: WyriHaximus/github-action-get-previous-tag@1.0.0
 
       - name: Update image in K8s
         run: |
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig -n prod \
-            set image deployment/api api=lkjaero/foreign-language-reader-api:$RELEASE_VERSION --record
+            set image deployment/api api=lkjaero/foreign-language-reader-api:${{ steps.version.outputs.tag }} --record
 
       - name: Wait for deployment to finish
         run: |
