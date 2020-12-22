@@ -69,6 +69,9 @@ jobs:
         image: "lkjaero/foreign-language-reader-api:LATEST"
         fail-build: true
         acs-report-enable: true
+    
+    - name: Get release version
+      run: echo "RELEASE_VERSION=`cat version.sbt | grep -Eo "[0-9\.]+"`" >> $GITHUB_ENV
 
     - name: Push container
       run: |
@@ -90,6 +93,9 @@ jobs:
 
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig show foreign-language-reader > $GITHUB_WORKSPACE/.kubeconfig
+      
+      - name: Get release version
+        run: echo "RELEASE_VERSION=`cat version.sbt | grep -Eo "[0-9\.]+"`" >> $GITHUB_ENV
 
       - name: Update image in K8s
         run: |
