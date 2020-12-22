@@ -5,7 +5,7 @@ COPY . /app/
 RUN sbt clean coverageOff dist
 
 # Detect the version and unzip to /app/dist
-# hadolint disable=SC2086
+# hadolint ignore=SC2086
 RUN VERSION=$(grep -Eo "[0-9\.]+" version.sbt) && \
     echo "Detected version $VERSION" && \
     unzip /app/api/target/universal/api-$VERSION-SNAPSHOT.zip -d ./api && \
