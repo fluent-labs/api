@@ -5,7 +5,7 @@ COPY . /app/
 RUN sbt clean coverageOff dist
 
 # Detect the version and unzip to /app/dist 
-RUN VERSION=`cat version.sbt | grep -Eo "[0-9\.]+"` && \
+RUN VERSION=$(grep -Eo "[0-9\.]+" version.sbt) && \
     echo "Detected version $VERSION" && \
     echo $VERSION > version.txt && \
     unzip /app/api/target/universal/api-$VERSION-SNAPSHOT.zip -d ./api && \
