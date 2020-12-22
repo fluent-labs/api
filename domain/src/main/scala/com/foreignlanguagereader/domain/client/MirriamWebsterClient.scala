@@ -36,8 +36,8 @@ class MirriamWebsterClient @Inject() (
   override val timeout: FiniteDuration =
     Duration(config.get[Int]("webster.timeout"), TimeUnit.SECONDS)
 
-  val learnersApiKey = ""
-  val spanishApiKey = ""
+  val learnersApiKey: String = config.get[String]("webster.learners")
+  val spanishApiKey: String = config.get[String]("webster.spanish")
 
   implicit val readsListLearners: Reads[List[WebsterLearnersDefinitionEntry]] =
     WebsterLearnersDefinitionEntry.helper.readsList
