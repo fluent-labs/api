@@ -70,8 +70,8 @@ jobs:
 
       - name: Push production docker image
         run: |
-          docker tag lkjaero/foreign-language-reader-api:LATEST lkjaero/foreign-language-reader-api:$RELEASE_VERSION
-          docker push lkjaero/foreign-language-reader-api:$RELEASE_VERSION
+          docker tag lkjaero/foreign-language-reader-api:LATEST lkjaero/foreign-language-reader-api:${{ env.RELEASE_VERSION}}
+          docker push lkjaero/foreign-language-reader-api:${{ env.RELEASE_VERSION}}
           docker push lkjaero/foreign-language-reader-api:LATEST
 
       - name: Log into DigitalOcean
@@ -85,7 +85,7 @@ jobs:
       - name: Update image in K8s
         run: |
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig -n prod \
-            set image deployment/api api=lkjaero/foreign-language-reader-api:${{ steps.version.outputs.tag }} --record
+            set image deployment/api api=lkjaero/foreign-language-reader-api:${{ env.RELEASE_VERSION}} --record
 
       - name: Wait for deployment to finish
         run: |
