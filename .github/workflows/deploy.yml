@@ -70,22 +70,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.4
 
-      - name: Save DigitalOcean kubeconfig
+      - name: Log into DigitalOcean
         uses: digitalocean/action-doctl@v2.1.0
         with:
-          args: kubernetes cluster kubeconfig show foreign-language-reader > $GITHUB_WORKSPACE/.kubeconfig
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
+      - name: Save DigitalOcean kubeconfig
+        run: kubernetes cluster kubeconfig show foreign-language-reader > $GITHUB_WORKSPACE/.kubeconfig
+
       - name: Update image in K8s
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: foreign-language-reader-api
-          IMAGE_TAG: ${{ github.sha }}
         run: |
-          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
-            set image deployment/api api=registry.digitalocean.com/foreign-language-reader/api:$RELEASE_VERSION --record
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig -n prod \
+            set image deployment/api api=lkjaero/foreign-language-reader-api:$RELEASE_VERSION --record
 
       - name: Wait for deployment to finish
         run: |
-          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig -n prod \
             rollout status deployment/api
