@@ -1,0 +1,90 @@
+# Used for automatically applying security patches
+name: Rebaseline Docker
+
+on:
+  pull_request:
+    paths:
+      - "Dockerfile_base"
+    types: [ closed ]
+  schedule:
+    # Monday at 6 AM
+    - cron:  '0 6 * * MON'
+
+jobs:
+  base:
+    name: Rebaseline base and builder images
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+    - uses: actions/checkout@v2.3.4
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1.8.0
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    
+    - name: Pull and rebuild base image
+      run: |
+        docker pull lkjaero/foreign-language-reader-api:base
+        docker build . -f Dockerfile_base -t lkjaero/foreign-language-reader-api:base
+        docker push lkjaero/foreign-language-reader-api:base
+    
+    - name: Pull and rebuild dependencies image
+      run: |
+        docker pull lkjaero/foreign-language-reader-api:builder
+        docker build . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
+        docker push lkjaero/foreign-language-reader-api:builder
+
+  service:
+    name: Rerelease current release
+    runs-on: ubuntu-latest
+    needs: [base]
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+    
+    - name: Get latest release version
+      run: echo "RELEASE_VERSION=`cat version.sbt | grep -Eo "[0-9\.]+"`" >> $GITHUB_ENV
+    
+    - name: Rebuild latest release
+      run: docker build . -t lkjaero/foreign-language-reader-api:LATEST
+
+    # Note: Skipped dependency security scan here
+    # Dependencies are the same between versions, so it's unlikely to introduce new vulnerabilities.
+    # This will apply OS patches, which anchore doesn't check
+    # We always want OS patches to go out, even if dependencies have issues.
+
+    - name: Republish image
+      run: |
+        docker tag lkjaero/foreign-language-reader-api:LATEST lkjaero/foreign-language-reader-api:$RELEASE_VERSION
+        docker push lkjaero/foreign-language-reader-api:$RELEASE_VERSION
+        docker push lkjaero/foreign-language-reader-api:LATEST
+    
+        kubectl rollout restart deploy NAME
+  
+  deploy:
+    name: Redeploy API with rebaselined version
+    runs-on: ubuntu-latest
+    needs: [service]
+    steps:
+      - uses: actions/checkout@v2.3.4
+
+      - name: Log into DigitalOcean
+        uses: digitalocean/action-doctl@v2.1.0
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Save DigitalOcean kubeconfig
+        run: doctl kubernetes cluster kubeconfig show foreign-language-reader > $GITHUB_WORKSPACE/.kubeconfig
+
+      - name: Redeploy latest version
+        run: |
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig -n prod \
+            rollout restart deployment/api
+
+      - name: Wait for deployment to finish
+        run: |
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig -n prod \
+            rollout status deployment/api
