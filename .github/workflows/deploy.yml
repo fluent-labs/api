@@ -33,33 +33,35 @@ jobs:
 
     - name: Get release version
       run: echo "RELEASE_VERSION=`cat version.sbt | grep -Eo "[0-9\.]+"`" >> $GITHUB_ENV
-    
-    - name: Print release version
-      run: echo $RELEASE_VERSIONs
 
-    - name: Save DigitalOcean kubeconfig
-      uses: digitalocean/action-doctl@v2.1.0
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1.8.0
       with:
-        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    
+    - name: Pull and rebuild dependencies image
+      run: |
+        docker pull lkjaero/foreign-language-reader-api:builder
+        docker build . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
+        docker push lkjaero/foreign-language-reader-api:builder
     
     - name: Build container
-      run: docker build . -t api
+      run: docker build . -t lkjaero/foreign-language-reader-api:LATEST
 
     - name: Enforce security rules
       id: scan
       uses: anchore/scan-action@v2
       with:
-        image: "api:latest"
+        image: "lkjaero/foreign-language-reader-api:LATEST"
         fail-build: true
         acs-report-enable: true
 
-    - name: Log into docker
-      run: doctl registry login
-
     - name: Push container
       run: |
-        docker tag api:latest registry.digitalocean.com/foreign-language-reader/api:$RELEASE_VERSION
-        docker push registry.digitalocean.com/foreign-language-reader/api:$RELEASE_VERSION
+        docker tag lkjaero/foreign-language-reader-api:LATEST lkjaero/foreign-language-reader-api:$RELEASE_VERSION
+        docker push lkjaero/foreign-language-reader-api:$RELEASE_VERSION
+        docker push lkjaero/foreign-language-reader-api:LATEST
 
   deploy:
     name: Deploy API
@@ -68,22 +70,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.4
 
-      - name: Save DigitalOcean kubeconfig
+      - name: Log into DigitalOcean
         uses: digitalocean/action-doctl@v2.1.0
         with:
-          args: kubernetes cluster kubeconfig show foreign-language-reader > $GITHUB_WORKSPACE/.kubeconfig
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
+      - name: Save DigitalOcean kubeconfig
+        run: kubernetes cluster kubeconfig show foreign-language-reader > $GITHUB_WORKSPACE/.kubeconfig
+
       - name: Update image in K8s
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: foreign-language-reader-api
-          IMAGE_TAG: ${{ github.sha }}
         run: |
-          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
-            set image deployment/api api=registry.digitalocean.com/foreign-language-reader/api:$RELEASE_VERSION --record
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig -n prod \
+            set image deployment/api api=lkjaero/foreign-language-reader-api:$RELEASE_VERSION --record
 
       - name: Wait for deployment to finish
         run: |
-          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig -n prod \
             rollout status deployment/api
