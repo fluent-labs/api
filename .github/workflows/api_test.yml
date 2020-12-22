@@ -31,6 +31,8 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     
     # Do this in case they have changed
+    # Pulling is there for caching, in case nothing has changed
+    # Remember not to push
     - name: Build dependencies image
       run: |
         docker pull lkjaero/foreign-language-reader-api:builder
