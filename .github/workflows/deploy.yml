@@ -40,6 +40,12 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     
+    - name: Pull and rebuild dependencies image
+      run: |
+        docker pull lkjaero/foreign-language-reader-api:builder
+        docker build . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
+        docker push lkjaero/foreign-language-reader-api:builder
+    
     - name: Build container
       run: docker build . -t lkjaero/foreign-language-reader-api:LATEST
 
