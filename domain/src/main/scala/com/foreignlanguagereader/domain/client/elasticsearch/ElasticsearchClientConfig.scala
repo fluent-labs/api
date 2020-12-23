@@ -4,6 +4,7 @@ import akka.Done
 import akka.actor.CoordinatedShutdown
 import javax.inject
 import javax.inject.Inject
+import javax.net.ssl.{HostnameVerifier, SSLSession}
 import org.apache.http.HttpHost
 import org.apache.http.auth.{AuthScope, UsernamePasswordCredentials}
 import org.apache.http.impl.client.BasicCredentialsProvider
@@ -59,8 +60,10 @@ class ElasticsearchClientConfig @Inject() (
         .setHttpClientConfigCallback(new HttpClientConfigCallback() {
           override def customizeHttpClient(
               httpClientBuilder: HttpAsyncClientBuilder
-          ): HttpAsyncClientBuilder =
+          ): HttpAsyncClientBuilder = {
             httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider)
+            httpClientBuilder.setSSLHostnameVerifier(new RubberStampVerifier())
+          }
         })
     )
 
@@ -84,4 +87,9 @@ class ElasticsearchClientConfig @Inject() (
     HttpHost.create(container.getHttpHostAddress)
   }
 }
+
+class RubberStampVerifier extends HostnameVerifier {
+  override def verify(hostname: String, session: SSLSession): Boolean = true
+}
+
 // $COVERAGE-ON$
