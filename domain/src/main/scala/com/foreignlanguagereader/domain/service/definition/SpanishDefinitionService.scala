@@ -23,10 +23,9 @@ import scala.concurrent.{ExecutionContext, Future}
 class SpanishDefinitionService @Inject() (
     val elasticsearch: ElasticsearchCacheClient,
     val websterClient: MirriamWebsterClient,
-    val config: Configuration,
+    override val config: Configuration,
     implicit val ec: ExecutionContext
 ) extends LanguageDefinitionService {
-  override val environment: String = config.get[String]("environment")
   override val wordLanguage: Language = Language.SPANISH
   override val sources: List[DefinitionSource] =
     List(DefinitionSource.MIRRIAM_WEBSTER_SPANISH, DefinitionSource.WIKTIONARY)
