@@ -22,6 +22,7 @@ import org.elasticsearch.client.{
   RestHighLevelClient
 }
 import org.elasticsearch.search.SearchHit
+import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Json, Reads}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,17 +37,19 @@ import scala.concurrent.{ExecutionContext, Future}
 class ElasticsearchClient @Inject() (
     config: ElasticsearchClientConfig,
     val system: ActorSystem
-) extends Circuitbreaker {
+) {
   implicit val ec: ExecutionContext =
     system.dispatchers.lookup("elasticsearch-context")
   val javaClient: RestHighLevelClient = new RestHighLevelClient(
     RestClient.builder(config.getHost())
   )
+  val breaker = new Circuitbreaker(system, ec, "Elasticsearch")
+  val logger: Logger = Logger(this.getClass)
 
   def index(
       request: IndexRequest
   ): Nested[Future, CircuitBreakerResult, IndexResponse] =
-    withBreaker(
+    breaker.withBreaker(
       s"Failed to index document on index(es) ${request.indices().mkString(",")}: ${request.sourceAsMap()}"
     ) {
       Future { javaClient.index(request, RequestOptions.DEFAULT) }
@@ -55,7 +58,7 @@ class ElasticsearchClient @Inject() (
   def bulk(
       request: BulkRequest
   ): Nested[Future, CircuitBreakerResult, BulkResponse] = {
-    withBreaker("Failed bulk request") {
+    breaker.withBreaker("Failed bulk request") {
       Future { javaClient.bulk(request, RequestOptions.DEFAULT) }
     }
   }
@@ -65,11 +68,11 @@ class ElasticsearchClient @Inject() (
   )(implicit
       reads: Reads[T]
   ): Nested[Future, CircuitBreakerResult, Map[String, T]] =
-    withBreaker(
-      s"Failed to search on index(es) ${request.indices().mkString(",")}: ${request.source().query().toString}"
-    )(Future { javaClient.search(request, RequestOptions.DEFAULT) }).map(
-      response => getResultsFromSearchResponse(response)
-    )
+    breaker
+      .withBreaker(
+        s"Failed to search on index(es) ${request.indices().mkString(",")}: ${request.source().query().toString}"
+      )(Future { javaClient.search(request, RequestOptions.DEFAULT) })
+      .map(response => getResultsFromSearchResponse(response))
 
   def doubleSearch[T, U](
       request: MultiSearchRequest
@@ -79,7 +82,7 @@ class ElasticsearchClient @Inject() (
   ): Nested[Future, CircuitBreakerResult, Option[
     (Map[String, T], Map[String, U])
   ]] =
-    withBreaker("Failed to multisearch")(Future {
+    breaker.withBreaker("Failed to multisearch")(Future {
       javaClient.msearch(request, RequestOptions.DEFAULT)
     }) map (response => {
       if (response.getResponses.length === 2) {

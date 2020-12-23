@@ -11,10 +11,10 @@ import play.api.libs.json._
 case class Readiness(
     database: ReadinessStatus,
     content: ReadinessStatus,
-    languageService: ReadinessStatus
+    webster: ReadinessStatus
 ) {
   def overall: ReadinessStatus =
-    List(database, content, languageService) match {
+    List(database, content, webster) match {
       case up if up.forall(_.eq(ReadinessStatus.UP)) => ReadinessStatus.UP
       case down if down.forall(_.eq(ReadinessStatus.DOWN)) =>
         ReadinessStatus.DOWN

@@ -14,18 +14,16 @@ import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
-trait Circuitbreaker {
-  val defaultTimeout = 60
-  val defaultResetTimeout = 60
-
-  val system: ActorSystem
-  implicit val ec: ExecutionContext
-  val maxFailures = 5
-  val timeout: FiniteDuration = FiniteDuration(defaultTimeout, TimeUnit.SECONDS)
-  val resetTimeout: FiniteDuration =
-    FiniteDuration(defaultResetTimeout, TimeUnit.SECONDS)
-
+class Circuitbreaker(
+    system: ActorSystem,
+    implicit val ec: ExecutionContext,
+    name: String,
+    timeout: FiniteDuration = FiniteDuration(60, TimeUnit.SECONDS),
+    resetTimeout: FiniteDuration = FiniteDuration(60, TimeUnit.SECONDS),
+    maxFailures: Int = 5
+) {
   val logger: Logger = Logger(this.getClass)
+  logger.info(s"Initialized circuitbreaker for $name with timeout $timeout")
 
   val breaker: CircuitBreaker =
     new CircuitBreaker(
@@ -39,6 +37,9 @@ trait Circuitbreaker {
 
   def defaultIsFailure(error: Throwable): Boolean = true
   def defaultIsSuccess[T](result: T): Boolean = true
+
+  def onClose(body: => Unit): Unit = breaker.onClose(body)
+  def isClosed: Boolean = breaker.isClosed
 
   def health(): ReadinessStatus =
     breaker match {

@@ -19,11 +19,10 @@ import com.foreignlanguagereader.content.types.internal.definition.{
   DefinitionSource
 }
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.domain.client.LanguageServiceClient
 import com.foreignlanguagereader.domain.repository.definition.Cedict
 import com.github.houbb.opencc4j.util.ZhConverterUtil
 import javax.inject.Inject
-import play.api.Logger
+import play.api.{Configuration, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -34,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
   */
 class ChineseDefinitionService @Inject() (
     val elasticsearch: ElasticsearchCacheClient,
-    val languageServiceClient: LanguageServiceClient,
+    val config: Configuration,
     implicit val ec: ExecutionContext
 ) extends LanguageDefinitionService {
   override val logger: Logger = Logger(this.getClass)
@@ -42,6 +41,7 @@ class ChineseDefinitionService @Inject() (
   override val wordLanguage: Language = Language.CHINESE
   override val sources: List[DefinitionSource] =
     List(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
+  override val environment: String = config.get[String]("environment")
 
   def cedictFetcher: (
       Language,
@@ -63,7 +63,10 @@ class ChineseDefinitionService @Inject() (
   ] =
     Map(
       (DefinitionSource.CEDICT, Language.ENGLISH) -> cedictFetcher,
-      (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
+      (
+        DefinitionSource.WIKTIONARY,
+        Language.ENGLISH
+      ) -> elasticsearchDefinitionClient
     )
 
   // Convert everything to traditional
