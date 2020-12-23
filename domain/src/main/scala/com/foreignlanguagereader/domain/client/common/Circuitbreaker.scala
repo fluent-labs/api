@@ -71,7 +71,7 @@ class Circuitbreaker(
             )
             CircuitBreakerNonAttempt()
           case e =>
-            logger.error(logIfError)
+            logger.error(logIfError, e)
             CircuitBreakerFailedAttempt(e)
         }
     )
