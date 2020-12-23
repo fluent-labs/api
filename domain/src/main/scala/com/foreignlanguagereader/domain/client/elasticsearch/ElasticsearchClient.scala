@@ -40,9 +40,7 @@ class ElasticsearchClient @Inject() (
 ) {
   implicit val ec: ExecutionContext =
     system.dispatchers.lookup("elasticsearch-context")
-  val javaClient: RestHighLevelClient = new RestHighLevelClient(
-    RestClient.builder(config.getHost())
-  )
+  val javaClient: RestHighLevelClient = config.getClient
   val breaker = new Circuitbreaker(system, ec, "Elasticsearch")
   val logger: Logger = Logger(this.getClass)
 
