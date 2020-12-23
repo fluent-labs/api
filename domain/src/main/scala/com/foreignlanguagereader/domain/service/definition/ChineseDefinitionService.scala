@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
   */
 class ChineseDefinitionService @Inject() (
     val elasticsearch: ElasticsearchCacheClient,
-    val config: Configuration,
+    override val config: Configuration,
     implicit val ec: ExecutionContext
 ) extends LanguageDefinitionService {
   override val logger: Logger = Logger(this.getClass)
@@ -41,7 +41,6 @@ class ChineseDefinitionService @Inject() (
   override val wordLanguage: Language = Language.CHINESE
   override val sources: List[DefinitionSource] =
     List(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
-  override val environment: String = config.get[String]("environment")
 
   def cedictFetcher: (
       Language,

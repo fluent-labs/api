@@ -16,7 +16,7 @@ import com.foreignlanguagereader.domain.client.common.{
 }
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchSearchRequest
-import play.api.Logger
+import play.api.{Configuration, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -43,11 +43,11 @@ import scala.concurrent.{ExecutionContext, Future}
 trait LanguageDefinitionService {
   // These are required fields for implementers
   implicit val ec: ExecutionContext
+  implicit val config: Configuration
   val logger: Logger = Logger(this.getClass)
   val elasticsearch: ElasticsearchCacheClient
   val wordLanguage: Language
   val sources: List[DefinitionSource]
-  val environment: String
 
   // These are strongly recommended to implement, but have sane defaults
 
@@ -98,8 +98,6 @@ trait LanguageDefinitionService {
 
   // Below here is trait behavior, implementers need not read further
 
-  val definitionsIndex = s"definitions-$environment"
-
   // Use this for definitions not backed by a rest API: eg loaded using spark
   def elasticsearchDefinitionClient: (
       Language,
@@ -122,6 +120,10 @@ trait LanguageDefinitionService {
       .map(results => sources.zip(results).toMap)
   }
 
+  def getIndex: String = {
+    s"definitions-${config.get[String]("environment")}"
+  }
+
   // Definition domain to elasticsearch domain
   private[this] def makeDefinitionRequest(
       source: DefinitionSource,
@@ -140,7 +142,7 @@ trait LanguageDefinitionService {
       }
 
     ElasticsearchSearchRequest(
-      definitionsIndex,
+      getIndex,
       Map(
         "wordLanguage" -> wordLanguage.toString,
         "definitionLanguage" -> definitionLanguage.toString,
