@@ -14,13 +14,14 @@ import com.foreignlanguagereader.content.types.internal.word.{
   PartOfSpeech,
   Word
 }
-import com.foreignlanguagereader.domain.client.LanguageServiceClient
+import com.foreignlanguagereader.domain.client.MirriamWebsterClient
 import com.foreignlanguagereader.domain.client.common.CircuitBreakerResult
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchSearchRequest
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
+import play.api.Configuration
 import play.api.libs.json.{Reads, Writes}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -39,8 +40,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     )
   val elasticsearchClientMock: ElasticsearchCacheClient =
     mock[ElasticsearchCacheClient]
-  val languageServiceClientMock: LanguageServiceClient =
-    mock[LanguageServiceClient]
+  val configMock: Configuration = mock[Configuration]
 
   val test: Word = Word.fromToken("test", Language.ENGLISH)
   val token: Word = Word.fromToken("token", Language.ENGLISH)
@@ -48,13 +48,12 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   describe("A default language definition service") {
     class DefaultLanguageDefinitionService() extends LanguageDefinitionService {
       val elasticsearch: ElasticsearchCacheClient = elasticsearchClientMock
-      override val languageServiceClient: LanguageServiceClient =
-        languageServiceClientMock
       implicit val ec: ExecutionContext =
         scala.concurrent.ExecutionContext.Implicits.global
       override val wordLanguage: Language = Language.ENGLISH
       override val sources: List[DefinitionSource] =
         List(DefinitionSource.WIKTIONARY)
+      override val config: Configuration = configMock
     }
     val defaultDefinitionService = new DefaultLanguageDefinitionService()
 
@@ -105,56 +104,6 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           assert(response.isEmpty)
         }
     }
-
-    it("does not break if a future is failed") {
-      when(
-        elasticsearchClientMock
-          .findFromCacheOrRefetch(
-            any(classOf[List[ElasticsearchSearchRequest[Definition]]])
-          )(
-            any(classOf[ClassTag[Definition]]),
-            any(classOf[Reads[Definition]]),
-            any(classOf[Writes[Definition]])
-          )
-      ).thenReturn(Future.successful(List(List())))
-      when(
-        languageServiceClientMock.getDefinition(
-          Language.ENGLISH,
-          Word.fromToken("test", Language.ENGLISH)
-        )
-      ).thenReturn(
-        Nested(
-          Future.failed[CircuitBreakerResult[List[Definition]]](
-            new IllegalStateException("Uh oh")
-          )
-        )
-      )
-
-      defaultDefinitionService
-        .getDefinitions(Language.ENGLISH, test)
-        .map { response =>
-          assert(response.isEmpty)
-        }
-    }
-
-    it("does not break if a fetcher cannot work with the requested language") {
-      when(
-        elasticsearchClientMock
-          .findFromCacheOrRefetch(
-            any(classOf[List[ElasticsearchSearchRequest[Definition]]])
-          )(
-            any(classOf[ClassTag[Definition]]),
-            any(classOf[Reads[Definition]]),
-            any(classOf[Writes[Definition]])
-          )
-      ).thenReturn(Future.successful(List(List())))
-
-      defaultDefinitionService
-        .getDefinitions(Language.CHINESE, test)
-        .map { response =>
-          assert(response.isEmpty)
-        }
-    }
   }
 
   describe("A customized language definition service") {
@@ -169,18 +118,102 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     class CustomizedLanguageDefinitionService()
         extends LanguageDefinitionService {
       val elasticsearch: ElasticsearchCacheClient = elasticsearchClientMock
-      override val languageServiceClient: LanguageServiceClient =
-        languageServiceClientMock
       implicit val ec: ExecutionContext =
         scala.concurrent.ExecutionContext.Implicits.global
-      override val wordLanguage: Language = Language.CHINESE
+      override val wordLanguage: Language = Language.SPANISH
       override val sources: List[DefinitionSource] =
-        List(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
+        List(
+          DefinitionSource.MIRRIAM_WEBSTER_SPANISH,
+          DefinitionSource.WIKTIONARY
+        )
+      override val config: Configuration = configMock
+    }
+
+    describe("with a custom fetcher") {
+      val websterMock: MirriamWebsterClient =
+        mock[MirriamWebsterClient]
+
+      class CustomizedFetcherLanguageDefinitionService
+          extends CustomizedLanguageDefinitionService {
+
+        override val config: Configuration = configMock
+        val websterFetcher: (
+            Language,
+            Word
+        ) => Nested[Future, CircuitBreakerResult, List[Definition]] =
+          (_: Language, word: Word) => websterMock.getSpanishDefinition(word)
+
+        override val definitionFetchers: Map[
+          (DefinitionSource, Language),
+          (
+              Language,
+              Word
+          ) => Nested[Future, CircuitBreakerResult, List[Definition]]
+        ] = Map(
+          (
+            DefinitionSource.MIRRIAM_WEBSTER_SPANISH,
+            Language.SPANISH
+          ) -> websterFetcher
+        )
+      }
+      val customizedFetcher = new CustomizedFetcherLanguageDefinitionService()
+
+      it("does not break if a future is failed") {
+        when(
+          elasticsearchClientMock
+            .findFromCacheOrRefetch(
+              any(classOf[List[ElasticsearchSearchRequest[Definition]]])
+            )(
+              any(classOf[ClassTag[Definition]]),
+              any(classOf[Reads[Definition]]),
+              any(classOf[Writes[Definition]])
+            )
+        ).thenReturn(Future.successful(List(List())))
+        when(
+          websterMock.getSpanishDefinition(
+            Word.fromToken("test", Language.SPANISH)
+          )
+        ).thenReturn(
+          Nested(
+            Future.failed[CircuitBreakerResult[List[Definition]]](
+              new IllegalStateException("Uh oh")
+            )
+          )
+        )
+
+        customizedFetcher
+          .getDefinitions(Language.SPANISH, test)
+          .map { response =>
+            assert(response.isEmpty)
+          }
+      }
+
+      it(
+        "does not break if a fetcher cannot work with the requested language"
+      ) {
+        when(
+          elasticsearchClientMock
+            .findFromCacheOrRefetch(
+              any(classOf[List[ElasticsearchSearchRequest[Definition]]])
+            )(
+              any(classOf[ClassTag[Definition]]),
+              any(classOf[Reads[Definition]]),
+              any(classOf[Writes[Definition]])
+            )
+        ).thenReturn(Future.successful(List(List())))
+
+        customizedFetcher
+          .getDefinitions(Language.CHINESE, test)
+          .map { response =>
+            assert(response.isEmpty)
+          }
+      }
     }
 
     describe("with a custom enricher") {
-      class CustomizedEnricherLangaugeDefinitionService
+      class CustomizedEnricherLanguageDefinitionService
           extends CustomizedLanguageDefinitionService {
+        override val config: Configuration = configMock
         override def enrichDefinitions(
             definitionLanguage: Language,
             word: Word,
@@ -202,7 +235,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           }
         }
       }
-      val customizedEnricher = new CustomizedEnricherLangaugeDefinitionService()
+      val customizedEnricher = new CustomizedEnricherLanguageDefinitionService()
 
       it("can define how to enrich definitions") {
         when(

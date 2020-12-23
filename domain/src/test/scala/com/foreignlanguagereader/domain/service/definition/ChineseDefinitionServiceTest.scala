@@ -11,12 +11,12 @@ import com.foreignlanguagereader.content.types.internal.word.{
   PartOfSpeech,
   Word
 }
-import com.foreignlanguagereader.domain.client.LanguageServiceClient
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchSearchRequest
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
+import play.api.Configuration
 import play.api.libs.json.{Reads, Writes}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -25,13 +25,12 @@ import scala.reflect.ClassTag
 class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   val elasticsearchClientMock: ElasticsearchCacheClient =
     mock[ElasticsearchCacheClient]
-  val languageServiceClientMock: LanguageServiceClient =
-    mock[LanguageServiceClient]
   val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
+  val configMock: Configuration = mock[Configuration]
 
   val chineseDefinitionService = new ChineseDefinitionService(
     elasticsearchClientMock,
-    languageServiceClientMock,
+    configMock,
     ec
   )
   val definitionsIndex = "definitions"
