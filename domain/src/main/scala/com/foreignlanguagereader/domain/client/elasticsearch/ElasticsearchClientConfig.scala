@@ -5,6 +5,11 @@ import akka.actor.CoordinatedShutdown
 import javax.inject
 import javax.inject.Inject
 import org.apache.http.HttpHost
+import org.apache.http.auth.{AuthScope, UsernamePasswordCredentials}
+import org.apache.http.impl.client.BasicCredentialsProvider
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder
+import org.elasticsearch.client.RestClientBuilder.HttpClientConfigCallback
+import org.elasticsearch.client.{RestClient, RestHighLevelClient}
 import org.testcontainers.elasticsearch.ElasticsearchContainer
 import play.api.Configuration
 
@@ -28,6 +33,8 @@ class ElasticsearchClientConfig @Inject() (
   val scheme: String = config.get[String]("elasticsearch.scheme")
   val url: String = config.get[String]("elasticsearch.url")
   val port: Int = config.get[Int]("elasticsearch.port")
+  val username: String = config.get[String]("elasticsearch.username")
+  val password: String = config.get[String]("elasticsearch.password")
 
   val httpHost: HttpHost = if (isLocal) {
     createLocalElasticsearch()
@@ -35,7 +42,27 @@ class ElasticsearchClientConfig @Inject() (
     new HttpHost(url, port, scheme)
   }
 
-  def getHost(): HttpHost = httpHost
+  val credentialsProvider: BasicCredentialsProvider = {
+    val provider = new BasicCredentialsProvider
+    provider.setCredentials(
+      AuthScope.ANY,
+      new UsernamePasswordCredentials(username, password)
+    )
+    provider
+  }
+
+  def getHost: HttpHost = httpHost
+  def getClient: RestHighLevelClient =
+    new RestHighLevelClient(
+      RestClient
+        .builder(httpHost)
+        .setHttpClientConfigCallback(new HttpClientConfigCallback() {
+          override def customizeHttpClient(
+              httpClientBuilder: HttpAsyncClientBuilder
+          ): HttpAsyncClientBuilder =
+            httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider)
+        })
+    )
 
   def createLocalElasticsearch(): HttpHost = {
     // Launches a dockerized elasticsearch process
