@@ -2,7 +2,7 @@ package com.foreignlanguagereader.api.controller.v1
 
 import java.util.concurrent.TimeUnit
 
-import com.foreignlanguagereader.domain.client.LanguageServiceClient
+import com.foreignlanguagereader.domain.client.MirriamWebsterClient
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchClient
 import com.foreignlanguagereader.dto.v1.health.{Readiness, ReadinessStatus}
 import javax.inject._
@@ -16,7 +16,7 @@ import scala.concurrent.duration.{Duration, FiniteDuration}
 class HealthController @Inject() (
     val controllerComponents: ControllerComponents,
     elasticsearchClient: ElasticsearchClient,
-    languageServiceClient: LanguageServiceClient,
+    websterClient: MirriamWebsterClient,
     implicit val ec: ExecutionContext
 ) extends BaseController {
 
@@ -43,8 +43,8 @@ class HealthController @Inject() (
 
       val status = Readiness(
         database,
-        elasticsearchClient.health(),
-        languageServiceClient.health()
+        elasticsearchClient.breaker.health(),
+        websterClient.health()
       )
       val response = Json.toJson(status)
       status.overall match {
