@@ -2,21 +2,21 @@ package com.foreignlanguagereader.domain.service.definition
 
 import cats.data.Nested
 import cats.implicits._
+import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.Language.Language
+import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.content.types.internal.definition.{
+  Definition,
+  DefinitionSource
+}
+import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerNonAttempt,
   CircuitBreakerResult
 }
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchSearchRequest
-import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.internal.word.Word
-import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.internal.definition.{
-  Definition,
-  DefinitionSource
-}
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
-import play.api.{Configuration, Logger}
+import play.api.Logger
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -47,9 +47,7 @@ trait LanguageDefinitionService {
   val elasticsearch: ElasticsearchCacheClient
   val wordLanguage: Language
   val sources: List[DefinitionSource]
-  val config: Configuration
-
-  val environment: String = config.get[String]("environment")
+  val environment: String
 
   // These are strongly recommended to implement, but have sane defaults
 

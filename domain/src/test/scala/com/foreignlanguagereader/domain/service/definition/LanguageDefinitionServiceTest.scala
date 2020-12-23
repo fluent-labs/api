@@ -40,7 +40,6 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     )
   val elasticsearchClientMock: ElasticsearchCacheClient =
     mock[ElasticsearchCacheClient]
-  val configMock: Configuration = mock[Configuration]
 
   val test: Word = Word.fromToken("test", Language.ENGLISH)
   val token: Word = Word.fromToken("token", Language.ENGLISH)
@@ -53,7 +52,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       override val wordLanguage: Language = Language.ENGLISH
       override val sources: List[DefinitionSource] =
         List(DefinitionSource.WIKTIONARY)
-      override val config: Configuration = configMock
+      override val environment: String = "test"
     }
     val defaultDefinitionService = new DefaultLanguageDefinitionService()
 
@@ -126,7 +125,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           DefinitionSource.MIRRIAM_WEBSTER_SPANISH,
           DefinitionSource.WIKTIONARY
         )
-      override val config: Configuration = configMock
+      override val environment: String = "test"
     }
 
     describe("with a custom fetcher") {
@@ -136,7 +135,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       class CustomizedFetcherLanguageDefinitionService
           extends CustomizedLanguageDefinitionService {
 
-        override val config: Configuration = configMock
+        override val environment: String = "test"
         val websterFetcher: (
             Language,
             Word
@@ -213,7 +212,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     describe("with a custom enricher") {
       class CustomizedEnricherLanguageDefinitionService
           extends CustomizedLanguageDefinitionService {
-        override val config: Configuration = configMock
+        override val environment: String = "test"
         override def enrichDefinitions(
             definitionLanguage: Language,
             word: Word,
