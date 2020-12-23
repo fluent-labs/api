@@ -6,10 +6,7 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerResult
 }
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
-import com.foreignlanguagereader.domain.client.{
-  LanguageServiceClient,
-  MirriamWebsterClient
-}
+import com.foreignlanguagereader.domain.client.MirriamWebsterClient
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.word.Word
 import Language.Language
@@ -19,13 +16,14 @@ import com.foreignlanguagereader.content.types.internal.definition.{
 }
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 import javax.inject.Inject
+import play.api.Configuration
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class EnglishDefinitionService @Inject() (
     val elasticsearch: ElasticsearchCacheClient,
-    val languageServiceClient: LanguageServiceClient,
     val websterClient: MirriamWebsterClient,
+    override val config: Configuration,
     implicit val ec: ExecutionContext
 ) extends LanguageDefinitionService {
   override val wordLanguage: Language = Language.ENGLISH
@@ -63,6 +61,9 @@ class EnglishDefinitionService @Inject() (
         DefinitionSource.MIRRIAM_WEBSTER_SPANISH,
         Language.SPANISH
       ) -> websterFetcher,
-      (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
+      (
+        DefinitionSource.WIKTIONARY,
+        Language.ENGLISH
+      ) -> elasticsearchDefinitionClient
     )
 }

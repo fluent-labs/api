@@ -16,8 +16,7 @@ import com.foreignlanguagereader.content.types.internal.definition.{
   DefinitionSource
 }
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.domain.client.LanguageServiceClient
-import play.api.Logger
+import play.api.{Configuration, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -46,9 +45,11 @@ trait LanguageDefinitionService {
   implicit val ec: ExecutionContext
   val logger: Logger = Logger(this.getClass)
   val elasticsearch: ElasticsearchCacheClient
-  val languageServiceClient: LanguageServiceClient
   val wordLanguage: Language
   val sources: List[DefinitionSource]
+  val config: Configuration
+
+  val environment: String = config.get[String]("environment")
 
   // These are strongly recommended to implement, but have sane defaults
 
@@ -62,7 +63,10 @@ trait LanguageDefinitionService {
     (Language, Word) => Nested[Future, CircuitBreakerResult, List[Definition]]
   ] =
     Map(
-      (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
+      (
+        DefinitionSource.WIKTIONARY,
+        Language.ENGLISH
+      ) -> elasticsearchDefinitionClient
     )
   val maxFetchAttempts = 5
 
@@ -96,14 +100,14 @@ trait LanguageDefinitionService {
 
   // Below here is trait behavior, implementers need not read further
 
-  val definitionsIndex = "definitions"
+  val definitionsIndex = s"definitions-$environment"
 
-  // Out of the box, this calls language service for Wiktionary definitions. All languages should use this.
-  def languageServiceFetcher: (
+  // Use this for definitions not backed by a rest API: eg loaded using spark
+  def elasticsearchDefinitionClient: (
       Language,
       Word
   ) => Nested[Future, CircuitBreakerResult, List[Definition]] =
-    (_, word: Word) => languageServiceClient.getDefinition(wordLanguage, word)
+    (_, word: Word) => Nested(Future.apply(CircuitBreakerNonAttempt()))
 
   private[this] def fetchDefinitions(
       sources: List[DefinitionSource],
