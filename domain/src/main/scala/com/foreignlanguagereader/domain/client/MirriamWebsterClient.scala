@@ -13,12 +13,12 @@ import com.foreignlanguagereader.content.types.internal.definition.Definition
 import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerResult,
-  Circuitbreaker,
-  WsClient
+  RestClient,
+  RestClientBuilder
 }
+import com.foreignlanguagereader.dto.v1.health.ReadinessStatus.ReadinessStatus
 import javax.inject.Inject
 import play.api.libs.json.Reads
-import play.api.libs.ws.WSClient
 import play.api.{Configuration, Logger}
 
 import scala.concurrent.duration.{Duration, FiniteDuration}
@@ -26,15 +26,18 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class MirriamWebsterClient @Inject() (
     config: Configuration,
-    val ws: WSClient,
-    val system: ActorSystem
-) extends WsClient
-    with Circuitbreaker {
-  override val logger: Logger = Logger(this.getClass)
+    val system: ActorSystem,
+    clientBuilder: RestClientBuilder
+) {
+  val logger: Logger = Logger(this.getClass)
   implicit val ec: ExecutionContext =
     system.dispatchers.lookup("webster-context")
-  override val timeout: FiniteDuration =
+  val timeout: FiniteDuration =
     Duration(config.get[Int]("webster.timeout"), TimeUnit.SECONDS)
+  val client: RestClient =
+    clientBuilder.buildClient("WebsterClient", timeout = timeout)
+
+  logger.info(s"Initialized webster client with a $timeout second timeout")
 
   val learnersApiKey: String = config.get[String]("webster.learners")
   val spanishApiKey: String = config.get[String]("webster.spanish")
@@ -52,14 +55,20 @@ class MirriamWebsterClient @Inject() (
   def getLearnersDefinition(
       word: Word
   ): Nested[Future, CircuitBreakerResult, List[Definition]] =
-    get[List[WebsterLearnersDefinitionEntry]](
-      s"https://www.dictionaryapi.com/api/v3/references/learners/json/${word.processedToken}?key=$learnersApiKey"
-    ).map(results => results.map(_.toDefinition(word.tag)))
+    client
+      .get[List[WebsterLearnersDefinitionEntry]](
+        s"https://www.dictionaryapi.com/api/v3/references/learners/json/${word.processedToken}?key=$learnersApiKey"
+      )
+      .map(results => results.map(_.toDefinition(word.tag)))
 
   def getSpanishDefinition(
       word: Word
   ): Nested[Future, CircuitBreakerResult, List[Definition]] =
-    get[List[WebsterSpanishDefinitionEntry]](
-      s"https://www.dictionaryapi.com/api/v3/references/spanish/json/${word.processedToken}?key=$spanishApiKey"
-    ).map(results => results.map(_.toDefinition(word.tag)))
+    client
+      .get[List[WebsterSpanishDefinitionEntry]](
+        s"https://www.dictionaryapi.com/api/v3/references/spanish/json/${word.processedToken}?key=$spanishApiKey"
+      )
+      .map(results => results.map(_.toDefinition(word.tag)))
+
+  def health(): ReadinessStatus = client.breaker.health()
 }
