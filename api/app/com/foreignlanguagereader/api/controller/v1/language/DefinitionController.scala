@@ -38,6 +38,10 @@ class DefinitionController @Inject() (
       definitionLanguage: Language,
       word: String
   ): Future[Result] = {
+    logger.info(
+      s"Getting definitions in $definitionLanguage for $wordLanguage word $word"
+    )
+
     definitionService
       .getDefinition(
         wordLanguage,
