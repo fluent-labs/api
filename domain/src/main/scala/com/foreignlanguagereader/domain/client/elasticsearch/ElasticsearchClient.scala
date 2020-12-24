@@ -16,16 +16,13 @@ import org.elasticsearch.action.search.{
   SearchResponse
 }
 import org.elasticsearch.client.indices.CreateIndexRequest
-import org.elasticsearch.client.{
-  RequestOptions,
-  RestClient,
-  RestHighLevelClient
-}
+import org.elasticsearch.client.{RequestOptions, RestHighLevelClient}
 import org.elasticsearch.search.SearchHit
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Json, Reads}
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success, Try}
 
 // $COVERAGE-OFF$
 /**
@@ -83,17 +80,26 @@ class ElasticsearchClient @Inject() (
     breaker.withBreaker("Failed to multisearch")(Future {
       javaClient.msearch(request, RequestOptions.DEFAULT)
     }) map (response => {
-      logger.info(s"Received result from multisearch: $response")
-      if (response.getResponses.length === 2) {
-        val first =
-          getResultsFromSearchResponse[T](
-            response.getResponses.head.getResponse
+      Try {
+        logger.info(s"Received result from multisearch: $response")
+        if (response.getResponses.length === 2) {
+          val first =
+            getResultsFromSearchResponse[T](
+              response.getResponses.head.getResponse
+            )
+          val second = getResultsFromSearchResponse[U](
+            response.getResponses.tail.head.getResponse
           )
-        val second = getResultsFromSearchResponse[U](
-          response.getResponses.tail.head.getResponse
-        )
-        Some((first, second))
-      } else { None }
+          Some((first, second))
+        } else {
+          None
+        }
+      } match {
+        case Success(result) => result
+        case Failure(e) =>
+          logger.error(s"Failed to multisearch: ${e.getMessage}", e)
+          None
+      }
     })
 
   def createIndex(index: String): Unit = {
