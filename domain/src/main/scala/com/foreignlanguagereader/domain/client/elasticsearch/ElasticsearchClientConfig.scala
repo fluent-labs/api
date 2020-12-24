@@ -7,6 +7,7 @@ import javax.inject.Inject
 import javax.net.ssl.SSLContext
 import org.apache.http.HttpHost
 import org.apache.http.auth.{AuthScope, UsernamePasswordCredentials}
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy
 import org.apache.http.impl.client.BasicCredentialsProvider
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder
 import org.apache.http.ssl.SSLContexts
@@ -39,6 +40,8 @@ class ElasticsearchClientConfig @Inject() (
   val port: Int = config.get[Int]("elasticsearch.port")
   val username: String = config.get[String]("elasticsearch.username")
   val password: String = config.get[String]("elasticsearch.password")
+  val truststorePassword: String =
+    config.get[String]("elasticsearch.truststore")
 
   val httpHost: HttpHost = if (isLocal) {
     createLocalElasticsearch()
@@ -59,7 +62,14 @@ class ElasticsearchClientConfig @Inject() (
     val keystorePath = os.root / "etc" / "estruststore" / "api_keystore.jks"
     if (os.exists(keystorePath)) {
       logger.info("Using custom trust store")
-      SSLContexts.custom().loadTrustMaterial(keystorePath.toIO).build()
+      SSLContexts
+        .custom()
+        .loadTrustMaterial(
+          keystorePath.toIO,
+          truststorePassword.toCharArray,
+          new TrustSelfSignedStrategy()
+        )
+        .build()
     } else {
       logger.info("Using default trust store")
       SSLContexts.createDefault()
