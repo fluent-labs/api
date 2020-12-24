@@ -4,15 +4,16 @@ import akka.Done
 import akka.actor.CoordinatedShutdown
 import javax.inject
 import javax.inject.Inject
-import javax.net.ssl.{HostnameVerifier, SSLSession}
+import javax.net.ssl.SSLContext
 import org.apache.http.HttpHost
 import org.apache.http.auth.{AuthScope, UsernamePasswordCredentials}
 import org.apache.http.impl.client.BasicCredentialsProvider
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder
+import org.apache.http.ssl.SSLContexts
 import org.elasticsearch.client.RestClientBuilder.HttpClientConfigCallback
 import org.elasticsearch.client.{RestClient, RestHighLevelClient}
 import org.testcontainers.elasticsearch.ElasticsearchContainer
-import play.api.Configuration
+import play.api.{Configuration, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -30,6 +31,8 @@ class ElasticsearchClientConfig @Inject() (
     cs: CoordinatedShutdown,
     implicit val ec: ExecutionContext
 ) {
+  val logger: Logger = Logger(this.getClass)
+
   val isLocal: Boolean = config.get[Boolean]("local")
   val scheme: String = config.get[String]("elasticsearch.scheme")
   val url: String = config.get[String]("elasticsearch.url")
@@ -52,6 +55,17 @@ class ElasticsearchClientConfig @Inject() (
     provider
   }
 
+  val sslContext: SSLContext = {
+    val keystorePath = os.root / "etc" / "estruststore" / "api_keystore.jks"
+    if (os.exists(keystorePath)) {
+      logger.info("Using custom trust store")
+      SSLContexts.custom().loadTrustMaterial(keystorePath.toIO).build()
+    } else {
+      logger.info("Using default trust store")
+      SSLContexts.createDefault()
+    }
+  }
+
   def getHost: HttpHost = httpHost
   def getClient: RestHighLevelClient =
     new RestHighLevelClient(
@@ -62,7 +76,7 @@ class ElasticsearchClientConfig @Inject() (
               httpClientBuilder: HttpAsyncClientBuilder
           ): HttpAsyncClientBuilder = {
             httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider)
-            httpClientBuilder.setSSLHostnameVerifier(new RubberStampVerifier())
+            httpClientBuilder.setSSLContext(sslContext)
           }
         })
     )
@@ -86,10 +100,6 @@ class ElasticsearchClientConfig @Inject() (
     // Gives connection details - they are randomized to prevent conflicts
     HttpHost.create(container.getHttpHostAddress)
   }
-}
-
-class RubberStampVerifier extends HostnameVerifier {
-  override def verify(hostname: String, session: SSLSession): Boolean = true
 }
 
 // $COVERAGE-ON$
