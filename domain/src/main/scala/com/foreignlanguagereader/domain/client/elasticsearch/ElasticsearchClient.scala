@@ -83,6 +83,7 @@ class ElasticsearchClient @Inject() (
     breaker.withBreaker("Failed to multisearch")(Future {
       javaClient.msearch(request, RequestOptions.DEFAULT)
     }) map (response => {
+      logger.info(s"Received result from multisearch: $response")
       if (response.getResponses.length === 2) {
         val first =
           getResultsFromSearchResponse[T](
@@ -125,6 +126,7 @@ class ElasticsearchClient @Inject() (
   private[this] def getResultsFromSearchResponse[T](
       response: SearchResponse
   )(implicit reads: Reads[T]): Map[String, T] = {
+    logger.info(s"Getting results from search response: $response")
     val hits =
       response.getHits.getHits.toList.map(hit => getResultsFromSearchHit(hit))
     hits.flatten.toMap
