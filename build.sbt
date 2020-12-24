@@ -120,6 +120,7 @@ lazy val dependencies =
     // External clients
     val elasticsearchHighLevelClient =
       "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "7.9.3"
+    val oslib = "com.lihaoyi" %% "os-lib" % "0.7.1"
     val googleCloudClient =
       "com.google.cloud" % "google-cloud-language" % "1.101.6"
 
@@ -181,6 +182,7 @@ lazy val domainDependencies = commonDependencies ++ Seq(
   guice,
   // Used to generate elasticsearch matchers
   dependencies.elasticsearchHighLevelClient,
+  dependencies.oslib,
   // Testing
   dependencies.mockito,
   dependencies.scalatestPlay,
