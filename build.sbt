@@ -99,6 +99,11 @@ lazy val dependencies =
     val cats = "org.typelevel" %% "cats-core" % "2.0.0"
     val lombok = "org.projectlombok" % "lombok" % "1.18.16"
 
+    val logbackJson =
+      "ch.qos.logback.contrib" % "logback-json-classic" % "0.1.5"
+    val logbackJackson =
+      "ch.qos.logback.contrib" % "logback-jackson" % "0.1.5"
+
     // Spark
     val sparkCore =
       "org.apache.spark" %% "spark-core" % sparkVersion
@@ -160,7 +165,11 @@ lazy val forcedDependencies = Seq(
   dependencies.avro
 )
 
-lazy val apiDependencies = commonDependencies ++ playDependencies
+lazy val apiDependencies =
+  commonDependencies ++ playDependencies ++ Seq(
+    dependencies.logbackJson,
+    dependencies.logbackJackson
+  )
 
 lazy val contentDependencies = commonDependencies ++ Seq(
   dependencies.scalatestPlay,
