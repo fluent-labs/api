@@ -50,10 +50,16 @@ case class ElasticsearchSearchResult[T: Writes](
     if (refetched) {
       val attempt =
         LookupAttempt(index = index, fields = fields, count = fetchCount)
+
+      val indexRequest = new IndexRequest()
+        .source(Json.toJson(attempt).toString(), XContentType.JSON)
+        .index(attemptsIndex)
+
       lookupId match {
         case Some(id) =>
           new UpdateRequest(attemptsIndex, id)
-            .upsert(Json.toJson(attempt).toString(), XContentType.JSON)
+            .upsert(indexRequest.id(id))
+            .doc(indexRequest.id(id))
             .asRight
             .some
         case None =>

@@ -23,6 +23,11 @@ jobs:
         run: |
           git config --local user.email "release@foreignlanguagereader.com"
           git config --local user.name "Release"
+      
+      - name: Wait for previous deployments to complete
+        uses: softprops/turnstyle@v0.1.5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to github packages
         run: sbt "release with-defaults"

@@ -11,7 +11,11 @@ lazy val settings = Seq(
     TokenSource.Environment("GITHUB_TOKEN"),
     TokenSource.GitConfig("github.token")
   ),
-  releaseVersionBump := sbtrelease.Version.Bump.Bugfix
+  releaseVersionBump := sbtrelease.Version.Bump.Bugfix,
+  publishConfiguration := publishConfiguration.value.withOverwrite(true),
+  publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(
+    true
+  )
 )
 
 lazy val global = project
