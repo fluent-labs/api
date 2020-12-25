@@ -30,11 +30,13 @@ lazy val global = project
 
 lazy val api = project
   .enablePlugins(PlayService, PlayLayoutPlugin)
+  .disablePlugins(PlayLogback)
   .settings(
     settings,
     assemblySettings,
     libraryDependencies ++= apiDependencies,
-    dependencyOverrides ++= forcedDependencies
+    dependencyOverrides ++= forcedDependencies,
+    javaOptions += "-Dlog4j.configurationFile=log4j2.xml"
   )
   .dependsOn(domain)
 
@@ -89,6 +91,7 @@ lazy val dependencies =
     val scalatestVersion = "3.2.2"
     val sparkVersion = "3.0.1"
     val jacksonVersion = "2.11.3"
+    val log4jVersion = "2.14.0"
 
     // Testing
     val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
@@ -102,6 +105,13 @@ lazy val dependencies =
     // Language helpers
     val cats = "org.typelevel" %% "cats-core" % "2.0.0"
     val lombok = "org.projectlombok" % "lombok" % "1.18.16"
+
+    val log4jImplementation =
+      "org.apache.logging.log4j" % "log4j-slf4j-impl" % log4jVersion
+    val log4jApi = "org.apache.logging.log4j" % "log4j-api" % log4jVersion
+    val log4jCore = "org.apache.logging.log4j" % "log4j-core" % log4jVersion
+    val log4jJson =
+      "org.apache.logging.log4j" % "log4j-layout-template-json" % log4jVersion
 
     // Spark
     val sparkCore =
@@ -166,7 +176,12 @@ lazy val forcedDependencies = Seq(
 )
 
 lazy val apiDependencies =
-  commonDependencies ++ playDependencies
+  commonDependencies ++ playDependencies ++ Seq(
+    dependencies.log4jApi,
+    dependencies.log4jCore,
+    dependencies.log4jImplementation,
+    dependencies.log4jJson
+  )
 
 lazy val contentDependencies = commonDependencies ++ Seq(
   dependencies.scalatestPlay,

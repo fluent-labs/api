@@ -31,9 +31,11 @@ class Circuitbreaker(
       maxFailures = maxFailures,
       callTimeout = timeout,
       resetTimeout = resetTimeout
-    ).onOpen(logger.error("Circuit breaker opening due to failures"))
-      .onHalfOpen(logger.info("Circuit breaker resetting"))
-      .onClose(logger.info("Circuit breaker reset"))
+    ).onOpen(
+        logger.error(s"Circuit breaker for $name opening due to failures")
+      )
+      .onHalfOpen(logger.info(s"Circuit breaker for $name resetting"))
+      .onClose(logger.info(s"Circuit breaker for $name reset"))
 
   def defaultIsFailure(error: Throwable): Boolean = true
   def defaultIsSuccess[T](result: T): Boolean = true
@@ -67,7 +69,7 @@ class Circuitbreaker(
         .recover {
           case c: CircuitBreakerOpenException =>
             logger.warn(
-              s"Failing fast because circuit breaker is open, ${c.remainingDuration} remaining."
+              s"Failing fast because circuit breaker $name is open, ${c.remainingDuration} remaining."
             )
             CircuitBreakerNonAttempt()
           case e =>
