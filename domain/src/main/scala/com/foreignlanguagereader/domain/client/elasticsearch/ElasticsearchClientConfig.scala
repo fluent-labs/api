@@ -17,6 +17,7 @@ import org.testcontainers.elasticsearch.ElasticsearchContainer
 import play.api.{Configuration, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success, Try}
 
 // $COVERAGE-OFF$
 /**
@@ -62,21 +63,31 @@ class ElasticsearchClientConfig @Inject() (
     val keystorePath = os.root / "etc" / "estruststore" / "api_keystore.jks"
     if (os.exists(keystorePath)) {
       logger.info("Using custom trust store")
-      SSLContexts
-        .custom()
-        .loadTrustMaterial(
-          keystorePath.toIO,
-          truststorePassword.toCharArray,
-          new TrustSelfSignedStrategy()
-        )
-        .build()
+      Try {
+        SSLContexts
+          .custom()
+          .loadTrustMaterial(
+            keystorePath.toIO,
+            truststorePassword.toCharArray,
+            new TrustSelfSignedStrategy()
+          )
+          .build()
+      } match {
+        case Success(context) => context
+        case Failure(e)       =>
+          // Usually this is an incorrect password
+          logger.error(
+            "Failed to use configured trust store, falling back to default",
+            e
+          )
+          SSLContexts.createDefault()
+      }
     } else {
       logger.info("Using default trust store")
       SSLContexts.createDefault()
     }
   }
 
-  def getHost: HttpHost = httpHost
   def getClient: RestHighLevelClient =
     new RestHighLevelClient(
       RestClient
