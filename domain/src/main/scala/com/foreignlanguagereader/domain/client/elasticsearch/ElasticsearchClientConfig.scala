@@ -60,7 +60,7 @@ class ElasticsearchClientConfig @Inject() (
   }
 
   val sslContext: SSLContext = {
-    val keystorePath = os.root / "etc" / "estruststore" / "api_keystore.jks"
+    val keystorePath = os.root / "etc" / "flrcredentials" / "api_keystore.jks"
     if (os.exists(keystorePath)) {
       logger.info("Using custom trust store")
       Try {
