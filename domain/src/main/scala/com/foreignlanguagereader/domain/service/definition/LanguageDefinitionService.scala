@@ -92,7 +92,9 @@ trait LanguageDefinitionService {
         }
       )
       .map(definitions =>
-        enrichDefinitions(definitionLanguage, word, definitions)
+        if (definitions.nonEmpty)
+          enrichDefinitions(definitionLanguage, word, definitions)
+        else List()
       )
   }
 
