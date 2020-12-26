@@ -4,7 +4,7 @@ import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.dto.v1.definition.chinese.HSKLevel
 import org.scalatest.funspec.AnyFunSpec
-import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.libs.json.Json
 
 import scala.collection.JavaConverters._
 import scala.compat.java8.OptionConverters._
