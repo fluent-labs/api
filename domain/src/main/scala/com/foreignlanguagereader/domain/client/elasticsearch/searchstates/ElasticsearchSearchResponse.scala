@@ -51,6 +51,10 @@ case class ElasticsearchSearchResponse[T](
   ) =
     response match {
       case CircuitBreakerAttempt(Some(r)) =>
+        logger.info(
+          s"Query on index $index with fields $fields received result $r"
+        )
+
         val (results, attemptsResult) = r
 
         // Done to force us to refetch
@@ -63,8 +67,15 @@ case class ElasticsearchSearchResponse[T](
           (Some(docId), a.count)
         } else { (None, 0) }
 
+        logger.info(
+          s"Query on index $index with fields $fields received result $actualResults with attempts $attempts"
+        )
+
         (actualResults, attempts, id, true)
       case _ =>
+        logger.info(
+          s"Query on index $index with fields $fields received no result. (First time attempted)"
+        )
         (None, 0, None, false)
     }
 
@@ -74,6 +85,9 @@ case class ElasticsearchSearchResponse[T](
   lazy val getResultOrFetchFromSource: Future[ElasticsearchSearchResult[T]] =
     elasticsearchResult match {
       case Some(es) =>
+        logger.info(
+          s"Returning elasticsearch results for query on index $index with fields $fields"
+        )
         Future.successful(
           ElasticsearchSearchResult(
             index = index,
@@ -85,8 +99,15 @@ case class ElasticsearchSearchResponse[T](
             queried = queried
           )
         )
-      case None if fetchCount < maxFetchAttempts => fetchFromSource
+      case None if fetchCount < maxFetchAttempts =>
+        logger.info(
+          s"Refetching from source for query on index $index with fields $fields"
+        )
+        fetchFromSource
       case None =>
+        logger.info(
+          s"Not refetching from source because maximum attempts have been exceeded for query on index $index with fields $fields"
+        )
         Future.successful(
           ElasticsearchSearchResult(
             index = index,
@@ -105,6 +126,9 @@ case class ElasticsearchSearchResponse[T](
     fetcher()
       .map {
         case CircuitBreakerAttempt(result) =>
+          logger.info(
+            s"Successfully called fetcher on index=$index for fields=$fields"
+          )
           ElasticsearchSearchResult(
             index = index,
             fields = fields,
@@ -115,6 +139,9 @@ case class ElasticsearchSearchResponse[T](
             queried = queried
           )
         case CircuitBreakerNonAttempt() =>
+          logger.warn(
+            s"Failed to call fetcher on index=$index for fields=$fields because the circuitbreaker was closed"
+          )
           ElasticsearchSearchResult(
             index = index,
             fields = fields,
@@ -126,7 +153,7 @@ case class ElasticsearchSearchResponse[T](
           )
         case CircuitBreakerFailedAttempt(e) =>
           logger.error(
-            s"Failed to call fetcher on index=$index fields=$fields due to error ${e.getMessage}",
+            s"Failed to call fetcher on index=$index for fields=$fields due to error ${e.getMessage}",
             e
           )
           ElasticsearchSearchResult(
@@ -142,7 +169,7 @@ case class ElasticsearchSearchResponse[T](
       .recover {
         case e: Exception =>
           logger.error(
-            s"Failed to call fetcher on index=$index fields=$fields due to error ${e.getMessage}",
+            s"Failed to call fetcher on index=$index for fields=$fields due to error ${e.getMessage}",
             e
           )
           ElasticsearchSearchResult(
