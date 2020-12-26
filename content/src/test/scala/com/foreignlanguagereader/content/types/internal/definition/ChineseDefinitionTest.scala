@@ -2,9 +2,10 @@ package com.foreignlanguagereader.content.types.internal.definition
 
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
-import com.foreignlanguagereader.dto.v1.definition.ChineseDefinitionDTO
 import com.foreignlanguagereader.dto.v1.definition.chinese.HSKLevel
 import org.scalatest.funspec.AnyFunSpec
+import play.api.libs.json.{JsError, JsSuccess, Json}
+
 import scala.collection.JavaConverters._
 import scala.compat.java8.OptionConverters._
 
@@ -102,6 +103,14 @@ class ChineseDefinitionTest extends AnyFunSpec {
       )
       assert(example.pronunciation.pinyin == converted.getPronunciation)
       assert(example.hsk == converted.getHsk)
+    }
+
+    it("can correctly serialize itself to JSON") {
+      val json: String = Json.stringify(Json.toJson(example))
+      // These matter for elasticsearch lookup to work
+      assert(json.contains("\"definitionLanguage\":\"ENGLISH\""))
+      assert(json.contains("\"source\":\"MULTIPLE\""))
+      assert(json.contains("\"wordLanguage\":\"CHINESE\""))
     }
   }
 }
