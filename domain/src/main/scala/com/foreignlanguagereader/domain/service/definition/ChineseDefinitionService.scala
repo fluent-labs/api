@@ -122,6 +122,7 @@ class ChineseDefinitionService @Inject() (
         val message =
           s"Definitions were lost for chinese word $word, check the request partitioner"
         logger.error(message)
+        logger.warn(s"Raw definitions for word $word: $definitions")
         throw new IllegalStateException(message)
     }
   }

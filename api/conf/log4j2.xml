@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="DEBUG">
+<Configuration status="INFO">
     <Appenders>
         <Console name="STDOUT" target="SYSTEM_OUT">
             <JSONLayout eventEol="true" compact="true"/>
         </Console>
     </Appenders>
     <Loggers>
-        <root level="debug">
+        <root level="info">
             <AppenderRef ref="STDOUT"/>
         </root>
     </Loggers>
