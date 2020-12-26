@@ -16,7 +16,9 @@ import com.foreignlanguagereader.dto.v1.definition.chinese.{
   HSKLevel
 }
 import com.github.houbb.opencc4j.util.ZhConverterUtil
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json._
+
 import scala.collection.JavaConverters._
 import scala.compat.java8.OptionConverters._
 
@@ -34,7 +36,7 @@ case class ChineseDefinition(
     override val token: String
 ) extends Definition {
   private[this] val isTraditional = ZhConverterUtil.isTraditional(token)
-  val wordLanguage: Language =
+  override val wordLanguage: Language =
     if (isTraditional) Language.CHINESE_TRADITIONAL else Language.CHINESE
 
   val pronunciation: ChinesePronunciation =
@@ -74,6 +76,11 @@ case class ChineseDefinition(
     )
 }
 object ChineseDefinition {
-  implicit val format: Format[ChineseDefinition] =
-    Json.format[ChineseDefinition]
+  implicit val writes: Writes[ChineseDefinition] = {
+    (Json.writes[ChineseDefinition] ~ (__ \ "wordLanguage").write[Language])(
+      (d: ChineseDefinition) => (d, d.wordLanguage)
+    )
+
+  }
+  implicit val reads: Reads[ChineseDefinition] = Json.reads[ChineseDefinition]
 }

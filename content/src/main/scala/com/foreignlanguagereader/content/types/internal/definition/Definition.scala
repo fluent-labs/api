@@ -61,13 +61,13 @@ object Definition {
     new Format[Definition] {
       override def reads(json: JsValue): JsResult[Definition] = {
         (json \ "wordLanguage").validate[Language] match {
-          case Language.CHINESE => ChineseDefinition.format.reads(json)
+          case Language.CHINESE => ChineseDefinition.reads.reads(json)
           case _                => GenericDefinition.format.reads(json)
         }
       }
       override def writes(o: Definition): JsValue =
         o match {
-          case c: ChineseDefinition => ChineseDefinition.format.writes(c)
+          case c: ChineseDefinition => ChineseDefinition.writes.writes(c)
           case g: GenericDefinition => GenericDefinition.format.writes(g)
         }
     }
