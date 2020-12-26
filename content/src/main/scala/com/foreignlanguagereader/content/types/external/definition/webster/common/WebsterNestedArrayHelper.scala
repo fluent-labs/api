@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.content.types.external.definition.webster.webster.common
+package com.foreignlanguagereader.content.types.external.definition.webster.common
 
 import play.api.libs.json._
 

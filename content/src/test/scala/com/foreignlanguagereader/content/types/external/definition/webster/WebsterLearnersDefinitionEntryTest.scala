@@ -1,7 +1,6 @@
-package com.foreignlanguagereader.content.types.external.definition.webster.webster
+package com.foreignlanguagereader.content.types.external.definition.webster
 
 import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.external.definition.webster.webster.WebsterLearnersDefinitionEntry.writes
 import com.foreignlanguagereader.content.types.internal.definition.{
   Definition,
   DefinitionSource
