@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.content.types.external.definition.webster.webster.common
+package com.foreignlanguagereader.content.types.external.definition.webster.common
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}

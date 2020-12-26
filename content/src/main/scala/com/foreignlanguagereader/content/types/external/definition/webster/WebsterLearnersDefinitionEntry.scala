@@ -1,16 +1,10 @@
-package com.foreignlanguagereader.content.types.external.definition.webster.webster
+package com.foreignlanguagereader.content.types.external.definition.webster
 
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
-import com.foreignlanguagereader.content.types.external.definition.webster.webster.common.WebsterPartOfSpeech.WebsterPartOfSpeech
-import com.foreignlanguagereader.content.types.external.definition.webster.webster.common.{
-  WebsterDefinedRunOnPhrase,
-  WebsterDefinition,
-  WebsterHeadwordInfo,
-  WebsterInflection,
-  WebsterMeta
-}
+import com.foreignlanguagereader.content.types.external.definition.webster.common.WebsterPartOfSpeech.WebsterPartOfSpeech
+import com.foreignlanguagereader.content.types.external.definition.webster.common._
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.content.util.JsonSequenceHelper

@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.content.types.external.definition.webster.webster.common
+package com.foreignlanguagereader.content.types.external.definition.webster.common
 
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech

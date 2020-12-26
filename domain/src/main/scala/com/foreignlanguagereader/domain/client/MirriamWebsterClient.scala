@@ -5,10 +5,11 @@ import java.util.concurrent.TimeUnit
 import akka.actor.ActorSystem
 import cats.data.Nested
 import cats.implicits._
-import com.foreignlanguagereader.content.types.external.definition.webster.webster.{
+import com.foreignlanguagereader.content.types.external.definition.webster.{
   WebsterLearnersDefinitionEntry,
   WebsterSpanishDefinitionEntry
 }
+import com.foreignlanguagereader.content.types.external.definition.webster.WebsterSpanishDefinitionEntry
 import com.foreignlanguagereader.content.types.internal.definition.Definition
 import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.common.{

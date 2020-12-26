@@ -1,12 +1,12 @@
-package com.foreignlanguagereader.content.types.external.definition.webster.webster
+package com.foreignlanguagereader.content.types.external.definition.webster
 
-import com.foreignlanguagereader.content.types.external.definition.webster.webster.common.{
+import com.foreignlanguagereader.content.types.external.definition.webster.common.WebsterPartOfSpeech.WebsterPartOfSpeech
+import com.foreignlanguagereader.content.types.external.definition.webster.common.{
   WebsterDefinition,
   WebsterHeadwordInfo,
   WebsterMeta,
   WebsterPartOfSpeech
 }
-import com.foreignlanguagereader.content.types.external.definition.webster.webster.common.WebsterPartOfSpeech.WebsterPartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 
 trait WebsterDefinitionEntryBase {
