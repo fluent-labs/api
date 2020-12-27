@@ -5,10 +5,10 @@ import com.foreignlanguagereader.content.types.internal.definition.DefinitionSou
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.dto.v1.definition.DefinitionDTO
-import play.api.libs.json.{Format, Json}
+
 import scala.collection.JavaConverters._
 
-case class GenericDefinition(
+case class EnglishDefinition(
     subdefinitions: List[String],
     ipa: String,
     tag: PartOfSpeech,
@@ -29,8 +29,4 @@ case class GenericDefinition(
       PartOfSpeech.toDTO(tag),
       examples.getOrElse(List()).asJava
     )
-}
-object GenericDefinition {
-  implicit val format: Format[GenericDefinition] =
-    Json.format[GenericDefinition]
 }
