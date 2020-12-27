@@ -102,7 +102,7 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         .getDefinition(Language.SPANISH, Language.ENGLISH, cualquier)
         .map { response =>
           assert(response.size == 1)
-          assert(response.head == dummyEnglishDefinition)
+          assert(response.head == dummySpanishDefinition)
         }
     }
   }
