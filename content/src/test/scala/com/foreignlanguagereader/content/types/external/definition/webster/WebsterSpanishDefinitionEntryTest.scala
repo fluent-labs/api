@@ -2,8 +2,8 @@ package com.foreignlanguagereader.content.types.external.definition.webster
 
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.definition.{
-  Definition,
-  DefinitionSource
+  DefinitionSource,
+  SpanishDefinition
 }
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.content.util.ContentFileLoader
@@ -45,7 +45,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         val definitionLanguage = Language.SPANISH
         val source = DefinitionSource.MIRRIAM_WEBSTER_SPANISH
 
-        val compareAgainst = Definition(
+        val compareAgainst = SpanishDefinition(
           subdefinitions,
           ipa,
           tag,

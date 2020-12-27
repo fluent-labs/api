@@ -4,7 +4,7 @@ import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.definition.{
   Definition,
   DefinitionSource,
-  GenericDefinition
+  EnglishDefinition
 }
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.domain.client.common.{
@@ -22,7 +22,7 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
   val index: String = "definition"
   val fields: Map[String, String] =
     Map("field1" -> "value1", "field2" -> "value2", "field3" -> "value3")
-  val fetchedDefinition: GenericDefinition = GenericDefinition(
+  val fetchedDefinition: EnglishDefinition = EnglishDefinition(
     List("refetched"),
     "ipa",
     PartOfSpeech.NOUN,

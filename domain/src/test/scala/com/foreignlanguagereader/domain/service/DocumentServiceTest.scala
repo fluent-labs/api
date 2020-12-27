@@ -1,10 +1,9 @@
 package com.foreignlanguagereader.domain.service
 
-import cats.data.Nested
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.definition.{
-  Definition,
-  DefinitionSource
+  DefinitionSource,
+  EnglishDefinition
 }
 import com.foreignlanguagereader.content.types.internal.word
 import com.foreignlanguagereader.content.types.internal.word.{
@@ -42,7 +41,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         mockGoogleCloudClient
           .getWordsForDocument(Language.CHINESE, "some words")
-      ).thenReturn(Nested(Future.successful(CircuitBreakerAttempt(Set()))))
+      ).thenReturn(Future.successful(CircuitBreakerAttempt(Set())))
 
       documentService
         .getWordsForDocument(Language.CHINESE, Language.CHINESE, "some words")
@@ -53,7 +52,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         mockGoogleCloudClient
           .getWordsForDocument(Language.CHINESE, "some words")
-      ).thenReturn(Nested(Future.successful(CircuitBreakerNonAttempt())))
+      ).thenReturn(Future.successful(CircuitBreakerNonAttempt()))
 
       documentService
         .getWordsForDocument(Language.CHINESE, Language.CHINESE, "some words")
@@ -65,10 +64,8 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         mockGoogleCloudClient
           .getWordsForDocument(Language.CHINESE_TRADITIONAL, "some words")
       ).thenReturn(
-        Nested(
-          Future.apply(
-            CircuitBreakerFailedAttempt(new IllegalArgumentException("Uh oh"))
-          )
+        Future.apply(
+          CircuitBreakerFailedAttempt(new IllegalArgumentException("Uh oh"))
         )
       )
       documentService
@@ -114,10 +111,10 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         mockGoogleCloudClient
           .getWordsForDocument(Language.ENGLISH, "test phrase")
       ).thenReturn(
-        Nested(Future.apply(CircuitBreakerAttempt(Set(testWord, phraseWord))))
+        Future.apply(CircuitBreakerAttempt(Set(testWord, phraseWord)))
       )
 
-      val testDefinition = Definition(
+      val testDefinition = EnglishDefinition(
         subdefinitions = List("test"),
         ipa = "",
         tag = PartOfSpeech.NOUN,
@@ -132,7 +129,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
           .getDefinition(Language.ENGLISH, Language.SPANISH, testWord)
       ).thenReturn(Future.successful(List(testDefinition)))
 
-      val phraseDefinition = Definition(
+      val phraseDefinition = EnglishDefinition(
         subdefinitions = List("phrase"),
         ipa = "",
         tag = PartOfSpeech.VERB,

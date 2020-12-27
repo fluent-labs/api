@@ -5,13 +5,14 @@ import com.foreignlanguagereader.content.types.internal.definition.{
   ChineseDefinition,
   Definition,
   DefinitionSource,
-  GenericDefinition
+  EnglishDefinition
 }
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
 import com.foreignlanguagereader.domain.util.ElasticsearchTestUtil
 import org.elasticsearch.action.index.IndexRequest
 import org.scalatest.funspec.AnyFunSpec
+import play.api.libs.json.{Json, Writes}
 
 class ElasticsearchSearchResultTest extends AnyFunSpec {
   val index: String = "definition"
@@ -76,7 +77,7 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
       source = DefinitionSource.MULTIPLE,
       token = "你好"
     )
-    val dummyGenericDefinition = GenericDefinition(
+    val dummyEnglishDefinition = EnglishDefinition(
       subdefinitions = List("definition 1", "definition 2"),
       ipa = "ipa",
       tag = PartOfSpeech.NOUN,
@@ -87,16 +88,19 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
       token = "anything"
     )
 
+    implicit val writes: Writes[EnglishDefinition] =
+      Json.writes[EnglishDefinition]
+
     val chineseDefinitionRequest =
       ElasticsearchTestUtil.indexRequestFrom(index, dummyChineseDefinition)
     val genericDefinitionRequest =
-      ElasticsearchTestUtil.indexRequestFrom(index, dummyGenericDefinition)
+      ElasticsearchTestUtil.indexRequestFrom(index, dummyEnglishDefinition)
 
     describe("on a previously untried query") {
       val result = ElasticsearchSearchResult[Definition](
         index = index,
         fields = fields,
-        result = List(dummyChineseDefinition, dummyGenericDefinition),
+        result = List(dummyChineseDefinition, dummyEnglishDefinition),
         fetchCount = 1,
         lookupId = None,
         refetched = true,
@@ -157,7 +161,7 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
       val result = ElasticsearchSearchResult[Definition](
         index = index,
         fields = fields,
-        result = List(dummyChineseDefinition, dummyGenericDefinition),
+        result = List(dummyChineseDefinition, dummyEnglishDefinition),
         fetchCount = 2,
         lookupId = Some(attemptsId),
         refetched = true,
