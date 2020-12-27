@@ -3,7 +3,6 @@ package com.foreignlanguagereader.domain.service.definition
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
-import com.foreignlanguagereader.content.types.external.definition.cedict.CEDICTDefinitionEntry
 import com.foreignlanguagereader.content.types.external.definition.webster.WebsterSpanishDefinitionEntry
 import com.foreignlanguagereader.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
@@ -22,7 +21,11 @@ import com.foreignlanguagereader.domain.client.common.CircuitBreakerResult
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchSearchRequest
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
-import com.foreignlanguagereader.domain.fetcher.spanish.WebsterSpanishToEnglishFetcher
+import com.foreignlanguagereader.domain.fetcher.english.WiktionaryEnglishFetcher
+import com.foreignlanguagereader.domain.fetcher.spanish.{
+  WebsterSpanishToEnglishFetcher,
+  WiktionarySpanishFetcher
+}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar
 import org.scalatest.FutureOutcome
@@ -48,7 +51,8 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     mock[ElasticsearchCacheClient]
   val configMock: Configuration = mock[Configuration]
 
-  val test: Word = Word.fromToken("test", Language.ENGLISH)
+  val test: Word =
+    Word.fromToken("test", Language.ENGLISH).copy(tag = PartOfSpeech.NOUN)
   val token: Word = Word.fromToken("token", Language.ENGLISH)
 
   override def withFixture(test: NoArgAsyncTest): FutureOutcome = {
@@ -67,8 +71,18 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         scala.concurrent.ExecutionContext.Implicits.global
       override val config: Configuration = configMock
       override val wordLanguage: Language = Language.ENGLISH
-      override val sources: List[DefinitionSource] =
+      override val sources: List[DefinitionSource] = {
         List(DefinitionSource.WIKTIONARY)
+      }
+      override val definitionFetchers: Map[
+        (DefinitionSource, Language),
+        DefinitionFetcher[_, EnglishDefinition]
+      ] = Map(
+        (
+          DefinitionSource.WIKTIONARY,
+          Language.ENGLISH
+        ) -> new WiktionaryEnglishFetcher()(ec)
+      )
     }
     val defaultDefinitionService = new DefaultLanguageDefinitionService()
 
@@ -211,6 +225,16 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     describe("with a custom enricher") {
       class CustomizedEnricherLanguageDefinitionService
           extends CustomizedLanguageDefinitionService {
+        override val definitionFetchers: Map[
+          (DefinitionSource, Language),
+          DefinitionFetcher[_, SpanishDefinition]
+        ] = Map(
+          (
+            DefinitionSource.WIKTIONARY,
+            Language.SPANISH
+          ) -> new WiktionarySpanishFetcher()(ec)
+        )
+
         override def enrichDefinitions(
             definitionLanguage: Language,
             word: Word,
@@ -228,7 +252,10 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
                   PartOfSpeech.NOUN
                 )
               )
-            case _ => List()
+            case _ =>
+              throw new IllegalStateException(
+                s"Incorrect parameters passed to enrich definitions - language: $definitionLanguage, word: $word, definitions: $definitions"
+              )
           }
         }
       }
@@ -255,7 +282,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         customizedEnricher
           .getDefinitions(Language.ENGLISH, token)
           .map { results =>
-            assert(results.length == 2)
+            assert(results.length == 1)
             assert(
               results.contains(
                 dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN)

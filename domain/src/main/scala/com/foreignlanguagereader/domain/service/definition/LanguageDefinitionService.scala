@@ -81,9 +81,17 @@ trait LanguageDefinitionService[T <: Definition] {
         }
       )
       .map(definitions =>
-        if (definitions.nonEmpty)
+        if (definitions.nonEmpty) {
+          logger.info(
+            s"Enriching definitions in $definitionLanguage for word $word"
+          )
           enrichDefinitions(definitionLanguage, word, definitions)
-        else List()
+        } else {
+          logger.info(
+            s"Not enriching definitions in $definitionLanguage for word $word because no results were found"
+          )
+          List()
+        }
       )
   }
 
