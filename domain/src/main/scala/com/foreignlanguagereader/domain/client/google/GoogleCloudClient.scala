@@ -51,7 +51,7 @@ class GoogleCloudClient @Inject() (
   def getWordsForDocument(
       language: Language,
       document: String
-  ): Nested[Future, CircuitBreakerResult, Set[Word]] = {
+  ): Future[CircuitBreakerResult[Set[Word]]] = {
     logger.info(s"Getting tokens in $language from Google cloud: $document")
 
     val doc =
@@ -66,13 +66,17 @@ class GoogleCloudClient @Inject() (
       .setEncodingType(EncodingType.UTF16)
       .build
 
-    breaker
-      .withBreaker(s"Failed to get tokens from google cloud")(
-        Future {
-          gcloud.getTokens(request)
-        }
+    Nested
+      .apply(
+        breaker
+          .withBreaker(s"Failed to get tokens from google cloud")(
+            Future {
+              gcloud.getTokens(request)
+            }
+          )
       )
       .map(tokens => convertTokensToWord(language, tokens))
+      .value
   }
 
   /*
