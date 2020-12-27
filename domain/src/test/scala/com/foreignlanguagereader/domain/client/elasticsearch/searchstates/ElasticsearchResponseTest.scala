@@ -1,11 +1,8 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
 import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.internal.definition.{
-  Definition,
-  DefinitionSource,
-  EnglishDefinition
-}
+import com.foreignlanguagereader.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
+import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerAttempt,
@@ -22,21 +19,21 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
   val index: String = "definition"
   val fields: Map[String, String] =
     Map("field1" -> "value1", "field2" -> "value2", "field3" -> "value3")
-  val fetchedDefinition: EnglishDefinition = EnglishDefinition(
-    List("refetched"),
-    "ipa",
-    PartOfSpeech.NOUN,
-    Some(List("this was refetched")),
-    Language.ENGLISH,
-    Language.ENGLISH,
-    DefinitionSource.MULTIPLE,
-    "refetched"
+  val fetchedDefinition: WiktionaryDefinitionEntry = WiktionaryDefinitionEntry(
+    subdefinitions = List("refetched"),
+    pronunciation = "ipa",
+    tag = Some(PartOfSpeech.NOUN),
+    examples = Some(List("this was refetched")),
+    wordLanguage = Language.ENGLISH,
+    definitionLanguage = Language.ENGLISH,
+    token = "refetched",
+    source = DefinitionSource.WIKTIONARY
   )
   val attemptsRefreshEligible: LookupAttempt = LookupAttempt(index, fields, 4)
   val attemptsRefreshIneligible: LookupAttempt = LookupAttempt(index, fields, 7)
 
-  val responseBase: ElasticsearchSearchResponse[Definition] =
-    ElasticsearchSearchResponse[Definition](
+  val responseBase: ElasticsearchSearchResponse[WiktionaryDefinitionEntry] =
+    ElasticsearchSearchResponse[WiktionaryDefinitionEntry](
       index = index,
       fields = fields,
       fetcher =
@@ -46,10 +43,10 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
     )
 
   def makeDoubleSearchResponse(
-      definitions: Seq[Definition],
+      definitions: Seq[WiktionaryDefinitionEntry],
       attempts: Option[LookupAttempt]
   ): CircuitBreakerResult[Option[
-    (Map[String, Definition], Map[String, LookupAttempt])
+    (Map[String, WiktionaryDefinitionEntry], Map[String, LookupAttempt])
   ]] = {
     val defs = definitions.map(d => d.token -> d).toMap
     val attempt = attempts match {
@@ -97,7 +94,9 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
       }
 
       it("updates the fetch count if the fetcher failed") {
-        val fetcher: () => Future[CircuitBreakerResult[List[Definition]]] =
+        val fetcher: () => Future[
+          CircuitBreakerResult[List[WiktionaryDefinitionEntry]]
+        ] =
           () => Future.failed(new IllegalArgumentException("Oh no"))
         val response = responseBase.copy(
           response = makeDoubleSearchResponse(
@@ -121,7 +120,9 @@ class ElasticsearchResponseTest extends AsyncFunSpec with MockitoSugar {
             Some(LookupAttempt("definitions", Map(), 4))
           ),
           fetcher = () =>
-            Future.successful(CircuitBreakerNonAttempt[List[Definition]]())
+            Future.successful(
+              CircuitBreakerNonAttempt[List[WiktionaryDefinitionEntry]]()
+            )
         )
         assert(response.elasticsearchResult.isEmpty)
 
