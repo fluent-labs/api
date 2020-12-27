@@ -4,7 +4,8 @@ import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.definition.{
   ChineseDefinition,
   DefinitionSource,
-  GenericDefinition
+  EnglishDefinition,
+  SpanishDefinition
 }
 import com.foreignlanguagereader.content.types.internal.word.{
   PartOfSpeech,
@@ -42,7 +43,7 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     source = DefinitionSource.MULTIPLE,
     token = "你好"
   )
-  val dummyGenericDefinition: GenericDefinition = GenericDefinition(
+  val dummyEnglishDefinition: EnglishDefinition = EnglishDefinition(
     subdefinitions = List("definition 1", "definition 2"),
     ipa = "",
     tag = PartOfSpeech.NOUN,
@@ -51,6 +52,17 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     wordLanguage = Language.ENGLISH,
     source = DefinitionSource.MULTIPLE,
     token = "anything"
+  )
+
+  val dummySpanishDefinition: SpanishDefinition = SpanishDefinition(
+    subdefinitions = List("definition 1", "definition 2"),
+    ipa = "",
+    tag = PartOfSpeech.NOUN,
+    examples = Some(List("example 1", "example 2")),
+    definitionLanguage = Language.ENGLISH,
+    wordLanguage = Language.SPANISH,
+    source = DefinitionSource.MULTIPLE,
+    token = "cualquier"
   )
 
   val suoYouDe: Word = Word.fromToken("所有的", Language.CHINESE)
@@ -72,25 +84,25 @@ class DefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
     it("can get definitions in English") {
       when(mockEnglishService.getDefinitions(Language.CHINESE, anything))
-        .thenReturn(Future.successful(List(dummyGenericDefinition)))
+        .thenReturn(Future.successful(List(dummyEnglishDefinition)))
 
       definitionService
         .getDefinition(Language.ENGLISH, Language.CHINESE, anything)
         .map { response =>
           assert(response.size == 1)
-          assert(response.head == dummyGenericDefinition)
+          assert(response.head == dummyEnglishDefinition)
         }
     }
 
     it("can get definitions in Spanish") {
       when(mockSpanishService.getDefinitions(Language.ENGLISH, cualquier))
-        .thenReturn(Future.successful(List(dummyGenericDefinition)))
+        .thenReturn(Future.successful(List(dummySpanishDefinition)))
 
       definitionService
         .getDefinition(Language.SPANISH, Language.ENGLISH, cualquier)
         .map { response =>
           assert(response.size == 1)
-          assert(response.head == dummyGenericDefinition)
+          assert(response.head == dummyEnglishDefinition)
         }
     }
   }

@@ -2,6 +2,7 @@ package com.foreignlanguagereader.domain.service.definition
 
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.Language.Language
+import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
 import com.foreignlanguagereader.content.types.external.definition.cedict.CEDICTDefinitionEntry
 import com.foreignlanguagereader.content.types.external.definition.webster.WebsterSpanishDefinitionEntry
 import com.foreignlanguagereader.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
@@ -198,13 +199,13 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[List[ElasticsearchSearchRequest[Definition]]])
+              any(classOf[ElasticsearchSearchRequest[Definition]])
             )(
               any(classOf[ClassTag[Definition]]),
               any(classOf[Reads[Definition]]),
               any(classOf[Writes[Definition]])
             )
-        ).thenReturn(Future.successful(List(List())))
+        ).thenReturn(Future.successful(List()))
 
         customizedFetcher
           .getDefinitions(Language.CHINESE, test)
@@ -244,18 +245,15 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[List[ElasticsearchSearchRequest[Definition]]])
+              any(classOf[ElasticsearchSearchRequest[DefinitionEntry]])
             )(
-              any(classOf[ClassTag[Definition]]),
-              any(classOf[Reads[Definition]]),
-              any(classOf[Writes[Definition]])
+              any(classOf[ClassTag[DefinitionEntry]]),
+              any(classOf[Reads[DefinitionEntry]]),
+              any(classOf[Writes[DefinitionEntry]])
             )
         ).thenReturn(
           Future.successful(
-            List(
-              List(dummyCEDICTDefinition.toDefinition(PartOfSpeech.NOUN)),
-              List(dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN))
-            )
+            List(dummyCEDICTDefinition, dummyWiktionaryDefinition)
           )
         )
 
