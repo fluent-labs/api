@@ -1,15 +1,10 @@
 package com.foreignlanguagereader.content.types.external.definition
 
-import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.external.definition.cedict.CEDICTDefinitionEntry
 import com.foreignlanguagereader.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
-import com.foreignlanguagereader.content.types.internal.definition.{
-  ChineseDefinition,
-  Definition,
-  DefinitionSource
-}
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.content.types.internal.definition._
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import play.api.libs.json._
 
@@ -24,29 +19,7 @@ trait DefinitionEntry {
   val source: DefinitionSource
   val token: String
 
-  def toDefinition(partOfSpeech: PartOfSpeech): Definition = {
-    val part = tag match {
-      case Some(t) => t
-      case None    => partOfSpeech
-    }
-    wordLanguage match {
-      case Language.CHINESE =>
-        DefinitionEntry.buildChineseDefinition(this, part)
-      case Language.CHINESE_TRADITIONAL =>
-        DefinitionEntry.buildChineseDefinition(this, part)
-      case _ =>
-        Definition(
-          subdefinitions = subdefinitions,
-          ipa = pronunciation,
-          tag = part,
-          examples = examples,
-          wordLanguage = wordLanguage,
-          definitionLanguage = definitionLanguage,
-          source = source,
-          token = token
-        )
-    }
-  }
+  def toDefinition(partOfSpeech: PartOfSpeech): Definition
 }
 
 object DefinitionEntry {
@@ -92,6 +65,36 @@ object DefinitionEntry {
       inputPinyin = entry.pronunciation,
       inputSimplified = None,
       inputTraditional = None,
+      definitionLanguage = entry.definitionLanguage,
+      source = entry.source,
+      token = entry.token
+    )
+
+  def buildEnglishDefinition(
+      entry: DefinitionEntry,
+      partOfSpeech: PartOfSpeech
+  ): EnglishDefinition =
+    EnglishDefinition(
+      subdefinitions = entry.subdefinitions,
+      ipa = entry.pronunciation,
+      tag = partOfSpeech,
+      examples = entry.examples,
+      wordLanguage = entry.wordLanguage,
+      definitionLanguage = entry.definitionLanguage,
+      source = entry.source,
+      token = entry.token
+    )
+
+  def buildSpanishDefinition(
+      entry: DefinitionEntry,
+      partOfSpeech: PartOfSpeech
+  ): SpanishDefinition =
+    SpanishDefinition(
+      subdefinitions = entry.subdefinitions,
+      ipa = entry.pronunciation,
+      tag = partOfSpeech,
+      examples = entry.examples,
+      wordLanguage = entry.wordLanguage,
       definitionLanguage = entry.definitionLanguage,
       source = entry.source,
       token = entry.token

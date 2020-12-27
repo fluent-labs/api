@@ -3,12 +3,11 @@ package com.foreignlanguagereader.content.types.external.definition.cedict
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
+import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.content.types.internal.definition.{
   ChineseDefinition,
-  Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import play.api.libs.json.{Format, Json, Reads}
 
@@ -28,7 +27,7 @@ case class CEDICTDefinitionEntry(
   override val source: DefinitionSource = DefinitionSource.CEDICT
 
   // We clearly do have simplified and traditional values so let's use them.
-  override def toDefinition(partOfSpeech: PartOfSpeech): Definition =
+  override def toDefinition(partOfSpeech: PartOfSpeech): ChineseDefinition =
     ChineseDefinition(
       subdefinitions = subdefinitions,
       tag = partOfSpeech,

@@ -5,8 +5,12 @@ import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
 import com.foreignlanguagereader.content.types.external.definition.webster.common.WebsterPartOfSpeech.WebsterPartOfSpeech
 import com.foreignlanguagereader.content.types.external.definition.webster.common._
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
+import com.foreignlanguagereader.content.types.internal.definition.{
+  Definition,
+  DefinitionSource
+}
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.content.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
@@ -40,6 +44,17 @@ case class WebsterSpanishDefinitionEntry(
     WebsterPartOfSpeech.parseFromString(partOfSpeechRaw)
 
   // TODO gender
+  override def toDefinition(partOfSpeech: PartOfSpeech): Definition =
+    wordLanguage match {
+      case Language.ENGLISH =>
+        DefinitionEntry.buildEnglishDefinition(this, partOfSpeech)
+      case Language.SPANISH =>
+        DefinitionEntry.buildSpanishDefinition(this, partOfSpeech)
+      case l =>
+        throw new IllegalStateException(
+          s"Tried to convert a WebsterSpanishDefinitionEntry to $l"
+        )
+    }
 }
 object WebsterSpanishDefinitionEntry {
   implicit val reads: Reads[WebsterSpanishDefinitionEntry] = (
