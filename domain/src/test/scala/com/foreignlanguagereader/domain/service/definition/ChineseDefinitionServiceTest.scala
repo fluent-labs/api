@@ -119,15 +119,13 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     it("Does not enhance non-chinese definitions") {
       // This will delegate to the base LanguageDefinitionService implementation
       // So the assertions may fail if that changes.
-      stubFor[CEDICTDefinitionEntry](List(dummyCedictDefinitionEntry))
       stubFor[WiktionaryDefinitionEntry](List(dummyWiktionaryDefinitionEntry))
 
       chineseDefinitionService
         .getDefinitions(Language.CHINESE, niHao)
         .map { definitions =>
-          assert(definitions.size == 2)
-          assert(definitions.exists(_.eq(dummyCedictDefinition)))
-          assert(definitions.exists(_.eq(dummyWiktionaryDefinition)))
+          assert(definitions.size == 1)
+          assert(definitions.contains(dummyWiktionaryDefinition))
         }
     }
 

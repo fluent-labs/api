@@ -48,6 +48,10 @@ class ChineseDefinitionService @Inject() (
       (
         DefinitionSource.WIKTIONARY,
         Language.ENGLISH
+      ) -> new WiktionaryChineseFetcher(),
+      (
+        DefinitionSource.WIKTIONARY,
+        Language.CHINESE
       ) -> new WiktionaryChineseFetcher()
     )
 
@@ -69,8 +73,12 @@ class ChineseDefinitionService @Inject() (
       definitions: Map[DefinitionSource, List[ChineseDefinition]]
   ): List[ChineseDefinition] = {
     definitionLanguage match {
-      case Language.ENGLISH => enrichEnglishDefinitions(word, definitions)
-      case _                => super.enrichDefinitions(definitionLanguage, word, definitions)
+      case Language.ENGLISH =>
+        logger.info("Enriching Chinese definitions in English")
+        enrichEnglishDefinitions(word, definitions)
+      case _ =>
+        logger.info(s"Not enriching Chinese definitions in $definitionLanguage")
+        super.enrichDefinitions(definitionLanguage, word, definitions)
     }
   }
 
