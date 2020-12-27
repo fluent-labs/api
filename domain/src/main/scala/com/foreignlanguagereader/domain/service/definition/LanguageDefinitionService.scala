@@ -66,11 +66,16 @@ trait LanguageDefinitionService[T <: Definition] {
   def getDefinitions(
       definitionLanguage: Language,
       word: Word
-  ): Future[List[T]] = {
+  ): Future[List[T]] =
     Future
       .traverse(sources)(source =>
         getDefinitionsForSingleSource(definitionLanguage, source, word).map(
-          results => source -> results
+          results => {
+            logger.info(
+              s"Got definitions for word $word source $source: $results"
+            )
+            source -> results
+          }
         )
       )
       .map(_.toMap)
@@ -93,7 +98,6 @@ trait LanguageDefinitionService[T <: Definition] {
           List()
         }
       )
-  }
 
   // Below here is trait behavior, implementers need not read further
 
@@ -115,7 +119,11 @@ trait LanguageDefinitionService[T <: Definition] {
       word: Word
   ): Future[List[T]] =
     definitionFetchers.get((source, definitionLanguage)) match {
-      case None => Future.successful(List[T]())
+      case None =>
+        logger.warn(
+          s"Fetcher not implemented for source $source in language $definitionLanguage"
+        )
+        Future.successful(List[T]())
       case Some(fetcher) =>
         fetcher
           .fetchDefinitions(

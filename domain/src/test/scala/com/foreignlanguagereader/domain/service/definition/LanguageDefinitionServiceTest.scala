@@ -231,9 +231,13 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         ] = Map(
           (
             DefinitionSource.WIKTIONARY,
-            Language.SPANISH
+            Language.ENGLISH
           ) -> new WiktionarySpanishFetcher()(ec)
         )
+        override val sources: List[DefinitionSource] =
+          List(
+            DefinitionSource.WIKTIONARY
+          )
 
         override def enrichDefinitions(
             definitionLanguage: Language,
@@ -285,7 +289,10 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
             assert(results.length == 1)
             assert(
               results.contains(
-                dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN)
+                DefinitionEntry.buildSpanishDefinition(
+                  dummyWiktionaryDefinition,
+                  PartOfSpeech.NOUN
+                )
               )
             )
 
