@@ -120,13 +120,6 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   }
 
   describe("A customized language definition service") {
-    val dummyCEDICTDefinition = CEDICTDefinitionEntry(
-      List("definition 1", "definition 2"),
-      "pinyin",
-      "simplified",
-      "traditional",
-      "token"
-    )
 
     class CustomizedLanguageDefinitionService()
         extends LanguageDefinitionService[SpanishDefinition] {
@@ -221,19 +214,19 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         override def enrichDefinitions(
             definitionLanguage: Language,
             word: Word,
-            definitions: Map[DefinitionSource, List[Definition]]
-        ): List[Definition] = {
+            definitions: Map[DefinitionSource, List[SpanishDefinition]]
+        ): List[SpanishDefinition] = {
           val stub: Map[DefinitionSource, List[Definition]] = Map(
-            DefinitionSource.CEDICT ->
-              List(dummyCEDICTDefinition.toDefinition(PartOfSpeech.NOUN)),
             DefinitionSource.WIKTIONARY ->
               List(dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN))
           )
           (definitionLanguage, word, definitions) match {
             case (Language.ENGLISH, token, stub) =>
               List(
-                dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN),
-                dummyCEDICTDefinition.toDefinition(PartOfSpeech.NOUN)
+                DefinitionEntry.buildSpanishDefinition(
+                  dummyWiktionaryDefinition,
+                  PartOfSpeech.NOUN
+                )
               )
             case _ => List()
           }
@@ -245,15 +238,17 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[ElasticsearchSearchRequest[DefinitionEntry]])
+              any(
+                classOf[ElasticsearchSearchRequest[WiktionaryDefinitionEntry]]
+              )
             )(
-              any(classOf[ClassTag[DefinitionEntry]]),
-              any(classOf[Reads[DefinitionEntry]]),
-              any(classOf[Writes[DefinitionEntry]])
+              any(classOf[ClassTag[WiktionaryDefinitionEntry]]),
+              any(classOf[Reads[WiktionaryDefinitionEntry]]),
+              any(classOf[Writes[WiktionaryDefinitionEntry]])
             )
         ).thenReturn(
           Future.successful(
-            List(dummyCEDICTDefinition, dummyWiktionaryDefinition)
+            List(dummyWiktionaryDefinition)
           )
         )
 
@@ -265,10 +260,6 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
               results.contains(
                 dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN)
               )
-            )
-            assert(
-              results
-                .contains(dummyCEDICTDefinition.toDefinition(PartOfSpeech.NOUN))
             )
 
             succeed
