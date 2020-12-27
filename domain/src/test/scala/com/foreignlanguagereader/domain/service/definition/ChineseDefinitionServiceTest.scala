@@ -1,10 +1,11 @@
 package com.foreignlanguagereader.domain.service.definition
 
 import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.internal.definition
+import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
+import com.foreignlanguagereader.content.types.external.definition.cedict.CEDICTDefinitionEntry
+import com.foreignlanguagereader.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
 import com.foreignlanguagereader.content.types.internal.definition.{
   ChineseDefinition,
-  Definition,
   DefinitionSource
 }
 import com.foreignlanguagereader.content.types.internal.word.{
@@ -35,7 +36,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   )
   val definitionsIndex = "definitions"
 
-  val dummyChineseDefinition: ChineseDefinition = definition.ChineseDefinition(
+  val dummyChineseDefinition: ChineseDefinition = ChineseDefinition(
     subdefinitions = List("definition 1", "definition 2"),
     tag = PartOfSpeech.NOUN,
     examples = Some(List("example 1", "example 2")),
@@ -47,64 +48,79 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     token = "你好"
   )
 
-  val dummyCedictDefinition: ChineseDefinition = definition.ChineseDefinition(
+  val dummyCedictDefinitionEntry: CEDICTDefinitionEntry = CEDICTDefinitionEntry(
     subdefinitions = List("cedict definition 1", "cedict definition 2"),
-    tag = PartOfSpeech.PARTICLE,
-    examples = None,
-    inputPinyin = "ni3 hao3",
-    inputSimplified = Some("你好"),
-    inputTraditional = Some("你好"),
-    definitionLanguage = Language.ENGLISH,
-    source = DefinitionSource.CEDICT,
+    pinyin = "ni3 hao3",
+    simplified = "你好",
+    traditional = "你好",
     token = "你好"
   )
+  val dummyCedictDefinition: ChineseDefinition =
+    dummyCedictDefinitionEntry.toDefinition(PartOfSpeech.NOUN)
 
-  val dummyWiktionaryDefinition: ChineseDefinition =
-    definition.ChineseDefinition(
+  val dummyWiktionaryDefinitionEntry: WiktionaryDefinitionEntry =
+    WiktionaryDefinitionEntry(
       subdefinitions =
         List("wiktionary definition 1", "wiktionary definition 2"),
-      tag = PartOfSpeech.NOUN,
+      pronunciation = "ni hao",
+      tag = Some(PartOfSpeech.NOUN),
       examples = Some(List("example 1", "example 2")),
-      inputPinyin = "",
-      inputSimplified = None,
-      inputTraditional = None,
+      wordLanguage = Language.CHINESE,
       definitionLanguage = Language.ENGLISH,
-      source = DefinitionSource.WIKTIONARY,
-      token = "你好"
+      token = "你好",
+      source = DefinitionSource.WIKTIONARY
+    )
+  val dummyWiktionaryDefinition: ChineseDefinition =
+    DefinitionEntry.buildChineseDefinition(
+      dummyWiktionaryDefinitionEntry,
+      PartOfSpeech.NOUN
     )
 
-  val dummyWiktionaryDefinitionTwo: ChineseDefinition = ChineseDefinition(
-    subdefinitions = List("wiktionary definition 3", "wiktionary definition 4"),
-    tag = PartOfSpeech.NOUN,
-    examples = Some(List("example 3", "example 4")),
-    inputPinyin = "",
-    inputTraditional = Some(""),
-    inputSimplified = Some(""),
-    definitionLanguage = Language.ENGLISH,
-    source = DefinitionSource.WIKTIONARY,
-    token = "你好"
-  )
+  val dummyWiktionaryDefinitionEntryTwo: WiktionaryDefinitionEntry =
+    WiktionaryDefinitionEntry(
+      subdefinitions =
+        List("wiktionary definition 3", "wiktionary definition 4"),
+      pronunciation = "ni hao",
+      tag = Some(PartOfSpeech.NOUN),
+      examples = Some(List("example 3", "example 4")),
+      wordLanguage = Language.CHINESE,
+      definitionLanguage = Language.ENGLISH,
+      token = "你好",
+      source = DefinitionSource.WIKTIONARY
+    )
+  val dummyWiktionaryDefinitionTwo: ChineseDefinition =
+    DefinitionEntry.buildChineseDefinition(
+      dummyWiktionaryDefinitionEntryTwo,
+      PartOfSpeech.NOUN
+    )
 
-  val niHao: Word = Word.fromToken("你好", Language.CHINESE)
+  val niHao: Word =
+    Word.fromToken("你好", Language.CHINESE).copy(tag = PartOfSpeech.NOUN)
 
   describe("When getting definitions for a single word") {
-    it("Does not enhance non-chinese definitions") {
-      // This will delegate to the base LanguageDefinitionService implementation
-      // So the assertions may fail if that changes.
+
+    def stubFor[T](entries: List[T]): Unit = {
       when(
         elasticsearchClientMock
-          .findFromCacheOrRefetch[ChineseDefinition](
-            any(classOf[ElasticsearchSearchRequest[ChineseDefinition]])
+          .findFromCacheOrRefetch[T](
+            any(classOf[ElasticsearchSearchRequest[T]])
           )(
-            any(classOf[ClassTag[ChineseDefinition]]),
-            any(classOf[Reads[ChineseDefinition]]),
-            any(classOf[Writes[ChineseDefinition]])
+            any(classOf[ClassTag[T]]),
+            any(classOf[Reads[T]]),
+            any(classOf[Writes[T]])
           )
       ).thenReturn(
         Future.successful(
-          List(dummyWiktionaryDefinition)
+          entries
         )
       )
+    }
+
+    it("Does not enhance non-chinese definitions") {
+      // This will delegate to the base LanguageDefinitionService implementation
+      // So the assertions may fail if that changes.
+      stubFor[CEDICTDefinitionEntry](List(dummyCedictDefinitionEntry))
+      stubFor[WiktionaryDefinitionEntry](List(dummyWiktionaryDefinitionEntry))
 
       chineseDefinitionService
         .getDefinitions(Language.CHINESE, niHao)
@@ -117,18 +133,8 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
     describe("can enhance chinese definitions") {
       it("and returns cedict definitions if no wiktionary are found") {
-        when(
-          elasticsearchClientMock
-            .findFromCacheOrRefetch(
-              any(classOf[ElasticsearchSearchRequest[Definition]])
-            )(
-              any(classOf[ClassTag[Definition]]),
-              any(classOf[Reads[Definition]]),
-              any(classOf[Writes[Definition]])
-            )
-        ).thenReturn(
-          Future.successful(List(List(dummyCedictDefinition), List()))
-        )
+        stubFor[CEDICTDefinitionEntry](List(dummyCedictDefinitionEntry))
+        stubFor[WiktionaryDefinitionEntry](List())
 
         chineseDefinitionService
           .getDefinitions(Language.ENGLISH, niHao)
@@ -141,18 +147,8 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       it(
         "and returns wiktionary definitions if no cedict definitions are found"
       ) {
-        when(
-          elasticsearchClientMock
-            .findFromCacheOrRefetch(
-              any(classOf[ElasticsearchSearchRequest[Definition]])
-            )(
-              any(classOf[ClassTag[Definition]]),
-              any(classOf[Reads[Definition]]),
-              any(classOf[Writes[Definition]])
-            )
-        ).thenReturn(
-          Future.successful(List(List(), List(dummyWiktionaryDefinition)))
-        )
+        stubFor[CEDICTDefinitionEntry](List())
+        stubFor[WiktionaryDefinitionEntry](List(dummyWiktionaryDefinitionEntry))
 
         chineseDefinitionService
           .getDefinitions(Language.ENGLISH, niHao)
@@ -163,21 +159,11 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       }
 
       it("combines cedict and wiktionary definitions correctly") {
-        when(
-          elasticsearchClientMock
-            .findFromCacheOrRefetch(
-              any(classOf[ElasticsearchSearchRequest[Definition]])
-            )(
-              any(classOf[ClassTag[Definition]]),
-              any(classOf[Reads[Definition]]),
-              any(classOf[Writes[Definition]])
-            )
-        ).thenReturn(
-          Future.successful(
-            List(
-              List(dummyCedictDefinition),
-              List(dummyWiktionaryDefinition, dummyWiktionaryDefinitionTwo)
-            )
+        stubFor[CEDICTDefinitionEntry](List(dummyCedictDefinitionEntry))
+        stubFor[WiktionaryDefinitionEntry](
+          List(
+            dummyWiktionaryDefinitionEntry,
+            dummyWiktionaryDefinitionEntryTwo
           )
         )
 
@@ -187,46 +173,42 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
             assert(definitions.size == 1)
             val combined = definitions.head
             assert(
-              combined.subdefinitions == dummyCedictDefinition.subdefinitions
+              combined.subdefinitions == dummyCedictDefinitionEntry.subdefinitions
             )
-            assert(combined.tag == dummyWiktionaryDefinition.tag)
+            assert(combined.tag == dummyWiktionaryDefinitionEntry.tag.get)
             assert(
               combined.examples.contains(
-                (dummyWiktionaryDefinition.examples ++ dummyWiktionaryDefinitionTwo.examples).flatten
+                (dummyWiktionaryDefinitionEntry.examples ++ dummyWiktionaryDefinitionEntryTwo.examples).flatten
               )
             )
             combined match {
               case c: ChineseDefinition =>
                 assert(c.pronunciation.pinyin == "ni hao")
-                assert(c.simplified == dummyCedictDefinition.simplified)
-                assert(c.traditional == dummyCedictDefinition.traditional)
+                assert(
+                  c.simplified.get == dummyCedictDefinitionEntry.simplified
+                )
+                assert(
+                  c.traditional.get.head == dummyCedictDefinitionEntry.traditional
+                )
               case other =>
                 fail(s"We aren't returning Chinese definitions, got $other")
             }
             assert(combined.definitionLanguage == Language.ENGLISH)
             assert(combined.source == DefinitionSource.MULTIPLE)
-            assert(combined.token == dummyCedictDefinition.token)
+            assert(combined.token == dummyCedictDefinitionEntry.token)
           }
       }
 
       it(
         "combines cedict and wiktionary definitions correctly when cedict entries are missing key data"
       ) {
-        when(
-          elasticsearchClientMock
-            .findFromCacheOrRefetch(
-              any(classOf[ElasticsearchSearchRequest[Definition]])
-            )(
-              any(classOf[ClassTag[Definition]]),
-              any(classOf[Reads[Definition]]),
-              any(classOf[Writes[Definition]])
-            )
-        ).thenReturn(
-          Future.successful(
-            List(
-              List(dummyCedictDefinition.copy(subdefinitions = List())),
-              List(dummyWiktionaryDefinition, dummyWiktionaryDefinitionTwo)
-            )
+        stubFor[CEDICTDefinitionEntry](
+          List(dummyCedictDefinitionEntry.copy(subdefinitions = List()))
+        )
+        stubFor[WiktionaryDefinitionEntry](
+          List(
+            dummyWiktionaryDefinitionEntry,
+            dummyWiktionaryDefinitionEntryTwo
           )
         )
 
@@ -241,29 +223,37 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
             List(combinedOne, combinedTwo) map {
               case c: ChineseDefinition =>
                 assert(c.pronunciation.pinyin == "ni hao")
-                assert(c.simplified == dummyCedictDefinition.simplified)
-                assert(c.traditional == dummyCedictDefinition.traditional)
+                assert(
+                  c.simplified.get == dummyCedictDefinitionEntry.simplified
+                )
+                assert(
+                  c.traditional.get.head == dummyCedictDefinitionEntry.traditional
+                )
               case other =>
                 fail(s"We aren't returning Chinese definitions, got $other")
             }
 
-            assert(definitions.forall(_.token == dummyCedictDefinition.token))
+            assert(
+              definitions.forall(_.token == dummyCedictDefinitionEntry.token)
+            )
 
             // Generated data should be the same for all
             assert(definitions.forall(_.definitionLanguage == Language.ENGLISH))
             assert(definitions.forall(_.source == DefinitionSource.MULTIPLE))
 
             assert(
-              combinedOne.subdefinitions == dummyWiktionaryDefinition.subdefinitions
+              combinedOne.subdefinitions == dummyWiktionaryDefinitionEntry.subdefinitions
             )
-            assert(combinedOne.tag == dummyWiktionaryDefinition.tag)
-            assert(combinedOne.examples == dummyWiktionaryDefinition.examples)
+            assert(combinedOne.tag == dummyWiktionaryDefinitionEntry.tag.get)
             assert(
-              combinedTwo.subdefinitions == dummyWiktionaryDefinitionTwo.subdefinitions
+              combinedOne.examples == dummyWiktionaryDefinitionEntry.examples
             )
-            assert(combinedTwo.tag == dummyWiktionaryDefinitionTwo.tag)
             assert(
-              combinedTwo.examples == dummyWiktionaryDefinitionTwo.examples
+              combinedTwo.subdefinitions == dummyWiktionaryDefinitionEntryTwo.subdefinitions
+            )
+            assert(combinedTwo.tag == dummyWiktionaryDefinitionEntryTwo.tag.get)
+            assert(
+              combinedTwo.examples == dummyWiktionaryDefinitionEntryTwo.examples
             )
           }
       }
