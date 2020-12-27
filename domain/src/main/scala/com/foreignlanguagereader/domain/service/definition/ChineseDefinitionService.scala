@@ -13,7 +13,10 @@ import com.foreignlanguagereader.content.types.internal.definition.{
 import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
-import com.foreignlanguagereader.domain.fetcher.chinese.CEDICTFetcher
+import com.foreignlanguagereader.domain.fetcher.chinese.{
+  CEDICTFetcher,
+  WiktionaryChineseFetcher
+}
 import com.github.houbb.opencc4j.util.ZhConverterUtil
 import javax.inject.Inject
 import play.api.{Configuration, Logger}
@@ -33,14 +36,19 @@ class ChineseDefinitionService @Inject() (
   override val logger: Logger = Logger(this.getClass)
 
   override val wordLanguage: Language = Language.CHINESE
-  override val sources: List[DefinitionSource] = List(DefinitionSource.CEDICT)
+  override val sources: List[DefinitionSource] =
+    List(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
 
   override val definitionFetchers: Map[
     (DefinitionSource, Language),
     DefinitionFetcher[_, ChineseDefinition]
   ] =
     Map(
-      (DefinitionSource.CEDICT, Language.ENGLISH) -> new CEDICTFetcher()
+      (DefinitionSource.CEDICT, Language.ENGLISH) -> new CEDICTFetcher(),
+      (
+        DefinitionSource.WIKTIONARY,
+        Language.ENGLISH
+      ) -> new WiktionaryChineseFetcher()
     )
 
   // Convert everything to traditional
