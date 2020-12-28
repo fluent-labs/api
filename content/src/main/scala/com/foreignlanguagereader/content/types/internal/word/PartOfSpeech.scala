@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.content.types.internal.word
 
+import cats.implicits._
 import com.foreignlanguagereader.dto.v1.word.PartOfSpeechDTO
 import play.api.libs.json.{Reads, Writes}
 
@@ -38,6 +39,9 @@ object PartOfSpeech extends Enumeration {
 
   implicit val reads: Reads[PartOfSpeech] = Reads.enumNameReads(PartOfSpeech)
   implicit val writes: Writes[PartOfSpeech] = Writes.enumNameWrites
+
+  def fromString(s: String): Option[PartOfSpeech] =
+    PartOfSpeech.values.find(_.toString === s)
 
   // scalastyle:off cyclomatic.complexity
   def toDTO(partOfSpeech: PartOfSpeech): PartOfSpeechDTO =

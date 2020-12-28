@@ -10,4 +10,7 @@ object Count extends Enumeration {
 
   implicit val reads: Reads[Count] = Reads.enumNameReads(Count)
   implicit val writes: Writes[Count] = Writes.enumNameWrites
+
+  def fromString(s: String): Option[Count] =
+    Count.values.find(_.toString === s)
 }
