@@ -90,9 +90,17 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
       Json.writes[EnglishDefinition]
 
     val chineseDefinitionRequest =
-      ElasticsearchTestUtil.indexRequestFrom(index, dummyChineseDefinition)
+      ElasticsearchTestUtil.indexRequestFrom(
+        index,
+        dummyChineseDefinition,
+        fields
+      )
     val genericDefinitionRequest =
-      ElasticsearchTestUtil.indexRequestFrom(index, dummyEnglishDefinition)
+      ElasticsearchTestUtil.indexRequestFrom(
+        index,
+        dummyEnglishDefinition,
+        fields
+      )
 
     describe("on a previously untried query") {
       val result = ElasticsearchSearchResult[WiktionaryDefinitionEntry](
