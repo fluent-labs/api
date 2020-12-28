@@ -44,9 +44,15 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-    
-    - name: Get latest release version
-      run: echo "RELEASE_VERSION=`cat version.sbt | grep -Eo "[0-9\.]+"`" >> $GITHUB_ENV
+    - uses: actions/checkout@v2.3.4
+
+    - name: Get release tag
+      id: version
+      uses: WyriHaximus/github-action-get-previous-tag@1.0.0
+
+    # This is different than the release tag. A tag has v, like v1.1.0, but a version does not, like 1.1.0
+    - name: Get release version
+      run: echo "RELEASE_VERSION=$(echo "${{ steps.version.outputs.tag }}" | grep -Eo "[0-9\.]+")" >> $GITHUB_ENV
     
     - name: Rebuild latest release
       run: docker build . -t lkjaero/foreign-language-reader-api:LATEST
