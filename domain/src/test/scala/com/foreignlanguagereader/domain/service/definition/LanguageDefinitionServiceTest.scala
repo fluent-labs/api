@@ -81,7 +81,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         (
           DefinitionSource.WIKTIONARY,
           Language.ENGLISH
-        ) -> new WiktionaryEnglishFetcher()(ec)
+        ) -> new WiktionaryEnglishFetcher()
       )
     }
     val defaultDefinitionService = new DefaultLanguageDefinitionService()
@@ -162,7 +162,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           (
             DefinitionSource.MIRRIAM_WEBSTER_SPANISH,
             Language.SPANISH
-          ) -> new WebsterSpanishToEnglishFetcher(websterMock)(ec)
+          ) -> new WebsterSpanishToEnglishFetcher(websterMock)
         )
       }
       val customizedFetcher = new CustomizedFetcherLanguageDefinitionService()
@@ -232,7 +232,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           (
             DefinitionSource.WIKTIONARY,
             Language.ENGLISH
-          ) -> new WiktionarySpanishFetcher()(ec)
+          ) -> new WiktionarySpanishFetcher()
         )
         override val sources: List[DefinitionSource] =
           List(

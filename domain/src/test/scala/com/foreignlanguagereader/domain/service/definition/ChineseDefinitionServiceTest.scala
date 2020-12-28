@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.domain.service.definition
 
 import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
 import com.foreignlanguagereader.content.types.external.definition.cedict.CEDICTDefinitionEntry
 import com.foreignlanguagereader.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
@@ -12,26 +13,33 @@ import com.foreignlanguagereader.content.types.internal.word.{
   PartOfSpeech,
   Word
 }
+import com.foreignlanguagereader.domain.client.common.CircuitBreakerAttempt
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
-import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchSearchRequest
-import org.mockito.ArgumentMatchers.any
+import com.foreignlanguagereader.domain.fetcher.chinese.{
+  CEDICTFetcher,
+  WiktionaryChineseFetcher
+}
 import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
-import play.api.Configuration
-import play.api.libs.json.{Reads, Writes}
+import play.api.{Configuration, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.reflect.ClassTag
 
 class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
+  val logger: Logger = Logger(this.getClass)
+
   val elasticsearchClientMock: ElasticsearchCacheClient =
     mock[ElasticsearchCacheClient]
+  val cedictMock: CEDICTFetcher = mock[CEDICTFetcher]
+  val wiktionaryMock: WiktionaryChineseFetcher = mock[WiktionaryChineseFetcher]
   val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
   val configMock: Configuration = mock[Configuration]
 
   val chineseDefinitionService = new ChineseDefinitionService(
     elasticsearchClientMock,
     configMock,
+    cedictMock,
+    wiktionaryMock,
     ec
   )
   val definitionsIndex = "definitions"
@@ -97,29 +105,35 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   val niHao: Word =
     Word.fromToken("你好", Language.CHINESE).copy(tag = PartOfSpeech.NOUN)
 
-  describe("When getting definitions for a single word") {
+  def stubForCedict(
+      language: Language,
+      word: Word,
+      entries: List[CEDICTDefinitionEntry]
+  ): Unit = {
+    when(cedictMock.fetch(language, word))
+      .thenReturn(Future.successful(CircuitBreakerAttempt(entries)))
+  }
 
-    def stubFor[T](entries: List[T]): Unit = {
-      when(
-        elasticsearchClientMock
-          .findFromCacheOrRefetch[T](
-            any(classOf[ElasticsearchSearchRequest[T]])
-          )(
-            any(classOf[ClassTag[T]]),
-            any(classOf[Reads[T]]),
-            any(classOf[Writes[T]])
-          )
-      ).thenReturn(
-        Future.successful(
-          entries
-        )
-      )
-    }
+  def stubForWiktionary(
+      language: Language,
+      word: Word,
+      entries: List[WiktionaryDefinitionEntry]
+  ): Unit = {
+    when(wiktionaryMock.fetch(language, word))
+      .thenReturn(Future.successful(CircuitBreakerAttempt(entries)))
+  }
+
+  describe("When getting definitions for a single word") {
 
     it("Does not enhance non-chinese definitions") {
       // This will delegate to the base LanguageDefinitionService implementation
       // So the assertions may fail if that changes.
-      stubFor[WiktionaryDefinitionEntry](List(dummyWiktionaryDefinitionEntry))
+      stubForWiktionary(
+        Language.CHINESE,
+        niHao,
+        List(dummyWiktionaryDefinitionEntry)
+      )
+      stubForCedict(Language.CHINESE, niHao, List())
 
       chineseDefinitionService
         .getDefinitions(Language.CHINESE, niHao)
@@ -131,34 +145,44 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
     describe("can enhance chinese definitions") {
       it("and returns cedict definitions if no wiktionary are found") {
-        stubFor[CEDICTDefinitionEntry](List(dummyCedictDefinitionEntry))
-        stubFor[WiktionaryDefinitionEntry](List())
+        stubForCedict(Language.ENGLISH, niHao, List(dummyCedictDefinitionEntry))
+        stubForWiktionary(
+          Language.ENGLISH,
+          niHao,
+          List()
+        )
 
         chineseDefinitionService
           .getDefinitions(Language.ENGLISH, niHao)
           .map { definitions =>
             assert(definitions.size == 1)
-            assert(definitions.exists(_.eq(dummyCedictDefinition)))
+            assert(definitions.contains(dummyCedictDefinition))
           }
       }
 
       it(
         "and returns wiktionary definitions if no cedict definitions are found"
       ) {
-        stubFor[CEDICTDefinitionEntry](List())
-        stubFor[WiktionaryDefinitionEntry](List(dummyWiktionaryDefinitionEntry))
+        stubForCedict(Language.ENGLISH, niHao, List())
+        stubForWiktionary(
+          Language.ENGLISH,
+          niHao,
+          List(dummyWiktionaryDefinitionEntry)
+        )
 
         chineseDefinitionService
           .getDefinitions(Language.ENGLISH, niHao)
           .map { definitions =>
             assert(definitions.size == 1)
-            assert(definitions.exists(_.eq(dummyWiktionaryDefinition)))
+            assert(definitions.contains(dummyWiktionaryDefinition))
           }
       }
 
       it("combines cedict and wiktionary definitions correctly") {
-        stubFor[CEDICTDefinitionEntry](List(dummyCedictDefinitionEntry))
-        stubFor[WiktionaryDefinitionEntry](
+        stubForCedict(Language.ENGLISH, niHao, List(dummyCedictDefinitionEntry))
+        stubForWiktionary(
+          Language.ENGLISH,
+          niHao,
           List(
             dummyWiktionaryDefinitionEntry,
             dummyWiktionaryDefinitionEntryTwo
@@ -200,10 +224,14 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       it(
         "combines cedict and wiktionary definitions correctly when cedict entries are missing key data"
       ) {
-        stubFor[CEDICTDefinitionEntry](
+        stubForCedict(
+          Language.ENGLISH,
+          niHao,
           List(dummyCedictDefinitionEntry.copy(subdefinitions = List()))
         )
-        stubFor[WiktionaryDefinitionEntry](
+        stubForWiktionary(
+          Language.ENGLISH,
+          niHao,
           List(
             dummyWiktionaryDefinitionEntry,
             dummyWiktionaryDefinitionEntryTwo

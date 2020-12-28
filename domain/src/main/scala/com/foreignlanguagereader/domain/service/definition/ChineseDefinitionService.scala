@@ -31,6 +31,8 @@ import scala.concurrent.ExecutionContext
 class ChineseDefinitionService @Inject() (
     val elasticsearch: ElasticsearchCacheClient,
     override val config: Configuration,
+    cedictFetcher: CEDICTFetcher,
+    wiktionaryChineseFetcher: WiktionaryChineseFetcher,
     implicit val ec: ExecutionContext
 ) extends LanguageDefinitionService[ChineseDefinition] {
   override val logger: Logger = Logger(this.getClass)
@@ -44,15 +46,15 @@ class ChineseDefinitionService @Inject() (
     DefinitionFetcher[_, ChineseDefinition]
   ] =
     Map(
-      (DefinitionSource.CEDICT, Language.ENGLISH) -> new CEDICTFetcher(),
+      (DefinitionSource.CEDICT, Language.ENGLISH) -> cedictFetcher,
       (
         DefinitionSource.WIKTIONARY,
         Language.ENGLISH
-      ) -> new WiktionaryChineseFetcher(),
+      ) -> wiktionaryChineseFetcher,
       (
         DefinitionSource.WIKTIONARY,
         Language.CHINESE
-      ) -> new WiktionaryChineseFetcher()
+      ) -> wiktionaryChineseFetcher
     )
 
   // Convert everything to traditional

@@ -13,15 +13,16 @@ import play.api.libs.json.{Reads, Writes}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WebsterSpanishToEnglishFetcher(websterClient: MirriamWebsterClient)(
-    override implicit val ec: ExecutionContext
-) extends DefinitionFetcher[
+class WebsterSpanishToEnglishFetcher(websterClient: MirriamWebsterClient)
+    extends DefinitionFetcher[
       WebsterSpanishDefinitionEntry,
       SpanishDefinition
     ] {
   override def fetch(
       language: Language,
       word: Word
+  )(implicit
+      ec: ExecutionContext
   ): Future[CircuitBreakerResult[List[WebsterSpanishDefinitionEntry]]] =
     websterClient.getSpanishDefinition(word)
 

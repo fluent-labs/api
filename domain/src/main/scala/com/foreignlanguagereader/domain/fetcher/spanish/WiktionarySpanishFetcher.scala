@@ -15,15 +15,16 @@ import play.api.libs.json.{Reads, Writes}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WiktionarySpanishFetcher()(
-    override implicit val ec: ExecutionContext
-) extends DefinitionFetcher[
+class WiktionarySpanishFetcher
+    extends DefinitionFetcher[
       WiktionaryDefinitionEntry,
       SpanishDefinition
     ] {
   override def fetch(
       language: Language,
       word: Word
+  )(implicit
+      ec: ExecutionContext
   ): Future[CircuitBreakerResult[List[WiktionaryDefinitionEntry]]] =
     Future.apply(
       CircuitBreakerFailedAttempt(
