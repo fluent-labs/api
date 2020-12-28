@@ -1,5 +1,9 @@
 import com.foreignlanguagereader.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
+import com.foreignlanguagereader.jobs.definitions.{
+  SimpleWiktionary,
+  WiktionaryRawEntry
+}
 import org.apache.spark.sql.SparkSession
 import org.scalatest.funspec.AnyFunSpec
 

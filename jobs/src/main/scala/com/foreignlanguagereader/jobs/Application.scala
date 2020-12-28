@@ -1,3 +1,6 @@
+package com.foreignlanguagereader.jobs
+
+import com.foreignlanguagereader.jobs.definitions.{SimpleWiktionary, Wiktionary}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 

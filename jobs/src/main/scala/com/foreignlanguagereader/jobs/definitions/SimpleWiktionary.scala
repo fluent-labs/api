@@ -1,15 +1,29 @@
-import Wiktionary.{
+package com.foreignlanguagereader.jobs.definitions
+
+import com.foreignlanguagereader.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
+import com.foreignlanguagereader.jobs.definitions.Wiktionary.{
   extractSections,
   extractSubsections,
   loadWiktionaryDump,
   regexp_extract_all
 }
-import com.foreignlanguagereader.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{Column, DataFrame, Dataset, SparkSession}
 
 object SimpleWiktionary {
+  val SIMPLE_WIKTIONARY_PATH =
+    "src/main/resources/simplewiktionary-20200301-pages-meta-current.xml"
+
+  def main(args: Array[String]): Unit = {
+    implicit val spark: SparkSession = SparkSession.builder
+      .appName("Simple English Wiktionary parse")
+      .getOrCreate()
+
+    val simpleWiktionary = SimpleWiktionary.loadSimple(SIMPLE_WIKTIONARY_PATH)
+    simpleWiktionary.coalesce(1).write.json("simple")
+  }
+
   val metaSections = List("pronunciation", "usage", "usage notes")
 
   // Parts of speech set here: http://www.lrec-conf.org/proceedings/lrec2012/pdf/274_Paper.pdf
