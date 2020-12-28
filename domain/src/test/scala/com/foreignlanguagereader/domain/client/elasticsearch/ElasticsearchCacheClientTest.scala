@@ -3,7 +3,6 @@ package com.foreignlanguagereader.domain.client.elasticsearch
 import cats.implicits._
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.definition.{
-  Definition,
   DefinitionSource,
   EnglishDefinition
 }
@@ -65,9 +64,15 @@ class ElasticsearchCacheClientTest extends AsyncFunSpec with MockitoSugar {
       definitions: Seq[EnglishDefinition],
       attempts: LookupAttempt
   ): Future[CircuitBreakerResult[Option[
-    (Map[String, EnglishDefinition], Map[String, LookupAttempt])
+    (
+        Map[String, ElasticsearchCacheable[EnglishDefinition]],
+        Map[String, LookupAttempt]
+    )
   ]]] = {
-    val defs = definitions.map(d => d.token -> d).toMap
+    val defs = definitions
+      .map(d => ElasticsearchCacheable(d, attempts.fields))
+      .map(d => d.item.token -> d)
+      .toMap
     val attempt = Map("dummyId" -> attempts)
     Future.apply(CircuitBreakerAttempt(Some((defs, attempt))))
   }
@@ -75,10 +80,12 @@ class ElasticsearchCacheClientTest extends AsyncFunSpec with MockitoSugar {
   describe("an elasticsearch caching client") {
     it("can fetch results from a cache") {
       when(
-        baseClient.doubleSearch[EnglishDefinition, LookupAttempt](
+        baseClient.doubleSearch[ElasticsearchCacheable[
+          EnglishDefinition
+        ], LookupAttempt](
           any(classOf[MultiSearchRequest])
         )(
-          any(classOf[Reads[EnglishDefinition]]),
+          any(classOf[Reads[ElasticsearchCacheable[EnglishDefinition]]]),
           any(classOf[Reads[LookupAttempt]])
         )
       ).thenReturn(
@@ -108,10 +115,12 @@ class ElasticsearchCacheClientTest extends AsyncFunSpec with MockitoSugar {
 
     it("can handle cache misses") {
       when(
-        baseClient.doubleSearch[EnglishDefinition, LookupAttempt](
+        baseClient.doubleSearch[ElasticsearchCacheable[
+          EnglishDefinition
+        ], LookupAttempt](
           any(classOf[MultiSearchRequest])
         )(
-          any(classOf[Reads[EnglishDefinition]]),
+          any(classOf[Reads[ElasticsearchCacheable[EnglishDefinition]]]),
           any(classOf[Reads[LookupAttempt]])
         )
       ).thenReturn(

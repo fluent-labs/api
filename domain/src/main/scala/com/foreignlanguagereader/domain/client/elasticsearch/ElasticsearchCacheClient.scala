@@ -38,8 +38,13 @@ class ElasticsearchCacheClient @Inject() (
       reads: Reads[T],
       writes: Writes[T]
   ): Future[List[T]] = {
+    implicit val readsCacheable: Reads[ElasticsearchCacheable[T]] =
+      ElasticsearchCacheable.reads[T]
+    implicit val writesCacheable: Writes[ElasticsearchCacheable[T]] =
+      ElasticsearchCacheable.writes[T]
+
     client
-      .doubleSearch[T, LookupAttempt](request.query)
+      .doubleSearch[ElasticsearchCacheable[T], LookupAttempt](request.query)
       .map(result => ElasticsearchSearchResponse.fromResult(request, result))
       // This is where fetchers are called to get results if they aren't in elasticsearch
       // There is also logic to remember what has been fetched from external sources

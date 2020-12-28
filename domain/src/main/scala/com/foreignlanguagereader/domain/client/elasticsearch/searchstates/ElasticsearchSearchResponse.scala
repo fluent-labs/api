@@ -1,12 +1,17 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
+import cats.data.Nested
+import cats.implicits._
 import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,
   CircuitBreakerNonAttempt,
   CircuitBreakerResult
 }
-import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
+import com.foreignlanguagereader.domain.client.elasticsearch.{
+  ElasticsearchCacheable,
+  LookupAttempt
+}
 import play.api.Logger
 import play.api.libs.json.{Reads, Writes}
 
@@ -30,10 +35,14 @@ import scala.reflect.ClassTag
 case class ElasticsearchSearchResponse[T](
     index: String,
     fields: Map[String, String],
-    fetcher: () => Future[CircuitBreakerResult[List[T]]],
+    fetcher: () => Future[
+      CircuitBreakerResult[List[T]]
+    ],
     maxFetchAttempts: Int,
     response: CircuitBreakerResult[
-      Option[(Map[String, T], Map[String, LookupAttempt])]
+      Option[
+        (Map[String, T], Map[String, LookupAttempt])
+      ]
     ]
 )(implicit
     tag: ClassTag[T],
@@ -190,7 +199,9 @@ object ElasticsearchSearchResponse {
   def fromResult[T](
       request: ElasticsearchSearchRequest[T],
       result: CircuitBreakerResult[
-        Option[(Map[String, T], Map[String, LookupAttempt])]
+        Option[
+          (Map[String, ElasticsearchCacheable[T]], Map[String, LookupAttempt])
+        ]
       ]
   )(implicit
       read: Reads[T],
@@ -198,13 +209,20 @@ object ElasticsearchSearchResponse {
       tag: ClassTag[T],
       ec: ExecutionContext
   ): ElasticsearchSearchResponse[T] = {
+    // Basically removes the ElasticsearchCacheable[] outer wrapper
+    val unwrappedResult = Nested
+      .apply(result)
+      .map {
+        case (items, attempts) => (items.mapValues(_.item), attempts)
+      }
+      .value
 
     ElasticsearchSearchResponse(
       request.index,
       request.fields,
       request.fetcher,
       request.maxFetchAttempts,
-      result
+      unwrappedResult
     )
   }
 }
