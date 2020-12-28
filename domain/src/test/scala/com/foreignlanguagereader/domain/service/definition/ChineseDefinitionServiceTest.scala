@@ -13,17 +13,18 @@ import com.foreignlanguagereader.content.types.internal.word.{
   PartOfSpeech,
   Word
 }
-import com.foreignlanguagereader.domain.client.common.CircuitBreakerAttempt
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.fetcher.chinese.{
   CEDICTFetcher,
   WiktionaryChineseFetcher
 }
+import org.mockito.ArgumentMatchers.{any, eq => MockitoEq}
 import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
 import play.api.{Configuration, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.reflect.ClassTag
 
 class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   val logger: Logger = Logger(this.getClass)
@@ -110,8 +111,20 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       word: Word,
       entries: List[CEDICTDefinitionEntry]
   ): Unit = {
-    when(cedictMock.fetch(language, word))
-      .thenReturn(Future.successful(CircuitBreakerAttempt(entries)))
+    val entriesAsDefinitions = entries.map(_.toDefinition(word.tag))
+    when(
+      cedictMock.fetchDefinitions(
+        any(classOf[ElasticsearchCacheClient]),
+        MockitoEq("definitions-null"),
+        MockitoEq(language),
+        MockitoEq(Language.CHINESE),
+        MockitoEq(DefinitionSource.CEDICT),
+        MockitoEq(word)
+      )(
+        any(classOf[ExecutionContext]),
+        any(classOf[ClassTag[CEDICTDefinitionEntry]])
+      )
+    ).thenReturn(Future.successful(entriesAsDefinitions))
   }
 
   def stubForWiktionary(
@@ -119,8 +132,22 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       word: Word,
       entries: List[WiktionaryDefinitionEntry]
   ): Unit = {
-    when(wiktionaryMock.fetch(language, word))
-      .thenReturn(Future.successful(CircuitBreakerAttempt(entries)))
+    val entriesAsDefinitions = entries.map(entry =>
+      DefinitionEntry.buildChineseDefinition(entry, word.tag)
+    )
+    when(
+      wiktionaryMock.fetchDefinitions(
+        any(classOf[ElasticsearchCacheClient]),
+        MockitoEq("definitions-null"),
+        MockitoEq(language),
+        MockitoEq(Language.CHINESE),
+        MockitoEq(DefinitionSource.WIKTIONARY),
+        MockitoEq(word)
+      )(
+        any(classOf[ExecutionContext]),
+        any(classOf[ClassTag[WiktionaryDefinitionEntry]])
+      )
+    ).thenReturn(Future.successful(entriesAsDefinitions))
   }
 
   describe("When getting definitions for a single word") {
