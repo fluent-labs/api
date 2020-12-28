@@ -1,8 +1,7 @@
 package com.foreignlanguagereader.content.enrichers.chinese
 
 import com.foreignlanguagereader.content.util.ContentFileLoader
-import com.foreignlanguagereader.dto.v1.definition.chinese.HskLevel
-import com.foreignlanguagereader.dto.v1.definition.chinese.HskLevel.HSKLevel
+import com.foreignlanguagereader.dto.v1.definition.chinese.HSKLevel
 import com.github.houbb.opencc4j.util.ZhConverterUtil
 import play.api.libs.json.{Json, Reads}
 
@@ -25,15 +24,15 @@ case class HskHolder(
     hsk6: Set[String]
 ) {
   // scalastyle:off cyclomatic.complexity
-  def getLevel(simplified: String): HskLevel.Value =
+  def getLevel(simplified: String): HSKLevel =
     simplified match {
-      case s if hsk1.contains(s) => HskLevel.ONE
-      case s if hsk2.contains(s) => HskLevel.TWO
-      case s if hsk3.contains(s) => HskLevel.THREE
-      case s if hsk4.contains(s) => HskLevel.FOUR
-      case s if hsk5.contains(s) => HskLevel.FIVE
-      case s if hsk6.contains(s) => HskLevel.SIX
-      case _                     => HskLevel.NONE
+      case s if hsk1.contains(s) => HSKLevel.ONE
+      case s if hsk2.contains(s) => HSKLevel.TWO
+      case s if hsk3.contains(s) => HSKLevel.THREE
+      case s if hsk4.contains(s) => HSKLevel.FOUR
+      case s if hsk5.contains(s) => HSKLevel.FIVE
+      case s if hsk6.contains(s) => HSKLevel.SIX
+      case _                     => HSKLevel.NONE
     }
   // scalastyle:on cyclomatic.complexity
 }

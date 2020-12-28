@@ -1,7 +1,10 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
 import cats.implicits._
-import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
+import com.foreignlanguagereader.domain.client.elasticsearch.{
+  ElasticsearchCacheable,
+  LookupAttempt
+}
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.common.xcontent.XContentType
@@ -37,8 +40,10 @@ case class ElasticsearchSearchResult[T: Writes](
       case values if refetched && values.nonEmpty =>
         values
           .map(v => {
+            val cacheable: ElasticsearchCacheable[T] =
+              ElasticsearchCacheable(v, fields)
             new IndexRequest()
-              .source(Json.toJson(v).toString(), XContentType.JSON)
+              .source(Json.toJson(cacheable).toString(), XContentType.JSON)
               .index(index)
               .asLeft
           })
@@ -50,10 +55,16 @@ case class ElasticsearchSearchResult[T: Writes](
     if (refetched) {
       val attempt =
         LookupAttempt(index = index, fields = fields, count = fetchCount)
+
+      val indexRequest = new IndexRequest()
+        .source(Json.toJson(attempt).toString(), XContentType.JSON)
+        .index(attemptsIndex)
+
       lookupId match {
         case Some(id) =>
           new UpdateRequest(attemptsIndex, id)
-            .upsert(Json.toJson(attempt).toString(), XContentType.JSON)
+            .upsert(indexRequest.id(id))
+            .doc(indexRequest.id(id))
             .asRight
             .some
         case None =>

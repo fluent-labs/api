@@ -44,13 +44,14 @@ class GoogleCloudClient @Inject() (
     gcloud: GoogleLanguageServiceClientHolder,
     implicit val ec: ExecutionContext,
     val system: ActorSystem
-) extends Circuitbreaker {
-  override val logger: Logger = Logger(this.getClass)
+) {
+  val logger: Logger = Logger(this.getClass)
+  val breaker: Circuitbreaker = new Circuitbreaker(system, ec, "GoogleCloud")
 
   def getWordsForDocument(
       language: Language,
       document: String
-  ): Nested[Future, CircuitBreakerResult, Set[Word]] = {
+  ): Future[CircuitBreakerResult[Set[Word]]] = {
     logger.info(s"Getting tokens in $language from Google cloud: $document")
 
     val doc =
@@ -65,11 +66,17 @@ class GoogleCloudClient @Inject() (
       .setEncodingType(EncodingType.UTF16)
       .build
 
-    withBreaker(s"Failed to get tokens from google cloud")(
-      Future {
-        gcloud.getTokens(request)
-      }
-    ).map(tokens => convertTokensToWord(language, tokens))
+    Nested
+      .apply(
+        breaker
+          .withBreaker(s"Failed to get tokens from google cloud")(
+            Future {
+              gcloud.getTokens(request)
+            }
+          )
+      )
+      .map(tokens => convertTokensToWord(language, tokens))
+      .value
   }
 
   /*

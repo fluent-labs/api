@@ -1,12 +1,17 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
+import cats.data.Nested
+import cats.implicits._
 import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,
   CircuitBreakerNonAttempt,
   CircuitBreakerResult
 }
-import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
+import com.foreignlanguagereader.domain.client.elasticsearch.{
+  ElasticsearchCacheable,
+  LookupAttempt
+}
 import play.api.Logger
 import play.api.libs.json.{Reads, Writes}
 
@@ -30,10 +35,14 @@ import scala.reflect.ClassTag
 case class ElasticsearchSearchResponse[T](
     index: String,
     fields: Map[String, String],
-    fetcher: () => Future[CircuitBreakerResult[List[T]]],
+    fetcher: () => Future[
+      CircuitBreakerResult[List[T]]
+    ],
     maxFetchAttempts: Int,
     response: CircuitBreakerResult[
-      Option[(Map[String, T], Map[String, LookupAttempt])]
+      Option[
+        (Map[String, T], Map[String, LookupAttempt])
+      ]
     ]
 )(implicit
     tag: ClassTag[T],
@@ -51,6 +60,10 @@ case class ElasticsearchSearchResponse[T](
   ) =
     response match {
       case CircuitBreakerAttempt(Some(r)) =>
+        logger.info(
+          s"Query on index $index with fields $fields received result $r"
+        )
+
         val (results, attemptsResult) = r
 
         // Done to force us to refetch
@@ -63,8 +76,15 @@ case class ElasticsearchSearchResponse[T](
           (Some(docId), a.count)
         } else { (None, 0) }
 
+        logger.info(
+          s"Query on index $index with fields $fields received result $actualResults with attempts $attempts"
+        )
+
         (actualResults, attempts, id, true)
       case _ =>
+        logger.info(
+          s"Query on index $index with fields $fields received no result. (First time attempted)"
+        )
         (None, 0, None, false)
     }
 
@@ -74,6 +94,9 @@ case class ElasticsearchSearchResponse[T](
   lazy val getResultOrFetchFromSource: Future[ElasticsearchSearchResult[T]] =
     elasticsearchResult match {
       case Some(es) =>
+        logger.info(
+          s"Returning elasticsearch results for query on index $index with fields $fields"
+        )
         Future.successful(
           ElasticsearchSearchResult(
             index = index,
@@ -85,8 +108,15 @@ case class ElasticsearchSearchResponse[T](
             queried = queried
           )
         )
-      case None if fetchCount < maxFetchAttempts => fetchFromSource
+      case None if fetchCount < maxFetchAttempts =>
+        logger.info(
+          s"Refetching from source for query on index $index with fields $fields"
+        )
+        fetchFromSource
       case None =>
+        logger.info(
+          s"Not refetching from source because maximum attempts have been exceeded for query on index $index with fields $fields"
+        )
         Future.successful(
           ElasticsearchSearchResult(
             index = index,
@@ -105,6 +135,9 @@ case class ElasticsearchSearchResponse[T](
     fetcher()
       .map {
         case CircuitBreakerAttempt(result) =>
+          logger.info(
+            s"Successfully called fetcher on index=$index for fields=$fields"
+          )
           ElasticsearchSearchResult(
             index = index,
             fields = fields,
@@ -115,6 +148,9 @@ case class ElasticsearchSearchResponse[T](
             queried = queried
           )
         case CircuitBreakerNonAttempt() =>
+          logger.warn(
+            s"Failed to call fetcher on index=$index for fields=$fields because the circuitbreaker was closed"
+          )
           ElasticsearchSearchResult(
             index = index,
             fields = fields,
@@ -126,7 +162,7 @@ case class ElasticsearchSearchResponse[T](
           )
         case CircuitBreakerFailedAttempt(e) =>
           logger.error(
-            s"Failed to call fetcher on index=$index fields=$fields due to error ${e.getMessage}",
+            s"Failed to call fetcher on index=$index for fields=$fields due to error ${e.getMessage}",
             e
           )
           ElasticsearchSearchResult(
@@ -142,7 +178,7 @@ case class ElasticsearchSearchResponse[T](
       .recover {
         case e: Exception =>
           logger.error(
-            s"Failed to call fetcher on index=$index fields=$fields due to error ${e.getMessage}",
+            s"Failed to call fetcher on index=$index for fields=$fields due to error ${e.getMessage}",
             e
           )
           ElasticsearchSearchResult(
@@ -163,7 +199,9 @@ object ElasticsearchSearchResponse {
   def fromResult[T](
       request: ElasticsearchSearchRequest[T],
       result: CircuitBreakerResult[
-        Option[(Map[String, T], Map[String, LookupAttempt])]
+        Option[
+          (Map[String, ElasticsearchCacheable[T]], Map[String, LookupAttempt])
+        ]
       ]
   )(implicit
       read: Reads[T],
@@ -171,13 +209,20 @@ object ElasticsearchSearchResponse {
       tag: ClassTag[T],
       ec: ExecutionContext
   ): ElasticsearchSearchResponse[T] = {
+    // Basically removes the ElasticsearchCacheable[] outer wrapper
+    val unwrappedResult = Nested
+      .apply(result)
+      .map {
+        case (items, attempts) => (items.mapValues(_.item), attempts)
+      }
+      .value
 
     ElasticsearchSearchResponse(
       request.index,
       request.fields,
       request.fetcher,
       request.maxFetchAttempts,
-      result
+      unwrappedResult
     )
   }
 }

@@ -4,11 +4,20 @@ import akka.Done
 import akka.actor.CoordinatedShutdown
 import javax.inject
 import javax.inject.Inject
+import javax.net.ssl.SSLContext
 import org.apache.http.HttpHost
+import org.apache.http.auth.{AuthScope, UsernamePasswordCredentials}
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy
+import org.apache.http.impl.client.BasicCredentialsProvider
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder
+import org.apache.http.ssl.SSLContexts
+import org.elasticsearch.client.RestClientBuilder.HttpClientConfigCallback
+import org.elasticsearch.client.{RestClient, RestHighLevelClient}
 import org.testcontainers.elasticsearch.ElasticsearchContainer
-import play.api.Configuration
+import play.api.{Configuration, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success, Try}
 
 // $COVERAGE-OFF$
 /**
@@ -24,10 +33,16 @@ class ElasticsearchClientConfig @Inject() (
     cs: CoordinatedShutdown,
     implicit val ec: ExecutionContext
 ) {
+  val logger: Logger = Logger(this.getClass)
+
   val isLocal: Boolean = config.get[Boolean]("local")
   val scheme: String = config.get[String]("elasticsearch.scheme")
   val url: String = config.get[String]("elasticsearch.url")
   val port: Int = config.get[Int]("elasticsearch.port")
+  val username: String = config.get[String]("elasticsearch.username")
+  val password: String = config.get[String]("elasticsearch.password")
+  val truststorePassword: String =
+    config.get[String]("elasticsearch.truststore")
 
   val httpHost: HttpHost = if (isLocal) {
     createLocalElasticsearch()
@@ -35,7 +50,57 @@ class ElasticsearchClientConfig @Inject() (
     new HttpHost(url, port, scheme)
   }
 
-  def getHost(): HttpHost = httpHost
+  val credentialsProvider: BasicCredentialsProvider = {
+    val provider = new BasicCredentialsProvider
+    provider.setCredentials(
+      AuthScope.ANY,
+      new UsernamePasswordCredentials(username, password)
+    )
+    provider
+  }
+
+  val sslContext: SSLContext = {
+    val keystorePath = os.root / "etc" / "flrcredentials" / "api_keystore.jks"
+    if (os.exists(keystorePath)) {
+      logger.info("Using custom trust store")
+      Try {
+        SSLContexts
+          .custom()
+          .loadTrustMaterial(
+            keystorePath.toIO,
+            truststorePassword.toCharArray,
+            new TrustSelfSignedStrategy()
+          )
+          .build()
+      } match {
+        case Success(context) => context
+        case Failure(e)       =>
+          // Usually this is an incorrect password
+          logger.error(
+            "Failed to use configured trust store, falling back to default",
+            e
+          )
+          SSLContexts.createDefault()
+      }
+    } else {
+      logger.info("Using default trust store")
+      SSLContexts.createDefault()
+    }
+  }
+
+  def getClient: RestHighLevelClient =
+    new RestHighLevelClient(
+      RestClient
+        .builder(httpHost)
+        .setHttpClientConfigCallback(new HttpClientConfigCallback() {
+          override def customizeHttpClient(
+              httpClientBuilder: HttpAsyncClientBuilder
+          ): HttpAsyncClientBuilder = {
+            httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider)
+            httpClientBuilder.setSSLContext(sslContext)
+          }
+        })
+    )
 
   def createLocalElasticsearch(): HttpHost = {
     // Launches a dockerized elasticsearch process
@@ -57,4 +122,5 @@ class ElasticsearchClientConfig @Inject() (
     HttpHost.create(container.getHttpHostAddress)
   }
 }
+
 // $COVERAGE-ON$

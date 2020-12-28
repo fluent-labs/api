@@ -1,33 +1,34 @@
 package com.foreignlanguagereader.api.controller.v1
 
-import java.util.concurrent.TimeUnit
-
-import com.foreignlanguagereader.domain.client.LanguageServiceClient
+import com.foreignlanguagereader.domain.client.MirriamWebsterClient
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchClient
 import com.foreignlanguagereader.dto.v1.health.{Readiness, ReadinessStatus}
 import javax.inject._
+import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc._
 
 import scala.concurrent.ExecutionContext
-import scala.concurrent.duration.{Duration, FiniteDuration}
 
 @Singleton
 class HealthController @Inject() (
     val controllerComponents: ControllerComponents,
     elasticsearchClient: ElasticsearchClient,
-    languageServiceClient: LanguageServiceClient,
+    websterClient: MirriamWebsterClient,
     implicit val ec: ExecutionContext
 ) extends BaseController {
 
-  val timeout: FiniteDuration = Duration(1, TimeUnit.SECONDS)
+  val logger: Logger = Logger(this.getClass)
 
   /*
    * This is simpler than the readiness check. It should just confirm that the server can respond to requests.
    */
   def health: Action[AnyContent] =
     Action { implicit request: Request[AnyContent] =>
-      Ok(Json.obj("status" -> "up"))
+      {
+        logger.debug("Responding to health check: up")
+        Ok(Json.obj("status" -> "up"))
+      }
     }
 
   /*
@@ -43,10 +44,12 @@ class HealthController @Inject() (
 
       val status = Readiness(
         database,
-        elasticsearchClient.health(),
-        languageServiceClient.health()
+        elasticsearchClient.breaker.health(),
+        websterClient.health()
       )
       val response = Json.toJson(status)
+      logger.debug(s"Responding to readiness check check: $response")
+
       status.overall match {
         case ReadinessStatus.UP => Ok(response)
         case ReadinessStatus.DOWN =>

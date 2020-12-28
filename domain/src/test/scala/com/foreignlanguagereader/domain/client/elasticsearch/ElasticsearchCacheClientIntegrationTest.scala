@@ -53,7 +53,6 @@ class ElasticsearchCacheClientIntegrationTest
 
       client
         .index(indexRequest)
-        .value
         .flatMap {
           case CircuitBreakerNonAttempt() =>
             fail("Indexing failed because circuit breaker was closed")
@@ -62,7 +61,7 @@ class ElasticsearchCacheClientIntegrationTest
           case CircuitBreakerAttempt(_) =>
             // Give elasticsearch five seconds to finish indexing before we search
             Thread.sleep(5000)
-            client.search[LookupAttempt](searchRequest).value.map {
+            client.search[LookupAttempt](searchRequest).map {
               case CircuitBreakerNonAttempt() =>
                 fail("Searching failed because circuit breaker was closed")
               case CircuitBreakerFailedAttempt(e) =>

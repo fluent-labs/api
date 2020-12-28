@@ -1,34 +1,22 @@
-FROM openjdk:14-jdk-alpine3.10 as builder
-MAINTAINER reader@lucaskjaerozhang.com
-
-ENV SBT_VERSION 1.4.0
-ENV INSTALL_DIR /usr/local
-ENV SBT_HOME /usr/local/sbt
-ENV PATH ${PATH}:${SBT_HOME}/bin
-
-# Install sbt
-RUN apk add --no-cache --update bash wget && mkdir -p "$SBT_HOME" && \
-    wget -qO - --no-check-certificate "https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz" |  tar xz -C $INSTALL_DIR && \
-    echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
-
-# Cache dependencies
-WORKDIR /app
-COPY project project
-COPY build.sbt build.sbt
-RUN sbt compile
+FROM lkjaero/foreign-language-reader-api:builder as builder
 
 # Compile the service
 COPY . /app/
 RUN sbt clean coverageOff dist
-RUN unzip /app/api/target/universal/api-0.1.0-SNAPSHOT.zip
+
+# Detect the version and unzip to /app/dist
+# hadolint ignore=SC2086
+RUN VERSION=$(grep -Eo "[0-9\.]+" version.sbt) && \
+    echo "Detected version $VERSION" && \
+    unzip /app/api/target/universal/api-$VERSION-SNAPSHOT.zip -d ./api && \
+    mkdir dist && \
+    mv api/api-$VERSION-SNAPSHOT/* dist
 
 ## Make sure tests are run on the correct JVM
 ## Changes to string methods between versions has burned us before
- RUN sbt test
+RUN sbt test
 
-FROM openjdk:14-jdk-alpine3.10 as final
-WORKDIR /app
-RUN apk add bash
+FROM lkjaero/foreign-language-reader-api:base as final
 EXPOSE 9000
 CMD ["/app/bin/api", "-Dconfig.resource=production.conf"]
-COPY --from=builder /app/api-0.1.0-SNAPSHOT /app
+COPY --from=builder /app/dist /app

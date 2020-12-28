@@ -1,31 +1,27 @@
 package com.foreignlanguagereader.domain.service.definition
 
-import cats.data.Nested
 import cats.implicits._
-import com.foreignlanguagereader.domain.client.common.{
-  CircuitBreakerAttempt,
-  CircuitBreakerNonAttempt,
-  CircuitBreakerResult
-}
-import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.content.enrichers.chinese.SimplifiedTraditionalConverter
 import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.internal.word.Word
-import Language.Language
+import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.internal.definition
+import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.content.types.internal.definition.{
   ChineseDefinition,
-  Definition,
   DefinitionSource
 }
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.domain.client.LanguageServiceClient
-import com.foreignlanguagereader.domain.repository.definition.Cedict
+import com.foreignlanguagereader.content.types.internal.word.Word
+import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
+import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
+import com.foreignlanguagereader.domain.fetcher.chinese.{
+  CEDICTFetcher,
+  WiktionaryChineseFetcher
+}
 import com.github.houbb.opencc4j.util.ZhConverterUtil
 import javax.inject.Inject
-import play.api.Logger
+import play.api.{Configuration, Logger}
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 /**
   * Language specific handling for Chinese.
@@ -34,36 +30,31 @@ import scala.concurrent.{ExecutionContext, Future}
   */
 class ChineseDefinitionService @Inject() (
     val elasticsearch: ElasticsearchCacheClient,
-    val languageServiceClient: LanguageServiceClient,
+    override val config: Configuration,
+    cedictFetcher: CEDICTFetcher,
+    wiktionaryChineseFetcher: WiktionaryChineseFetcher,
     implicit val ec: ExecutionContext
-) extends LanguageDefinitionService {
+) extends LanguageDefinitionService[ChineseDefinition] {
   override val logger: Logger = Logger(this.getClass)
 
   override val wordLanguage: Language = Language.CHINESE
   override val sources: List[DefinitionSource] =
     List(DefinitionSource.CEDICT, DefinitionSource.WIKTIONARY)
 
-  def cedictFetcher: (
-      Language,
-      Word
-  ) => Nested[Future, CircuitBreakerResult, List[Definition]] =
-    (_, word: Word) =>
-      Cedict.getDefinition(word) match {
-        case Some(entries) =>
-          Nested(
-            CircuitBreakerAttempt(entries.map(_.toDefinition(word.tag)))
-              .pure[Future]
-          )
-        case None => Nested(CircuitBreakerNonAttempt().pure[Future])
-      }
-
   override val definitionFetchers: Map[
     (DefinitionSource, Language),
-    (Language, Word) => Nested[Future, CircuitBreakerResult, List[Definition]]
+    DefinitionFetcher[_, ChineseDefinition]
   ] =
     Map(
       (DefinitionSource.CEDICT, Language.ENGLISH) -> cedictFetcher,
-      (DefinitionSource.WIKTIONARY, Language.ENGLISH) -> languageServiceFetcher
+      (
+        DefinitionSource.WIKTIONARY,
+        Language.ENGLISH
+      ) -> wiktionaryChineseFetcher,
+      (
+        DefinitionSource.WIKTIONARY,
+        Language.CHINESE
+      ) -> wiktionaryChineseFetcher
     )
 
   // Convert everything to traditional
@@ -81,18 +72,22 @@ class ChineseDefinitionService @Inject() (
   override def enrichDefinitions(
       definitionLanguage: Language,
       word: Word,
-      definitions: Map[DefinitionSource, List[Definition]]
-  ): List[Definition] = {
+      definitions: Map[DefinitionSource, List[ChineseDefinition]]
+  ): List[ChineseDefinition] = {
     definitionLanguage match {
-      case Language.ENGLISH => enrichEnglishDefinitions(word, definitions)
-      case _                => super.enrichDefinitions(definitionLanguage, word, definitions)
+      case Language.ENGLISH =>
+        logger.info("Enriching Chinese definitions in English")
+        enrichEnglishDefinitions(word, definitions)
+      case _ =>
+        logger.info(s"Not enriching Chinese definitions in $definitionLanguage")
+        super.enrichDefinitions(definitionLanguage, word, definitions)
     }
   }
 
   private[this] def enrichEnglishDefinitions(
       word: Word,
-      definitions: Map[DefinitionSource, List[Definition]]
-  ): List[Definition] = {
+      definitions: Map[DefinitionSource, List[ChineseDefinition]]
+  ): List[ChineseDefinition] = {
     val cedict = definitions.get(DefinitionSource.CEDICT)
     val wiktionary = definitions.get(DefinitionSource.WIKTIONARY)
     logger.info(
@@ -106,8 +101,8 @@ class ChineseDefinitionService @Inject() (
         logger.info(s"Combining cedict and wiktionary definitions for $word")
         mergeCedictAndWiktionary(
           word,
-          cedict.head.asInstanceOf[ChineseDefinition],
-          wiktionary.map(_.asInstanceOf[ChineseDefinition])
+          cedict.head,
+          wiktionary
         )
       case (Some(cedict), None) =>
         logger.info(s"Using cedict definitions for $word")
@@ -120,6 +115,7 @@ class ChineseDefinitionService @Inject() (
         val message =
           s"Definitions were lost for chinese word $word, check the request partitioner"
         logger.error(message)
+        logger.warn(s"Raw definitions for word $word: $definitions")
         throw new IllegalStateException(message)
     }
   }

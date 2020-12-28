@@ -1,23 +1,42 @@
 name := "foreign-language-reader-parent"
-organization := "com.foreignlanguagereader"
-version := "1.0-SNAPSHOT"
-
 scalaVersion in ThisBuild := "2.12.12"
+
+/*
+ * Project Setup
+ */
+
+lazy val settings = Seq(
+  scalacOptions ++= compilerOptions,
+  githubTokenSource := TokenSource.Or(
+    TokenSource.Environment("GITHUB_TOKEN"),
+    TokenSource.GitConfig("github.token")
+  ),
+  releaseVersionBump := sbtrelease.Version.Bump.Bugfix,
+  publishConfiguration := publishConfiguration.value.withOverwrite(true),
+  publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(
+    true
+  )
+)
 
 lazy val global = project
   .in(file("."))
-  .settings(settings)
   .disablePlugins(AssemblyPlugin)
+  .settings(
+    settings,
+    assemblySettings,
+    dependencyOverrides ++= forcedDependencies
+  )
   .aggregate(api, content, domain, dto, jobs)
 
 lazy val api = project
   .enablePlugins(PlayService, PlayLayoutPlugin)
+  .disablePlugins(PlayLogback)
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies ++ playDependencies ++ Seq(
-      dependencies.h2
-    )
+    libraryDependencies ++= apiDependencies,
+    dependencyOverrides ++= forcedDependencies,
+    javaOptions += "-Dlog4j.configurationFile=log4j2.xml"
   )
   .dependsOn(domain)
 
@@ -25,10 +44,8 @@ lazy val content = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies ++ Seq(
-      dependencies.scalatestPlay,
-      dependencies.opencc4j
-    )
+    libraryDependencies ++= contentDependencies,
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(dto)
 
@@ -36,19 +53,8 @@ lazy val domain = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies ++ Seq(
-      // Dependency injection
-      guice,
-      // Used to generate elasticsearch matchers
-      dependencies.elasticsearchHighLevelClient,
-      // Testing
-      dependencies.mockito,
-      dependencies.scalatestPlay,
-      dependencies.elasticsearchContainer,
-      // Clients
-      dependencies.opencc4j,
-      dependencies.googleCloudClient
-    )
+    libraryDependencies ++= domainDependencies,
+    dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(content)
 
@@ -56,48 +62,36 @@ lazy val dto = project
   .settings(
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies
+    libraryDependencies ++= dtoDependencies,
+    dependencyOverrides ++= forcedDependencies
   )
 
 lazy val jobs = project
+  .enablePlugins(AssemblyPlugin)
   .settings(
-    assemblySettings,
-    libraryDependencies ++= commonDependencies ++ Seq(
-      dependencies.sparkCore % "provided",
-      dependencies.sparkSql % "provided",
-      dependencies.sparkXml
+    settings,
+    assemblySettings ++ Seq(
+      assemblyJarName in assembly := name.value + ".jar",
+      assemblyMergeStrategy in assembly := {
+        case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
+        case _                                   => MergeStrategy.first
+      }
     ),
+    libraryDependencies ++= jobsDependencies,
     dependencyOverrides ++= forcedDependencies
   )
   .dependsOn(content)
 
-lazy val commonDependencies = Seq(
-  dependencies.scalatest % "test",
-  dependencies.scalactic,
-  dependencies.cats,
-  ws,
-  dependencies.sangria
-)
-
-lazy val playDependencies = Seq(
-  dependencies.scalatestPlay,
-  dependencies.sangria,
-  dependencies.sangriaPlay,
-  dependencies.mockito,
-  jdbc
-)
-
-lazy val forcedDependencies = Seq(
-  dependencies.jacksonScala,
-  dependencies.jacksonDatabind,
-  dependencies.jacksonCore
-)
+/*
+ * Dependencies
+ */
 
 lazy val dependencies =
   new {
     val scalatestVersion = "3.2.2"
     val sparkVersion = "3.0.1"
     val jacksonVersion = "2.11.3"
+    val log4jVersion = "2.14.0"
 
     // Testing
     val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
@@ -108,7 +102,16 @@ lazy val dependencies =
     val elasticsearchContainer =
       "org.testcontainers" % "elasticsearch" % "1.15.0"
 
+    // Language helpers
     val cats = "org.typelevel" %% "cats-core" % "2.0.0"
+    val lombok = "org.projectlombok" % "lombok" % "1.18.16"
+
+    val log4jImplementation =
+      "org.apache.logging.log4j" % "log4j-slf4j-impl" % log4jVersion
+    val log4jApi = "org.apache.logging.log4j" % "log4j-api" % log4jVersion
+    val log4jCore = "org.apache.logging.log4j" % "log4j-core" % log4jVersion
+    val log4jJson =
+      "org.apache.logging.log4j" % "log4j-layout-template-json" % log4jVersion
 
     // Spark
     val sparkCore =
@@ -126,6 +129,7 @@ lazy val dependencies =
     // External clients
     val elasticsearchHighLevelClient =
       "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "7.9.3"
+    val oslib = "com.lihaoyi" %% "os-lib" % "0.7.1"
     val googleCloudClient =
       "com.google.cloud" % "google-cloud-language" % "1.101.6"
 
@@ -140,9 +144,72 @@ lazy val dependencies =
       "com.fasterxml.jackson.core" % "jackson-core" % jacksonVersion
   }
 
-lazy val settings = Seq(
-  scalacOptions ++= compilerOptions
+lazy val commonDependencies = Seq(
+  dependencies.scalatest % "test",
+  dependencies.scalactic,
+  dependencies.cats,
+  ws,
+  dependencies.sangria
 )
+
+lazy val playDependencies = Seq(
+  dependencies.scalatestPlay,
+  dependencies.sangria,
+  dependencies.sangriaPlay,
+  dependencies.mockito
+)
+
+lazy val forcedDependencies = Seq(
+  dependencies.hadoopClient,
+  dependencies.jacksonScala,
+  dependencies.jacksonDatabind,
+  dependencies.jacksonCore,
+  dependencies.lombok,
+  dependencies.htrace,
+  dependencies.hadoop,
+  dependencies.avro
+)
+
+lazy val apiDependencies =
+  commonDependencies ++ playDependencies ++ Seq(
+    dependencies.log4jApi,
+    dependencies.log4jCore,
+    dependencies.log4jImplementation,
+    dependencies.log4jJson,
+    dependencies.h2
+  )
+
+lazy val contentDependencies = commonDependencies ++ Seq(
+  dependencies.scalatestPlay,
+  dependencies.opencc4j
+)
+
+lazy val domainDependencies = commonDependencies ++ Seq(
+  // Dependency injection
+  guice,
+  // Used to generate elasticsearch matchers
+  dependencies.elasticsearchHighLevelClient,
+  dependencies.oslib,
+  // Testing
+  dependencies.mockito,
+  dependencies.scalatestPlay,
+  dependencies.elasticsearchContainer,
+  // Clients
+  dependencies.opencc4j,
+  dependencies.googleCloudClient
+)
+
+lazy val dtoDependencies = commonDependencies
+
+lazy val jobsDependencies = commonDependencies ++ Seq(
+  dependencies.sparkCore % "provided",
+  dependencies.sparkSql % "provided",
+  dependencies.sparkXml
+)
+
+/*
+ * Build
+ */
 
 lazy val compilerOptions = Seq(
   "-encoding",
@@ -157,9 +224,19 @@ lazy val compilerOptions = Seq(
 //  "-Wdead-code",
 //  "-Wvalue-discard",
 
+/*
+ * Release
+ */
+
 lazy val assemblySettings = Seq(
-  assemblyJarName in assembly := name.value + ".jar"
+  organization := "com.foreignlanguagereader",
+  githubOwner := "foreign-language-reader",
+  githubRepository := "api"
 )
+
+/*
+ * Quality
+ */
 
 // Code coverage settings
 coverageMinimum := 70

@@ -11,13 +11,16 @@ import com.foreignlanguagereader.content.types.internal.definition.DefinitionSou
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.dto.v1.definition.ChineseDefinitionDTO
-import com.foreignlanguagereader.dto.v1.definition.chinese.HskLevel.HSKLevel
 import com.foreignlanguagereader.dto.v1.definition.chinese.{
   ChinesePronunciation,
-  HskLevel
+  HSKLevel
 }
 import com.github.houbb.opencc4j.util.ZhConverterUtil
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json._
+
+import scala.collection.JavaConverters._
+import scala.compat.java8.OptionConverters._
 
 case class ChineseDefinition(
     override val subdefinitions: List[String],
@@ -33,7 +36,7 @@ case class ChineseDefinition(
     override val token: String
 ) extends Definition {
   private[this] val isTraditional = ZhConverterUtil.isTraditional(token)
-  val wordLanguage: Language =
+  override val wordLanguage: Language =
     if (isTraditional) Language.CHINESE_TRADITIONAL else Language.CHINESE
 
   val pronunciation: ChinesePronunciation =
@@ -57,22 +60,28 @@ case class ChineseDefinition(
 
   val hsk: HSKLevel = simplified match {
     case Some(s) => HSKLevelFinder.getHSK(s)
-    case None    => HskLevel.NONE
+    case None    => HSKLevel.NONE
   }
 
   lazy val toDTO: ChineseDefinitionDTO =
-    ChineseDefinitionDTO(
-      id = id,
-      subdefinitions = subdefinitions,
-      tag = PartOfSpeech.toDTO(tag),
-      examples = examples,
-      simplified = simplified,
-      traditional = traditional,
-      pronunciation = pronunciation,
-      hsk = hsk
+    new ChineseDefinitionDTO(
+      id,
+      subdefinitions.asJava,
+      PartOfSpeech.toDTO(tag),
+      examples.getOrElse(List()).asJava,
+      simplified.asJava,
+      traditional.map(_.asJava).asJava,
+      pronunciation.pinyin,
+      hsk
     )
 }
 object ChineseDefinition {
-  implicit val format: Format[ChineseDefinition] =
-    Json.format[ChineseDefinition]
+  implicit val writes: Writes[ChineseDefinition] = {
+    (Json.writes[ChineseDefinition] ~ (__ \ "wordLanguage")
+      .write[Language] ~ (__ \ "ipa").write[String])((d: ChineseDefinition) =>
+      (d, Language.CHINESE, d.ipa)
+    )
+
+  }
+  implicit val reads: Reads[ChineseDefinition] = Json.reads[ChineseDefinition]
 }

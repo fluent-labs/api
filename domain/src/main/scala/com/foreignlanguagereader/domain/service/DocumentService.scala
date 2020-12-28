@@ -52,7 +52,6 @@ class DocumentService @Inject() (
   ): Future[Set[Word]] = {
     googleCloudClient
       .getWordsForDocument(language, document)
-      .value
       .map {
         case CircuitBreakerAttempt(result)  => result
         case CircuitBreakerNonAttempt()     => Set[Word]()

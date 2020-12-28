@@ -2,9 +2,12 @@ package com.foreignlanguagereader.content.types.internal.definition
 
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
-import com.foreignlanguagereader.dto.v1.definition.ChineseDefinitionDTO
-import com.foreignlanguagereader.dto.v1.definition.chinese.HskLevel
+import com.foreignlanguagereader.dto.v1.definition.chinese.HSKLevel
 import org.scalatest.funspec.AnyFunSpec
+import play.api.libs.json.Json
+
+import scala.collection.JavaConverters._
+import scala.compat.java8.OptionConverters._
 
 class ChineseDefinitionTest extends AnyFunSpec {
   val example: ChineseDefinition = ChineseDefinition(
@@ -80,26 +83,35 @@ class ChineseDefinitionTest extends AnyFunSpec {
     describe("when getting HSK level") {
       it("can get HSK level") {
         val withHSK = example.copy(inputSimplified = Some("好"))
-        assert(withHSK.hsk == HskLevel.ONE)
+        assert(withHSK.hsk == HSKLevel.ONE)
       }
 
       it("does not break if there is no HSK level") {
-        assert(example.hsk == HskLevel.NONE)
+        assert(example.hsk == HSKLevel.NONE)
       }
     }
 
     it("can convert itself to a DTO") {
-      val compareAgainst = ChineseDefinitionDTO(
-        example.id,
-        example.subdefinitions,
-        PartOfSpeech.toDTO(example.tag),
-        example.examples,
-        example.simplified,
-        example.traditional,
-        example.pronunciation,
-        example.hsk
+      val converted = example.toDTO
+      assert(example.id == converted.getId)
+      assert(example.subdefinitions == converted.getSubdefinitions.asScala)
+      assert(PartOfSpeech.toDTO(example.tag) == converted.getTag)
+      assert(example.examples.contains(converted.getExamples.asScala))
+      assert(example.simplified == converted.getSimplified.asScala)
+      assert(
+        example.traditional == converted.getTraditional.asScala.map(_.asScala)
       )
-      assert(example.toDTO == compareAgainst)
+      assert(example.pronunciation.pinyin == converted.getPronunciation)
+      assert(example.hsk == converted.getHsk)
+    }
+
+    it("can correctly serialize itself to JSON") {
+      val json: String = Json.stringify(Json.toJson(example))
+      // These matter for elasticsearch lookup to work
+      assert(json.contains("\"definitionLanguage\":\"ENGLISH\""))
+      assert(json.contains("\"source\":\"MULTIPLE\""))
+      assert(json.contains("\"wordLanguage\":\"CHINESE\""))
+      assert(json.contains("\"ipa\":\"[ni] [xɑʊ̯]\""))
     }
   }
 }

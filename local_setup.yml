@@ -1,12 +1,15 @@
 version: '3'
 services:
   api:
-    build: ./api
+    build: .
     environment:
-      AUTH_TOKEN: "simpletoken"
-      DATABASE_URL: "ecto://dev-user:dev-password@database:33061/foreign-language-reader"
-      SECRET_KEY_BASE: "KN4rxjPOfxRk3uo7fD928e6nt12jzrvy5t90fp7Snlp63ckc0rRZTglirGt+WiB6"
-      LANGUAGE_SERVICE_URL: "http://localhost:8000"
+      APPLICATION_SECRET: "fakesecret"
+      ELASTICSEARCH_PASSWORD: "password"
+      ENVIRONMENT: "local"
+      GOOGLE_APPLICATION_CREDENTIALS: "/etc/flrcredentials/gcloud-creds.json"
+      TRUSTSTORE_PASSWORD: "password"
+      WEBSTER_LEARNERS_KEY: "fakekey"
+      WEBSTER_SPANISH_KEY: "fakekey"
     ports:
     - 9000:9000
   database:
@@ -19,7 +22,7 @@ services:
     ports:
     - 33061:3306
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
     environment:
     - "discovery.type=single-node"
     ports:

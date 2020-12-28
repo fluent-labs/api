@@ -1,12 +1,13 @@
 package com.foreignlanguagereader.api.controller.v1.language
 
 import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.dto.v1.document.DocumentRequest
 import com.foreignlanguagereader.domain.service.DocumentService
+import com.foreignlanguagereader.dto.v1.document.DocumentRequest
 import javax.inject._
 import play.api.Logger
-import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
+import play.api.libs.json._
 import play.api.mvc._
+import play.libs.{Json => JavaJson}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -17,6 +18,9 @@ class DocumentController @Inject() (
     implicit val ec: ExecutionContext
 ) extends BaseController {
   val logger: Logger = Logger(this.getClass)
+
+  implicit val documentRequestReader: Reads[DocumentRequest] =
+    (JsPath \ "text").read[String].map(text => new DocumentRequest(text))
 
   def definition(
       wordLanguage: Language,
@@ -29,12 +33,11 @@ class DocumentController @Inject() (
             .getWordsForDocument(
               wordLanguage,
               definitionLanguage,
-              documentRequest.text
+              documentRequest.getText
             )
-            .map {
-              case List() => NoContent
-              case words  => Ok(Json.toJson(words.map(_.toDTO)))
-            }
+            .map(words =>
+              Ok(JavaJson.stringify(JavaJson.toJson(words.map(_.toDTO))))
+            )
             .recover {
               case error: Throwable =>
                 val message =

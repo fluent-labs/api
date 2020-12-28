@@ -1,0 +1,98 @@
+name: Build and Deploy
+
+on:
+  pull_request:
+    types: [ closed ]
+    branches: master
+
+jobs:
+  publish:
+    name: Publish packages
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2.3.4
+
+      - name: Set up JDK 15
+        uses: actions/setup-java@v1
+        with:
+          java-version: 15.0.1
+
+      - name: Configure git
+        run: |
+          git config --local user.email "release@foreignlanguagereader.com"
+          git config --local user.name "Release"
+      
+      - name: Wait for previous deployments to complete
+        uses: softprops/turnstyle@v0.1.5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to github packages
+        run: sbt "release with-defaults"
+
+      - name: Get release tag
+        id: version
+        uses: WyriHaximus/github-action-get-previous-tag@1.0.0
+      
+      # This is different than the release tag. A tag has v, like v1.1.0, but a version does not, like 1.1.0
+      - name: Get release version
+        run: echo "RELEASE_VERSION=$(echo "${{ steps.version.outputs.tag }}" | grep -Eo "[0-9\.]+")" >> $GITHUB_ENV
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1.1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          release_name: "${{ env.RELEASE_VERSION }}: ${{ github.event.pull_request.title }}"
+          body: ${{ github.event.pull_request.body }}
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1.8.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Pull and rebuild dependencies docker image
+        run: |
+          docker pull lkjaero/foreign-language-reader-api:builder
+          docker build . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
+          docker push lkjaero/foreign-language-reader-api:builder
+
+      - name: Build production docker image
+        run: docker build . -t lkjaero/foreign-language-reader-api:LATEST
+
+      - name: Enforce security rules
+        id: scan
+        uses: anchore/scan-action@v2
+        with:
+          image: "lkjaero/foreign-language-reader-api:LATEST"
+          fail-build: true
+          acs-report-enable: true
+
+      - name: Push production docker image
+        run: |
+          docker tag lkjaero/foreign-language-reader-api:LATEST lkjaero/foreign-language-reader-api:${{ env.RELEASE_VERSION}}
+          docker push lkjaero/foreign-language-reader-api:${{ env.RELEASE_VERSION}}
+          docker push lkjaero/foreign-language-reader-api:LATEST
+
+      - name: Log into DigitalOcean
+        uses: digitalocean/action-doctl@v2.1.0
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Save DigitalOcean kubeconfig
+        run: doctl kubernetes cluster kubeconfig show foreign-language-reader > $GITHUB_WORKSPACE/.kubeconfig
+
+      - name: Update image in K8s
+        run: |
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig -n prod \
+            set image deployment/api api=lkjaero/foreign-language-reader-api:${{ env.RELEASE_VERSION}} --record
+
+      - name: Wait for deployment to finish
+        run: |
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig -n prod \
+            rollout status deployment/api

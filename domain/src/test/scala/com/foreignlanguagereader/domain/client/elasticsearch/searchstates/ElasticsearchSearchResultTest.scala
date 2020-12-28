@@ -1,17 +1,17 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
 import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
 import com.foreignlanguagereader.content.types.internal.definition.{
-  ChineseDefinition,
-  Definition,
   DefinitionSource,
-  GenericDefinition
+  EnglishDefinition
 }
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
 import com.foreignlanguagereader.domain.util.ElasticsearchTestUtil
 import org.elasticsearch.action.index.IndexRequest
 import org.scalatest.funspec.AnyFunSpec
+import play.api.libs.json.{Json, Writes}
 
 class ElasticsearchSearchResultTest extends AnyFunSpec {
   val index: String = "definition"
@@ -21,7 +21,7 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
   describe("an elasticsearch result") {
     describe("where nothing was refetched") {
       it("does not persist anything to elasticsearch") {
-        val result = ElasticsearchSearchResult[Definition](
+        val result = ElasticsearchSearchResult[WiktionaryDefinitionEntry](
           index = index,
           fields = fields,
           result = List(),
@@ -38,7 +38,7 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
     }
 
     describe("where refetching gave no result") {
-      val result = ElasticsearchSearchResult[Definition](
+      val result = ElasticsearchSearchResult[WiktionaryDefinitionEntry](
         index = index,
         fields = fields,
         result = List(),
@@ -65,38 +65,48 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
       }
     }
 
-    val dummyChineseDefinition = ChineseDefinition(
+    val dummyChineseDefinition = WiktionaryDefinitionEntry(
       subdefinitions = List("definition 1", "definition 2"),
-      tag = PartOfSpeech.NOUN,
+      pronunciation = "ni hao",
+      tag = Some(PartOfSpeech.NOUN),
       examples = Some(List("example 1", "example 2")),
-      inputPinyin = "ni3 hao3",
-      inputSimplified = Some("你好"),
-      inputTraditional = Some("你好"),
       definitionLanguage = Language.ENGLISH,
-      source = DefinitionSource.MULTIPLE,
-      token = "你好"
+      wordLanguage = Language.CHINESE,
+      token = "你好",
+      source = DefinitionSource.MULTIPLE
     )
-    val dummyGenericDefinition = GenericDefinition(
+    val dummyEnglishDefinition = WiktionaryDefinitionEntry(
       subdefinitions = List("definition 1", "definition 2"),
-      ipa = "ipa",
-      tag = PartOfSpeech.NOUN,
+      pronunciation = "ipa",
+      tag = Some(PartOfSpeech.NOUN),
       examples = Some(List("example 1", "example 2")),
       definitionLanguage = Language.ENGLISH,
       wordLanguage = Language.ENGLISH,
-      source = DefinitionSource.MULTIPLE,
-      token = "anything"
+      token = "anything",
+      source = DefinitionSource.MULTIPLE
     )
 
+    implicit val writes: Writes[EnglishDefinition] =
+      Json.writes[EnglishDefinition]
+
     val chineseDefinitionRequest =
-      ElasticsearchTestUtil.indexRequestFrom(index, dummyChineseDefinition)
+      ElasticsearchTestUtil.indexRequestFrom(
+        index,
+        dummyChineseDefinition,
+        fields
+      )
     val genericDefinitionRequest =
-      ElasticsearchTestUtil.indexRequestFrom(index, dummyGenericDefinition)
+      ElasticsearchTestUtil.indexRequestFrom(
+        index,
+        dummyEnglishDefinition,
+        fields
+      )
 
     describe("on a previously untried query") {
-      val result = ElasticsearchSearchResult[Definition](
+      val result = ElasticsearchSearchResult[WiktionaryDefinitionEntry](
         index = index,
         fields = fields,
-        result = List(dummyChineseDefinition, dummyGenericDefinition),
+        result = List(dummyChineseDefinition, dummyEnglishDefinition),
         fetchCount = 1,
         lookupId = None,
         refetched = true,
@@ -154,10 +164,10 @@ class ElasticsearchSearchResultTest extends AnyFunSpec {
       "on a query which previously failed but contained results this time"
     ) {
       val attemptsId = "2423423"
-      val result = ElasticsearchSearchResult[Definition](
+      val result = ElasticsearchSearchResult[WiktionaryDefinitionEntry](
         index = index,
         fields = fields,
-        result = List(dummyChineseDefinition, dummyGenericDefinition),
+        result = List(dummyChineseDefinition, dummyEnglishDefinition),
         fetchCount = 2,
         lookupId = Some(attemptsId),
         refetched = true,

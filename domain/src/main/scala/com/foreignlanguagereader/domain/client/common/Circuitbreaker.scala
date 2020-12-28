@@ -5,7 +5,6 @@ import java.util.concurrent.TimeUnit
 import akka.actor.ActorSystem
 import akka.pattern.{CircuitBreaker, CircuitBreakerOpenException}
 import cats.Functor
-import cats.data.Nested
 import com.foreignlanguagereader.dto.v1.health.ReadinessStatus
 import com.foreignlanguagereader.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.Logger
@@ -14,18 +13,16 @@ import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
-trait Circuitbreaker {
-  val defaultTimeout = 60
-  val defaultResetTimeout = 60
-
-  val system: ActorSystem
-  implicit val ec: ExecutionContext
-  val maxFailures = 5
-  val timeout: FiniteDuration = FiniteDuration(defaultTimeout, TimeUnit.SECONDS)
-  val resetTimeout: FiniteDuration =
-    FiniteDuration(defaultResetTimeout, TimeUnit.SECONDS)
-
+class Circuitbreaker(
+    system: ActorSystem,
+    implicit val ec: ExecutionContext,
+    name: String,
+    timeout: FiniteDuration = FiniteDuration(60, TimeUnit.SECONDS),
+    resetTimeout: FiniteDuration = FiniteDuration(60, TimeUnit.SECONDS),
+    maxFailures: Int = 5
+) {
   val logger: Logger = Logger(this.getClass)
+  logger.info(s"Initialized circuitbreaker for $name with timeout $timeout")
 
   val breaker: CircuitBreaker =
     new CircuitBreaker(
@@ -33,12 +30,17 @@ trait Circuitbreaker {
       maxFailures = maxFailures,
       callTimeout = timeout,
       resetTimeout = resetTimeout
-    ).onOpen(logger.error("Circuit breaker opening due to failures"))
-      .onHalfOpen(logger.info("Circuit breaker resetting"))
-      .onClose(logger.info("Circuit breaker reset"))
+    ).onOpen(
+        logger.error(s"Circuit breaker for $name opening due to failures")
+      )
+      .onHalfOpen(logger.info(s"Circuit breaker for $name resetting"))
+      .onClose(logger.info(s"Circuit breaker for $name reset"))
 
   def defaultIsFailure(error: Throwable): Boolean = true
   def defaultIsSuccess[T](result: T): Boolean = true
+
+  def onClose(body: => Unit): Unit = breaker.onClose(body)
+  def isClosed: Boolean = breaker.isClosed
 
   def health(): ReadinessStatus =
     breaker match {
@@ -49,7 +51,7 @@ trait Circuitbreaker {
 
   def withBreaker[T](logIfError: String)(
       body: => Future[T]
-  ): Nested[Future, CircuitBreakerResult, T] =
+  ): Future[CircuitBreakerResult[T]] =
     withBreaker(logIfError, defaultIsFailure, defaultIsSuccess[T])(body)
 
   def withBreaker[T](
@@ -58,22 +60,20 @@ trait Circuitbreaker {
       isSuccess: T => Boolean
   )(
       body: => Future[T]
-  ): Nested[Future, CircuitBreakerResult, T] =
-    Nested[Future, CircuitBreakerResult, T](
-      breaker
-        .withCircuitBreaker[T](body, makeFailureFunction(isFailure, isSuccess))
-        .map(s => CircuitBreakerAttempt(s))
-        .recover {
-          case c: CircuitBreakerOpenException =>
-            logger.warn(
-              s"Failing fast because circuit breaker is open, ${c.remainingDuration} remaining."
-            )
-            CircuitBreakerNonAttempt()
-          case e =>
-            logger.error(logIfError)
-            CircuitBreakerFailedAttempt(e)
-        }
-    )
+  ): Future[CircuitBreakerResult[T]] =
+    breaker
+      .withCircuitBreaker[T](body, makeFailureFunction(isFailure, isSuccess))
+      .map(s => CircuitBreakerAttempt(s))
+      .recover {
+        case c: CircuitBreakerOpenException =>
+          logger.warn(
+            s"Failing fast because circuit breaker $name is open, ${c.remainingDuration} remaining."
+          )
+          CircuitBreakerNonAttempt[T]()
+        case e =>
+          logger.error(logIfError, e)
+          CircuitBreakerFailedAttempt[T](e)
+      }
 
   // This should return true if failure count should increase
   private[this] def makeFailureFunction[T](

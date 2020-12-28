@@ -14,3 +14,4 @@ project/project
 project/target
 target
 .bsp/sbt.json
+api/conf/localproduction.conf

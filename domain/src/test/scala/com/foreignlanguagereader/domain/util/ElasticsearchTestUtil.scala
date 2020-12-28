@@ -1,6 +1,9 @@
 package com.foreignlanguagereader.domain.util
 
-import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
+import com.foreignlanguagereader.domain.client.elasticsearch.{
+  ElasticsearchCacheable,
+  LookupAttempt
+}
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.common.xcontent.XContentType
@@ -21,7 +24,21 @@ object ElasticsearchTestUtil {
       .upsert(Json.toJson(attempt).toString(), XContentType.JSON)
   }
 
-  def indexRequestFrom[T](index: String, item: T)(implicit
+  def indexRequestFrom[T](
+      index: String,
+      item: T,
+      fields: Map[String, String]
+  )(implicit
+      writes: Writes[T]
+  ): IndexRequest = {
+    val cacheable = ElasticsearchCacheable(item, fields)
+    indexRequestFrom(index, cacheable)
+  }
+
+  private[this] def indexRequestFrom[T](
+      index: String,
+      item: T
+  )(implicit
       writes: Writes[T]
   ): IndexRequest = {
     new IndexRequest()
