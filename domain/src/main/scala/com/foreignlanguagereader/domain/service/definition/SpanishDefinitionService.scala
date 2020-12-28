@@ -7,7 +7,6 @@ import com.foreignlanguagereader.content.types.internal.definition.{
   DefinitionSource,
   SpanishDefinition
 }
-import com.foreignlanguagereader.domain.client.MirriamWebsterClient
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
 import com.foreignlanguagereader.domain.fetcher.spanish.WebsterSpanishToEnglishFetcher
@@ -18,7 +17,7 @@ import scala.concurrent.ExecutionContext
 
 class SpanishDefinitionService @Inject() (
     val elasticsearch: ElasticsearchCacheClient,
-    val websterClient: MirriamWebsterClient,
+    val websterSpanishToEnglishFetcher: WebsterSpanishToEnglishFetcher,
     override val config: Configuration,
     implicit val ec: ExecutionContext
 ) extends LanguageDefinitionService[SpanishDefinition] {
@@ -33,7 +32,7 @@ class SpanishDefinitionService @Inject() (
     (
       DefinitionSource.MIRRIAM_WEBSTER_SPANISH,
       Language.ENGLISH
-    ) -> new WebsterSpanishToEnglishFetcher(websterClient)
+    ) -> websterSpanishToEnglishFetcher
   )
 
 }

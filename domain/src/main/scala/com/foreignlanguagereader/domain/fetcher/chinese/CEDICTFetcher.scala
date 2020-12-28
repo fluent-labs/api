@@ -13,12 +13,13 @@ import com.foreignlanguagereader.domain.client.common.{
 }
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
 import com.foreignlanguagereader.domain.repository.definition.Cedict
+import javax.inject.Inject
 import play.api.Logger
 import play.api.libs.json.{Reads, Writes}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class CEDICTFetcher()
+class CEDICTFetcher @Inject()
     extends DefinitionFetcher[CEDICTDefinitionEntry, ChineseDefinition] {
   override val logger: Logger = Logger(this.getClass)
 

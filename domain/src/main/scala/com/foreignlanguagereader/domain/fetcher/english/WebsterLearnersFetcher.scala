@@ -9,11 +9,12 @@ import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.MirriamWebsterClient
 import com.foreignlanguagereader.domain.client.common.CircuitBreakerResult
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
+import javax.inject.Inject
 import play.api.libs.json.{Reads, Writes}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WebsterLearnersFetcher(websterClient: MirriamWebsterClient)
+class WebsterLearnersFetcher @Inject() (websterClient: MirriamWebsterClient)
     extends DefinitionFetcher[
       WebsterLearnersDefinitionEntry,
       EnglishDefinition
