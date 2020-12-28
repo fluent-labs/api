@@ -1,10 +1,12 @@
-import Wiktionary.{
+package com.foreignlanguagereader.jobs.definitions
+
+import com.foreignlanguagereader.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
+import com.foreignlanguagereader.jobs.definitions.Wiktionary.{
   extractSections,
   extractSubsections,
   loadWiktionaryDump,
   regexp_extract_all
 }
-import com.foreignlanguagereader.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{Column, DataFrame, Dataset, SparkSession}
