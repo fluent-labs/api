@@ -88,6 +88,8 @@ lazy val jobs = project
 
 lazy val dependencies =
   new {
+    val jacksonVersion = "2.11.3"
+    val playSlickVersion = "5.0.0"
     val scalatestVersion = "3.2.2"
     val sparkVersion = "3.0.1"
     val jacksonVersion = "2.11.3"
@@ -134,6 +136,9 @@ lazy val dependencies =
       "com.google.cloud" % "google-cloud-language" % "1.101.6"
 
     val h2 = "com.h2database" % "h2" % "1.4.192"
+    val playSlick = "com.typesafe.play" %% "play-slick" % playSlickVersion
+    val playSlickEvolutions =
+      "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion
 
     // Security related dependency upgrades below here
     val jacksonScala =
@@ -196,7 +201,8 @@ lazy val domainDependencies = commonDependencies ++ Seq(
   dependencies.elasticsearchContainer,
   // Clients
   dependencies.opencc4j,
-  dependencies.googleCloudClient
+  dependencies.googleCloudClient,
+  dependencies.playSlick
 )
 
 lazy val dtoDependencies = commonDependencies
