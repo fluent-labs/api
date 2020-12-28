@@ -48,7 +48,6 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
     it("returns the results of successful calls") {
       closedBreaker
         .withBreaker("Don't log")(Future.apply("testString"))
-        .value
         .map {
           case CircuitBreakerAttempt("testString") => succeed
           case _                                   => fail("This is the wrong result")
@@ -61,7 +60,6 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
           Future
             .apply(throw new IllegalArgumentException("Something went wrong"))
         )
-        .value
         .map {
           case CircuitBreakerFailedAttempt(e) =>
             assert(e.getMessage == "Something went wrong")
@@ -84,7 +82,6 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
             Future
               .apply(throw new IllegalArgumentException("Something went wrong"))
           )
-          .value
           .map {
             case CircuitBreakerFailedAttempt(e) =>
               assert(e.getMessage == "Something went wrong")
@@ -107,7 +104,6 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
             Future
               .apply(throw new IllegalStateException("Something went wrong"))
           )
-          .value
           .map {
             case CircuitBreakerFailedAttempt(e) =>
               assert(e.getMessage == "Something went wrong")
@@ -133,7 +129,6 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
             Future
               .apply(None)
           )
-          .value
           .map {
             case CircuitBreakerAttempt(None) =>
               assert(almostOpenBreaker.health() === ReadinessStatus.DOWN)
@@ -156,7 +151,6 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
             Future
               .apply(Some("testString"))
           )
-          .value
           .map {
             case CircuitBreakerAttempt(Some("testString")) =>
               assert(almostOpenBreaker.health() === ReadinessStatus.UP)
@@ -185,7 +179,6 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
         .withBreaker[String]("log message")(
           Future(fail("this should not have been evaluated"))
         )
-        .value
         .map {
           case CircuitBreakerNonAttempt() => succeed
           case _                          => fail("This is the wrong result")

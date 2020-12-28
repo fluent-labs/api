@@ -1,21 +1,16 @@
 package com.foreignlanguagereader.domain.service.definition
 
-import cats.data.Nested
-import cats.implicits._
-import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.Language.Language
+import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
+import com.foreignlanguagereader.content.types.internal.definition.Definition
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.content.types.internal.definition.{
-  Definition,
-  DefinitionSource
-}
 import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.common.{
-  CircuitBreakerNonAttempt,
+  CircuitBreakerFailedAttempt,
   CircuitBreakerResult
 }
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
-import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchSearchRequest
+import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
 import play.api.{Configuration, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -40,10 +35,10 @@ import scala.concurrent.{ExecutionContext, Future}
  * ec: A thread pool to use. Since none of these methods are blocking, any pool is fine.
  * elasticsearch: An ElasticsearchClient for use in caching and getting file sources
  */
-trait LanguageDefinitionService {
+trait LanguageDefinitionService[T <: Definition] {
   // These are required fields for implementers
   implicit val ec: ExecutionContext
-  implicit val config: Configuration
+  val config: Configuration
   val logger: Logger = Logger(this.getClass)
   val elasticsearch: ElasticsearchCacheClient
   val wordLanguage: Language
@@ -56,35 +51,34 @@ trait LanguageDefinitionService {
   def preprocessWordForRequest(word: Word): List[Word] = List(word)
 
   // Functions that can fetch definitions from web sources should be registered here.
-  val definitionFetchers: Map[
-    (DefinitionSource, Language),
-    (Language, Word) => Nested[Future, CircuitBreakerResult, List[Definition]]
-  ] =
-    Map(
-      (
-        DefinitionSource.WIKTIONARY,
-        Language.ENGLISH
-      ) -> elasticsearchDefinitionClient
-    )
+  val definitionFetchers
+      : Map[(DefinitionSource, Language), DefinitionFetcher[_, T]] = Map()
   val maxFetchAttempts = 5
 
   // Define logic to combine definition sources here. If there is only one source, this just returns it.
   def enrichDefinitions(
       definitionLanguage: Language,
       word: Word,
-      definitions: Map[DefinitionSource, List[Definition]]
-  ): List[Definition] = definitions.values.flatten.toList
+      definitions: Map[DefinitionSource, List[T]]
+  ): List[T] = definitions.values.flatten.toList
 
   // This is the main method that consumers will call
   def getDefinitions(
       definitionLanguage: Language,
       word: Word
-  ): Future[List[Definition]] = {
-    preprocessWordForRequest(word)
-    // Trigger all requests asynchronously and block for all to complete
-      .traverse(token => fetchDefinitions(sources, definitionLanguage, token))
-      // Merge definitions for each lookup term
-      .map(_.combineAll)
+  ): Future[List[T]] =
+    Future
+      .traverse(sources)(source =>
+        getDefinitionsForSingleSource(definitionLanguage, source, word).map(
+          results => {
+            logger.info(
+              s"Got definitions for word $word source $source: $results"
+            )
+            source -> results
+          }
+        )
+      )
+      .map(_.toMap)
       // Remove empty sources
       .map(p =>
         p.collect {
@@ -92,67 +86,70 @@ trait LanguageDefinitionService {
         }
       )
       .map(definitions =>
-        if (definitions.nonEmpty)
+        if (definitions.nonEmpty) {
+          logger.info(
+            s"Enriching definitions in $definitionLanguage for word $word"
+          )
           enrichDefinitions(definitionLanguage, word, definitions)
-        else List()
+        } else {
+          logger.info(
+            s"Not enriching definitions in $definitionLanguage for word $word because no results were found"
+          )
+          List()
+        }
       )
-  }
 
   // Below here is trait behavior, implementers need not read further
 
-  // Use this for definitions not backed by a rest API: eg loaded using spark
-  def elasticsearchDefinitionClient: (
-      Language,
-      Word
-  ) => Nested[Future, CircuitBreakerResult, List[Definition]] =
-    (_, word: Word) => Nested(Future.apply(CircuitBreakerNonAttempt()))
-
-  private[this] def fetchDefinitions(
-      sources: List[DefinitionSource],
+  private[this] def getDefinitionsForSingleSource(
       definitionLanguage: Language,
+      source: DefinitionSource,
       word: Word
-  ): Future[Map[DefinitionSource, List[Definition]]] = {
-    elasticsearch
-      .findFromCacheOrRefetch[Definition](
-        sources
-          .map(source =>
-            makeDefinitionRequest(source, definitionLanguage, word)
-          )
+  ): Future[List[T]] = {
+    Future
+      .traverse(preprocessWordForRequest(word))(token =>
+        getDefinitionsForToken(definitionLanguage, source, token)
       )
-      .map(results => sources.zip(results).toMap)
+      .map(_.flatten)
   }
+
+  private[this] def getDefinitionsForToken(
+      definitionLanguage: Language,
+      source: DefinitionSource,
+      word: Word
+  ): Future[List[T]] =
+    definitionFetchers.get((source, definitionLanguage)) match {
+      case None =>
+        logger.warn(
+          s"Fetcher not implemented for source $source in language $definitionLanguage"
+        )
+        Future.successful(List[T]())
+      case Some(fetcher) =>
+        fetcher
+          .fetchDefinitions(
+            elasticsearch,
+            getIndex,
+            definitionLanguage,
+            wordLanguage,
+            source,
+            word
+          )
+    }
+
+  // Use this for definitions not backed by a rest API: eg loaded using spark
+  def elasticsearchDefinitionClient[U <: DefinitionEntry](
+      language: Language,
+      word: Word
+  ): Future[CircuitBreakerResult[List[U]]] =
+    Future.apply(
+      CircuitBreakerFailedAttempt(
+        new NotImplementedError(
+          s"Fetcher not implemented for language: $language, failed to fetch $word"
+        )
+      )
+    )
 
   def getIndex: String = {
     s"definitions-${config.get[String]("environment")}"
-  }
-
-  // Definition domain to elasticsearch domain
-  private[this] def makeDefinitionRequest(
-      source: DefinitionSource,
-      definitionLanguage: Language,
-      word: Word
-  ): ElasticsearchSearchRequest[Definition] = {
-    val fetcher: () => Future[CircuitBreakerResult[List[Definition]]] =
-      definitionFetchers.get(source, definitionLanguage) match {
-        case Some(fetcher) =>
-          () => fetcher(definitionLanguage, word).value
-        case None =>
-          logger.error(
-            s"Failed to search in $wordLanguage for $word because $source is not implemented for definitions in $definitionLanguage"
-          )
-          () => CircuitBreakerNonAttempt[List[Definition]]().pure[Future]
-      }
-
-    ElasticsearchSearchRequest(
-      getIndex,
-      Map(
-        "wordLanguage" -> wordLanguage.toString,
-        "definitionLanguage" -> definitionLanguage.toString,
-        "token" -> word.processedToken,
-        "source" -> source.toString
-      ),
-      fetcher,
-      maxFetchAttempts
-    )
   }
 }

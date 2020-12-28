@@ -5,8 +5,12 @@ import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
 import com.foreignlanguagereader.content.types.external.definition.webster.common.WebsterPartOfSpeech.WebsterPartOfSpeech
 import com.foreignlanguagereader.content.types.external.definition.webster.common._
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
+import com.foreignlanguagereader.content.types.internal.definition.{
+  Definition,
+  DefinitionSource
+}
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.content.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
@@ -31,6 +35,8 @@ case class WebsterLearnersDefinitionEntry(
   // Or non-standard
   // Learners may not even want to see obsolete words
   // And definitely should be discouraged from adding them to their vocabulary list.
+  override def toDefinition(partOfSpeech: PartOfSpeech): Definition =
+    DefinitionEntry.buildEnglishDefinition(this, partOfSpeech)
 }
 object WebsterLearnersDefinitionEntry {
   implicit val reads: Reads[WebsterLearnersDefinitionEntry] = (

@@ -1,11 +1,14 @@
 package com.foreignlanguagereader.content.types.external.definition.webster
 
 import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.Language.Language
+import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.content.types.internal.definition.{
-  Definition,
-  DefinitionSource
+  DefinitionSource,
+  EnglishDefinition
 }
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
+import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.content.util.ContentFileLoader
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.{JsValue, Json}
@@ -41,22 +44,18 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
       }
 
       it("can convert to a Definition") {
-        val wordLanguage = Language.ENGLISH
-        val definitionLanguage = Language.SPANISH
-        val source = DefinitionSource.MIRRIAM_WEBSTER_SPANISH
+        val testDefinition = webster.head.toDefinition(PartOfSpeech.NOUN)
 
-        val compareAgainst = Definition(
-          subdefinitions,
-          ipa,
-          tag,
-          examples,
-          wordLanguage,
-          definitionLanguage,
-          source,
-          token
+        assert(testDefinition.subdefinitions == subdefinitions)
+        assert(testDefinition.ipa == ipa)
+        assert(testDefinition.tag == tag)
+        assert(testDefinition.examples == examples)
+        assert(testDefinition.definitionLanguage == Language.SPANISH)
+        assert(testDefinition.wordLanguage == Language.ENGLISH)
+        assert(
+          testDefinition.source == DefinitionSource.MIRRIAM_WEBSTER_SPANISH
         )
-
-        assert(webster.head.toDefinition(PartOfSpeech.NOUN) == compareAgainst)
+        assert(testDefinition.token == token)
       }
 
       it("can be written out to json") {

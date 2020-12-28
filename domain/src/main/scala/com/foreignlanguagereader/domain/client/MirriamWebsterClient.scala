@@ -3,14 +3,10 @@ package com.foreignlanguagereader.domain.client
 import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
-import cats.data.Nested
-import cats.implicits._
 import com.foreignlanguagereader.content.types.external.definition.webster.{
   WebsterLearnersDefinitionEntry,
   WebsterSpanishDefinitionEntry
 }
-import com.foreignlanguagereader.content.types.external.definition.webster.WebsterSpanishDefinitionEntry
-import com.foreignlanguagereader.content.types.internal.definition.Definition
 import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerResult,
@@ -55,21 +51,19 @@ class MirriamWebsterClient @Inject() (
 
   def getLearnersDefinition(
       word: Word
-  ): Nested[Future, CircuitBreakerResult, List[Definition]] =
+  ): Future[CircuitBreakerResult[List[WebsterLearnersDefinitionEntry]]] =
     client
       .get[List[WebsterLearnersDefinitionEntry]](
         s"https://www.dictionaryapi.com/api/v3/references/learners/json/${word.processedToken}?key=$learnersApiKey"
       )
-      .map(results => results.map(_.toDefinition(word.tag)))
 
   def getSpanishDefinition(
       word: Word
-  ): Nested[Future, CircuitBreakerResult, List[Definition]] =
+  ): Future[CircuitBreakerResult[List[WebsterSpanishDefinitionEntry]]] =
     client
       .get[List[WebsterSpanishDefinitionEntry]](
         s"https://www.dictionaryapi.com/api/v3/references/spanish/json/${word.processedToken}?key=$spanishApiKey"
       )
-      .map(results => results.map(_.toDefinition(word.tag)))
 
   def health(): ReadinessStatus = client.breaker.health()
 }

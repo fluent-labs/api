@@ -1,14 +1,16 @@
 package com.foreignlanguagereader.domain.service.definition
 
-import cats.data.Nested
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.external.definition.cedict.CEDICTDefinitionEntry
+import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
+import com.foreignlanguagereader.content.types.external.definition.webster.WebsterSpanishDefinitionEntry
 import com.foreignlanguagereader.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.content.types.internal.definition.{
   Definition,
-  DefinitionSource
+  DefinitionSource,
+  EnglishDefinition,
+  SpanishDefinition
 }
 import com.foreignlanguagereader.content.types.internal.word.{
   PartOfSpeech,
@@ -18,6 +20,12 @@ import com.foreignlanguagereader.domain.client.MirriamWebsterClient
 import com.foreignlanguagereader.domain.client.common.CircuitBreakerResult
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchSearchRequest
+import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
+import com.foreignlanguagereader.domain.fetcher.english.WiktionaryEnglishFetcher
+import com.foreignlanguagereader.domain.fetcher.spanish.{
+  WebsterSpanishToEnglishFetcher,
+  WiktionarySpanishFetcher
+}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar
 import org.scalatest.FutureOutcome
@@ -43,7 +51,8 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     mock[ElasticsearchCacheClient]
   val configMock: Configuration = mock[Configuration]
 
-  val test: Word = Word.fromToken("test", Language.ENGLISH)
+  val test: Word =
+    Word.fromToken("test", Language.ENGLISH).copy(tag = PartOfSpeech.NOUN)
   val token: Word = Word.fromToken("token", Language.ENGLISH)
 
   override def withFixture(test: NoArgAsyncTest): FutureOutcome = {
@@ -55,14 +64,25 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   }
 
   describe("A default language definition service") {
-    class DefaultLanguageDefinitionService() extends LanguageDefinitionService {
+    class DefaultLanguageDefinitionService()
+        extends LanguageDefinitionService[EnglishDefinition] {
       val elasticsearch: ElasticsearchCacheClient = elasticsearchClientMock
       implicit val ec: ExecutionContext =
         scala.concurrent.ExecutionContext.Implicits.global
       override val config: Configuration = configMock
       override val wordLanguage: Language = Language.ENGLISH
-      override val sources: List[DefinitionSource] =
+      override val sources: List[DefinitionSource] = {
         List(DefinitionSource.WIKTIONARY)
+      }
+      override val definitionFetchers: Map[
+        (DefinitionSource, Language),
+        DefinitionFetcher[_, EnglishDefinition]
+      ] = Map(
+        (
+          DefinitionSource.WIKTIONARY,
+          Language.ENGLISH
+        ) -> new WiktionaryEnglishFetcher()
+      )
     }
     val defaultDefinitionService = new DefaultLanguageDefinitionService()
 
@@ -70,18 +90,16 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .findFromCacheOrRefetch(
-            any(classOf[List[ElasticsearchSearchRequest[Definition]]])
+            any(classOf[ElasticsearchSearchRequest[WiktionaryDefinitionEntry]])
           )(
-            any(classOf[ClassTag[Definition]]),
-            any(classOf[Reads[Definition]]),
-            any(classOf[Writes[Definition]])
+            any(classOf[ClassTag[WiktionaryDefinitionEntry]]),
+            any(classOf[Reads[WiktionaryDefinitionEntry]]),
+            any(classOf[Writes[WiktionaryDefinitionEntry]])
           )
       ).thenReturn(
         Future
           .successful(
-            List(
-              List(dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN))
-            )
+            List(dummyWiktionaryDefinition)
           )
       )
       defaultDefinitionService
@@ -99,13 +117,13 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         elasticsearchClientMock
           .findFromCacheOrRefetch(
-            any(classOf[List[ElasticsearchSearchRequest[Definition]]])
+            any(classOf[ElasticsearchSearchRequest[WiktionaryDefinitionEntry]])
           )(
-            any(classOf[ClassTag[Definition]]),
-            any(classOf[Reads[Definition]]),
-            any(classOf[Writes[Definition]])
+            any(classOf[ClassTag[WiktionaryDefinitionEntry]]),
+            any(classOf[Reads[WiktionaryDefinitionEntry]]),
+            any(classOf[Writes[WiktionaryDefinitionEntry]])
           )
-      ).thenReturn(Future.successful(List(List())))
+      ).thenReturn(Future.successful(List()))
 
       defaultDefinitionService
         .getDefinitions(Language.ENGLISH, test)
@@ -116,16 +134,9 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   }
 
   describe("A customized language definition service") {
-    val dummyCEDICTDefinition = CEDICTDefinitionEntry(
-      List("definition 1", "definition 2"),
-      "pinyin",
-      "simplified",
-      "traditional",
-      "token"
-    )
 
     class CustomizedLanguageDefinitionService()
-        extends LanguageDefinitionService {
+        extends LanguageDefinitionService[SpanishDefinition] {
       val elasticsearch: ElasticsearchCacheClient = elasticsearchClientMock
       implicit val ec: ExecutionContext =
         scala.concurrent.ExecutionContext.Implicits.global
@@ -133,8 +144,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       override val wordLanguage: Language = Language.SPANISH
       override val sources: List[DefinitionSource] =
         List(
-          DefinitionSource.MIRRIAM_WEBSTER_SPANISH,
-          DefinitionSource.WIKTIONARY
+          DefinitionSource.MIRRIAM_WEBSTER_SPANISH
         )
     }
 
@@ -145,23 +155,14 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       class CustomizedFetcherLanguageDefinitionService
           extends CustomizedLanguageDefinitionService {
 
-        val websterFetcher: (
-            Language,
-            Word
-        ) => Nested[Future, CircuitBreakerResult, List[Definition]] =
-          (_: Language, word: Word) => websterMock.getSpanishDefinition(word)
-
         override val definitionFetchers: Map[
           (DefinitionSource, Language),
-          (
-              Language,
-              Word
-          ) => Nested[Future, CircuitBreakerResult, List[Definition]]
+          DefinitionFetcher[_, SpanishDefinition]
         ] = Map(
           (
             DefinitionSource.MIRRIAM_WEBSTER_SPANISH,
             Language.SPANISH
-          ) -> websterFetcher
+          ) -> new WebsterSpanishToEnglishFetcher(websterMock)
         )
       }
       val customizedFetcher = new CustomizedFetcherLanguageDefinitionService()
@@ -170,23 +171,26 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[List[ElasticsearchSearchRequest[Definition]]])
+              any(
+                classOf[
+                  ElasticsearchSearchRequest[WebsterSpanishDefinitionEntry]
+                ]
+              )
             )(
-              any(classOf[ClassTag[Definition]]),
-              any(classOf[Reads[Definition]]),
-              any(classOf[Writes[Definition]])
+              any(classOf[ClassTag[WebsterSpanishDefinitionEntry]]),
+              any(classOf[Reads[WebsterSpanishDefinitionEntry]]),
+              any(classOf[Writes[WebsterSpanishDefinitionEntry]])
             )
-        ).thenReturn(Future.successful(List(List())))
+        ).thenReturn(Future.successful(List()))
         when(
           websterMock.getSpanishDefinition(
             Word.fromToken("test", Language.SPANISH)
           )
         ).thenReturn(
-          Nested(
-            Future.failed[CircuitBreakerResult[List[Definition]]](
+          Future
+            .failed[CircuitBreakerResult[List[WebsterSpanishDefinitionEntry]]](
               new IllegalStateException("Uh oh")
             )
-          )
         )
 
         customizedFetcher
@@ -202,13 +206,13 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[List[ElasticsearchSearchRequest[Definition]]])
+              any(classOf[ElasticsearchSearchRequest[Definition]])
             )(
               any(classOf[ClassTag[Definition]]),
               any(classOf[Reads[Definition]]),
               any(classOf[Writes[Definition]])
             )
-        ).thenReturn(Future.successful(List(List())))
+        ).thenReturn(Future.successful(List()))
 
         customizedFetcher
           .getDefinitions(Language.CHINESE, test)
@@ -221,24 +225,41 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     describe("with a custom enricher") {
       class CustomizedEnricherLanguageDefinitionService
           extends CustomizedLanguageDefinitionService {
+        override val definitionFetchers: Map[
+          (DefinitionSource, Language),
+          DefinitionFetcher[_, SpanishDefinition]
+        ] = Map(
+          (
+            DefinitionSource.WIKTIONARY,
+            Language.ENGLISH
+          ) -> new WiktionarySpanishFetcher()
+        )
+        override val sources: List[DefinitionSource] =
+          List(
+            DefinitionSource.WIKTIONARY
+          )
+
         override def enrichDefinitions(
             definitionLanguage: Language,
             word: Word,
-            definitions: Map[DefinitionSource, List[Definition]]
-        ): List[Definition] = {
+            definitions: Map[DefinitionSource, List[SpanishDefinition]]
+        ): List[SpanishDefinition] = {
           val stub: Map[DefinitionSource, List[Definition]] = Map(
-            DefinitionSource.CEDICT ->
-              List(dummyCEDICTDefinition.toDefinition(PartOfSpeech.NOUN)),
             DefinitionSource.WIKTIONARY ->
               List(dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN))
           )
           (definitionLanguage, word, definitions) match {
             case (Language.ENGLISH, token, stub) =>
               List(
-                dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN),
-                dummyCEDICTDefinition.toDefinition(PartOfSpeech.NOUN)
+                DefinitionEntry.buildSpanishDefinition(
+                  dummyWiktionaryDefinition,
+                  PartOfSpeech.NOUN
+                )
               )
-            case _ => List()
+            case _ =>
+              throw new IllegalStateException(
+                s"Incorrect parameters passed to enrich definitions - language: $definitionLanguage, word: $word, definitions: $definitions"
+              )
           }
         }
       }
@@ -248,33 +269,31 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         when(
           elasticsearchClientMock
             .findFromCacheOrRefetch(
-              any(classOf[List[ElasticsearchSearchRequest[Definition]]])
+              any(
+                classOf[ElasticsearchSearchRequest[WiktionaryDefinitionEntry]]
+              )
             )(
-              any(classOf[ClassTag[Definition]]),
-              any(classOf[Reads[Definition]]),
-              any(classOf[Writes[Definition]])
+              any(classOf[ClassTag[WiktionaryDefinitionEntry]]),
+              any(classOf[Reads[WiktionaryDefinitionEntry]]),
+              any(classOf[Writes[WiktionaryDefinitionEntry]])
             )
         ).thenReturn(
           Future.successful(
-            List(
-              List(dummyCEDICTDefinition.toDefinition(PartOfSpeech.NOUN)),
-              List(dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN))
-            )
+            List(dummyWiktionaryDefinition)
           )
         )
 
         customizedEnricher
           .getDefinitions(Language.ENGLISH, token)
           .map { results =>
-            assert(results.length == 2)
+            assert(results.length == 1)
             assert(
               results.contains(
-                dummyWiktionaryDefinition.toDefinition(PartOfSpeech.NOUN)
+                DefinitionEntry.buildSpanishDefinition(
+                  dummyWiktionaryDefinition,
+                  PartOfSpeech.NOUN
+                )
               )
-            )
-            assert(
-              results
-                .contains(dummyCEDICTDefinition.toDefinition(PartOfSpeech.NOUN))
             )
 
             succeed

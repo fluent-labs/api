@@ -2,8 +2,8 @@ package com.foreignlanguagereader.content.types.external.definition.webster
 
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.definition.{
-  Definition,
-  DefinitionSource
+  DefinitionSource,
+  EnglishDefinition
 }
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.content.util.ContentFileLoader
@@ -63,7 +63,7 @@ class WebsterLearnersDefinitionEntryTest extends AnyFunSpec {
         val definitionLanguage = Language.ENGLISH
         val source = DefinitionSource.MIRRIAM_WEBSTER_LEARNERS
 
-        val compareAgainst = Definition(
+        val compareAgainst = EnglishDefinition(
           subdefinitions,
           ipa,
           tag,

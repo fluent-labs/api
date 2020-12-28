@@ -3,7 +3,6 @@ package com.foreignlanguagereader.domain.client.common
 import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
-import cats.data.Nested
 import javax.inject.Inject
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Reads}
@@ -30,7 +29,7 @@ case class RestClient(
 
   def get[T: ClassTag](
       url: String
-  )(implicit reads: Reads[T]): Nested[Future, CircuitBreakerResult, T] = {
+  )(implicit reads: Reads[T]): Future[CircuitBreakerResult[T]] = {
     val typeName = implicitly[ClassTag[T]].runtimeClass.getSimpleName
     val message = s"Failed to get $typeName from $url"
     get(url, message)
@@ -39,7 +38,7 @@ case class RestClient(
   def get[T: ClassTag](
       url: String,
       logIfError: String
-  )(implicit reads: Reads[T]): Nested[Future, CircuitBreakerResult, T] = {
+  )(implicit reads: Reads[T]): Future[CircuitBreakerResult[T]] = {
     logger.info(s"Calling url $url")
     val typeName = implicitly[ClassTag[T]].runtimeClass.getSimpleName
     breaker.withBreaker(logIfError) {

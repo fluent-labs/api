@@ -111,6 +111,7 @@ class ChineseDefinitionTest extends AnyFunSpec {
       assert(json.contains("\"definitionLanguage\":\"ENGLISH\""))
       assert(json.contains("\"source\":\"MULTIPLE\""))
       assert(json.contains("\"wordLanguage\":\"CHINESE\""))
+      assert(json.contains("\"ipa\":\"[ni] [xɑʊ̯]\""))
     }
   }
 }

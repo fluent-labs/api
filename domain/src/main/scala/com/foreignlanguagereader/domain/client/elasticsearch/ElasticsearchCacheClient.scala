@@ -1,6 +1,5 @@
 package com.foreignlanguagereader.domain.client.elasticsearch
 
-import cats.implicits._
 import com.foreignlanguagereader.domain.client.common._
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.{
   ElasticsearchCacheRequest,
@@ -29,51 +28,39 @@ class ElasticsearchCacheClient @Inject() (
     * This caching prevents us from using requests for things we have already searched for,
     * and puts a limit on the number of times we will retry a search that hasn't given us results before.
     *
-    * @param requests The search requests to cache.
+    * @param request The search request to cache.
     * @param tag The class of T, captured at runtime. This is needed to make a Seq of an arbitrary type due to JVM type erasure.
     * @tparam T A case class with Reads[T] and Writes[T]
     * @return
     */
-  def findFromCacheOrRefetch[T](
-      requests: List[ElasticsearchSearchRequest[T]]
-  )(implicit
+  def findFromCacheOrRefetch[T](request: ElasticsearchSearchRequest[T])(implicit
       tag: ClassTag[T],
       reads: Reads[T],
       writes: Writes[T]
-  ): Future[List[List[T]]] = {
-
-    // Fork and join for getting each request
-    requests
-      .traverse(request =>
-        client
-          .doubleSearch[T, LookupAttempt](request.query)
-          .value
-          .map(result =>
-            ElasticsearchSearchResponse.fromResult(request, result)
-          )
-          // This is where fetchers are called to get results if they aren't in elasticsearch
-          // There is also logic to remember what has been fetched from external sources
-          // So that we don't try too many times on the same query
-          .map(_.getResultOrFetchFromSource)
-          // Future of a future can just wait until both complete
-          .flatten
-      )
+  ): Future[List[T]] = {
+    client
+      .doubleSearch[T, LookupAttempt](request.query)
+      .map(result => ElasticsearchSearchResponse.fromResult(request, result))
+      // This is where fetchers are called to get results if they aren't in elasticsearch
+      // There is also logic to remember what has been fetched from external sources
+      // So that we don't try too many times on the same query
+      .map(_.getResultOrFetchFromSource)
+      // Future of a future can just wait until both complete
+      .flatten
       // Block here until we have finished with all of the requests
       .map(results => {
         // Asychronously save results back to elasticsearch
         // toIndex only exists when results were fetched from the fetchers
-        val toSave = results.flatMap(_.toIndex).flatten
-
-        if (toSave.nonEmpty) {
-          queue.addInsertsToQueue(toSave)
-
-          // Spin up a thread to work on the queue
-          // And return to user without waiting for it to finish
-          startInserting()
-          logger.info(s"Saving results back to elasticsearch")
+        results.toIndex match {
+          case Some(toSave) =>
+            queue.addInsertsToQueue(toSave)
+            // Spin up a thread to work on the queue
+            // And return to user without waiting for it to finish
+            startInserting()
+            logger.info(s"Saving results back to elasticsearch")
+            results.result
+          case None => results.result
         }
-
-        results.map(_.result)
       })
   }
 
@@ -88,7 +75,7 @@ class ElasticsearchCacheClient @Inject() (
           case Right(u) => acc.add(u)
         }
     }
-    client.bulk(bulkRequest).value.map {
+    client.bulk(bulkRequest).map {
       case CircuitBreakerAttempt(_) =>
         logger
           .info(s"Successfully saved to elasticsearch: $request")

@@ -77,8 +77,9 @@ case class ChineseDefinition(
 }
 object ChineseDefinition {
   implicit val writes: Writes[ChineseDefinition] = {
-    (Json.writes[ChineseDefinition] ~ (__ \ "wordLanguage").write[Language])(
-      (d: ChineseDefinition) => (d, Language.CHINESE)
+    (Json.writes[ChineseDefinition] ~ (__ \ "wordLanguage")
+      .write[Language] ~ (__ \ "ipa").write[String])((d: ChineseDefinition) =>
+      (d, Language.CHINESE, d.ipa)
     )
 
   }

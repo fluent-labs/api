@@ -40,7 +40,6 @@ class GoogleCloudClientTest extends AsyncFunSpec with MockitoSugar {
 
         client
           .getWordsForDocument(Language.ENGLISH, "test document")
-          .value
           .map {
             case CircuitBreakerAttempt(result) => assert(result.isEmpty)
             case _                             => fail("This isn't the happy path")

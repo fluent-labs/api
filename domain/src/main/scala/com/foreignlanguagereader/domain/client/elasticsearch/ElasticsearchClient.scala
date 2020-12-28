@@ -12,6 +12,7 @@ import org.elasticsearch.action.bulk.{BulkRequest, BulkResponse}
 import org.elasticsearch.action.index.{IndexRequest, IndexResponse}
 import org.elasticsearch.action.search.{
   MultiSearchRequest,
+  MultiSearchResponse,
   SearchRequest,
   SearchResponse
 }
@@ -43,7 +44,7 @@ class ElasticsearchClient @Inject() (
 
   def index(
       request: IndexRequest
-  ): Nested[Future, CircuitBreakerResult, IndexResponse] =
+  ): Future[CircuitBreakerResult[IndexResponse]] =
     breaker.withBreaker(
       s"Failed to index document on index(es) ${request.indices().mkString(",")}: ${request.sourceAsMap()}"
     ) {
@@ -52,7 +53,7 @@ class ElasticsearchClient @Inject() (
 
   def bulk(
       request: BulkRequest
-  ): Nested[Future, CircuitBreakerResult, BulkResponse] = {
+  ): Future[CircuitBreakerResult[BulkResponse]] = {
     breaker.withBreaker("Failed bulk request") {
       Future { javaClient.bulk(request, RequestOptions.DEFAULT) }
     }
@@ -62,45 +63,53 @@ class ElasticsearchClient @Inject() (
       request: SearchRequest
   )(implicit
       reads: Reads[T]
-  ): Nested[Future, CircuitBreakerResult, Map[String, T]] =
-    breaker
-      .withBreaker(
-        s"Failed to search on index(es) ${request.indices().mkString(",")}: ${request.source().query().toString}"
-      )(Future { javaClient.search(request, RequestOptions.DEFAULT) })
+  ): Future[CircuitBreakerResult[Map[String, T]]] = {
+    Nested
+      .apply(
+        breaker
+          .withBreaker(
+            s"Failed to search on index(es) ${request.indices().mkString(",")}: ${request.source().query().toString}"
+          )(Future { javaClient.search(request, RequestOptions.DEFAULT) })
+      )
       .map(response => getResultsFromSearchResponse(response))
+      .value
+  }
 
   def doubleSearch[T, U](
       request: MultiSearchRequest
   )(implicit
       readsT: Reads[T],
       readsU: Reads[U]
-  ): Nested[Future, CircuitBreakerResult, Option[
-    (Map[String, T], Map[String, U])
-  ]] =
-    breaker.withBreaker("Failed to multisearch")(Future {
-      javaClient.msearch(request, RequestOptions.DEFAULT)
-    }) map (response => {
-      Try {
-        logger.info(s"Received result from multisearch: $response")
-        if (response.getResponses.length === 2) {
-          val first =
-            getResultsFromSearchResponse[T](
-              response.getResponses.head.getResponse
+  ): Future[CircuitBreakerResult[Option[(Map[String, T], Map[String, U])]]] =
+    Nested
+      .apply[Future, CircuitBreakerResult, MultiSearchResponse](
+        breaker.withBreaker("Failed to multisearch")(Future {
+          javaClient.msearch(request, RequestOptions.DEFAULT)
+        })
+      )
+      .map(response => {
+        Try {
+          logger.info(s"Received result from multisearch: $response")
+          if (response.getResponses.length === 2) {
+            val first =
+              getResultsFromSearchResponse[T](
+                response.getResponses.head.getResponse
+              )
+            val second = getResultsFromSearchResponse[U](
+              response.getResponses.tail.head.getResponse
             )
-          val second = getResultsFromSearchResponse[U](
-            response.getResponses.tail.head.getResponse
-          )
-          Some((first, second))
-        } else {
-          None
+            Some((first, second))
+          } else {
+            None
+          }
+        } match {
+          case Success(result) => result
+          case Failure(e) =>
+            logger.error(s"Failed to multisearch: ${e.getMessage}", e)
+            None
         }
-      } match {
-        case Success(result) => result
-        case Failure(e) =>
-          logger.error(s"Failed to multisearch: ${e.getMessage}", e)
-          None
-      }
-    })
+      })
+      .value
 
   def createIndex(index: String): Unit = {
     javaClient

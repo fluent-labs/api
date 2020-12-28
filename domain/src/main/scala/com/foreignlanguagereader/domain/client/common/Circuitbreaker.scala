@@ -5,7 +5,6 @@ import java.util.concurrent.TimeUnit
 import akka.actor.ActorSystem
 import akka.pattern.{CircuitBreaker, CircuitBreakerOpenException}
 import cats.Functor
-import cats.data.Nested
 import com.foreignlanguagereader.dto.v1.health.ReadinessStatus
 import com.foreignlanguagereader.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.Logger
@@ -52,7 +51,7 @@ class Circuitbreaker(
 
   def withBreaker[T](logIfError: String)(
       body: => Future[T]
-  ): Nested[Future, CircuitBreakerResult, T] =
+  ): Future[CircuitBreakerResult[T]] =
     withBreaker(logIfError, defaultIsFailure, defaultIsSuccess[T])(body)
 
   def withBreaker[T](
@@ -61,22 +60,20 @@ class Circuitbreaker(
       isSuccess: T => Boolean
   )(
       body: => Future[T]
-  ): Nested[Future, CircuitBreakerResult, T] =
-    Nested[Future, CircuitBreakerResult, T](
-      breaker
-        .withCircuitBreaker[T](body, makeFailureFunction(isFailure, isSuccess))
-        .map(s => CircuitBreakerAttempt(s))
-        .recover {
-          case c: CircuitBreakerOpenException =>
-            logger.warn(
-              s"Failing fast because circuit breaker $name is open, ${c.remainingDuration} remaining."
-            )
-            CircuitBreakerNonAttempt()
-          case e =>
-            logger.error(logIfError, e)
-            CircuitBreakerFailedAttempt(e)
-        }
-    )
+  ): Future[CircuitBreakerResult[T]] =
+    breaker
+      .withCircuitBreaker[T](body, makeFailureFunction(isFailure, isSuccess))
+      .map(s => CircuitBreakerAttempt(s))
+      .recover {
+        case c: CircuitBreakerOpenException =>
+          logger.warn(
+            s"Failing fast because circuit breaker $name is open, ${c.remainingDuration} remaining."
+          )
+          CircuitBreakerNonAttempt[T]()
+        case e =>
+          logger.error(logIfError, e)
+          CircuitBreakerFailedAttempt[T](e)
+      }
 
   // This should return true if failure count should increase
   private[this] def makeFailureFunction[T](

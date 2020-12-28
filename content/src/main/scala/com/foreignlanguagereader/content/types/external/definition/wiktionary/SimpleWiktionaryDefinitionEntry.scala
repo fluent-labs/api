@@ -5,7 +5,10 @@ import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.content.types.Language.Language
 import PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
+import com.foreignlanguagereader.content.types.internal.definition.{
+  Definition,
+  DefinitionSource
+}
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 
 case class SimpleWiktionaryDefinitionEntry(
@@ -34,4 +37,7 @@ case class SimpleWiktionaryDefinitionEntry(
   override val pronunciation: String = pronunciationRaw.head
   override val tag: Option[PartOfSpeech] = Some(PartOfSpeech.withName(tagRaw))
   override val examples: Option[List[String]] = Some(examplesRaw)
+
+  override def toDefinition(partOfSpeech: PartOfSpeech): Definition =
+    DefinitionEntry.buildEnglishDefinition(this, partOfSpeech)
 }
