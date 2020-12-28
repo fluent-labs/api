@@ -13,7 +13,7 @@ import org.apache.spark.sql.{Column, DataFrame, Dataset, SparkSession}
 
 object SimpleWiktionary {
   val SIMPLE_WIKTIONARY_PATH =
-    "content/definitions/src/main/resources/simplewiktionary-20200301-pages-meta-current.xml"
+    "src/main/resources/simplewiktionary-20200301-pages-meta-current.xml"
 
   def main(args: Array[String]): Unit = {
     implicit val spark: SparkSession = SparkSession.builder
