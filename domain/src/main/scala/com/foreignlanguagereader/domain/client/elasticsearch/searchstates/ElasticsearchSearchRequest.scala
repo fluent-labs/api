@@ -42,7 +42,7 @@ case class ElasticsearchSearchRequest[T](
   val searchQuery: SearchRequest = {
     val q = fields.foldLeft(QueryBuilders.boolQuery()) {
       case (acc, (field, value)) =>
-        acc.must(QueryBuilders.matchQuery(s"fields.field", value))
+        acc.must(QueryBuilders.matchQuery(s"fields.$field", value))
     }
     new SearchRequest()
       .source(new SearchSourceBuilder().query(q))
