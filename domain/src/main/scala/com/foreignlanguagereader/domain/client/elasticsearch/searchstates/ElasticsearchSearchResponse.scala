@@ -2,16 +2,14 @@ package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
 import cats.data.Nested
 import cats.implicits._
+import com.foreignlanguagereader.content.types.internal.ElasticsearchCacheable
 import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,
   CircuitBreakerNonAttempt,
   CircuitBreakerResult
 }
-import com.foreignlanguagereader.domain.client.elasticsearch.{
-  ElasticsearchCacheable,
-  LookupAttempt
-}
+import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
 import play.api.Logger
 import play.api.libs.json.{Reads, Writes}
 

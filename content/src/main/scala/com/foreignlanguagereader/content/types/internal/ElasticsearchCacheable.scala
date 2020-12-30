@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.domain.client.elasticsearch
+package com.foreignlanguagereader.content.types.internal
 
 import play.api.libs.functional.syntax.{toFunctionalBuilderOps, unlift}
 import play.api.libs.json.{JsPath, Reads, Writes}
