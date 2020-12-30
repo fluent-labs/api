@@ -117,6 +117,9 @@ lazy val dependencies =
     val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
     val sparkXml = "com.databricks" %% "spark-xml" % "0.10.0"
     val hadoop = "org.apache.hadoop" % "hadoop-common" % hadoopVersion
+    val hadoopClient = "org.apache.hadoop" % "hadoop-client" % hadoopVersion
+    val hadoopAWS = "org.apache.hadoop" % "hadoop-aws" % hadoopVersion
+    val awsJavaSDK = "com.amazonaws" % "aws-java-sdk" % "1.7.4"
 
     // NLP tools
     val opencc4j = "com.github.houbb" % "opencc4j" % "1.6.0"
@@ -214,6 +217,10 @@ lazy val jobsDependencies = commonDependencies ++ log4jDependencies ++ Seq(
   dependencies.sparkSql % "provided",
   dependencies.sparkXml,
   // S3 support
+  dependencies.hadoop,
+  dependencies.hadoopClient,
+  dependencies.hadoopAWS,
+  dependencies.awsJavaSDK
 )
 
 /*
