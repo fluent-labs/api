@@ -10,7 +10,8 @@ on:
       - "jobs/**/*"
 
 jobs:
-  build:
+  deploy:
+    name: Deploy to S3
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
