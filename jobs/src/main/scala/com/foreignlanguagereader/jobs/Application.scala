@@ -13,7 +13,7 @@ object Application extends App {
     .appName("WiktionaryParse")
     .getOrCreate()
 
-  val simpleWiktionary = SimpleWiktionary.loadSimple(SIMPLE_WIKTIONARY_PATH)
+  val simpleWiktionary = SimpleWiktionary.loadFromPath(SIMPLE_WIKTIONARY_PATH)
   simpleWiktionary.limit(500).coalesce(1).write.json("simple")
 
   // Use this when you want to know what kind of sections a backup has. Good for getting the rough structure of the dump
