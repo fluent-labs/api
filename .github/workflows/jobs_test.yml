@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+    name: Confirm that the fat jar builds
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
