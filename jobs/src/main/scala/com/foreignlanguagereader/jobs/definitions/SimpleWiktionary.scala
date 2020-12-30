@@ -2,6 +2,7 @@ package com.foreignlanguagereader.jobs.definitions
 
 import com.foreignlanguagereader.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
 import com.foreignlanguagereader.content.types.internal.ElasticsearchCacheable
+import com.foreignlanguagereader.jobs.SparkSessionBuilder
 import com.foreignlanguagereader.jobs.definitions.Wiktionary.{
   extractSections,
   extractSubsections,
@@ -18,19 +19,8 @@ object SimpleWiktionary {
     "s3a://foreign-language-reader-content/definitions/wiktionary/simplewiktionary-20200301-pages-meta-current.xml"
 
   def main(args: Array[String]): Unit = {
-    implicit val spark: SparkSession = SparkSession.builder
-      .appName("Simple English Wiktionary parse")
-      .config("es.nodes", "content-es-http.content.svc.cluster.local")
-      .config("es.net.ssl", "true")
-      .config("es.net.ssl.cert.allow.self.signed", "true")
-      .config(
-        "es.net.ssl.truststore.location",
-        "file:///etc/flrcredentials/api_keystore.jks"
-      )
-      .config("es.net.ssl.truststore.pass", sys.env("es_truststore"))
-      .config("es.net.http.auth.user", sys.env("es_user"))
-      .config("es.net.http.auth.pass", sys.env("es_password"))
-      .getOrCreate()
+    implicit val spark: SparkSession = SparkSessionBuilder
+      .build("Simple English Wiktionary parse")
 
     val simpleWiktionary = loadSimple(SIMPLE_WIKTIONARY_PATH)
     prepareSimpleForCaching(simpleWiktionary).saveToEs("definitions-staging")
