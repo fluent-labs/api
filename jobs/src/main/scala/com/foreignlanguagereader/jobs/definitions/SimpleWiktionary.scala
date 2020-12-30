@@ -196,19 +196,6 @@ object SimpleWiktionary {
     })
   }
 
-  val makeCacheable: UserDefinedFunction =
-    udf((entry: SimpleWiktionaryDefinitionEntry) =>
-      ElasticsearchCacheable(
-        entry,
-        Map(
-          "source" -> SimpleWiktionaryDefinitionEntry.source.toString,
-          "wordLanguage" -> SimpleWiktionaryDefinitionEntry.wordLanguage.toString,
-          "definitionLanguage" -> SimpleWiktionaryDefinitionEntry.definitionLanguage.toString,
-          "token" -> entry.token
-        )
-      )
-    )
-
   def prepareSimpleForCaching(
       data: Dataset[SimpleWiktionaryDefinitionEntry]
   )(implicit
