@@ -15,7 +15,7 @@ import org.elasticsearch.spark.sql._
 
 object SimpleWiktionary {
   val SIMPLE_WIKTIONARY_PATH =
-    "src/main/resources/simplewiktionary-20200301-pages-meta-current.xml"
+    "s3a://foreign-language-reader-content/definitions/wiktionary/simplewiktionary-20200301-pages-meta-current.xml"
 
   def main(args: Array[String]): Unit = {
     implicit val spark: SparkSession = SparkSession.builder
