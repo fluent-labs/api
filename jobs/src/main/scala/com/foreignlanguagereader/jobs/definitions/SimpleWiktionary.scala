@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.jobs.definitions
 
 import com.foreignlanguagereader.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
+import com.foreignlanguagereader.content.types.internal.ElasticsearchCacheable
 import com.foreignlanguagereader.jobs.definitions.Wiktionary.{
   extractSections,
   extractSubsections,
@@ -10,6 +11,7 @@ import com.foreignlanguagereader.jobs.definitions.Wiktionary.{
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{Column, DataFrame, Dataset, SparkSession}
+import org.elasticsearch.spark.sql._
 
 object SimpleWiktionary {
   val SIMPLE_WIKTIONARY_PATH =
@@ -20,8 +22,8 @@ object SimpleWiktionary {
       .appName("Simple English Wiktionary parse")
       .getOrCreate()
 
-    val simpleWiktionary = SimpleWiktionary.loadSimple(SIMPLE_WIKTIONARY_PATH)
-    simpleWiktionary.coalesce(1).write.json("simple")
+    val simpleWiktionary = loadSimple(SIMPLE_WIKTIONARY_PATH)
+    prepareSimpleForCaching(simpleWiktionary).saveToEs("definitions-staging")
   }
 
   val metaSections = List("pronunciation", "usage", "usage notes")
@@ -190,5 +192,37 @@ object SimpleWiktionary {
         .withColumn(subsectionName, array_remove(subsectionColumns, ""))
         .drop(columnsToDrop: _*)
     })
+  }
+
+  val makeCacheable: UserDefinedFunction =
+    udf((entry: SimpleWiktionaryDefinitionEntry) =>
+      ElasticsearchCacheable(
+        entry,
+        Map(
+          "source" -> SimpleWiktionaryDefinitionEntry.source.toString,
+          "wordLanguage" -> SimpleWiktionaryDefinitionEntry.wordLanguage.toString,
+          "definitionLanguage" -> SimpleWiktionaryDefinitionEntry.definitionLanguage.toString,
+          "token" -> entry.token
+        )
+      )
+    )
+
+  def prepareSimpleForCaching(
+      data: Dataset[SimpleWiktionaryDefinitionEntry]
+  )(implicit
+      spark: SparkSession
+  ): Dataset[ElasticsearchCacheable[SimpleWiktionaryDefinitionEntry]] = {
+    import spark.implicits._
+    data.map(entry =>
+      ElasticsearchCacheable(
+        entry,
+        Map(
+          "source" -> SimpleWiktionaryDefinitionEntry.source.toString,
+          "wordLanguage" -> SimpleWiktionaryDefinitionEntry.wordLanguage.toString,
+          "definitionLanguage" -> SimpleWiktionaryDefinitionEntry.definitionLanguage.toString,
+          "token" -> entry.token
+        )
+      )
+    )
   }
 }
