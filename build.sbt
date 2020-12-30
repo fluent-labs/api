@@ -120,6 +120,10 @@ lazy val dependencies =
     val hadoopClient = "org.apache.hadoop" % "hadoop-client" % hadoopVersion
     val hadoopAWS = "org.apache.hadoop" % "hadoop-aws" % hadoopVersion
     val awsJavaSDK = "com.amazonaws" % "aws-java-sdk" % "1.7.4"
+    // Enable this when it is build for scala 2.12 in main
+    // And remove our local version
+//    val elasticsearchHadoop =
+//      "org.elasticsearch" % "elasticsearch-hadoop" % elasticsearchVersion
 
     // NLP tools
     val opencc4j = "com.github.houbb" % "opencc4j" % "1.6.0"
