@@ -31,6 +31,7 @@ object SimpleWiktionary {
   val metaSections = List("pronunciation", "usage", "usage notes")
 
   // Parts of speech set here: http://www.lrec-conf.org/proceedings/lrec2012/pdf/274_Paper.pdf
+  // TODO can this be the enum?
   val partOfSpeechMapping: Map[String, String] = Map(
     "abbreviation" -> "Noun",
     "acronym" -> "Noun",
