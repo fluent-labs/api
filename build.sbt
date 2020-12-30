@@ -1,3 +1,5 @@
+import sbtassembly.AssemblyPlugin.autoImport.assemblyMergeStrategy
+
 name := "foreign-language-reader-parent"
 scalaVersion in ThisBuild := "2.12.12"
 
@@ -70,13 +72,7 @@ lazy val jobs = project
   .enablePlugins(AssemblyPlugin)
   .settings(
     settings,
-    assemblySettings ++ Seq(
-      assemblyJarName in assembly := name.value + ".jar",
-      assemblyMergeStrategy in assembly := {
-        case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
-        case _                                   => MergeStrategy.first
-      }
-    ),
+    assemblySettings,
     libraryDependencies ++= jobsDependencies,
     dependencyOverrides ++= forcedDependencies
   )
@@ -89,9 +85,11 @@ lazy val jobs = project
 lazy val dependencies =
   new {
     val scalatestVersion = "3.2.2"
-    val sparkVersion = "3.0.1"
     val jacksonVersion = "2.11.3"
     val log4jVersion = "2.14.0"
+    val elasticsearchVersion = "7.10.1"
+    val sparkVersion = "3.0.1"
+    val hadoopVersion = "2.7.4"
 
     // Testing
     val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
@@ -118,6 +116,14 @@ lazy val dependencies =
       "org.apache.spark" %% "spark-core" % sparkVersion
     val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
     val sparkXml = "com.databricks" %% "spark-xml" % "0.10.0"
+    val hadoop = "org.apache.hadoop" % "hadoop-common" % hadoopVersion
+    val hadoopClient = "org.apache.hadoop" % "hadoop-client" % hadoopVersion
+    val hadoopAWS = "org.apache.hadoop" % "hadoop-aws" % hadoopVersion
+    val awsJavaSDK = "com.amazonaws" % "aws-java-sdk" % "1.7.4"
+    // Enable this when it is build for scala 2.12 in main
+    // And remove our local version
+//    val elasticsearchHadoop =
+//      "org.elasticsearch" % "elasticsearch-hadoop" % elasticsearchVersion
 
     // NLP tools
     val opencc4j = "com.github.houbb" % "opencc4j" % "1.6.0"
@@ -128,13 +134,13 @@ lazy val dependencies =
 
     // External clients
     val elasticsearchHighLevelClient =
-      "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % "7.9.3"
+      "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % elasticsearchVersion
     val oslib = "com.lihaoyi" %% "os-lib" % "0.7.1"
     val googleCloudClient =
       "com.google.cloud" % "google-cloud-language" % "1.101.6"
 
     // Hacks for guava incompatibility
-    val hadoopClient =
+    val hadoopMapreduceClient =
       "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "2.7.2"
 
     // Security related dependency upgrades below here
@@ -145,7 +151,6 @@ lazy val dependencies =
     val jacksonCore =
       "com.fasterxml.jackson.core" % "jackson-core" % jacksonVersion
     val htrace = "org.apache.htrace" % "htrace-core" % "4.0.0-incubating"
-    val hadoop = "org.apache.hadoop" % "hadoop-common" % "2.10.1"
     val avro = "org.apache.avro" % "avro" % "1.10.0"
   }
 
@@ -157,6 +162,13 @@ lazy val commonDependencies = Seq(
   dependencies.sangria
 )
 
+lazy val log4jDependencies = Seq(
+  dependencies.log4jApi,
+  dependencies.log4jCore,
+  dependencies.log4jImplementation,
+  dependencies.log4jJson
+)
+
 lazy val playDependencies = Seq(
   dependencies.scalatestPlay,
   dependencies.sangria,
@@ -165,23 +177,22 @@ lazy val playDependencies = Seq(
 )
 
 lazy val forcedDependencies = Seq(
-  dependencies.hadoopClient,
+  dependencies.hadoopMapreduceClient,
   dependencies.jacksonScala,
   dependencies.jacksonDatabind,
   dependencies.jacksonCore,
   dependencies.lombok,
   dependencies.htrace,
   dependencies.hadoop,
-  dependencies.avro
+  dependencies.avro,
+  dependencies.log4jApi,
+  dependencies.log4jCore,
+  dependencies.log4jImplementation,
+  dependencies.log4jJson
 )
 
 lazy val apiDependencies =
-  commonDependencies ++ playDependencies ++ Seq(
-    dependencies.log4jApi,
-    dependencies.log4jCore,
-    dependencies.log4jImplementation,
-    dependencies.log4jJson
-  )
+  commonDependencies ++ playDependencies ++ log4jDependencies
 
 lazy val contentDependencies = commonDependencies ++ Seq(
   dependencies.scalatestPlay,
@@ -205,10 +216,15 @@ lazy val domainDependencies = commonDependencies ++ Seq(
 
 lazy val dtoDependencies = commonDependencies
 
-lazy val jobsDependencies = commonDependencies ++ Seq(
+lazy val jobsDependencies = commonDependencies ++ log4jDependencies ++ Seq(
   dependencies.sparkCore % "provided",
   dependencies.sparkSql % "provided",
-  dependencies.sparkXml
+  dependencies.sparkXml,
+  // S3 support
+  dependencies.hadoop,
+  dependencies.hadoopClient,
+  dependencies.hadoopAWS,
+  dependencies.awsJavaSDK
 )
 
 /*
@@ -235,7 +251,13 @@ lazy val compilerOptions = Seq(
 lazy val assemblySettings = Seq(
   organization := "com.foreignlanguagereader",
   githubOwner := "foreign-language-reader",
-  githubRepository := "api"
+  githubRepository := "api",
+  // Used for building jobs fat jars
+  assemblyJarName in assembly := name.value + ".jar",
+  assemblyMergeStrategy in assembly := {
+    case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
+    case _                                   => MergeStrategy.first
+  }
 )
 
 /*

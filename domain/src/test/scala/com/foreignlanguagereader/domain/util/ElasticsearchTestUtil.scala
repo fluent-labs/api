@@ -1,9 +1,7 @@
 package com.foreignlanguagereader.domain.util
 
-import com.foreignlanguagereader.domain.client.elasticsearch.{
-  ElasticsearchCacheable,
-  LookupAttempt
-}
+import com.foreignlanguagereader.content.types.internal.ElasticsearchCacheable
+import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.common.xcontent.XContentType
