@@ -23,7 +23,9 @@ object SimpleWiktionary {
       .build("Simple English Wiktionary parse")
 
     val simpleWiktionary = loadSimple(SIMPLE_WIKTIONARY_PATH)
-    prepareSimpleForCaching(simpleWiktionary).saveToEs("definitions-staging")
+    prepareSimpleForCaching(simpleWiktionary).saveToEs(
+      "definitions-simple-english"
+    )
   }
 
   val metaSections = List("pronunciation", "usage", "usage notes")
