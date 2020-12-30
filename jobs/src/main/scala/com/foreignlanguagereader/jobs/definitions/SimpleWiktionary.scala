@@ -1,8 +1,8 @@
 package com.foreignlanguagereader.jobs.definitions
 
+import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
-import com.foreignlanguagereader.content.types.internal.ElasticsearchCacheable
-import com.foreignlanguagereader.jobs.SparkSessionBuilder
+import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
 import com.foreignlanguagereader.jobs.definitions.Wiktionary.{
   extractSections,
   extractSubsections,
@@ -12,21 +12,16 @@ import com.foreignlanguagereader.jobs.definitions.Wiktionary.{
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{Column, DataFrame, Dataset, SparkSession}
-import org.elasticsearch.spark.sql._
 
-object SimpleWiktionary {
+object SimpleWiktionary
+    extends DefinitionsParsingJob[SimpleWiktionaryDefinitionEntry](
+      "s3a://foreign-language-reader-content/definitions/wiktionary/",
+      DefinitionSource.WIKTIONARY_SIMPLE_ENGLISH,
+      Language.ENGLISH,
+      Language.ENGLISH
+    ) {
   val SIMPLE_WIKTIONARY_PATH =
     "s3a://foreign-language-reader-content/definitions/wiktionary/simplewiktionary-20200301-pages-meta-current.xml"
-
-  def main(args: Array[String]): Unit = {
-    implicit val spark: SparkSession = SparkSessionBuilder
-      .build("Simple English Wiktionary parse")
-
-    val simpleWiktionary = loadSimple(SIMPLE_WIKTIONARY_PATH)
-    prepareSimpleForCaching(simpleWiktionary).saveToEs(
-      "definitions-simple-english"
-    )
-  }
 
   val metaSections = List("pronunciation", "usage", "usage notes")
 
@@ -129,11 +124,10 @@ object SimpleWiktionary {
     subdefinitionMarker + optionalSpace + "([^\\n:]*)" + newline
   val examplesRegex: String = examplesMarker + optionalSpace + "([^\\n]*)"
 
-  def loadSimple(
-      path: String
-  )(implicit spark: SparkSession): Dataset[SimpleWiktionaryDefinitionEntry] = {
+  override def loadFromPath(path: String)(implicit
+      spark: SparkSession
+  ): Dataset[SimpleWiktionaryDefinitionEntry] =
     parseSimple(loadWiktionaryDump(path))
-  }
 
   def parseSimple(
       data: Dataset[WiktionaryRawEntry]
@@ -195,24 +189,5 @@ object SimpleWiktionary {
         .withColumn(subsectionName, array_remove(subsectionColumns, ""))
         .drop(columnsToDrop: _*)
     })
-  }
-
-  def prepareSimpleForCaching(
-      data: Dataset[SimpleWiktionaryDefinitionEntry]
-  )(implicit
-      spark: SparkSession
-  ): Dataset[ElasticsearchCacheable[SimpleWiktionaryDefinitionEntry]] = {
-    import spark.implicits._
-    data.map(entry =>
-      ElasticsearchCacheable(
-        entry,
-        Map(
-          "source" -> SimpleWiktionaryDefinitionEntry.source.toString,
-          "wordLanguage" -> SimpleWiktionaryDefinitionEntry.wordLanguage.toString,
-          "definitionLanguage" -> SimpleWiktionaryDefinitionEntry.definitionLanguage.toString,
-          "token" -> entry.token
-        )
-      )
-    )
   }
 }
