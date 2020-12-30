@@ -20,6 +20,16 @@ object SimpleWiktionary {
   def main(args: Array[String]): Unit = {
     implicit val spark: SparkSession = SparkSession.builder
       .appName("Simple English Wiktionary parse")
+      .config("es.nodes", "content-es-http.content.svc.cluster.local")
+      .config("es.net.ssl", "true")
+      .config("es.net.ssl.cert.allow.self.signed", "true")
+      .config(
+        "es.net.ssl.truststore.location",
+        "file:///etc/flrcredentials/api_keystore.jks"
+      )
+      .config("es.net.ssl.truststore.pass", sys.env("es_truststore"))
+      .config("es.net.http.auth.user", sys.env("es_user"))
+      .config("es.net.http.auth.pass", sys.env("es_password"))
       .getOrCreate()
 
     val simpleWiktionary = loadSimple(SIMPLE_WIKTIONARY_PATH)
