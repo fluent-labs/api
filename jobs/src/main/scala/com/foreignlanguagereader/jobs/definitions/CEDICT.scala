@@ -4,6 +4,7 @@ import com.foreignlanguagereader.content.types.external.definition.cedict.CEDICT
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
 import org.apache.spark.sql.{Dataset, SparkSession}
 
+import scala.util.{Failure, Success, Try}
 import scala.util.matching.Regex
 
 object CEDICT
@@ -22,19 +23,27 @@ object CEDICT
       .textFile(path)
       // These lines are license and parsing instructions
       .filter(line => !line.startsWith("#"))
-      // Error guard
-      .filter(line => line.matches(lineRegex.regex))
       .map(line => {
-        val lineRegex(traditional, simplified, pinyin, definitions) = line
-        val subdefinitions = definitions.split("/")
+        Try({
+          val lineRegex(traditional, simplified, pinyin, definitions) = line
+          val subdefinitions = definitions.split("/")
 
-        CEDICTDefinitionEntry(
-          subdefinitions = subdefinitions.toList,
-          pinyin = pinyin,
-          simplified = simplified,
-          traditional = traditional,
-          token = traditional
-        )
+          CEDICTDefinitionEntry(
+            subdefinitions = subdefinitions.toList,
+            pinyin = pinyin,
+            simplified = simplified,
+            traditional = traditional,
+            token = traditional
+          )
+        }) match {
+          case Success(value) => value
+          case Failure(exception) =>
+            log.error(
+              s"Error parsing line $line: ${exception.getMessage}",
+              exception
+            )
+            CEDICTDefinitionEntry(List(), "ERROR", "ERROR", "ERROR", line)
+        }
       })
   }
 }
