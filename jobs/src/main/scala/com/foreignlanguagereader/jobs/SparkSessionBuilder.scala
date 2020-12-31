@@ -7,6 +7,7 @@ object SparkSessionBuilder {
     SparkSession.builder
       .appName(name)
       .config("es.nodes", "content-es-http.content.svc.cluster.local")
+      .config("es.index.auto.create", "true")
       .config("es.net.ssl", "true")
       .config("es.net.ssl.cert.allow.self.signed", "true")
       .config(
