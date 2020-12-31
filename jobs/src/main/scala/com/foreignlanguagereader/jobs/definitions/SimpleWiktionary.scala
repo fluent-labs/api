@@ -1,6 +1,5 @@
 package com.foreignlanguagereader.jobs.definitions
 
-import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
 import com.foreignlanguagereader.jobs.definitions.Wiktionary.{
@@ -16,13 +15,8 @@ import org.apache.spark.sql.{Column, DataFrame, Dataset, SparkSession}
 object SimpleWiktionary
     extends DefinitionsParsingJob[SimpleWiktionaryDefinitionEntry](
       "s3a://foreign-language-reader-content/definitions/wiktionary/",
-      DefinitionSource.WIKTIONARY_SIMPLE_ENGLISH,
-      Language.ENGLISH,
-      Language.ENGLISH
+      DefinitionSource.WIKTIONARY_SIMPLE_ENGLISH
     ) {
-  val SIMPLE_WIKTIONARY_PATH =
-    "s3a://foreign-language-reader-content/definitions/wiktionary/simplewiktionary-20200301-pages-meta-current.xml"
-
   val metaSections = List("pronunciation", "usage", "usage notes")
 
   // Parts of speech set here: http://www.lrec-conf.org/proceedings/lrec2012/pdf/274_Paper.pdf
