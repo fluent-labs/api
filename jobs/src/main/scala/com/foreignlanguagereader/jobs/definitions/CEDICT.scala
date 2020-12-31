@@ -21,10 +21,11 @@ object CEDICT
     spark.read
       .textFile(path)
       // These lines are license and parsing instructions
-      .filter(line => line.startsWith("#"))
+      .filter(line => !line.startsWith("#"))
       .map(line => {
         val lineRegex(traditional, simplified, pinyin, definitions) = line
         val subdefinitions = definitions.split("/")
+
         CEDICTDefinitionEntry(
           subdefinitions = subdefinitions.toList,
           pinyin = pinyin,
