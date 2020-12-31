@@ -3,6 +3,7 @@ package com.foreignlanguagereader.content.types.external.definition
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.external.definition.cedict.CEDICTDefinitionEntry
 import com.foreignlanguagereader.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
+import com.foreignlanguagereader.content.types.internal.ElasticsearchCacheable
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.content.types.internal.definition._
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
@@ -98,5 +99,16 @@ object DefinitionEntry {
       definitionLanguage = entry.definitionLanguage,
       source = entry.source,
       token = entry.token
+    )
+
+  def toCacheable[T <: DefinitionEntry](entry: T): ElasticsearchCacheable[T] =
+    ElasticsearchCacheable(
+      item = entry,
+      fields = Map(
+        "source" -> entry.source.toString,
+        "wordLanguage" -> entry.wordLanguage.toString,
+        "definitionLanguage" -> entry.definitionLanguage.toString,
+        "token" -> entry.token
+      )
     )
 }

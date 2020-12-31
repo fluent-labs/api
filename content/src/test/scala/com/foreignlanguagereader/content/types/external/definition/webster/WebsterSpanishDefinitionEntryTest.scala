@@ -1,14 +1,9 @@
 package com.foreignlanguagereader.content.types.external.definition.webster
 
 import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.content.types.internal.definition.{
-  DefinitionSource,
-  EnglishDefinition
-}
+import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
+import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
-import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.content.util.ContentFileLoader
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.{JsValue, Json}
@@ -60,6 +55,18 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
 
       it("can be written out to json") {
         assert(Json.toJson(webster).toString() == output)
+      }
+
+      it("can be saved to elasticsearch") {
+        val cacheable = DefinitionEntry.toCacheable(webster.head)
+        assert(
+          cacheable.fields == Map(
+            "source" -> "MIRRIAM_WEBSTER_SPANISH",
+            "wordLanguage" -> "ENGLISH",
+            "definitionLanguage" -> "SPANISH",
+            "token" -> token
+          )
+        )
       }
     }
 
