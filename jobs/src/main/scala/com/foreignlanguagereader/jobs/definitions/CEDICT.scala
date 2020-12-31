@@ -12,7 +12,7 @@ object CEDICT
       "cedict_1_0_ts_utf-8_mdbg.zip",
       DefinitionSource.CEDICT
     ) {
-  val lineRegex: Regex = "/([^ ]+)\\s([^ ]+) \\[(.*)\\] \\/(.*)\\/\\n/g".r
+  val lineRegex: Regex = "([^ ]+)\\s([^ ]+) \\[(.*)\\] \\/(.*)\\/\\n".r
 
   override def loadFromPath(path: String)(implicit
       spark: SparkSession
