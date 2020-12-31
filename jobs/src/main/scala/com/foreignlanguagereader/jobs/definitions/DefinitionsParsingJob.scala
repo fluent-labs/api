@@ -11,11 +11,13 @@ import scala.reflect.runtime.universe.TypeTag
 // Typetag needed to tell spark how to encode as a dataset
 abstract class DefinitionsParsingJob[T <: DefinitionEntry: TypeTag](
     s3BasePath: String,
+    defaultBackupFileName: String,
     source: DefinitionSource
 ) {
   def main(args: Array[String]): Unit = {
     val sourceName = source.toString.replace("_", "-").toLowerCase
-    val backupFileName = sys.env("backup_file_name")
+    val backupFileName =
+      sys.env.getOrElse("backup_file_name", defaultBackupFileName)
     val path = s"$s3BasePath/$backupFileName"
 
     implicit val spark: SparkSession = SparkSessionBuilder

@@ -15,6 +15,7 @@ import org.apache.spark.sql.{Column, DataFrame, Dataset, SparkSession}
 object SimpleWiktionary
     extends DefinitionsParsingJob[SimpleWiktionaryDefinitionEntry](
       "s3a://foreign-language-reader-content/definitions/wiktionary/",
+      "simplewiktionary-20200301-pages-meta-current.xml",
       DefinitionSource.WIKTIONARY_SIMPLE_ENGLISH
     ) {
   val metaSections = List("pronunciation", "usage", "usage notes")
