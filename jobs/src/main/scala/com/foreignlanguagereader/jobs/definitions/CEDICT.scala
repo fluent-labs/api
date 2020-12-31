@@ -22,6 +22,8 @@ object CEDICT
       .textFile(path)
       // These lines are license and parsing instructions
       .filter(line => !line.startsWith("#"))
+      // Error guard
+      .filter(line => line.matches(lineRegex.regex))
       .map(line => {
         val lineRegex(traditional, simplified, pinyin, definitions) = line
         val subdefinitions = definitions.split("/")
