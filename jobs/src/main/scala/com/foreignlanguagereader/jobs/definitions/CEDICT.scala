@@ -10,10 +10,10 @@ import scala.util.matching.Regex
 object CEDICT
     extends DefinitionsParsingJob[CEDICTDefinitionEntry](
       "s3a://foreign-language-reader-content/definitions/cedict/",
-      "cedict_1_0_ts_utf-8_mdbg.zip",
+      "cedict_ts.u8",
       DefinitionSource.CEDICT
     ) {
-  val lineRegex: Regex = "([^ ]+)\\s([^ ]+) \\[(.*)\\] \\/(.*)\\/\\n".r
+  val lineRegex: Regex = "([^ ]+)\\s([^ ]+) \\[(.*)\\] \\/(.*)\\/".r
 
   override def loadFromPath(path: String)(implicit
       spark: SparkSession
