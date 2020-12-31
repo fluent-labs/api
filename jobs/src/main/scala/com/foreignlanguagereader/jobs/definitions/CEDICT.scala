@@ -19,23 +19,13 @@ object CEDICT
       spark: SparkSession
   ): Dataset[CEDICTDefinitionEntry] = {
     import spark.implicits._
+
     spark.read
       .textFile(path)
       // These lines are license and parsing instructions
       .filter(line => !line.startsWith("#"))
       .map(line => {
-        Try({
-          val lineRegex(traditional, simplified, pinyin, definitions) = line
-          val subdefinitions = definitions.split("/")
-
-          CEDICTDefinitionEntry(
-            subdefinitions = subdefinitions.toList,
-            pinyin = pinyin,
-            simplified = simplified,
-            traditional = traditional,
-            token = traditional
-          )
-        }) match {
+        Try(parseLine(line)) match {
           case Success(value) => value
           case Failure(exception) =>
             log.error(
@@ -45,5 +35,18 @@ object CEDICT
             CEDICTDefinitionEntry(List(), "ERROR", "ERROR", "ERROR", line)
         }
       })
+  }
+
+  def parseLine(line: String): CEDICTDefinitionEntry = {
+    val lineRegex(traditional, simplified, pinyin, definitions) = line
+    val subdefinitions = definitions.split("/")
+
+    CEDICTDefinitionEntry(
+      subdefinitions = subdefinitions.toList,
+      pinyin = pinyin,
+      simplified = simplified,
+      traditional = traditional,
+      token = traditional
+    )
   }
 }
