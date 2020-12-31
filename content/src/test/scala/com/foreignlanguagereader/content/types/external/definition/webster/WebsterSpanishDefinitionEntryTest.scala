@@ -62,8 +62,8 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         assert(
           cacheable.fields == Map(
             "source" -> "MIRRIAM_WEBSTER_SPANISH",
-            "wordLanguage" -> "SPANISH",
-            "definitionLanguage" -> "ENGLISH",
+            "wordLanguage" -> "ENGLISH",
+            "definitionLanguage" -> "SPANISH",
             "token" -> token
           )
         )
