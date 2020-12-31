@@ -2,6 +2,7 @@ package com.foreignlanguagereader.jobs
 
 import org.apache.spark.sql.SparkSession
 
+// $COVERAGE-OFF$
 object SparkSessionBuilder {
   def build(name: String): SparkSession = {
     SparkSession.builder
@@ -20,3 +21,4 @@ object SparkSessionBuilder {
       .getOrCreate()
   }
 }
+// $COVERAGE-ON$
