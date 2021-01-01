@@ -1,8 +1,6 @@
 package com.foreignlanguagereader.dto.v1.definition.chinese
 
 import play.api.libs.json.{Format, Json}
-import sangria.macros.derive.{ObjectTypeDescription, deriveObjectType}
-import sangria.schema
 
 case class ChinesePronunciation(
     pinyin: String = "",
@@ -22,10 +20,4 @@ case class ChinesePronunciation(
 }
 object ChinesePronunciation {
   implicit val format: Format[ChinesePronunciation] = Json.format
-  implicit val graphQlType: schema.ObjectType[Unit, ChinesePronunciation] =
-    deriveObjectType[Unit, ChinesePronunciation](
-      ObjectTypeDescription(
-        "A holder of different pronunciation formats for Chinese words"
-      )
-    )
 }
