@@ -1,11 +1,13 @@
-import java.io.File
-import java.net.URL
+package com.foreignlanguagereader.api.configuration
 
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.core.LoggerContext
 import org.apache.logging.log4j.core.config.Configurator
 import org.slf4j.ILoggerFactory
 import play.api.{Configuration, Environment, LoggerConfigurator, Mode}
+
+import java.io.File
+import java.net.URL
 
 class Log4J2LoggerConfigurator extends LoggerConfigurator {
 
