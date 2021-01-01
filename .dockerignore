@@ -2,10 +2,9 @@
 .github/*
 .idea/*
 .terraform/*
-frontend/*
-language-service/*
 logs/*
 target/*
+.bsp/*
 
 *.tf
 *.tfvars
@@ -15,3 +14,10 @@ target/*
 codecov.yml
 local_setup.yml
 state.json
+
+api/target/*
+client/target/*
+content/target/*
+domain/target/*
+dto/target/*
+jobs/target/*
