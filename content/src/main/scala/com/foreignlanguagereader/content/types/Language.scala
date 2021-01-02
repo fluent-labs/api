@@ -3,8 +3,6 @@ package com.foreignlanguagereader.content.types
 import cats.implicits._
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.PathBindable
-import sangria.macros.derive.{EnumTypeDescription, EnumTypeName, deriveEnumType}
-import sangria.schema.EnumType
 
 object Language extends Enumeration {
   type Language = Value
@@ -29,9 +27,4 @@ object Language extends Enumeration {
         }
       override def unbind(key: String, value: Language): String = value.toString
     }
-
-  val graphqlType: EnumType[Language] = deriveEnumType[Language](
-    EnumTypeName("Language"),
-    EnumTypeDescription("A human language")
-  )
 }
