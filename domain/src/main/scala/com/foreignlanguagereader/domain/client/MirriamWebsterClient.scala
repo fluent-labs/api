@@ -58,8 +58,8 @@ class MirriamWebsterClient @Inject() (
     client
       .get[List[WebsterLearnersDefinitionEntry]](
         s"https://www.dictionaryapi.com/api/v3/references/learners/json/${word.processedToken}?key=$learnersApiKey",
-        () => metrics.report(Metric.WEBSTER_SUCCESS, learnersLabel),
-        () => metrics.report(Metric.WEBSTER_FAILURE, learnersLabel)
+        () => metrics.report(Metric.WEBSTER_SUCCESSES, learnersLabel),
+        () => metrics.report(Metric.WEBSTER_FAILURES, learnersLabel)
       )
 
   val spanishLabel = "spanish"
@@ -69,8 +69,8 @@ class MirriamWebsterClient @Inject() (
     client
       .get[List[WebsterSpanishDefinitionEntry]](
         s"https://www.dictionaryapi.com/api/v3/references/spanish/json/${word.processedToken}?key=$spanishApiKey",
-        () => metrics.report(Metric.WEBSTER_SUCCESS, spanishLabel),
-        () => metrics.report(Metric.WEBSTER_FAILURE, spanishLabel)
+        () => metrics.report(Metric.WEBSTER_SUCCESSES, spanishLabel),
+        () => metrics.report(Metric.WEBSTER_FAILURES, spanishLabel)
       )
 
   def health(): ReadinessStatus = client.breaker.health()

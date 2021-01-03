@@ -50,8 +50,8 @@ class ElasticsearchClient @Inject() (
   ): Future[CircuitBreakerResult[IndexResponse]] =
     breaker.withBreaker(
       s"Failed to index document on index(es) ${request.indices().mkString(",")}: ${request.sourceAsMap()}",
-      () => metrics.report(Metric.ELASTICSEARCH_SUCCESS, indexLabel),
-      () => metrics.report(Metric.ELASTICSEARCH_FAILURE, indexLabel)
+      () => metrics.report(Metric.ELASTICSEARCH_SUCCESSES, indexLabel),
+      () => metrics.report(Metric.ELASTICSEARCH_FAILURES, indexLabel)
     ) {
       Future { javaClient.index(request, RequestOptions.DEFAULT) }
     }
@@ -62,8 +62,8 @@ class ElasticsearchClient @Inject() (
   ): Future[CircuitBreakerResult[BulkResponse]] = {
     breaker.withBreaker(
       "Failed bulk request",
-      () => metrics.report(Metric.ELASTICSEARCH_SUCCESS, bulkLabel),
-      () => metrics.report(Metric.ELASTICSEARCH_FAILURE, bulkLabel)
+      () => metrics.report(Metric.ELASTICSEARCH_SUCCESSES, bulkLabel),
+      () => metrics.report(Metric.ELASTICSEARCH_FAILURES, bulkLabel)
     ) {
       Future { javaClient.bulk(request, RequestOptions.DEFAULT) }
     }
@@ -80,8 +80,8 @@ class ElasticsearchClient @Inject() (
         breaker
           .withBreaker(
             s"Failed to search on index(es) ${request.indices().mkString(",")}: ${request.source().query().toString}",
-            () => metrics.report(Metric.ELASTICSEARCH_SUCCESS, searchLabel),
-            () => metrics.report(Metric.ELASTICSEARCH_FAILURE, searchLabel)
+            () => metrics.report(Metric.ELASTICSEARCH_SUCCESSES, searchLabel),
+            () => metrics.report(Metric.ELASTICSEARCH_FAILURES, searchLabel)
           )(Future { javaClient.search(request, RequestOptions.DEFAULT) })
       )
       .map(response => getResultsFromSearchResponse(response))
@@ -99,8 +99,9 @@ class ElasticsearchClient @Inject() (
       .apply[Future, CircuitBreakerResult, MultiSearchResponse](
         breaker.withBreaker(
           "Failed to multisearch",
-          () => metrics.report(Metric.ELASTICSEARCH_SUCCESS, multisearchLabel),
-          () => metrics.report(Metric.ELASTICSEARCH_FAILURE, multisearchLabel)
+          () =>
+            metrics.report(Metric.ELASTICSEARCH_SUCCESSES, multisearchLabel),
+          () => metrics.report(Metric.ELASTICSEARCH_FAILURES, multisearchLabel)
         )(Future {
           javaClient.msearch(request, RequestOptions.DEFAULT)
         })

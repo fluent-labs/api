@@ -68,8 +68,8 @@ class GoogleCloudClient @Inject() (
         breaker
           .withBreaker(
             s"Failed to get tokens from google cloud",
-            () => metrics.report(Metric.GOOGLE_SUCCESS),
-            () => metrics.report(Metric.GOOGLE_FAILURE)
+            () => metrics.report(Metric.GOOGLE_SUCCESSES),
+            () => metrics.report(Metric.GOOGLE_FAILURES)
           )(
             Future {
               gcloud.getTokens(request)
