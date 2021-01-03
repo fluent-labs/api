@@ -32,9 +32,8 @@ class DocumentController @Inject() (
       definitionLanguage: Language
   ): Action[JsValue] =
     Action.async(parse.json) { request =>
-      metrics.requestTimer
-        .labels(documentLabel)
-        .time(() => {
+      metrics
+        .timeRequest(documentLabel) {
           metrics.inc(Metric.ACTIVE_REQUESTS)
           request.body.validate[DocumentRequest] match {
             case JsSuccess(documentRequest: DocumentRequest, _) =>
@@ -65,7 +64,7 @@ class DocumentController @Inject() (
                 BadRequest("Invalid request body, please try again")
               }
           }
-        })
+        }
         .map(r => {
           metrics.dec(Metric.ACTIVE_REQUESTS)
           r

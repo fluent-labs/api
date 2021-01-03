@@ -5,12 +5,11 @@ import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
 import com.foreignlanguagereader.domain.service.definition.DefinitionService
-
-import javax.inject._
 import play.api.Logger
 import play.api.mvc._
 import play.libs.{Json => JavaJson}
 
+import javax.inject._
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -32,46 +31,44 @@ class DefinitionController @Inject() (
       wordLanguage: Language,
       definitionLanguage: Language,
       word: String
-  ): Future[Result] =
-    metrics.requestTimer
-      .labels(definitionLabel)
-      .time(() => {
-        metrics.inc(Metric.ACTIVE_REQUESTS)
-        logger.info(
-          s"Getting definitions in $definitionLanguage for $wordLanguage word $word"
-        )
+  ): Future[Result] = {
+    metrics.timeRequest(definitionLabel) {
+      //    metrics.inc(Metric.ACTIVE_REQUESTS)
+      logger.info(
+        s"Getting definitions in $definitionLanguage for $wordLanguage word $word"
+      )
 
-        definitionService
-          .getDefinition(
-            wordLanguage,
-            definitionLanguage,
-            Word.fromToken(word, wordLanguage)
-          )
-          .map { definitions =>
-            {
-              metrics.report(Metric.REQUEST_SUCCESSES, definitionLabel)
-              Ok(
-                JavaJson.stringify(
-                  JavaJson
-                    .toJson(definitions.map(_.toDTO))
-                )
+      definitionService
+        .getDefinition(
+          wordLanguage,
+          definitionLanguage,
+          Word.fromToken(word, wordLanguage)
+        )
+        .map { definitions =>
+          {
+            metrics.report(Metric.REQUEST_SUCCESSES, definitionLabel)
+            Ok(
+              JavaJson.stringify(
+                JavaJson
+                  .toJson(definitions.map(_.toDTO))
               )
-            }
+            )
           }
-          .recover {
-            case error: Throwable =>
-              metrics.report(Metric.REQUEST_FAILURES, definitionLabel)
-              logger.error(
-                s"Failed to get definitions for $word in $wordLanguage: ${error.getMessage}",
-                error
-              )
-              InternalServerError(
-                s"Failed to get definitions for $word in $wordLanguage"
-              )
-          }
-      })
-      .map(r => {
-        metrics.dec(Metric.ACTIVE_REQUESTS)
-        r
-      })
+        }
+        .recover {
+          case error: Throwable =>
+            metrics.report(Metric.REQUEST_FAILURES, definitionLabel)
+            logger.error(
+              s"Failed to get definitions for $word in $wordLanguage: ${error.getMessage}",
+              error
+            )
+            InternalServerError(
+              s"Failed to get definitions for $word in $wordLanguage"
+            )
+        }
+    }
+  }.map(r => {
+//    metrics.dec(Metric.ACTIVE_REQUESTS)
+    r
+  })
 }
