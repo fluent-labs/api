@@ -4,10 +4,13 @@ import com.foreignlanguagereader.domain.client.MirriamWebsterClient
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchClient
 import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.foreignlanguagereader.dto.v1.health.{Readiness, ReadinessStatus}
+import io.prometheus.client.CollectorRegistry
+import io.prometheus.client.exporter.common.TextFormat
 import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc._
 
+import java.io.StringWriter
 import javax.inject._
 import scala.concurrent.ExecutionContext
 
@@ -21,18 +24,15 @@ class HealthController @Inject() (
 ) extends BaseController {
 
   val logger: Logger = Logger(this.getClass)
+  val metricsRegistry: CollectorRegistry = CollectorRegistry.defaultRegistry
 
   /*
    * This is simpler than the readiness check. It should just confirm that the server can respond to requests.
    */
   def health: Action[AnyContent] =
     Action { implicit request: Request[AnyContent] =>
-      metrics.requestTimer
-        .labels("health")
-        .time(() => {
-          logger.debug("Responding to health check: up")
-          Ok(Json.obj("status" -> "up"))
-        })
+      logger.debug("Responding to health check: up")
+      Ok(Json.obj("status" -> "up"))
     }
 
   /*
@@ -65,4 +65,16 @@ class HealthController @Inject() (
           }
         })
     }
+
+  def getMetrics: Action[AnyContent] =
+    Action { implicit request: Request[AnyContent] => Ok(writeMetrics()) }
+
+  def writeMetrics(): String = {
+    val writer = new StringWriter()
+    TextFormat.write004(
+      writer,
+      metricsRegistry.metricFamilySamples()
+    )
+    writer.toString
+  }
 }

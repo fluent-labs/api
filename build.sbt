@@ -113,6 +113,8 @@ lazy val dependencies =
       "org.apache.logging.log4j" % "log4j-layout-template-json" % log4jVersion
 
     val prometheusClient = "io.prometheus" % "simpleclient" % prometheusVersion
+    val prometheusCommon =
+      "io.prometheus" % "simpleclient_common" % prometheusVersion
     val prometheusHotspot =
       "io.prometheus" % "simpleclient_hotspot" % prometheusVersion
 
@@ -192,7 +194,8 @@ lazy val forcedDependencies = Seq(
 lazy val apiDependencies =
   commonDependencies ++ playDependencies ++ log4jDependencies ++ Seq(
     dependencies.prometheusClient,
-    dependencies.prometheusHotspot
+    dependencies.prometheusHotspot,
+    dependencies.prometheusCommon
   )
 
 lazy val contentDependencies = commonDependencies ++ Seq(
