@@ -7,7 +7,7 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerResult,
   Circuitbreaker
 }
-import javax.inject.{Inject, Singleton}
+import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
 import org.elasticsearch.action.bulk.{BulkRequest, BulkResponse}
 import org.elasticsearch.action.index.{IndexRequest, IndexResponse}
 import org.elasticsearch.action.search.{
@@ -22,6 +22,7 @@ import org.elasticsearch.search.SearchHit
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Json, Reads}
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
@@ -34,6 +35,7 @@ import scala.util.{Failure, Success, Try}
 @Singleton
 class ElasticsearchClient @Inject() (
     config: ElasticsearchClientConfig,
+    metrics: MetricsReporter,
     val system: ActorSystem
 ) {
   implicit val ec: ExecutionContext =
@@ -42,23 +44,32 @@ class ElasticsearchClient @Inject() (
   val breaker = new Circuitbreaker(system, ec, "Elasticsearch")
   val logger: Logger = Logger(this.getClass)
 
+  val indexLabel = "index"
   def index(
       request: IndexRequest
   ): Future[CircuitBreakerResult[IndexResponse]] =
     breaker.withBreaker(
-      s"Failed to index document on index(es) ${request.indices().mkString(",")}: ${request.sourceAsMap()}"
+      s"Failed to index document on index(es) ${request.indices().mkString(",")}: ${request.sourceAsMap()}",
+      () => metrics.report(Metric.ELASTICSEARCH_SUCCESS, indexLabel),
+      () => metrics.report(Metric.ELASTICSEARCH_FAILURE, indexLabel)
     ) {
       Future { javaClient.index(request, RequestOptions.DEFAULT) }
     }
 
+  val bulkLabel = "bulk"
   def bulk(
       request: BulkRequest
   ): Future[CircuitBreakerResult[BulkResponse]] = {
-    breaker.withBreaker("Failed bulk request") {
+    breaker.withBreaker(
+      "Failed bulk request",
+      () => metrics.report(Metric.ELASTICSEARCH_SUCCESS, bulkLabel),
+      () => metrics.report(Metric.ELASTICSEARCH_FAILURE, bulkLabel)
+    ) {
       Future { javaClient.bulk(request, RequestOptions.DEFAULT) }
     }
   }
 
+  val searchLabel = "search"
   def search[T](
       request: SearchRequest
   )(implicit
@@ -68,13 +79,16 @@ class ElasticsearchClient @Inject() (
       .apply(
         breaker
           .withBreaker(
-            s"Failed to search on index(es) ${request.indices().mkString(",")}: ${request.source().query().toString}"
+            s"Failed to search on index(es) ${request.indices().mkString(",")}: ${request.source().query().toString}",
+            () => metrics.report(Metric.ELASTICSEARCH_SUCCESS, searchLabel),
+            () => metrics.report(Metric.ELASTICSEARCH_FAILURE, searchLabel)
           )(Future { javaClient.search(request, RequestOptions.DEFAULT) })
       )
       .map(response => getResultsFromSearchResponse(response))
       .value
   }
 
+  val multisearchLabel = "multisearch"
   def doubleSearch[T, U](
       request: MultiSearchRequest
   )(implicit
@@ -83,7 +97,11 @@ class ElasticsearchClient @Inject() (
   ): Future[CircuitBreakerResult[Option[(Map[String, T], Map[String, U])]]] =
     Nested
       .apply[Future, CircuitBreakerResult, MultiSearchResponse](
-        breaker.withBreaker("Failed to multisearch")(Future {
+        breaker.withBreaker(
+          "Failed to multisearch",
+          () => metrics.report(Metric.ELASTICSEARCH_SUCCESS, multisearchLabel),
+          () => metrics.report(Metric.ELASTICSEARCH_FAILURE, multisearchLabel)
+        )(Future {
           javaClient.msearch(request, RequestOptions.DEFAULT)
         })
       )

@@ -40,6 +40,9 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
     b
   }
 
+  val noOp: () => Unit = () => ()
+  val fail: () => Unit = () => fail("This method should not have been called")
+
   describe("a closed circuit breaker") {
     it("gives a correct readiness status") {
       assert(closedBreaker.health() === ReadinessStatus.UP)
@@ -47,7 +50,9 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
 
     it("returns the results of successful calls") {
       closedBreaker
-        .withBreaker("Don't log")(Future.apply("testString"))
+        .withBreaker("Don't log", noOp, noOp)(
+          Future.apply("testString")
+        )
         .map {
           case CircuitBreakerAttempt("testString") => succeed
           case _                                   => fail("This is the wrong result")
@@ -56,14 +61,44 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
 
     it("does not rethrow exceptions generated within the circuitbreaker") {
       closedBreaker
-        .withBreaker[String]("Uh oh")(
+        .withBreaker[String]("Uh oh", noOp, noOp)(
           Future
             .apply(throw new IllegalArgumentException("Something went wrong"))
         )
         .map {
           case CircuitBreakerFailedAttempt(e) =>
             assert(e.getMessage == "Something went wrong")
+            succeed
           case _ => fail("This is the wrong result")
+        }
+    }
+
+    it("correctly updates metrics on success") {
+      var called = false
+      val correctMethod = () => { called = true }
+
+      closedBreaker
+        .withBreaker("Don't log", correctMethod, fail)(
+          Future.apply("testString")
+        )
+        .map {
+          case CircuitBreakerAttempt("testString") => assert(called)
+          case _                                   => fail("This is the wrong result")
+        }
+    }
+
+    it("correctly updates metrics on failure") {
+      var called = false
+      val correctMethod = () => { called = true }
+
+      closedBreaker
+        .withBreaker[String]("Uh oh", fail, correctMethod)(
+          Future
+            .apply(throw new IllegalArgumentException("Something went wrong"))
+        )
+        .map {
+          case CircuitBreakerFailedAttempt(e) => assert(called)
+          case _                              => fail("This is the wrong result")
         }
     }
 
@@ -77,7 +112,9 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
           .withBreaker[String](
             "Uh oh",
             a => succeedForIllegalArgumentException(a),
-            (_: String) => true
+            (_: String) => true,
+            noOp,
+            noOp
           )(
             Future
               .apply(throw new IllegalArgumentException("Something went wrong"))
@@ -99,7 +136,9 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
           .withBreaker[String](
             "Uh oh",
             a => succeedForIllegalArgumentException(a),
-            (_: String) => true
+            (_: String) => true,
+            noOp,
+            noOp
           )(
             Future
               .apply(throw new IllegalStateException("Something went wrong"))
@@ -124,7 +163,9 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
           .withBreaker[Option[String]](
             "Uh oh",
             (_: Throwable) => true,
-            a => failIfNone(a)
+            a => failIfNone(a),
+            noOp,
+            noOp
           )(
             Future
               .apply(None)
@@ -146,7 +187,9 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
           .withBreaker[Option[String]](
             "Uh oh",
             (_: Throwable) => true,
-            a => failIfNone(a)
+            a => failIfNone(a),
+            noOp,
+            noOp
           )(
             Future
               .apply(Some("testString"))
@@ -176,7 +219,7 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
 
     it("does not attempt calls") {
       openCircuitBreaker
-        .withBreaker[String]("log message")(
+        .withBreaker[String]("log message", noOp, noOp)(
           Future(fail("this should not have been evaluated"))
         )
         .map {

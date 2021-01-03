@@ -1,7 +1,5 @@
 package com.foreignlanguagereader.domain.client.common
 
-import java.util.concurrent.TimeUnit
-
 import akka.actor.ActorSystem
 import akka.pattern.{CircuitBreaker, CircuitBreakerOpenException}
 import cats.Functor
@@ -9,6 +7,7 @@ import com.foreignlanguagereader.dto.v1.health.ReadinessStatus
 import com.foreignlanguagereader.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.Logger
 
+import java.util.concurrent.TimeUnit
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
@@ -49,29 +48,46 @@ class Circuitbreaker(
       case breaker if breaker.isOpen     => ReadinessStatus.DOWN
     }
 
-  def withBreaker[T](logIfError: String)(
+  def withBreaker[T](
+      logIfError: String,
+      onSuccess: () => Unit,
+      onError: () => Unit
+  )(
       body: => Future[T]
   ): Future[CircuitBreakerResult[T]] =
-    withBreaker(logIfError, defaultIsFailure, defaultIsSuccess[T])(body)
+    withBreaker(
+      logIfError,
+      defaultIsFailure,
+      defaultIsSuccess[T],
+      onSuccess,
+      onError
+    )(body)
 
   def withBreaker[T](
       logIfError: String,
       isFailure: Throwable => Boolean,
-      isSuccess: T => Boolean
+      isSuccess: T => Boolean,
+      onSuccess: () => Unit,
+      onError: () => Unit
   )(
       body: => Future[T]
   ): Future[CircuitBreakerResult[T]] =
     breaker
       .withCircuitBreaker[T](body, makeFailureFunction(isFailure, isSuccess))
-      .map(s => CircuitBreakerAttempt(s))
+      .map(s => {
+        onSuccess.apply()
+        CircuitBreakerAttempt(s)
+      })
       .recover {
         case c: CircuitBreakerOpenException =>
           logger.warn(
             s"Failing fast because circuit breaker $name is open, ${c.remainingDuration} remaining."
           )
+          onError.apply()
           CircuitBreakerNonAttempt[T]()
         case e =>
           logger.error(logIfError, e)
+          onError.apply()
           CircuitBreakerFailedAttempt[T](e)
       }
 

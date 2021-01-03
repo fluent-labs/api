@@ -212,7 +212,10 @@ lazy val domainDependencies = commonDependencies ++ Seq(
   dependencies.elasticsearchContainer,
   // Clients
   dependencies.opencc4j,
-  dependencies.googleCloudClient
+  dependencies.googleCloudClient,
+  // Metrics
+  dependencies.prometheusClient,
+  dependencies.prometheusHotspot
 )
 
 lazy val dtoDependencies = commonDependencies
