@@ -91,7 +91,7 @@ trait LanguageDefinitionService[T <: Definition] {
         } else {
           metrics
             .report(
-              Metric.DEFINITIONS_SEARCHED,
+              Metric.DEFINITIONS_NOT_FOUND,
               wordLanguage.toString.toLowerCase
             )
           logger.info(

@@ -26,7 +26,7 @@ import com.foreignlanguagereader.domain.fetcher.spanish.{
   WebsterSpanishToEnglishFetcher,
   WiktionarySpanishFetcher
 }
-import com.foreignlanguagereader.domain.metrics.MetricsReporter
+import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar
 import org.scalatest.FutureOutcome
@@ -59,6 +59,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
   override def withFixture(test: NoArgAsyncTest): FutureOutcome = {
     when(configMock.get[String]("environment")).thenReturn("test")
+    reset(metricsMock)
 
     complete {
       super.withFixture(test) // Invoke the test function
@@ -108,6 +109,11 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       defaultDefinitionService
         .getDefinitions(Language.ENGLISH, test)
         .map { results =>
+          verify(metricsMock)
+            .report(Metric.DEFINITIONS_SEARCHED, "english")
+          verify(metricsMock)
+            .report(Metric.DEFINITIONS_SEARCHED_IN_CACHE, "wiktionary")
+          verifyNoMoreInteractions(metricsMock)
           assert(results.length == 1)
           assert(
             results.head == dummyWiktionaryDefinition
@@ -131,6 +137,13 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       defaultDefinitionService
         .getDefinitions(Language.ENGLISH, test)
         .map { response =>
+          verify(metricsMock)
+            .report(Metric.DEFINITIONS_SEARCHED, "english")
+          verify(metricsMock)
+            .report(Metric.DEFINITIONS_SEARCHED_IN_CACHE, "wiktionary")
+          verify(metricsMock)
+            .report(Metric.DEFINITIONS_NOT_FOUND, "english")
+          verifyNoMoreInteractions(metricsMock)
           assert(response.isEmpty)
         }
     }
