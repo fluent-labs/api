@@ -1,5 +1,7 @@
 package com.foreignlanguagereader.domain.metrics
 
+import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.domain.metrics.Metric.Metric
 import io.prometheus.client.{Counter, Gauge, Histogram}
 
@@ -47,7 +49,10 @@ class MetricsReporter {
     Metric.WEBSTER_FAILURES -> "dictionary",
     Metric.REQUEST_COUNT -> "route",
     Metric.REQUEST_FAILURES -> "route",
-    Metric.BAD_REQUEST_DATA -> "route"
+    Metric.BAD_REQUEST_DATA -> "route",
+    Metric.CHINESE_LEARNER_REQUESTS -> "definitionLanguage",
+    Metric.ENGLISH_LEARNER_REQUESTS -> "definitionLanguage",
+    Metric.SPANISH_LEARNER_REQUESTS -> "definitionLanguage"
   ).map {
     case (metric, labels) => metric -> buildCounter(metric, labels)
   }
@@ -56,6 +61,21 @@ class MetricsReporter {
     unlabeledCounters.get(metric).foreach(_.inc())
   def report(metric: Metric, label: String): Unit =
     labeledCounters.get(metric).foreach(_.labels(label).inc())
+
+  // Specialized class to report user metrics
+  def reportLanguageUsage(
+      learningLanguage: Language,
+      definitionLanguage: Language
+  ): Unit = {
+    val metric = learningLanguage match {
+      case Language.CHINESE             => Metric.CHINESE_LEARNER_REQUESTS
+      case Language.CHINESE_TRADITIONAL => Metric.CHINESE_LEARNER_REQUESTS
+      case Language.ENGLISH             => Metric.ENGLISH_LEARNER_REQUESTS
+      case Language.SPANISH             => Metric.SPANISH_LEARNER_REQUESTS
+    }
+    val label = definitionLanguage.toString.toLowerCase
+    report(metric, label)
+  }
 
   def buildGauge(
       metric: Metric

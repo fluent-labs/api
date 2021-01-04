@@ -35,6 +35,8 @@ class DocumentController @Inject() (
       metrics
         .timeRequest(documentLabel)(() => {
           metrics.inc(Metric.ACTIVE_REQUESTS)
+          metrics.report(Metric.REQUEST_COUNT, documentLabel)
+          metrics.reportLanguageUsage(wordLanguage, definitionLanguage)
           request.body.validate[DocumentRequest] match {
             case JsSuccess(documentRequest: DocumentRequest, _) =>
               documentService
@@ -44,7 +46,6 @@ class DocumentController @Inject() (
                   documentRequest.getText
                 )
                 .map(words => {
-                  metrics.report(Metric.REQUEST_COUNT, documentLabel)
                   Ok(JavaJson.stringify(JavaJson.toJson(words.map(_.toDTO))))
                 })
                 .recover {

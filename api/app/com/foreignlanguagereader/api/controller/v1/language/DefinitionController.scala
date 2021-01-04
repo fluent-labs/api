@@ -34,6 +34,8 @@ class DefinitionController @Inject() (
   ): Future[Result] = {
     metrics.timeRequest(definitionLabel)(() => {
       metrics.inc(Metric.ACTIVE_REQUESTS)
+      metrics.report(Metric.REQUEST_COUNT, definitionLabel)
+      metrics.reportLanguageUsage(wordLanguage, definitionLanguage)
       logger.info(
         s"Getting definitions in $definitionLanguage for $wordLanguage word $word"
       )
@@ -46,7 +48,6 @@ class DefinitionController @Inject() (
         )
         .map { definitions =>
           {
-            metrics.report(Metric.REQUEST_COUNT, definitionLabel)
             Ok(
               JavaJson.stringify(
                 JavaJson
@@ -68,7 +69,7 @@ class DefinitionController @Inject() (
         }
     })
   }.map(r => {
-//    metrics.dec(Metric.ACTIVE_REQUESTS)
+    metrics.dec(Metric.ACTIVE_REQUESTS)
     r
   })
 }
