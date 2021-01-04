@@ -1,7 +1,5 @@
 package com.foreignlanguagereader.domain.client
 
-import java.util.concurrent.TimeUnit
-
 import akka.actor.ActorSystem
 import com.foreignlanguagereader.content.types.external.definition.webster.{
   WebsterLearnersDefinitionEntry,
@@ -13,18 +11,22 @@ import com.foreignlanguagereader.domain.client.common.{
   RestClient,
   RestClientBuilder
 }
+import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
 import com.foreignlanguagereader.dto.v1.health.ReadinessStatus.ReadinessStatus
-import javax.inject.Inject
 import play.api.libs.json.Reads
 import play.api.{Configuration, Logger}
 
+import java.util.concurrent.TimeUnit
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.duration.{Duration, FiniteDuration}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class MirriamWebsterClient @Inject() (
     config: Configuration,
     val system: ActorSystem,
-    clientBuilder: RestClientBuilder
+    clientBuilder: RestClientBuilder,
+    metrics: MetricsReporter
 ) {
   val logger: Logger = Logger(this.getClass)
   implicit val ec: ExecutionContext =
@@ -49,21 +51,39 @@ class MirriamWebsterClient @Inject() (
 
   // TODO filter garbage
 
+  val learnersLabel = "learners"
   def getLearnersDefinition(
       word: Word
-  ): Future[CircuitBreakerResult[List[WebsterLearnersDefinitionEntry]]] =
+  ): Future[CircuitBreakerResult[List[WebsterLearnersDefinitionEntry]]] = {
+    metrics.report(Metric.WEBSTER_CALLS, learnersLabel)
     client
       .get[List[WebsterLearnersDefinitionEntry]](
-        s"https://www.dictionaryapi.com/api/v3/references/learners/json/${word.processedToken}?key=$learnersApiKey"
+        s"https://www.dictionaryapi.com/api/v3/references/learners/json/${word.processedToken}?key=$learnersApiKey",
+        e => {
+          logger.error(
+            s"Failed to get learners definition result for word $word",
+            e
+          )
+          metrics.report(Metric.WEBSTER_FAILURES, learnersLabel)
+        }
       )
+  }
 
+  val spanishLabel = "spanish"
   def getSpanishDefinition(
       word: Word
-  ): Future[CircuitBreakerResult[List[WebsterSpanishDefinitionEntry]]] =
+  ): Future[CircuitBreakerResult[List[WebsterSpanishDefinitionEntry]]] = {
+    metrics.report(Metric.WEBSTER_CALLS, spanishLabel)
     client
       .get[List[WebsterSpanishDefinitionEntry]](
-        s"https://www.dictionaryapi.com/api/v3/references/spanish/json/${word.processedToken}?key=$spanishApiKey"
+        s"https://www.dictionaryapi.com/api/v3/references/spanish/json/${word.processedToken}?key=$spanishApiKey",
+        e => {
+          logger
+            .error(s"Failed to get spanish definition result for word $word", e)
+          metrics.report(Metric.WEBSTER_FAILURES, spanishLabel)
+        }
       )
+  }
 
   def health(): ReadinessStatus = client.breaker.health()
 }

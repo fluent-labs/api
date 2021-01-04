@@ -5,6 +5,7 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerFailedAttempt,
   CircuitBreakerNonAttempt
 }
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.typesafe.config.ConfigFactory
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchRequest
@@ -26,6 +27,7 @@ class ElasticsearchCacheClientIntegrationTest
   val application: Application = new GuiceApplicationBuilder()
     .configure(playConfig)
     .build()
+  val metricsMock: MetricsReporter = mock[MetricsReporter]
 
   describe("an elasticsearch client") {
     ignore("can index documents") {
@@ -36,7 +38,7 @@ class ElasticsearchCacheClientIntegrationTest
       )
 
       val client =
-        new ElasticsearchClient(config, application.actorSystem)
+        new ElasticsearchClient(config, metricsMock, application.actorSystem)
       client.createIndex("indexTest")
 
       val attempt = LookupAttempt("definitions", Map("field1" -> "value1"), 1)

@@ -90,6 +90,7 @@ lazy val dependencies =
     val elasticsearchVersion = "7.10.1"
     val sparkVersion = "3.0.1"
     val hadoopVersion = "2.7.4"
+    val prometheusVersion = "0.9.0"
 
     // Testing
     val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
@@ -110,6 +111,12 @@ lazy val dependencies =
     val log4jCore = "org.apache.logging.log4j" % "log4j-core" % log4jVersion
     val log4jJson =
       "org.apache.logging.log4j" % "log4j-layout-template-json" % log4jVersion
+
+    val prometheusClient = "io.prometheus" % "simpleclient" % prometheusVersion
+    val prometheusCommon =
+      "io.prometheus" % "simpleclient_common" % prometheusVersion
+    val prometheusHotspot =
+      "io.prometheus" % "simpleclient_hotspot" % prometheusVersion
 
     // Spark
     val sparkCore =
@@ -185,7 +192,11 @@ lazy val forcedDependencies = Seq(
 )
 
 lazy val apiDependencies =
-  commonDependencies ++ playDependencies ++ log4jDependencies
+  commonDependencies ++ playDependencies ++ log4jDependencies ++ Seq(
+    dependencies.prometheusClient,
+    dependencies.prometheusHotspot,
+    dependencies.prometheusCommon
+  )
 
 lazy val contentDependencies = commonDependencies ++ Seq(
   dependencies.scalatestPlay,
@@ -204,7 +215,10 @@ lazy val domainDependencies = commonDependencies ++ Seq(
   dependencies.elasticsearchContainer,
   // Clients
   dependencies.opencc4j,
-  dependencies.googleCloudClient
+  dependencies.googleCloudClient,
+  // Metrics
+  dependencies.prometheusClient,
+  dependencies.prometheusHotspot
 )
 
 lazy val dtoDependencies = commonDependencies

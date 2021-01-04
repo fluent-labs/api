@@ -9,6 +9,7 @@ import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.common.CircuitBreakerResult
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchSearchRequest
+import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
 import play.api.Logger
 import play.api.libs.json.{Reads, Writes}
 
@@ -17,6 +18,7 @@ import scala.reflect.ClassTag
 
 trait DefinitionFetcher[T <: DefinitionEntry, U <: Definition] {
   val logger: Logger = Logger(this.getClass)
+  val metrics: MetricsReporter
 
   def fetch(
       language: Language,
@@ -36,6 +38,10 @@ trait DefinitionFetcher[T <: DefinitionEntry, U <: Definition] {
       source: DefinitionSource,
       word: Word
   )(implicit ec: ExecutionContext, tag: ClassTag[T]): Future[List[U]] = {
+    metrics.report(
+      Metric.DEFINITIONS_SEARCHED_IN_CACHE,
+      source.toString.toLowerCase
+    )
     elasticsearch
       .findFromCacheOrRefetch(
         makeDefinitionRequest(
@@ -61,7 +67,13 @@ trait DefinitionFetcher[T <: DefinitionEntry, U <: Definition] {
       index: String,
       word: Word
   )(implicit ec: ExecutionContext): ElasticsearchSearchRequest[T] = {
-    val fetcher = () => fetch(definitionLanguage, word)
+    val fetcher = () => {
+      metrics.report(
+        Metric.DEFINITIONS_NOT_FOUND_IN_CACHE,
+        source.toString.toLowerCase
+      )
+      fetch(definitionLanguage, word)
+    }
 
     ElasticsearchSearchRequest(
       index,

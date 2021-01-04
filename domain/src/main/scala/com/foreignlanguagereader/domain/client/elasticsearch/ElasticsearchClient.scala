@@ -7,7 +7,7 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerResult,
   Circuitbreaker
 }
-import javax.inject.{Inject, Singleton}
+import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
 import org.elasticsearch.action.bulk.{BulkRequest, BulkResponse}
 import org.elasticsearch.action.index.{IndexRequest, IndexResponse}
 import org.elasticsearch.action.search.{
@@ -22,6 +22,7 @@ import org.elasticsearch.search.SearchHit
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Json, Reads}
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
@@ -34,6 +35,7 @@ import scala.util.{Failure, Success, Try}
 @Singleton
 class ElasticsearchClient @Inject() (
     config: ElasticsearchClientConfig,
+    metrics: MetricsReporter,
     val system: ActorSystem
 ) {
   implicit val ec: ExecutionContext =
@@ -42,48 +44,73 @@ class ElasticsearchClient @Inject() (
   val breaker = new Circuitbreaker(system, ec, "Elasticsearch")
   val logger: Logger = Logger(this.getClass)
 
+  val indexLabel = "index"
   def index(
       request: IndexRequest
-  ): Future[CircuitBreakerResult[IndexResponse]] =
-    breaker.withBreaker(
-      s"Failed to index document on index(es) ${request.indices().mkString(",")}: ${request.sourceAsMap()}"
-    ) {
+  ): Future[CircuitBreakerResult[IndexResponse]] = {
+    metrics.report(Metric.ELASTICSEARCH_CALLS, indexLabel)
+    breaker.withBreaker(e => {
+      logger.error(
+        s"Failed to index document on index(es) ${request.indices().mkString(",")}: ${request.sourceAsMap()}",
+        e
+      )
+      metrics.report(Metric.ELASTICSEARCH_FAILURES, indexLabel)
+    }) {
       Future { javaClient.index(request, RequestOptions.DEFAULT) }
     }
+  }
 
+  val bulkLabel = "bulk"
   def bulk(
       request: BulkRequest
   ): Future[CircuitBreakerResult[BulkResponse]] = {
-    breaker.withBreaker("Failed bulk request") {
+    metrics.report(Metric.ELASTICSEARCH_CALLS, bulkLabel)
+    breaker.withBreaker(e => {
+      logger.error("Failed bulk request", e)
+      metrics.report(Metric.ELASTICSEARCH_FAILURES, bulkLabel)
+    }) {
       Future { javaClient.bulk(request, RequestOptions.DEFAULT) }
     }
   }
 
+  val searchLabel = "search"
   def search[T](
       request: SearchRequest
   )(implicit
       reads: Reads[T]
   ): Future[CircuitBreakerResult[Map[String, T]]] = {
+    metrics.report(Metric.ELASTICSEARCH_CALLS, searchLabel)
     Nested
       .apply(
         breaker
-          .withBreaker(
-            s"Failed to search on index(es) ${request.indices().mkString(",")}: ${request.source().query().toString}"
-          )(Future { javaClient.search(request, RequestOptions.DEFAULT) })
+          .withBreaker(e => {
+            logger.error(
+              s"Failed to search on index(es) ${request
+                .indices()
+                .mkString(",")}: ${request.source().query().toString}",
+              e
+            )
+            metrics.report(Metric.ELASTICSEARCH_FAILURES, searchLabel)
+          })(Future { javaClient.search(request, RequestOptions.DEFAULT) })
       )
       .map(response => getResultsFromSearchResponse(response))
       .value
   }
 
+  val multisearchLabel = "multisearch"
   def doubleSearch[T, U](
       request: MultiSearchRequest
   )(implicit
       readsT: Reads[T],
       readsU: Reads[U]
-  ): Future[CircuitBreakerResult[Option[(Map[String, T], Map[String, U])]]] =
+  ): Future[CircuitBreakerResult[Option[(Map[String, T], Map[String, U])]]] = {
+    metrics.report(Metric.ELASTICSEARCH_CALLS, multisearchLabel)
     Nested
       .apply[Future, CircuitBreakerResult, MultiSearchResponse](
-        breaker.withBreaker("Failed to multisearch")(Future {
+        breaker.withBreaker(e => {
+          logger.error("Failed to multisearch", e)
+          metrics.report(Metric.ELASTICSEARCH_FAILURES, multisearchLabel)
+        })(Future {
           javaClient.msearch(request, RequestOptions.DEFAULT)
         })
       )
@@ -110,6 +137,7 @@ class ElasticsearchClient @Inject() (
         }
       })
       .value
+  }
 
   def createIndex(index: String): Unit = {
     javaClient

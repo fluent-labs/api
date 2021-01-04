@@ -26,6 +26,7 @@ import com.foreignlanguagereader.domain.fetcher.spanish.{
   WebsterSpanishToEnglishFetcher,
   WiktionarySpanishFetcher
 }
+import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar
 import org.scalatest.FutureOutcome
@@ -50,6 +51,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   val elasticsearchClientMock: ElasticsearchCacheClient =
     mock[ElasticsearchCacheClient]
   val configMock: Configuration = mock[Configuration]
+  val metricsMock: MetricsReporter = mock[MetricsReporter]
 
   val test: Word =
     Word.fromToken("test", Language.ENGLISH).copy(tag = PartOfSpeech.NOUN)
@@ -57,6 +59,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
 
   override def withFixture(test: NoArgAsyncTest): FutureOutcome = {
     when(configMock.get[String]("environment")).thenReturn("test")
+    reset(metricsMock)
 
     complete {
       super.withFixture(test) // Invoke the test function
@@ -67,6 +70,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     class DefaultLanguageDefinitionService()
         extends LanguageDefinitionService[EnglishDefinition] {
       val elasticsearch: ElasticsearchCacheClient = elasticsearchClientMock
+      val metrics: MetricsReporter = metricsMock
       implicit val ec: ExecutionContext =
         scala.concurrent.ExecutionContext.Implicits.global
       override val config: Configuration = configMock
@@ -81,7 +85,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         (
           DefinitionSource.WIKTIONARY,
           Language.ENGLISH
-        ) -> new WiktionaryEnglishFetcher()
+        ) -> new WiktionaryEnglishFetcher(metricsMock)
       )
     }
     val defaultDefinitionService = new DefaultLanguageDefinitionService()
@@ -105,6 +109,11 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       defaultDefinitionService
         .getDefinitions(Language.ENGLISH, test)
         .map { results =>
+          verify(metricsMock)
+            .report(Metric.DEFINITIONS_SEARCHED, "english")
+          verify(metricsMock)
+            .report(Metric.DEFINITIONS_SEARCHED_IN_CACHE, "wiktionary")
+          verifyNoMoreInteractions(metricsMock)
           assert(results.length == 1)
           assert(
             results.head == dummyWiktionaryDefinition
@@ -128,6 +137,13 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       defaultDefinitionService
         .getDefinitions(Language.ENGLISH, test)
         .map { response =>
+          verify(metricsMock)
+            .report(Metric.DEFINITIONS_SEARCHED, "english")
+          verify(metricsMock)
+            .report(Metric.DEFINITIONS_SEARCHED_IN_CACHE, "wiktionary")
+          verify(metricsMock)
+            .report(Metric.DEFINITIONS_NOT_FOUND, "english")
+          verifyNoMoreInteractions(metricsMock)
           assert(response.isEmpty)
         }
     }
@@ -138,6 +154,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     class CustomizedLanguageDefinitionService()
         extends LanguageDefinitionService[SpanishDefinition] {
       val elasticsearch: ElasticsearchCacheClient = elasticsearchClientMock
+      val metrics: MetricsReporter = metricsMock
       implicit val ec: ExecutionContext =
         scala.concurrent.ExecutionContext.Implicits.global
       override val config: Configuration = configMock
@@ -162,7 +179,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           (
             DefinitionSource.MIRRIAM_WEBSTER_SPANISH,
             Language.SPANISH
-          ) -> new WebsterSpanishToEnglishFetcher(websterMock)
+          ) -> new WebsterSpanishToEnglishFetcher(websterMock, metricsMock)
         )
       }
       val customizedFetcher = new CustomizedFetcherLanguageDefinitionService()
@@ -232,7 +249,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
           (
             DefinitionSource.WIKTIONARY,
             Language.ENGLISH
-          ) -> new WiktionarySpanishFetcher()
+          ) -> new WiktionarySpanishFetcher(metricsMock)
         )
         override val sources: List[DefinitionSource] =
           List(

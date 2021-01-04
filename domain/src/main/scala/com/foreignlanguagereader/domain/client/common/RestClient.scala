@@ -1,13 +1,12 @@
 package com.foreignlanguagereader.domain.client.common
 
-import java.util.concurrent.TimeUnit
-
 import akka.actor.ActorSystem
-import javax.inject.Inject
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Reads}
 import play.api.libs.ws.WSClient
 
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
@@ -28,20 +27,12 @@ case class RestClient(
   logger.info(s"Initialized ws client $name with timeout $timeout")
 
   def get[T: ClassTag](
-      url: String
-  )(implicit reads: Reads[T]): Future[CircuitBreakerResult[T]] = {
-    val typeName = implicitly[ClassTag[T]].runtimeClass.getSimpleName
-    val message = s"Failed to get $typeName from $url"
-    get(url, message)
-  }
-
-  def get[T: ClassTag](
       url: String,
-      logIfError: String
+      onError: Throwable => Unit
   )(implicit reads: Reads[T]): Future[CircuitBreakerResult[T]] = {
     logger.info(s"Calling url $url")
     val typeName = implicitly[ClassTag[T]].runtimeClass.getSimpleName
-    breaker.withBreaker(logIfError) {
+    breaker.withBreaker(onError) {
       ws.url(url)
         // Doubled so that the circuit breaker will handle it.
         .withRequestTimeout(timeout * 2)

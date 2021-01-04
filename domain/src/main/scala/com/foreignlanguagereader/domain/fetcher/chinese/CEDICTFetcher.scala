@@ -11,13 +11,14 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerResult
 }
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import play.api.Logger
 import play.api.libs.json.{Reads, Writes}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CEDICTFetcher @Inject()
+class CEDICTFetcher @Inject() (val metrics: MetricsReporter)
     extends DefinitionFetcher[CEDICTDefinitionEntry, ChineseDefinition] {
   override val logger: Logger = Logger(this.getClass)
 
