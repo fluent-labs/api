@@ -20,6 +20,6 @@ RUN apk add --no-cache wget=1.20.3-r1 && \
 
 # Cache dependencies
 COPY project project
-COPY build-dependencies.sbt build.sbt
+COPY build-dependencies build.sbt
 RUN sbt compile
 RUN rm build.sbt

@@ -2,8 +2,7 @@ FROM lkjaero/foreign-language-reader-api:builder as builder
 
 # Compile the service
 COPY . /app/
-RUN rm build-dependencies.sbt && \
-    sbt clean coverageOff dist
+RUN sbt clean coverageOff dist
 
 # Detect the version and unzip to /app/dist
 # hadolint ignore=SC2086
