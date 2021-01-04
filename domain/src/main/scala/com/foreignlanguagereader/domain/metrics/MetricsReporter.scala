@@ -6,6 +6,12 @@ import io.prometheus.client.{Counter, Gauge, Histogram}
 import java.util.concurrent.Callable
 import javax.inject.Singleton
 
+/*
+ * Two motivations for this class
+ * - Put an interface on metrics, in case we want to change solutions. Metrics design is still in an early stage
+ * - Metrics are global and shared among all instances. Creating one twice causes an error.
+ *      This makes creating metrics in classes play badly in tests, so we use this class that can be stubbed.
+ */
 @Singleton
 class MetricsReporter {
   def makeCounterBuilder(metric: Metric): Counter.Builder = {
@@ -52,8 +58,7 @@ class MetricsReporter {
     labeledCounters.get(metric).foreach(_.labels(label).inc())
 
   def buildGauge(
-      metric: Metric,
-      labelNames: String
+      metric: Metric
   ): Gauge =
     Gauge
       .build()
@@ -61,9 +66,9 @@ class MetricsReporter {
       .help(metric.toString.toLowerCase.replaceAll("_", " "))
       .register()
 
-  val gauges: Map[Metric, Gauge] = Map(Metric.ACTIVE_REQUESTS -> "route").map {
-    case (metric, labels) => metric -> buildGauge(metric, labels)
-  }
+  val gauges: Map[Metric, Gauge] = List(Metric.ACTIVE_REQUESTS)
+    .map(metric => metric -> buildGauge(metric))
+    .toMap
 
   def inc(metric: Metric): Unit =
     gauges.get(metric).foreach(_.inc())
