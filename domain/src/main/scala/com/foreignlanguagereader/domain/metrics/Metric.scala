@@ -37,13 +37,13 @@ object Metric extends Enumeration {
     Value("spanish_learner_requests") // label by definition language
 
   // Caching results
-  val DEFINITIONS_FOUND: Value =
-    Value("definitions_found") // label by source
+  val DEFINITIONS_SEARCHED: Value =
+    Value("definitions_searched") // label by language
   val DEFINITIONS_NOT_FOUND: Value =
-    Value("definitions_not_found") // label by source
-  val DEFINITIONS_FOUND_FROM_CACHE: Value =
-    Value("definitions_found_from_cache") // label by source
-  val DEFINITIONS_NOT_FOUND_FROM_CACHE: Value =
-    Value("definitions_not_found_from_cache") // label by source
+    Value("definitions_not_found") // label by language
+  val DEFINITIONS_SEARCHED_IN_CACHE: Value =
+    Value("definitions_searched_in_cache") // label by source
+  val DEFINITIONS_NOT_FOUND_IN_CACHE: Value =
+    Value("definitions_not_found_in_cache") // label by source
 }
 // $COVERAGE-ON$

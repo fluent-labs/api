@@ -1,16 +1,12 @@
 package com.foreignlanguagereader.domain.service.definition
 
 import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
 import com.foreignlanguagereader.content.types.internal.definition.Definition
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.content.types.internal.word.Word
-import com.foreignlanguagereader.domain.client.common.{
-  CircuitBreakerFailedAttempt,
-  CircuitBreakerResult
-}
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
+import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
 import play.api.{Configuration, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -40,6 +36,7 @@ trait LanguageDefinitionService[T <: Definition] {
   implicit val ec: ExecutionContext
   val config: Configuration
   val logger: Logger = Logger(this.getClass)
+  val metrics: MetricsReporter
   val elasticsearch: ElasticsearchCacheClient
   val wordLanguage: Language
   val sources: List[DefinitionSource]
@@ -92,6 +89,11 @@ trait LanguageDefinitionService[T <: Definition] {
           )
           enrichDefinitions(definitionLanguage, word, definitions)
         } else {
+          metrics
+            .report(
+              Metric.DEFINITIONS_SEARCHED,
+              wordLanguage.toString.toLowerCase
+            )
           logger.info(
             s"Not enriching definitions in $definitionLanguage for word $word because no results were found"
           )
@@ -125,6 +127,10 @@ trait LanguageDefinitionService[T <: Definition] {
         )
         Future.successful(List[T]())
       case Some(fetcher) =>
+        metrics.report(
+          Metric.DEFINITIONS_SEARCHED,
+          wordLanguage.toString.toLowerCase
+        )
         fetcher
           .fetchDefinitions(
             elasticsearch,
@@ -135,19 +141,6 @@ trait LanguageDefinitionService[T <: Definition] {
             word
           )
     }
-
-  // Use this for definitions not backed by a rest API: eg loaded using spark
-  def elasticsearchDefinitionClient[U <: DefinitionEntry](
-      language: Language,
-      word: Word
-  ): Future[CircuitBreakerResult[List[U]]] =
-    Future.apply(
-      CircuitBreakerFailedAttempt(
-        new NotImplementedError(
-          s"Fetcher not implemented for language: $language, failed to fetch $word"
-        )
-      )
-    )
 
   def getIndex: String = {
     s"definitions-${config.get[String]("environment")}"
