@@ -39,9 +39,3 @@ jobs:
       uses: codecov/codecov-action@v1
       with:
         flags: unittest
-
-    - name: Run codacy-coverage-reporter
-      uses: codacy/codacy-coverage-reporter-action@master
-      with:
-        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        coverage-reports: api/target/scala-2.12/coverage-report/cobertura.xml, content/target/scala-2.12/coverage-report/cobertura.xml, domain/target/scala-2.12/coverage-report/cobertura.xml, jobs/target/scala-2.12/coverage-report/cobertura.xml
