@@ -32,8 +32,8 @@ class DefinitionController @Inject() (
       definitionLanguage: Language,
       word: String
   ): Future[Result] = {
-    metrics.timeRequest(definitionLabel) {
-      //    metrics.inc(Metric.ACTIVE_REQUESTS)
+    metrics.timeRequest(definitionLabel)(() => {
+      metrics.inc(Metric.ACTIVE_REQUESTS)
       logger.info(
         s"Getting definitions in $definitionLanguage for $wordLanguage word $word"
       )
@@ -66,7 +66,7 @@ class DefinitionController @Inject() (
               s"Failed to get definitions for $word in $wordLanguage"
             )
         }
-    }
+    })
   }.map(r => {
 //    metrics.dec(Metric.ACTIVE_REQUESTS)
     r
