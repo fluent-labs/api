@@ -64,9 +64,7 @@ class MetricsReporter {
     .labelNames("route")
     .register()
 
-  def timeRequest[T](label: String)(request: => T): T = {
-//    val callable: Callable[T] = () => request
-//    requestTimer.time(callable)
-    request
+  def timeRequest[T](label: String)(request: Callable[T]): T = {
+    requestTimer.labels(label).time(request)
   }
 }
