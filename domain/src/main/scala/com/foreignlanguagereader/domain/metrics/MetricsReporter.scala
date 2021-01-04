@@ -3,6 +3,7 @@ package com.foreignlanguagereader.domain.metrics
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.domain.metrics.Metric.Metric
+import io.prometheus.client.hotspot.DefaultExports
 import io.prometheus.client.{Counter, Gauge, Histogram}
 
 import java.util.concurrent.Callable
@@ -16,6 +17,9 @@ import javax.inject.Singleton
  */
 @Singleton
 class MetricsReporter {
+  // JVM metrics
+  DefaultExports.initialize()
+
   def makeCounterBuilder(metric: Metric): Counter.Builder = {
     Counter
       .build()
