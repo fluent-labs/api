@@ -50,6 +50,7 @@ class GoogleCloudClient @Inject() (
       document: String
   ): Future[CircuitBreakerResult[Set[Word]]] = {
     logger.info(s"Getting tokens in $language from Google cloud: $document")
+    metrics.report(Metric.GOOGLE_CALLS)
 
     val doc =
       Document.newBuilder
@@ -66,11 +67,10 @@ class GoogleCloudClient @Inject() (
     Nested
       .apply(
         breaker
-          .withBreaker(
-            s"Failed to get tokens from google cloud",
-            () => metrics.report(Metric.GOOGLE_SUCCESSES),
-            () => metrics.report(Metric.GOOGLE_FAILURES)
-          )(
+          .withBreaker(e => {
+            logger.error("Failed to get tokens from google cloud", e)
+            metrics.report(Metric.GOOGLE_FAILURES)
+          })(
             Future {
               gcloud.getTokens(request)
             }

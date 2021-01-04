@@ -10,18 +10,19 @@ object Metric extends Enumeration {
 
   // Traffic - Rates
   // Can this be attached as an interceptor?
-  val REQUEST_SUCCESSES: Value = Value("request_successes")
+  val REQUEST_COUNT: Value = Value("request_count")
+
   // Errors
   val REQUEST_FAILURES: Value = Value("request_failures")
   val BAD_REQUEST_DATA: Value =
     Value("bad_request_data") // Likely indicates issues on the frontend
 
   // Clients
-  val ELASTICSEARCH_SUCCESSES: Value = Value("elasticsearch_successes")
+  val ELASTICSEARCH_CALLS: Value = Value("elasticsearch_calls")
   val ELASTICSEARCH_FAILURES: Value = Value("elasticsearch_failures")
-  val GOOGLE_SUCCESSES: Value = Value("google_successes")
+  val GOOGLE_CALLS: Value = Value("google_calls")
   val GOOGLE_FAILURES: Value = Value("google_failures")
-  val WEBSTER_SUCCESSES: Value = Value("webster_successes")
+  val WEBSTER_CALLS: Value = Value("webster_calls")
   val WEBSTER_FAILURES: Value = Value("webster_failures")
 
   // Saturation

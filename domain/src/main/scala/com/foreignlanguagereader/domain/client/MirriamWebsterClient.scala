@@ -54,24 +54,36 @@ class MirriamWebsterClient @Inject() (
   val learnersLabel = "learners"
   def getLearnersDefinition(
       word: Word
-  ): Future[CircuitBreakerResult[List[WebsterLearnersDefinitionEntry]]] =
+  ): Future[CircuitBreakerResult[List[WebsterLearnersDefinitionEntry]]] = {
+    metrics.report(Metric.WEBSTER_CALLS, learnersLabel)
     client
       .get[List[WebsterLearnersDefinitionEntry]](
         s"https://www.dictionaryapi.com/api/v3/references/learners/json/${word.processedToken}?key=$learnersApiKey",
-        () => metrics.report(Metric.WEBSTER_SUCCESSES, learnersLabel),
-        () => metrics.report(Metric.WEBSTER_FAILURES, learnersLabel)
+        e => {
+          logger.error(
+            s"Failed to get learners definition result for word $word",
+            e
+          )
+          metrics.report(Metric.WEBSTER_FAILURES, learnersLabel)
+        }
       )
+  }
 
   val spanishLabel = "spanish"
   def getSpanishDefinition(
       word: Word
-  ): Future[CircuitBreakerResult[List[WebsterSpanishDefinitionEntry]]] =
+  ): Future[CircuitBreakerResult[List[WebsterSpanishDefinitionEntry]]] = {
+    metrics.report(Metric.WEBSTER_CALLS, spanishLabel)
     client
       .get[List[WebsterSpanishDefinitionEntry]](
         s"https://www.dictionaryapi.com/api/v3/references/spanish/json/${word.processedToken}?key=$spanishApiKey",
-        () => metrics.report(Metric.WEBSTER_SUCCESSES, spanishLabel),
-        () => metrics.report(Metric.WEBSTER_FAILURES, spanishLabel)
+        e => {
+          logger
+            .error(s"Failed to get spanish definition result for word $word", e)
+          metrics.report(Metric.WEBSTER_FAILURES, spanishLabel)
+        }
       )
+  }
 
   def health(): ReadinessStatus = client.breaker.health()
 }

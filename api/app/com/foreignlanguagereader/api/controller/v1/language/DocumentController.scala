@@ -44,7 +44,7 @@ class DocumentController @Inject() (
                   documentRequest.getText
                 )
                 .map(words => {
-                  metrics.report(Metric.REQUEST_SUCCESSES, documentLabel)
+                  metrics.report(Metric.REQUEST_COUNT, documentLabel)
                   Ok(JavaJson.stringify(JavaJson.toJson(words.map(_.toDTO))))
                 })
                 .recover {

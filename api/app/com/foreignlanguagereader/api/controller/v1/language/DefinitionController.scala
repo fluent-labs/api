@@ -46,7 +46,7 @@ class DefinitionController @Inject() (
         )
         .map { definitions =>
           {
-            metrics.report(Metric.REQUEST_SUCCESSES, definitionLabel)
+            metrics.report(Metric.REQUEST_COUNT, definitionLabel)
             Ok(
               JavaJson.stringify(
                 JavaJson

@@ -49,45 +49,35 @@ class Circuitbreaker(
     }
 
   def withBreaker[T](
-      logIfError: String,
-      onSuccess: () => Unit,
-      onError: () => Unit
+      onError: Throwable => Unit
   )(
       body: => Future[T]
   ): Future[CircuitBreakerResult[T]] =
     withBreaker(
-      logIfError,
+      onError,
       defaultIsFailure,
-      defaultIsSuccess[T],
-      onSuccess,
-      onError
+      defaultIsSuccess[T]
     )(body)
 
   def withBreaker[T](
-      logIfError: String,
+      onError: Throwable => Unit,
       isFailure: Throwable => Boolean,
-      isSuccess: T => Boolean,
-      onSuccess: () => Unit,
-      onError: () => Unit
+      isSuccess: T => Boolean
   )(
       body: => Future[T]
   ): Future[CircuitBreakerResult[T]] =
     breaker
       .withCircuitBreaker[T](body, makeFailureFunction(isFailure, isSuccess))
-      .map(s => {
-        onSuccess.apply()
-        CircuitBreakerAttempt(s)
-      })
+      .map(s => CircuitBreakerAttempt(s))
       .recover {
         case c: CircuitBreakerOpenException =>
           logger.warn(
             s"Failing fast because circuit breaker $name is open, ${c.remainingDuration} remaining."
           )
-          onError.apply()
+          onError.apply(c)
           CircuitBreakerNonAttempt[T]()
         case e =>
-          logger.error(logIfError, e)
-          onError.apply()
+          onError.apply(e)
           CircuitBreakerFailedAttempt[T](e)
       }
 

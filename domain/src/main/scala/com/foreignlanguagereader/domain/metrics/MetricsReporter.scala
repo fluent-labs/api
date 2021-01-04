@@ -30,16 +30,16 @@ class MetricsReporter {
       .register()
 
   val unlabeledCounters: Map[Metric, Counter] =
-    List(Metric.GOOGLE_SUCCESSES, Metric.GOOGLE_FAILURES)
+    List(Metric.GOOGLE_CALLS, Metric.GOOGLE_FAILURES)
       .map(metric => metric -> buildCounter(metric))
       .toMap
 
   val labeledCounters: Map[Metric, Counter] = Map(
-    Metric.ELASTICSEARCH_SUCCESSES -> "method",
+    Metric.ELASTICSEARCH_CALLS -> "method",
     Metric.ELASTICSEARCH_FAILURES -> "method",
-    Metric.WEBSTER_SUCCESSES -> "dictionary",
+    Metric.WEBSTER_CALLS -> "dictionary",
     Metric.WEBSTER_FAILURES -> "dictionary",
-    Metric.REQUEST_SUCCESSES -> "route",
+    Metric.REQUEST_COUNT -> "route",
     Metric.REQUEST_FAILURES -> "route",
     Metric.BAD_REQUEST_DATA -> "route"
   ).map {

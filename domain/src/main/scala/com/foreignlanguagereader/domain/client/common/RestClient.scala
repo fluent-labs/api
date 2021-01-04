@@ -28,23 +28,11 @@ case class RestClient(
 
   def get[T: ClassTag](
       url: String,
-      onSuccess: () => Unit,
-      onError: () => Unit
-  )(implicit reads: Reads[T]): Future[CircuitBreakerResult[T]] = {
-    val typeName = implicitly[ClassTag[T]].runtimeClass.getSimpleName
-    val message = s"Failed to get $typeName from $url"
-    get(url, message, onSuccess, onError)
-  }
-
-  def get[T: ClassTag](
-      url: String,
-      logIfError: String,
-      onSuccess: () => Unit,
-      onError: () => Unit
+      onError: Throwable => Unit
   )(implicit reads: Reads[T]): Future[CircuitBreakerResult[T]] = {
     logger.info(s"Calling url $url")
     val typeName = implicitly[ClassTag[T]].runtimeClass.getSimpleName
-    breaker.withBreaker(logIfError, onSuccess, onError) {
+    breaker.withBreaker(onError) {
       ws.url(url)
         // Doubled so that the circuit breaker will handle it.
         .withRequestTimeout(timeout * 2)
