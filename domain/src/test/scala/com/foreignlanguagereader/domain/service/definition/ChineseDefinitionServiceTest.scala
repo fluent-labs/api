@@ -18,6 +18,7 @@ import com.foreignlanguagereader.domain.fetcher.chinese.{
   CEDICTFetcher,
   WiktionaryChineseFetcher
 }
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import org.mockito.ArgumentMatchers.{any, eq => MockitoEq}
 import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
@@ -35,10 +36,12 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
   val wiktionaryMock: WiktionaryChineseFetcher = mock[WiktionaryChineseFetcher]
   val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
   val configMock: Configuration = mock[Configuration]
+  val metricsMock: MetricsReporter = mock[MetricsReporter]
 
   val chineseDefinitionService = new ChineseDefinitionService(
     elasticsearchClientMock,
     configMock,
+    metricsMock,
     cedictMock,
     wiktionaryMock,
     ec

@@ -17,7 +17,9 @@ import com.foreignlanguagereader.domain.fetcher.chinese.{
   CEDICTFetcher,
   WiktionaryChineseFetcher
 }
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.github.houbb.opencc4j.util.ZhConverterUtil
+
 import javax.inject.Inject
 import play.api.{Configuration, Logger}
 
@@ -31,6 +33,7 @@ import scala.concurrent.ExecutionContext
 class ChineseDefinitionService @Inject() (
     val elasticsearch: ElasticsearchCacheClient,
     override val config: Configuration,
+    val metrics: MetricsReporter,
     cedictFetcher: CEDICTFetcher,
     wiktionaryChineseFetcher: WiktionaryChineseFetcher,
     implicit val ec: ExecutionContext

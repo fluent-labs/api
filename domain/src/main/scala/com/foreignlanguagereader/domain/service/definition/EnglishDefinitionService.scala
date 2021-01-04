@@ -13,6 +13,8 @@ import com.foreignlanguagereader.domain.fetcher.english.{
   WebsterEnglishToSpanishFetcher,
   WebsterLearnersFetcher
 }
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
+
 import javax.inject.Inject
 import play.api.Configuration
 
@@ -23,6 +25,7 @@ class EnglishDefinitionService @Inject() (
     val websterLearnersFetcher: WebsterLearnersFetcher,
     val websterEnglishToSpanishFetcher: WebsterEnglishToSpanishFetcher,
     override val config: Configuration,
+    val metrics: MetricsReporter,
     implicit val ec: ExecutionContext
 ) extends LanguageDefinitionService[EnglishDefinition] {
   override val wordLanguage: Language = Language.ENGLISH

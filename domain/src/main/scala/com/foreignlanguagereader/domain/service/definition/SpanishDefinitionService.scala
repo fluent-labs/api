@@ -10,6 +10,8 @@ import com.foreignlanguagereader.content.types.internal.definition.{
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
 import com.foreignlanguagereader.domain.fetcher.spanish.WebsterSpanishToEnglishFetcher
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
+
 import javax.inject.Inject
 import play.api.Configuration
 
@@ -19,6 +21,7 @@ class SpanishDefinitionService @Inject() (
     val elasticsearch: ElasticsearchCacheClient,
     val websterSpanishToEnglishFetcher: WebsterSpanishToEnglishFetcher,
     override val config: Configuration,
+    val metrics: MetricsReporter,
     implicit val ec: ExecutionContext
 ) extends LanguageDefinitionService[SpanishDefinition] {
   override val wordLanguage: Language = Language.SPANISH
