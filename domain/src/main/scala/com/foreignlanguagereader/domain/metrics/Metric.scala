@@ -1,16 +1,21 @@
 package com.foreignlanguagereader.domain.metrics
 
+// $COVERAGE-OFF$
 object Metric extends Enumeration {
   type Metric = Value
 
   // Latency - Duration
+  // Can this be attached as an interceptor?
   val REQUESTS_LATENCY_SECONDS: Value = Value("requests_latency_seconds")
 
   // Traffic - Rates
+  // Can this be attached as an interceptor?
   val REQUEST_SUCCESSES: Value = Value("request_successes")
   // Errors
   val REQUEST_FAILURES: Value = Value("request_failures")
-  val BAD_REQUEST_DATA: Value = Value("bad_request_data")
+  val BAD_REQUEST_DATA: Value =
+    Value("bad_request_data") // Likely indicates issues on the frontend
+
   // Clients
   val ELASTICSEARCH_SUCCESSES: Value = Value("elasticsearch_successes")
   val ELASTICSEARCH_FAILURES: Value = Value("elasticsearch_failures")
@@ -21,4 +26,23 @@ object Metric extends Enumeration {
 
   // Saturation
   val ACTIVE_REQUESTS: Value = Value("active_requests")
+
+  // Usage metrics
+  val CHINESE_LEARNER_REQUESTS: Value =
+    Value("chinese_learner_requests") // label by definition language
+  val ENGLISH_LEARNER_REQUESTS: Value =
+    Value("english_learner_requests") // label by definition language
+  val SPANISH_LEARNER_REQUESTS: Value =
+    Value("spanish_learner_requests") // label by definition language
+
+  // Caching results
+  val DEFINITIONS_FOUND: Value =
+    Value("definitions_found") // label by source
+  val DEFINITIONS_NOT_FOUND: Value =
+    Value("definitions_not_found") // label by source
+  val DEFINITIONS_FOUND_FROM_CACHE: Value =
+    Value("definitions_found_from_cache") // label by source
+  val DEFINITIONS_NOT_FOUND_FROM_CACHE: Value =
+    Value("definitions_not_found_from_cache") // label by source
 }
+// $COVERAGE-ON$
