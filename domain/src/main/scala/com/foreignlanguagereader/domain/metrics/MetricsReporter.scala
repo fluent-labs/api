@@ -20,10 +20,12 @@ class MetricsReporter {
   // JVM metrics
   DefaultExports.initialize()
 
+  val namespace = "flr_"
+
   def makeCounterBuilder(metric: Metric): Counter.Builder = {
     Counter
       .build()
-      .name(metric.toString.toLowerCase)
+      .name(namespace + metric.toString.toLowerCase)
       .help(metric.toString.toLowerCase.replaceAll("_", " "))
   }
 
@@ -86,7 +88,7 @@ class MetricsReporter {
   ): Gauge =
     Gauge
       .build()
-      .name(metric.toString.toLowerCase)
+      .name(namespace + metric.toString.toLowerCase)
       .help(metric.toString.toLowerCase.replaceAll("_", " "))
       .register()
 
@@ -101,7 +103,7 @@ class MetricsReporter {
 
   val requestTimer: Histogram = Histogram
     .build()
-    .name(Metric.REQUESTS_LATENCY_SECONDS.toString)
+    .name(namespace + Metric.REQUESTS_LATENCY_SECONDS.toString)
     .help("Request latency in seconds.")
     .labelNames("route")
     .register()
