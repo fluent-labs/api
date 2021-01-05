@@ -56,9 +56,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - uses: dorny/paths-filter@v2.70
+        name: Check if dependencies have changed
+        id: changed_dependencies
+        with:
+          filters: |
+            dependencies:
+              - 'project/Dependencies.scala'
+
       - name: Pull and rebuild dependencies docker image
+        if: steps.changed_dependencies.outputs.dependencies == 'true'
         run: |
-          docker pull lkjaero/foreign-language-reader-api:builder
           docker build . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
           docker push lkjaero/foreign-language-reader-api:builder
 
