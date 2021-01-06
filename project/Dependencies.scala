@@ -1,6 +1,5 @@
-import sbt._
-import Keys._
 import play.sbt.PlayImport.{guice, ws}
+import sbt._
 
 /*
  * Dependencies
