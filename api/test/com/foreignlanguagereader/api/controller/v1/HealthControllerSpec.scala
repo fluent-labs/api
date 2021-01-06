@@ -1,48 +1,59 @@
 package com.foreignlanguagereader.api.controller.v1
 
-import org.scalatest.OptionValues
-import org.scalatest.matchers.must.Matchers
-import org.scalatest.wordspec.AnyWordSpec
-import org.scalatestplus.play.WsScalaTestClient
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
+import org.mockito.MockitoSugar
+import play.api.Application
+import play.api.inject.bind
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.Helpers._
 import play.api.test._
 
-// Shim because scalatestplus is behind scalatest, so dependencies collide
-// More: https://github.com/scalatest/scalatest/issues/1734
-abstract class PlaySpec
-    extends AnyWordSpec
-    with Matchers
-    with OptionValues
-    with WsScalaTestClient
+class HealthControllerSpec extends PlaySpec with MockitoSugar {
 
-class HealthControllerSpec
-    extends PlaySpec
-    with GuiceOneAppPerSuite
-    with Injecting {
+  val jsonContentType = "application/json"
+  val textContentType = "text/plain"
 
-  val responseContentType = "application/json"
+  val app: Application = new GuiceApplicationBuilder()
+    .bindings(bind[MetricsReporter].toInstance(mock[MetricsReporter]))
+    .build()
 
   "Health Check" should {
     val healthRoute = "/health"
     val upStatus = "{\"status\":\"up\"}"
 
-    "render the index page from the application" in {
-      val controller = inject[HealthController]
-      val home = controller.health().apply(FakeRequest(GET, healthRoute))
-
-      status(home) mustBe OK
-      contentType(home) mustBe Some(responseContentType)
-      contentAsString(home) must include(upStatus)
-    }
-
-    "render the index page from the router" in {
+    "render the health check page from the router" in {
       val request = FakeRequest(GET, healthRoute)
-      val home = route(app, request).get
+      val health = route(app, request).get
 
-      status(home) mustBe OK
-      contentType(home) mustBe Some(responseContentType)
-      contentAsString(home) must include(upStatus)
+      status(health) mustBe OK
+      contentType(health) mustBe Some(jsonContentType)
+      contentAsString(health) must include(upStatus)
+    }
+  }
+
+  "Readiness Check" should {
+    val readinessRoute = "/readiness"
+    val upStatus = "{\"database\":\"UP\",\"content\":\"UP\",\"webster\":\"UP\"}"
+
+    "render the readiness page from the router" in {
+      val request = FakeRequest(GET, readinessRoute)
+      val readiness = route(app, request).get
+
+      status(readiness) mustBe OK
+      contentType(readiness) mustBe Some(jsonContentType)
+      contentAsString(readiness) must include(upStatus)
+    }
+  }
+
+  "Metrics endpoint" should {
+    val metricsRoute = "/metrics"
+
+    "render the metrics page from the router" in {
+      val request = FakeRequest(GET, metricsRoute)
+      val metrics = route(app, request).get
+
+      status(metrics) mustBe OK
+      contentType(metrics) mustBe Some(textContentType)
     }
   }
 }

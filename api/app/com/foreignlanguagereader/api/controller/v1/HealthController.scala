@@ -2,7 +2,6 @@ package com.foreignlanguagereader.api.controller.v1
 
 import com.foreignlanguagereader.domain.client.MirriamWebsterClient
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchClient
-import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.foreignlanguagereader.dto.v1.health.{Readiness, ReadinessStatus}
 import io.prometheus.client.CollectorRegistry
 import io.prometheus.client.exporter.common.TextFormat
@@ -19,7 +18,6 @@ class HealthController @Inject() (
     val controllerComponents: ControllerComponents,
     elasticsearchClient: ElasticsearchClient,
     websterClient: MirriamWebsterClient,
-    metrics: MetricsReporter,
     implicit val ec: ExecutionContext
 ) extends BaseController {
 
@@ -43,27 +41,25 @@ class HealthController @Inject() (
    */
   def readiness: Action[AnyContent] =
     Action.apply { implicit request: Request[AnyContent] =>
-      metrics.requestTimer
-        .labels("readiness")
-        .time(() => {
-          // Trigger all the requests in parallel
-          val database = ReadinessStatus.UP
+      {
+        // Trigger all the requests in parallel
+        val database = ReadinessStatus.UP
 
-          val status = Readiness(
-            database,
-            elasticsearchClient.breaker.health(),
-            websterClient.health()
-          )
-          val response = Json.toJson(status)
-          logger.debug(s"Responding to readiness check check: $response")
+        val status = Readiness(
+          database,
+          elasticsearchClient.breaker.health(),
+          websterClient.health()
+        )
+        val response = Json.toJson(status)
+        logger.debug(s"Responding to readiness check check: $response")
 
-          status.overall match {
-            case ReadinessStatus.UP => Ok(response)
-            case ReadinessStatus.DOWN =>
-              ServiceUnavailable(response)
-            case ReadinessStatus.DEGRADED => ImATeapot(response)
-          }
-        })
+        status.overall match {
+          case ReadinessStatus.UP => Ok(response)
+          case ReadinessStatus.DOWN =>
+            ServiceUnavailable(response)
+          case ReadinessStatus.DEGRADED => ImATeapot(response)
+        }
+      }
     }
 
   def getMetrics: Action[AnyContent] =
