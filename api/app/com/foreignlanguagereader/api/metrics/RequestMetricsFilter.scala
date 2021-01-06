@@ -33,12 +33,7 @@ class RequestMetricsFilter @Inject() (implicit
   ): Future[Result] = {
     metrics.report(Metric.REQUEST_COUNT, pathLabel)
     metrics.inc(Metric.ACTIVE_REQUESTS)
-    val timer = metrics.requestTimer.map(
-      _.labels(
-        method,
-        pathLabel
-      ).startTimer()
-    )
+    val timer = metrics.startTimer(method, pathLabel)
     future.onComplete(_ => {
       timer.map(_.observeDuration())
       metrics.dec(Metric.ACTIVE_REQUESTS)

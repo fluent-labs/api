@@ -88,6 +88,15 @@ class MetricsReporter {
         .labelNames("method", "path")
         .register()
     )
+
+  def startTimer(method: String, path: String): Option[Histogram.Timer] = {
+    requestTimer.map(
+      _.labels(
+        method,
+        path
+      ).startTimer()
+    )
+  }
 }
 
 object MetricsReporter {

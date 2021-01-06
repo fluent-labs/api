@@ -21,7 +21,7 @@ class HealthControllerSpec extends PlaySpec with MockitoSugar {
     val healthRoute = "/health"
     val upStatus = "{\"status\":\"up\"}"
 
-    "render the index page from the router" in {
+    "render the health check page from the router" in {
       val request = FakeRequest(GET, healthRoute)
       val health = route(app, request).get
 
@@ -35,7 +35,7 @@ class HealthControllerSpec extends PlaySpec with MockitoSugar {
     val readinessRoute = "/readiness"
     val upStatus = "{\"database\":\"UP\",\"content\":\"UP\",\"webster\":\"UP\"}"
 
-    "render the index page from the router" in {
+    "render the readiness page from the router" in {
       val request = FakeRequest(GET, readinessRoute)
       val readiness = route(app, request).get
 
@@ -48,7 +48,7 @@ class HealthControllerSpec extends PlaySpec with MockitoSugar {
   "Metrics endpoint" should {
     val metricsRoute = "/metrics"
 
-    "render the index page from the router" in {
+    "render the metrics page from the router" in {
       val request = FakeRequest(GET, metricsRoute)
       val metrics = route(app, request).get
 
