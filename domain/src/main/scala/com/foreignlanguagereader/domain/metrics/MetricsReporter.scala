@@ -8,7 +8,6 @@ import io.prometheus.client.{Counter, Gauge, Histogram}
 import play.api.Logger
 
 import javax.inject.Singleton
-import scala.util.matching.Regex
 import scala.util.{Failure, Success, Try}
 
 /*
@@ -19,9 +18,8 @@ import scala.util.{Failure, Success, Try}
  */
 @Singleton
 class MetricsReporter {
-
   // JVM metrics
-//  DefaultExports.initialize()
+  DefaultExports.initialize()
 
   val unlabeledCounters: Map[Metric, Counter] =
     MetricsReporter.initializeUnlabeledMetric(
