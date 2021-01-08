@@ -6,9 +6,11 @@ import com.google.cloud.language.v1.{
   LanguageServiceClient,
   Token
 }
-import javax.inject.Singleton
+import play.api.Logger
 
+import javax.inject.Singleton
 import scala.collection.JavaConverters._
+import scala.util.{Failure, Success, Try}
 
 // $COVERAGE-OFF$
 /**
@@ -17,11 +19,23 @@ import scala.collection.JavaConverters._
   */
 @Singleton
 class GoogleLanguageServiceClientHolder {
-  private[this] val gcloud: LanguageServiceClient =
+  val logger: Logger = Logger(this.getClass)
+  private[this] val gcloud: Option[LanguageServiceClient] = Try(
     LanguageServiceClient.create()
+  ) match {
+    case Success(value) => Some(value)
+    case Failure(e) =>
+      logger.error("Failed to provision google cloud client", e)
+      None
+  }
 
-  def analyzeSyntax(request: AnalyzeSyntaxRequest): AnalyzeSyntaxResponse =
-    gcloud.analyzeSyntax(request)
+  def analyzeSyntax(request: AnalyzeSyntaxRequest): AnalyzeSyntaxResponse = {
+    if (gcloud.isDefined) {
+      gcloud.get.analyzeSyntax(request)
+    } else {
+      throw new IllegalStateException("Google cloud client was not provisioned")
+    }
+  }
 
   def getTokens(request: AnalyzeSyntaxRequest): List[Token] =
     analyzeSyntax(request).getTokensList.asScala.toList
