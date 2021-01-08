@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.api.controller.v1.language
 
+import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.foreignlanguagereader.domain.metrics.label.RequestPath
@@ -25,7 +26,8 @@ class DocumentController @Inject() (
   implicit val documentRequestReader: Reads[DocumentRequest] =
     (JsPath \ "text").read[String].map(text => new DocumentRequest(text))
 
-  val documentLabel = "document"
+  def document(wordLanguage: Language): Action[JsValue] =
+    document(wordLanguage, Language.ENGLISH)
 
   def document(
       wordLanguage: Language,

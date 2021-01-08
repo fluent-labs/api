@@ -25,9 +25,6 @@ class DefinitionControllerSpec extends PlaySpec with MockitoSugar {
   val app: Application = new GuiceApplicationBuilder()
     .bindings(bind[MetricsReporter].toInstance(mockMetricsReporter))
     .bindings(bind[DefinitionService].toInstance(mockDefinitionService))
-    .configure(
-      "play.http.errorHandler" -> "com.foreignlanguagereader.api.error.ErrorHandler"
-    )
     .build()
 
   override def withFixture(test: NoArgTest): Outcome = {
