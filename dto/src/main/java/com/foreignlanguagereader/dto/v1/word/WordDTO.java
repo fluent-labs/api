@@ -16,4 +16,20 @@ public class WordDTO {
         this.lemma = lemma;
         this.definitions = definitions;
     }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public String getLemma() {
+        return lemma;
+    }
+
+    public List<DefinitionDTO> getDefinitions() {
+        return definitions;
+    }
+
+    public String getToken() {
+        return token;
+    }
 }
