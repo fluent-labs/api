@@ -11,8 +11,8 @@ import com.foreignlanguagereader.domain.client.common.{
   RestClient,
   RestClientBuilder
 }
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.foreignlanguagereader.domain.metrics.label.WebsterDictionary
-import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
 import com.foreignlanguagereader.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.libs.json.Reads
 import play.api.{Configuration, Logger}
@@ -52,7 +52,6 @@ class MirriamWebsterClient @Inject() (
 
   // TODO filter garbage
 
-  val learnersLabel = "learners"
   def getLearnersDefinition(
       word: Word
   ): Future[CircuitBreakerResult[List[WebsterLearnersDefinitionEntry]]] = {
@@ -72,7 +71,6 @@ class MirriamWebsterClient @Inject() (
     result
   }
 
-  val spanishLabel = "spanish"
   def getSpanishDefinition(
       word: Word
   ): Future[CircuitBreakerResult[List[WebsterSpanishDefinitionEntry]]] = {

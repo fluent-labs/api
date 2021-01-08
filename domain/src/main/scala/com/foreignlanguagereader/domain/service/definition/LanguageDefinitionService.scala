@@ -6,7 +6,7 @@ import com.foreignlanguagereader.content.types.internal.definition.DefinitionSou
 import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
-import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import play.api.{Configuration, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -76,13 +76,6 @@ trait LanguageDefinitionService[T <: Definition] {
         )
       )
       .map(_.toMap)
-      .map(results => {
-        results.keySet.foreach(source => {
-          if (results.getOrElse(source, List()).isEmpty)
-            metrics.reportDefinitionsNotFound(source)
-        })
-        results
-      })
       // Remove empty sources
       .map(p =>
         p.collect {
@@ -111,11 +104,16 @@ trait LanguageDefinitionService[T <: Definition] {
       source: DefinitionSource,
       word: Word
   ): Future[List[T]] = {
+    metrics.reportDefinitionsSearched(source)
     Future
       .traverse(preprocessWordForRequest(word))(token =>
         getDefinitionsForToken(definitionLanguage, source, token)
       )
       .map(_.flatten)
+      .map(result => {
+        if (result.isEmpty) metrics.reportDefinitionsNotFound(source)
+        result
+      })
   }
 
   private[this] def getDefinitionsForToken(
@@ -130,7 +128,6 @@ trait LanguageDefinitionService[T <: Definition] {
         )
         Future.successful(List[T]())
       case Some(fetcher) =>
-        metrics.reportDefinitionsSearched(source)
         fetcher
           .fetchDefinitions(
             elasticsearch,
