@@ -1,173 +1,156 @@
 package com.foreignlanguagereader.domain.metrics
 
-import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.domain.metrics.Metric.Metric
+import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.domain.metrics.label.ElasticsearchMethod.ElasticsearchMethod
+import com.foreignlanguagereader.domain.metrics.label.RequestPath.RequestPath
+import com.foreignlanguagereader.domain.metrics.label.WebsterDictionary.WebsterDictionary
+import io.prometheus.client.Histogram
 import io.prometheus.client.hotspot.DefaultExports
-import io.prometheus.client.{Counter, Gauge, Histogram}
-import play.api.Logger
+import play.api.Configuration
 
-import javax.inject.Singleton
-import scala.util.{Failure, Success, Try}
+import javax.inject.{Inject, Singleton}
 
-/*
- * Two motivations for this class
- * - Put an interface on metrics, in case we want to change solutions. Metrics design is still in an early stage
- * - Metrics are global and shared among all instances. Creating one twice causes an error.
- *      This makes creating metrics in classes play badly in tests, so we use this class that can be stubbed.
- */
 @Singleton
-class MetricsReporter {
+class MetricsReporter @Inject() (holder: MetricHolder, config: Configuration) {
   // JVM metrics
-  DefaultExports.initialize()
+  val getJvmMetrics: Boolean =
+    config.getOptional[Boolean]("metrics.reportJVM").getOrElse(true)
 
-  val unlabeledCounters: Map[Metric, Counter] =
-    MetricsReporter.initializeUnlabeledMetric(
-      List(Metric.GOOGLE_CALLS, Metric.GOOGLE_FAILURES)
-    )(MetricsReporter.buildCounter)
+  def initialize(): Unit = {
+    if (getJvmMetrics) {
+      DefaultExports.initialize()
+    }
+    holder.initializeMetricsToZero()
+  }
 
-  val labeledCounters: Map[Metric, Counter] =
-    MetricsReporter.initializeLabeledMetric(
-      Map(
-        Metric.ELASTICSEARCH_CALLS -> "method",
-        Metric.ELASTICSEARCH_FAILURES -> "method",
-        Metric.WEBSTER_CALLS -> "dictionary",
-        Metric.WEBSTER_FAILURES -> "dictionary",
-        Metric.REQUEST_COUNT -> "route",
-        Metric.REQUEST_FAILURES -> "route",
-        Metric.BAD_REQUEST_DATA -> "route",
-        Metric.CHINESE_LEARNER_REQUESTS -> "definitionLanguage",
-        Metric.ENGLISH_LEARNER_REQUESTS -> "definitionLanguage",
-        Metric.SPANISH_LEARNER_REQUESTS -> "definitionLanguage"
-      )
-    )(MetricsReporter.buildCounter)
+  /*
+   * End user RED metrics
+   */
 
-  val gauges: Map[Metric, Gauge] =
-    MetricsReporter.initializeUnlabeledMetric(List(Metric.ACTIVE_REQUESTS))(
-      MetricsReporter.buildGauge
+  // Requests and Duration
+  def reportRequestStarted(
+      method: String,
+      path: RequestPath
+  ): Option[Histogram.Timer] = {
+    holder.inc(Metric.ACTIVE_REQUESTS)
+    holder.report(Metric.REQUEST_COUNT, path.toString)
+    holder.startTimer(
+      Metric.REQUESTS_LATENCY_SECONDS,
+      Seq(method, path.toString)
     )
+  }
+  def reportRequestFinished(timer: Option[Histogram.Timer]): Unit = {
+    timer.map(_.observeDuration())
+    holder.dec(Metric.ACTIVE_REQUESTS)
+  }
 
-  def report(metric: Metric): Unit =
-    unlabeledCounters.get(metric).foreach(_.inc())
-  def report(metric: Metric, label: String): Unit =
-    labeledCounters.get(metric).foreach(_.labels(label).inc())
+  // Errors
+  def reportRequestFailure(path: RequestPath): Unit =
+    holder.report(Metric.REQUEST_FAILURES, path.toString)
+  def reportBadRequest(path: RequestPath): Unit =
+    holder.report(Metric.BAD_REQUEST_DATA, path.toString)
 
-  // Specialized class to report user metrics
-  def reportLanguageUsage(
-      learningLanguage: Language,
-      definitionLanguage: Language
+  /*
+   * Downstream dependency RED metrics
+   */
+
+  // Elasticsearch
+  def reportElasticsearchRequestStarted(
+      method: ElasticsearchMethod
+  ): Option[Histogram.Timer] = {
+    holder.inc(Metric.ACTIVE_ELASTICSEARCH_REQUESTS)
+    holder.report(Metric.ELASTICSEARCH_CALLS, method.toString)
+    holder.startTimer(
+      Metric.ELASTICSEARCH_LATENCY_SECONDS,
+      Seq(method.toString)
+    )
+  }
+  def reportElasticsearchRequestFinished(
+      timer: Option[Histogram.Timer]
   ): Unit = {
-    val metric = learningLanguage match {
-      case Language.CHINESE             => Metric.CHINESE_LEARNER_REQUESTS
-      case Language.CHINESE_TRADITIONAL => Metric.CHINESE_LEARNER_REQUESTS
-      case Language.ENGLISH             => Metric.ENGLISH_LEARNER_REQUESTS
-      case Language.SPANISH             => Metric.SPANISH_LEARNER_REQUESTS
-    }
-    val label = definitionLanguage.toString.toLowerCase
-    report(metric, label)
+    timer.map(_.observeDuration())
+    holder.dec(Metric.ACTIVE_ELASTICSEARCH_REQUESTS)
+  }
+  def reportElasticsearchFailure(
+      timer: Option[Histogram.Timer],
+      method: ElasticsearchMethod
+  ): Unit = {
+    timer.map(_.observeDuration())
+    holder.report(Metric.ELASTICSEARCH_FAILURES, method.toString)
   }
 
-  def inc(metric: Metric): Unit =
-    gauges.get(metric).foreach(_.inc())
-  def dec(metric: Metric): Unit =
-    gauges.get(metric).foreach(_.dec())
-
-  // Initialize everything so metrics always show up
-  unlabeledCounters.mapValues(_.inc(0))
-  labeledCounters.mapValues(_.labels().inc(0))
-  gauges.mapValues(_.inc(0))
-
-  val requestTimer: Option[Histogram] =
-    MetricsReporter.safelyMakeMetric(Metric.REQUESTS_LATENCY_SECONDS)(() =>
-      Histogram
-        .build()
-        .name(
-          MetricsReporter.namespace + Metric.REQUESTS_LATENCY_SECONDS.toString
-        )
-        .help("Request latency in seconds.")
-        .labelNames("method", "path")
-        .register()
-    )
-
-  def startTimer(method: String, path: String): Option[Histogram.Timer] = {
-    requestTimer.map(
-      _.labels(
-        method,
-        path
-      ).startTimer()
+  // Google
+  def reportGoogleRequestStarted(): Option[Histogram.Timer] = {
+    holder.inc(Metric.ACTIVE_GOOGLE_REQUESTS)
+    holder.report(Metric.GOOGLE_CALLS)
+    holder.startTimer(
+      Metric.GOOGLE_LATENCY_SECONDS,
+      Seq("get_tokens")
     )
   }
-}
-
-object MetricsReporter {
-  val namespace = "flr_"
-  val logger: Logger = Logger(this.getClass)
-
-  // Handle duplicate registry when running locally
-  // Play automatic reload will break otherwise
-  def safelyMakeMetric[T](metric: Metric)(method: () => T): Option[T] = {
-    Try(method.apply()) match {
-      case Success(metric) => Some(metric)
-      case Failure(e) =>
-        logger.error(
-          s"Failed to initialize metric ${metric.toString.toLowerCase}",
-          e
-        )
-        None
-    }
+  def reportGoogleRequestFinished(timer: Option[Histogram.Timer]): Unit = {
+    timer.map(_.observeDuration())
+    holder.dec(Metric.ACTIVE_GOOGLE_REQUESTS)
   }
 
-  def initializeUnlabeledMetric[T](metrics: List[Metric])(
-      builder: Metric => T
-  ): Map[Metric, T] = {
-    metrics
-      .map(metric => metric -> safelyMakeMetric(metric)(() => builder(metric)))
-      .collect {
-        case (metric, Some(counter)) => metric -> counter
-      }
-      .toMap
+  def reportGoogleFailure(timer: Option[Histogram.Timer]): Unit = {
+    timer.map(_.observeDuration())
+    holder.report(Metric.GOOGLE_FAILURES)
   }
 
-  def initializeLabeledMetric[T](metrics: Map[Metric, String])(
-      builder: (Metric, String) => T
-  ): Map[Metric, T] = {
-    metrics
-      .map {
-        case (metric, labels) =>
-          metric -> safelyMakeMetric(metric)(() => builder(metric, labels))
-      }
-      .collect {
-        case (metric, Some(counter)) => metric -> counter
-      }
+  // Webster
+  def reportWebsterRequestStarted(
+      dictionary: WebsterDictionary
+  ): Option[Histogram.Timer] = {
+    holder.inc(Metric.ACTIVE_WEBSTER_REQUESTS)
+    holder.report(Metric.WEBSTER_CALLS, dictionary.toString)
+    holder.startTimer(
+      Metric.WEBSTER_LATENCY_SECONDS,
+      Seq(dictionary.toString)
+    )
+  }
+  def reportWebsterRequestFinished(timer: Option[Histogram.Timer]): Unit = {
+    timer.map(_.observeDuration())
+    holder.dec(Metric.ACTIVE_WEBSTER_REQUESTS)
   }
 
-  def makeCounterBuilder(metric: Metric): Counter.Builder = {
-    Counter
-      .build()
-      .name(namespace + metric.toString.toLowerCase)
-      .help(metric.toString.toLowerCase.replaceAll("_", " "))
+  def reportWebsterFailure(
+      timer: Option[Histogram.Timer],
+      dictionary: WebsterDictionary
+  ): Unit = {
+    timer.map(_.observeDuration())
+    holder.report(Metric.WEBSTER_FAILURES, dictionary.toString)
   }
 
-  def buildCounter(
-      metric: Metric
-  ): Counter =
-    makeCounterBuilder(metric)
-      .register()
+  /*
+   * User behavior and experience metrics
+   */
+  def reportLearnerLanguage(
+      learningLanguage: Language,
+      baseLanguage: Language
+  ): Unit = {
+    holder.report(
+      Metric.LEARNER_LANGUAGE_REQUESTS,
+      Seq(learningLanguage.toString, baseLanguage.toString)
+    )
+  }
+  def reportDefinitionsSearched(source: DefinitionSource): Unit = {
+    holder.report(Metric.DEFINITIONS_SEARCHED, source.toString)
+  }
+  def reportDefinitionsNotFound(source: DefinitionSource): Unit = {
+    holder.report(Metric.DEFINITIONS_NOT_FOUND, source.toString)
+  }
 
-  def buildCounter(
-      metric: Metric,
-      labelNames: String
-  ): Counter =
-    makeCounterBuilder(metric)
-      .labelNames(labelNames)
-      .register()
+  /*
+   * Caching metrics
+   */
+  def reportDefinitionsSearchedInCache(source: DefinitionSource): Unit = {
+    holder.report(Metric.DEFINITIONS_SEARCHED_IN_CACHE, source.toString)
+  }
+  def reportDefinitionsNotFoundInCache(source: DefinitionSource): Unit = {
+    holder.report(Metric.DEFINITIONS_NOT_FOUND_IN_CACHE, source.toString)
+  }
 
-  def buildGauge(
-      metric: Metric
-  ): Gauge =
-    Gauge
-      .build()
-      .name(namespace + metric.toString.toLowerCase)
-      .help(metric.toString.toLowerCase.replaceAll("_", " "))
-      .register()
+  initialize()
 }
