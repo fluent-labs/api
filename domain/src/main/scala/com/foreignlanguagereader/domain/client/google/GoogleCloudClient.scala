@@ -15,7 +15,7 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerResult,
   Circuitbreaker
 }
-import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.google.cloud.language.v1.Document.Type
 import com.google.cloud.language.v1.PartOfSpeech.{
   Gender,
