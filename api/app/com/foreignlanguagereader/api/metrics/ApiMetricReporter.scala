@@ -10,7 +10,7 @@ object ApiMetricReporter {
   val languageRegex: String = s"[${Language.values.mkString("|")}]+"
   val definitionsRegex: Regex =
     s"/v1/language/definition/$languageRegex/[^/]+/?".r
-  val documentRegex: Regex = s"/v1/language/definition/$languageRegex/?".r
+  val documentRegex: Regex = s"/v1/language/document/$languageRegex/?".r
 
   def getLabelFromPath(path: String): RequestPath =
     path match {
