@@ -86,6 +86,72 @@ class MetricHolder {
   ): Option[Histogram.Timer] = {
     timers.get(metric).map(timer => timer.labels(labels: _*).startTimer())
   }
+
+  // Initialize everything so metrics always show up
+  def initializeMetricsToZero(): Unit = {
+    unlabeledCounters.mapValues(_.inc(0))
+    gauges.mapValues(_.inc(0))
+
+    initializeLabeledCounter(
+      Metric.ELASTICSEARCH_CALLS,
+      ElasticsearchMethod.values.map(_.toString)
+    )
+    initializeLabeledCounter(
+      Metric.ELASTICSEARCH_FAILURES,
+      ElasticsearchMethod.values.map(_.toString)
+    )
+
+    initializeLabeledCounter(
+      Metric.WEBSTER_CALLS,
+      WebsterDictionary.values.map(_.toString)
+    )
+    initializeLabeledCounter(
+      Metric.WEBSTER_FAILURES,
+      WebsterDictionary.values.map(_.toString)
+    )
+
+    initializeLabeledCounter(
+      Metric.REQUEST_COUNT,
+      RequestPath.values.map(_.toString)
+    )
+    initializeLabeledCounter(
+      Metric.REQUEST_FAILURES,
+      RequestPath.values.map(_.toString)
+    )
+    initializeLabeledCounter(
+      Metric.BAD_REQUEST_DATA,
+      RequestPath.values.map(_.toString)
+    )
+
+    val languageLabels: Set[List[String]] = for {
+      learningLanguage <- Language.values.map(_.toString)
+      baseLanguage <- Language.values.map(_.toString)
+    } yield List(learningLanguage, baseLanguage)
+    initializeLabeledCounter(
+      Metric.LEARNER_LANGUAGE_REQUESTS,
+      languageLabels.toSeq
+    )
+  }
+
+  def initializeLabeledCounter(
+      metric: Metric,
+      labels: Set[String]
+  ): Unit =
+    initializeLabeledCounter(
+      metric,
+      labels.map(label => List(label)).toSeq
+    )
+
+  def initializeLabeledCounter(
+      metric: Metric,
+      labels: Seq[Seq[String]]
+  ): Unit = {
+    labeledCounters
+      .get(metric)
+      .foreach(counter =>
+        labels.foreach(labelSet => counter.labels(labelSet: _*).inc(0))
+      )
+  }
 }
 
 object MetricHolder {
