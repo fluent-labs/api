@@ -110,9 +110,9 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         .getDefinitions(Language.ENGLISH, test)
         .map { results =>
           verify(metricsMock)
-            .report(Metric.DEFINITIONS_SEARCHED, "english")
+            .reportDefinitionsSearched(DefinitionSource.WIKTIONARY)
           verify(metricsMock)
-            .report(Metric.DEFINITIONS_SEARCHED_IN_CACHE, "wiktionary")
+            .reportDefinitionsSearchedInCache(DefinitionSource.WIKTIONARY)
           verifyNoMoreInteractions(metricsMock)
           assert(results.length == 1)
           assert(
@@ -138,11 +138,11 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         .getDefinitions(Language.ENGLISH, test)
         .map { response =>
           verify(metricsMock)
-            .report(Metric.DEFINITIONS_SEARCHED, "english")
+            .reportDefinitionsSearched(DefinitionSource.WIKTIONARY)
           verify(metricsMock)
-            .report(Metric.DEFINITIONS_SEARCHED_IN_CACHE, "wiktionary")
+            .reportDefinitionsSearchedInCache(DefinitionSource.WIKTIONARY)
           verify(metricsMock)
-            .report(Metric.DEFINITIONS_NOT_FOUND, "english")
+            .reportDefinitionsNotFound(DefinitionSource.WIKTIONARY)
           verifyNoMoreInteractions(metricsMock)
           assert(response.isEmpty)
         }

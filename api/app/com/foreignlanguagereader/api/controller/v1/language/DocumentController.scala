@@ -1,7 +1,8 @@
 package com.foreignlanguagereader.api.controller.v1.language
 
 import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
+import com.foreignlanguagereader.domain.metrics.label.RequestPath
 import com.foreignlanguagereader.domain.service.DocumentService
 import com.foreignlanguagereader.dto.v1.document.DocumentRequest
 import play.api.Logger
@@ -32,7 +33,7 @@ class DocumentController @Inject() (
   ): Action[JsValue] =
     Action.async(parse.json) { request =>
       {
-        metrics.reportLanguageUsage(wordLanguage, definitionLanguage)
+        metrics.reportLearnerLanguage(wordLanguage, definitionLanguage)
         request.body.validate[DocumentRequest] match {
           case JsSuccess(documentRequest: DocumentRequest, _) =>
             documentService
@@ -48,7 +49,7 @@ class DocumentController @Inject() (
             logger.error(
               s"Invalid request body given to document service: $errors"
             )
-            metrics.report(Metric.BAD_REQUEST_DATA, documentLabel)
+            metrics.reportBadRequest(RequestPath.DOCUMENT)
             Future {
               BadRequest("Invalid request body, please try again")
             }

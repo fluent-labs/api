@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.api.error
 
 import com.foreignlanguagereader.api.metrics.ApiMetricReporter
-import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import play.api.Logger
 import play.api.http.HttpErrorHandler
 import play.api.libs.json.Json
@@ -28,10 +28,7 @@ class ErrorHandler @Inject() (metrics: MetricsReporter)
       s"Bad input provided from client on method ${request.method} path ${request.path}: $message"
     )
 
-    metrics.report(
-      Metric.BAD_REQUEST_DATA,
-      ApiMetricReporter.getLabelFromPath(request.path)
-    )
+    metrics.reportBadRequest(ApiMetricReporter.getLabelFromPath(request.path))
 
     Future.successful(
       Status(statusCode)(
@@ -49,8 +46,7 @@ class ErrorHandler @Inject() (metrics: MetricsReporter)
       exception
     )
 
-    metrics.report(
-      Metric.REQUEST_FAILURES,
+    metrics.reportRequestFailure(
       ApiMetricReporter.getLabelFromPath(request.path)
     )
 

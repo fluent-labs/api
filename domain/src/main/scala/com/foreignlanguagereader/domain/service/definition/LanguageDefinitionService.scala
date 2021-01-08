@@ -76,6 +76,13 @@ trait LanguageDefinitionService[T <: Definition] {
         )
       )
       .map(_.toMap)
+      .map(results => {
+        results.keySet.foreach(source => {
+          if (results.getOrElse(source, List()).isEmpty)
+            metrics.reportDefinitionsNotFound(source)
+        })
+        results
+      })
       // Remove empty sources
       .map(p =>
         p.collect {
@@ -89,11 +96,7 @@ trait LanguageDefinitionService[T <: Definition] {
           )
           enrichDefinitions(definitionLanguage, word, definitions)
         } else {
-          metrics
-            .report(
-              Metric.DEFINITIONS_NOT_FOUND,
-              wordLanguage.toString.toLowerCase
-            )
+          definitions.keySet.foreach(metrics.reportDefinitionsNotFound)
           logger.info(
             s"Not enriching definitions in $definitionLanguage for word $word because no results were found"
           )
@@ -127,10 +130,7 @@ trait LanguageDefinitionService[T <: Definition] {
         )
         Future.successful(List[T]())
       case Some(fetcher) =>
-        metrics.report(
-          Metric.DEFINITIONS_SEARCHED,
-          wordLanguage.toString.toLowerCase
-        )
+        metrics.reportDefinitionsSearched(source)
         fetcher
           .fetchDefinitions(
             elasticsearch,

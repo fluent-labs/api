@@ -31,7 +31,7 @@ class DefinitionController @Inject() (
       definitionLanguage: Language,
       word: String
   ): Future[Result] = {
-    metrics.reportLanguageUsage(wordLanguage, definitionLanguage)
+    metrics.reportLearnerLanguage(wordLanguage, definitionLanguage)
     logger.info(
       s"Getting definitions in $definitionLanguage for $wordLanguage word $word"
     )

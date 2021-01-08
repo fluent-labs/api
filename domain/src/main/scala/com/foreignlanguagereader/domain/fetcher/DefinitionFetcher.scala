@@ -38,10 +38,7 @@ trait DefinitionFetcher[T <: DefinitionEntry, U <: Definition] {
       source: DefinitionSource,
       word: Word
   )(implicit ec: ExecutionContext, tag: ClassTag[T]): Future[List[U]] = {
-    metrics.report(
-      Metric.DEFINITIONS_SEARCHED_IN_CACHE,
-      source.toString.toLowerCase
-    )
+    metrics.reportDefinitionsSearchedInCache(source)
     elasticsearch
       .findFromCacheOrRefetch(
         makeDefinitionRequest(
@@ -68,10 +65,7 @@ trait DefinitionFetcher[T <: DefinitionEntry, U <: Definition] {
       word: Word
   )(implicit ec: ExecutionContext): ElasticsearchSearchRequest[T] = {
     val fetcher = () => {
-      metrics.report(
-        Metric.DEFINITIONS_NOT_FOUND_IN_CACHE,
-        source.toString.toLowerCase
-      )
+      metrics.reportDefinitionsNotFoundInCache(source)
       fetch(definitionLanguage, word)
     }
 
