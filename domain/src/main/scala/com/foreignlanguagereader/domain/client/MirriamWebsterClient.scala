@@ -11,7 +11,8 @@ import com.foreignlanguagereader.domain.client.common.{
   RestClient,
   RestClientBuilder
 }
-import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
+import com.foreignlanguagereader.domain.metrics.label.WebsterDictionary
 import com.foreignlanguagereader.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.libs.json.Reads
 import play.api.{Configuration, Logger}
@@ -51,12 +52,11 @@ class MirriamWebsterClient @Inject() (
 
   // TODO filter garbage
 
-  val learnersLabel = "learners"
   def getLearnersDefinition(
       word: Word
   ): Future[CircuitBreakerResult[List[WebsterLearnersDefinitionEntry]]] = {
-    metrics.report(Metric.WEBSTER_CALLS, learnersLabel)
-    client
+    val timer = metrics.reportWebsterRequestStarted(WebsterDictionary.LEARNERS)
+    val result = client
       .get[List[WebsterLearnersDefinitionEntry]](
         s"https://www.dictionaryapi.com/api/v3/references/learners/json/${word.processedToken}?key=$learnersApiKey",
         e => {
@@ -64,25 +64,28 @@ class MirriamWebsterClient @Inject() (
             s"Failed to get learners definition result for word $word",
             e
           )
-          metrics.report(Metric.WEBSTER_FAILURES, learnersLabel)
+          metrics.reportWebsterFailure(timer, WebsterDictionary.LEARNERS)
         }
       )
+    metrics.reportWebsterRequestFinished(timer)
+    result
   }
 
-  val spanishLabel = "spanish"
   def getSpanishDefinition(
       word: Word
   ): Future[CircuitBreakerResult[List[WebsterSpanishDefinitionEntry]]] = {
-    metrics.report(Metric.WEBSTER_CALLS, spanishLabel)
-    client
+    val timer = metrics.reportWebsterRequestStarted(WebsterDictionary.SPANISH)
+    val result = client
       .get[List[WebsterSpanishDefinitionEntry]](
         s"https://www.dictionaryapi.com/api/v3/references/spanish/json/${word.processedToken}?key=$spanishApiKey",
         e => {
           logger
             .error(s"Failed to get spanish definition result for word $word", e)
-          metrics.report(Metric.WEBSTER_FAILURES, spanishLabel)
+          metrics.reportWebsterFailure(timer, WebsterDictionary.SPANISH)
         }
       )
+    metrics.reportWebsterRequestFinished(timer)
+    result
   }
 
   def health(): ReadinessStatus = client.breaker.health()

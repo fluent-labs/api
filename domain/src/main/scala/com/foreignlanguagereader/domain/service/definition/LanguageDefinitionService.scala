@@ -6,7 +6,7 @@ import com.foreignlanguagereader.content.types.internal.definition.DefinitionSou
 import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
-import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import play.api.{Configuration, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -89,11 +89,7 @@ trait LanguageDefinitionService[T <: Definition] {
           )
           enrichDefinitions(definitionLanguage, word, definitions)
         } else {
-          metrics
-            .report(
-              Metric.DEFINITIONS_NOT_FOUND,
-              wordLanguage.toString.toLowerCase
-            )
+          definitions.keySet.foreach(metrics.reportDefinitionsNotFound)
           logger.info(
             s"Not enriching definitions in $definitionLanguage for word $word because no results were found"
           )
@@ -108,11 +104,16 @@ trait LanguageDefinitionService[T <: Definition] {
       source: DefinitionSource,
       word: Word
   ): Future[List[T]] = {
+    metrics.reportDefinitionsSearched(source)
     Future
       .traverse(preprocessWordForRequest(word))(token =>
         getDefinitionsForToken(definitionLanguage, source, token)
       )
       .map(_.flatten)
+      .map(result => {
+        if (result.isEmpty) metrics.reportDefinitionsNotFound(source)
+        result
+      })
   }
 
   private[this] def getDefinitionsForToken(
@@ -127,10 +128,6 @@ trait LanguageDefinitionService[T <: Definition] {
         )
         Future.successful(List[T]())
       case Some(fetcher) =>
-        metrics.report(
-          Metric.DEFINITIONS_SEARCHED,
-          wordLanguage.toString.toLowerCase
-        )
         fetcher
           .fetchDefinitions(
             elasticsearch,

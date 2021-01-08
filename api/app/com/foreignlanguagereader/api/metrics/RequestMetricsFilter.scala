@@ -1,7 +1,9 @@
 package com.foreignlanguagereader.api.metrics
 
 import akka.stream.Materializer
-import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
+import com.foreignlanguagereader.domain.metrics.label.RequestPath
+import com.foreignlanguagereader.domain.metrics.label.RequestPath.RequestPath
 import play.api.mvc.{Filter, RequestHeader, Result}
 
 import javax.inject.Inject
@@ -13,7 +15,8 @@ class RequestMetricsFilter @Inject() (implicit
     metrics: MetricsReporter,
     executionContext: ExecutionContext
 ) extends Filter {
-  val ignoredPaths = Set("health", "metrics", "readiness")
+  val ignoredPaths =
+    Set(RequestPath.HEALTH, RequestPath.METRICS, RequestPath.READINESS)
 
   def apply(
       nextFilter: RequestHeader => Future[Result]
@@ -29,14 +32,11 @@ class RequestMetricsFilter @Inject() (implicit
   def annotateWithMetrics(
       future: Future[Result],
       method: String,
-      pathLabel: String
+      pathLabel: RequestPath
   ): Future[Result] = {
-    metrics.report(Metric.REQUEST_COUNT, pathLabel)
-    metrics.inc(Metric.ACTIVE_REQUESTS)
-    val timer = metrics.startTimer(method, pathLabel)
+    val timer = metrics.reportRequestStarted(method, pathLabel)
     future.onComplete(_ => {
-      timer.map(_.observeDuration())
-      metrics.dec(Metric.ACTIVE_REQUESTS)
+      metrics.reportRequestFinished(timer)
     })
     future
   }

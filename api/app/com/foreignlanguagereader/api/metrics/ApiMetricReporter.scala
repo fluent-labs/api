@@ -1,20 +1,22 @@
 package com.foreignlanguagereader.api.metrics
 
 import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.domain.metrics.label.RequestPath
+import com.foreignlanguagereader.domain.metrics.label.RequestPath.RequestPath
 
 import scala.util.matching.Regex
 
 object ApiMetricReporter {
   val languageRegex: String = s"[${Language.values.mkString("|")}]+"
   val definitionsRegex: Regex =
-    "/v1/language/definition/$languageRegex/[^/]+/?".r
+    s"/v1/language/definition/$languageRegex/[^/]+/?".r
 
-  def getLabelFromPath(path: String): String =
+  def getLabelFromPath(path: String): RequestPath =
     path match {
-      case definitionsRegex() => "definition"
-      case "/health"          => "health"
-      case "/metrics"         => "metrics"
-      case "/readiness"       => "readiness"
-      case _                  => path
+      case definitionsRegex() => RequestPath.DEFINITIONS
+      case "/health"          => RequestPath.HEALTH
+      case "/metrics"         => RequestPath.METRICS
+      case "/readiness"       => RequestPath.READINESS
+      case _                  => RequestPath.UNKNOWN
     }
 }
