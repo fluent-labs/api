@@ -39,6 +39,8 @@ object Dependencies {
     "io.prometheus" % "simpleclient_common" % prometheusVersion
   val prometheusHotspot =
     "io.prometheus" % "simpleclient_hotspot" % prometheusVersion
+  val apmAgentAttach =
+    "co.elastic.apm" % "apm-agent-attach" % "1.20.0"
 
   // Spark
   val sparkCore =
@@ -119,7 +121,8 @@ object ProjectDependencies {
     commonDependencies ++ playDependencies ++ log4jDependencies ++ Seq(
       Dependencies.prometheusClient,
       Dependencies.prometheusHotspot,
-      Dependencies.prometheusCommon
+      Dependencies.prometheusCommon,
+      Dependencies.apmAgentAttach
     )
 
   val contentDependencies: Seq[ModuleID] = commonDependencies ++ Seq(
