@@ -8,6 +8,7 @@ import sbt._
 object Dependencies {
   val scalatestVersion = "3.2.2"
   val jacksonVersion = "2.11.3"
+  val playSlickVersion = "5.0.0"
   val log4jVersion = "2.14.0"
   val elasticsearchVersion = "7.10.1"
   val sparkVersion = "3.0.1"
@@ -64,6 +65,11 @@ object Dependencies {
   val googleCloudClient =
     "com.google.cloud" % "google-cloud-language" % "1.101.6"
 
+  val h2 = "com.h2database" % "h2" % "1.4.192"
+  val playSlick = "com.typesafe.play" %% "play-slick" % playSlickVersion
+  val playSlickEvolutions =
+    "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion
+
   // Hacks for guava incompatibility
   val hadoopMapreduceClient =
     "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "2.7.2"
@@ -119,7 +125,8 @@ object ProjectDependencies {
     commonDependencies ++ playDependencies ++ log4jDependencies ++ Seq(
       Dependencies.prometheusClient,
       Dependencies.prometheusHotspot,
-      Dependencies.prometheusCommon
+      Dependencies.prometheusCommon,
+      Dependencies.h2
     )
 
   val contentDependencies: Seq[ModuleID] = commonDependencies ++ Seq(
@@ -142,7 +149,8 @@ object ProjectDependencies {
     Dependencies.googleCloudClient,
     // Metrics
     Dependencies.prometheusClient,
-    Dependencies.prometheusHotspot
+    Dependencies.prometheusHotspot,
+    Dependencies.playSlick
   )
 
   val dtoDependencies: Seq[ModuleID] = commonDependencies
