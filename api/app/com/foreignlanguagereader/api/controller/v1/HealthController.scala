@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.api.controller.v1
 
 import com.foreignlanguagereader.domain.client.MirriamWebsterClient
+import com.foreignlanguagereader.domain.client.database.DatabaseClient
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchClient
 import com.foreignlanguagereader.dto.v1.health.{Readiness, ReadinessStatus}
 import io.prometheus.client.CollectorRegistry
@@ -16,6 +17,7 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class HealthController @Inject() (
     val controllerComponents: ControllerComponents,
+    databaseClient: DatabaseClient,
     elasticsearchClient: ElasticsearchClient,
     websterClient: MirriamWebsterClient,
     implicit val ec: ExecutionContext
@@ -34,19 +36,13 @@ class HealthController @Inject() (
     }
 
   /*
-   * Indicates if instance is able to serve traffic. This should:
-   * - Check connection to DB
-   * - Check connection to Elasticsearch
-   * But for now a static response is fine
+   * Indicates if instance is able to serve traffic. This should show if connections to downstream dependencies are healthy.
    */
   def readiness: Action[AnyContent] =
     Action.apply { implicit request: Request[AnyContent] =>
       {
-        // Trigger all the requests in parallel
-        val database = ReadinessStatus.UP
-
         val status = Readiness(
-          database,
+          databaseClient.breaker.health(),
           elasticsearchClient.breaker.health(),
           websterClient.health()
         )
