@@ -7,7 +7,7 @@ import slick.dbio.{DBIOAction, NoStream}
 import slick.jdbc.JdbcProfile
 
 import javax.inject.Singleton
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class DatabaseConnectionHolder @Inject() (
@@ -18,5 +18,6 @@ class DatabaseConnectionHolder @Inject() (
     system.dispatchers.lookup("database-context")
   val database = db
 
-  def run[R](query: DBIOAction[R, NoStream, Nothing]) = db.run[R](query)
+  def run[R](query: DBIOAction[R, NoStream, Nothing]): Future[R] =
+    db.run[R](query)
 }
