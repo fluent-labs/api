@@ -1,11 +1,13 @@
 package com.foreignlanguagereader.domain.client.elasticsearch
 
+import com.foreignlanguagereader.content.types.internal.ElasticsearchCacheable
 import com.foreignlanguagereader.domain.client.common._
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.{
   ElasticsearchCacheRequest,
   ElasticsearchSearchRequest,
   ElasticsearchSearchResponse
 }
+
 import javax.inject.{Inject, Singleton}
 import org.elasticsearch.action.bulk.BulkRequest
 import play.api.Logger

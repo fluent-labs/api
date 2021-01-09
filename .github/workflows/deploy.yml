@@ -56,9 +56,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - uses: dorny/paths-filter@v2.7.0
+        name: Check if dependencies have changed
+        id: changed_dependencies
+        with:
+          filters: |
+            dependencies:
+              - 'project/Dependencies.scala'
+
       - name: Pull and rebuild dependencies docker image
+        if: steps.changed_dependencies.outputs.dependencies == 'true'
         run: |
-          docker pull lkjaero/foreign-language-reader-api:builder
           docker build . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
           docker push lkjaero/foreign-language-reader-api:builder
 
@@ -89,10 +97,10 @@ jobs:
 
       - name: Update image in K8s
         run: |
-          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig -n prod \
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
             set image deployment/api api=lkjaero/foreign-language-reader-api:${{ env.RELEASE_VERSION}} --record
 
       - name: Wait for deployment to finish
         run: |
-          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig -n prod \
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig \
             rollout status deployment/api

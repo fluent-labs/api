@@ -7,19 +7,18 @@ import com.foreignlanguagereader.content.types.internal.definition.ChineseDefini
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.common.{
-  CircuitBreakerAttempt,
-  CircuitBreakerNonAttempt,
+  CircuitBreakerFailedAttempt,
   CircuitBreakerResult
 }
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
-import com.foreignlanguagereader.domain.repository.definition.Cedict
-import javax.inject.Inject
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import play.api.Logger
 import play.api.libs.json.{Reads, Writes}
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CEDICTFetcher @Inject()
+class CEDICTFetcher @Inject() (val metrics: MetricsReporter)
     extends DefinitionFetcher[CEDICTDefinitionEntry, ChineseDefinition] {
   override val logger: Logger = Logger(this.getClass)
 
@@ -29,16 +28,13 @@ class CEDICTFetcher @Inject()
   )(implicit
       ec: ExecutionContext
   ): Future[CircuitBreakerResult[List[CEDICTDefinitionEntry]]] =
-    Cedict.getDefinition(word) match {
-      case Some(entries) =>
-        logger.info(s"Found results in CEDICT for $word")
-        Future.successful(CircuitBreakerAttempt(entries))
-      case None =>
-        logger.info(s"Did not find results in CEDICT for $word")
-        Future.successful(
-          CircuitBreakerNonAttempt[List[CEDICTDefinitionEntry]]()
+    Future.apply(
+      CircuitBreakerFailedAttempt(
+        new NotImplementedError(
+          "CEDICT is a elasticsearch only fetcher"
         )
-    }
+      )
+    )
 
   override def convertToDefinition(
       entry: CEDICTDefinitionEntry,

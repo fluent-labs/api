@@ -3,18 +3,20 @@ package com.foreignlanguagereader.api.controller.v1.language
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.internal.word.Word
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.foreignlanguagereader.domain.service.definition.DefinitionService
-import javax.inject._
 import play.api.Logger
 import play.api.mvc._
 import play.libs.{Json => JavaJson}
 
+import javax.inject._
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class DefinitionController @Inject() (
     val controllerComponents: ControllerComponents,
-    val definitionService: DefinitionService,
+    definitionService: DefinitionService,
+    metrics: MetricsReporter,
     implicit val ec: ExecutionContext
 ) extends BaseController {
   val logger: Logger = Logger(this.getClass)
@@ -24,20 +26,12 @@ class DefinitionController @Inject() (
       getDefinitions(wordLanguage, Language.ENGLISH, word)
     }
 
-  def definitionIn(
-      wordLanguage: Language,
-      definitionLanguage: Language,
-      word: String
-  ): Action[AnyContent] =
-    Action.async {
-      getDefinitions(wordLanguage, definitionLanguage, word)
-    }
-
   def getDefinitions(
       wordLanguage: Language,
       definitionLanguage: Language,
       word: String
   ): Future[Result] = {
+    metrics.reportLearnerLanguage(wordLanguage, definitionLanguage)
     logger.info(
       s"Getting definitions in $definitionLanguage for $wordLanguage word $word"
     )
@@ -49,22 +43,14 @@ class DefinitionController @Inject() (
         Word.fromToken(word, wordLanguage)
       )
       .map { definitions =>
-        Ok(
-          JavaJson.stringify(
-            JavaJson
-              .toJson(definitions.map(_.toDTO))
+        {
+          Ok(
+            JavaJson.stringify(
+              JavaJson
+                .toJson(definitions.map(_.toDTO))
+            )
           )
-        )
-      }
-      .recover {
-        case error: Throwable =>
-          logger.error(
-            s"Failed to get definitions for $word in $wordLanguage: ${error.getMessage}",
-            error
-          )
-          InternalServerError(
-            s"Failed to get definitions for $word in $wordLanguage"
-          )
+        }
       }
   }
 }

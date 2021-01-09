@@ -11,12 +11,14 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerResult
 }
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
+
 import javax.inject.Inject
 import play.api.libs.json.{Reads, Writes}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WiktionaryChineseFetcher @Inject()
+class WiktionaryChineseFetcher @Inject() (val metrics: MetricsReporter)
     extends DefinitionFetcher[
       WiktionaryDefinitionEntry,
       ChineseDefinition

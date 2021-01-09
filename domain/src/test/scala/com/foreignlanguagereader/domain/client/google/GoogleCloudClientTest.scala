@@ -9,6 +9,7 @@ import com.foreignlanguagereader.content.types.internal.word.{
   WordTense
 }
 import com.foreignlanguagereader.domain.client.common.CircuitBreakerAttempt
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.google.cloud.language.v1.AnalyzeSyntaxRequest
 import com.google.cloud.language.v1.PartOfSpeech.{
   Gender,
@@ -25,9 +26,11 @@ import org.scalatest.funspec.AsyncFunSpec
 class GoogleCloudClientTest extends AsyncFunSpec with MockitoSugar {
   val holderMock: GoogleLanguageServiceClientHolder =
     mock[GoogleLanguageServiceClientHolder]
+  val metricsMock: MetricsReporter = mock[MetricsReporter]
 
   val client = new GoogleCloudClient(
     holderMock,
+    metricsMock,
     scala.concurrent.ExecutionContext.Implicits.global,
     ActorSystem("testActorSystem", ConfigFactory.load())
   )

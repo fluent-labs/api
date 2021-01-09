@@ -3,24 +3,19 @@ package com.foreignlanguagereader.domain.client.google
 import akka.actor.ActorSystem
 import cats.data.Nested
 import cats.implicits._
+import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.Language.Language
+import com.foreignlanguagereader.content.types.internal.word
+import com.foreignlanguagereader.content.types.internal.word.Count.Count
+import com.foreignlanguagereader.content.types.internal.word.GrammaticalGender.GrammaticalGender
+import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
+import com.foreignlanguagereader.content.types.internal.word.WordTense.WordTense
+import com.foreignlanguagereader.content.types.internal.word._
 import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerResult,
   Circuitbreaker
 }
-import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.internal.word
-import Language.Language
-import com.foreignlanguagereader.content.types.internal.word.Count.Count
-import com.foreignlanguagereader.content.types.internal.word.GrammaticalGender.GrammaticalGender
-import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
-import com.foreignlanguagereader.content.types.internal.word.{
-  Count,
-  GrammaticalGender,
-  PartOfSpeech,
-  Word,
-  WordTense
-}
-import com.foreignlanguagereader.content.types.internal.word.WordTense.WordTense
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.google.cloud.language.v1.Document.Type
 import com.google.cloud.language.v1.PartOfSpeech.{
   Gender,
@@ -35,13 +30,15 @@ import com.google.cloud.language.v1.{
   EncodingType,
   Token
 }
-import javax.inject.Inject
 import play.api.Logger
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class GoogleCloudClient @Inject() (
     gcloud: GoogleLanguageServiceClientHolder,
+    metrics: MetricsReporter,
     implicit val ec: ExecutionContext,
     val system: ActorSystem
 ) {
@@ -66,12 +63,18 @@ class GoogleCloudClient @Inject() (
       .setEncodingType(EncodingType.UTF16)
       .build
 
+    val timer = metrics.reportGoogleRequestStarted()
     Nested
       .apply(
         breaker
-          .withBreaker(s"Failed to get tokens from google cloud")(
+          .withBreaker(e => {
+            logger.error("Failed to get tokens from google cloud", e)
+            metrics.reportGoogleFailure(timer)
+          })(
             Future {
-              gcloud.getTokens(request)
+              val result = gcloud.getTokens(request)
+              metrics.reportGoogleRequestFinished(timer)
+              result
             }
           )
       )

@@ -2,6 +2,7 @@ package com.foreignlanguagereader.domain.client.elasticsearch
 
 import cats.implicits._
 import com.foreignlanguagereader.content.types.Language
+import com.foreignlanguagereader.content.types.internal.ElasticsearchCacheable
 import com.foreignlanguagereader.content.types.internal.definition.{
   DefinitionSource,
   EnglishDefinition
