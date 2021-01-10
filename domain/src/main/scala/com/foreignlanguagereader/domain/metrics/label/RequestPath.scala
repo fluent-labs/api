@@ -9,4 +9,5 @@ object RequestPath extends Enumeration {
   val METRICS: Value = Value("metrics")
   val READINESS: Value = Value("readiness")
   val UNKNOWN: Value = Value("unknown")
+  val WORDS: Value = Value("words")
 }

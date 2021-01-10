@@ -22,7 +22,7 @@ abstract class Repository(
 
   def setup(): Unit = {
     logger.info(s"Running setup for repository $name")
-    db.run(makeSetupQuery()).foreach {
+    db.runSetup(makeSetupQuery()).foreach {
       case CircuitBreakerAttempt(_) =>
         logger.info(s"Successfully set up repository $name")
       case CircuitBreakerFailedAttempt(e) =>

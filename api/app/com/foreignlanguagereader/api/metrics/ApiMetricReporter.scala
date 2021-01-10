@@ -14,11 +14,12 @@ object ApiMetricReporter {
 
   def getLabelFromPath(path: String): RequestPath =
     path match {
-      case definitionsRegex() => RequestPath.DEFINITIONS
-      case documentRegex()    => RequestPath.DOCUMENT
-      case "/health"          => RequestPath.HEALTH
-      case "/metrics"         => RequestPath.METRICS
-      case "/readiness"       => RequestPath.READINESS
-      case _                  => RequestPath.UNKNOWN
+      case definitionsRegex()     => RequestPath.DEFINITIONS
+      case documentRegex()        => RequestPath.DOCUMENT
+      case "/health"              => RequestPath.HEALTH
+      case "/metrics"             => RequestPath.METRICS
+      case "/readiness"           => RequestPath.READINESS
+      case "/v1/vocabulary/words" => RequestPath.WORDS
+      case _                      => RequestPath.UNKNOWN
     }
 }

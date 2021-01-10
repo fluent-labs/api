@@ -20,7 +20,7 @@ class WordRepository @Inject() (
   val words = TableQuery[WordSchema]
 
   def getAllWords: Future[CircuitBreakerResult[Seq[WordDAO]]] = {
-    db.run(words.result)
+    db.runQuery(words.result)
   }
 
   override def makeSetupQuery(): DBIOAction[Unit, NoStream, _] =
