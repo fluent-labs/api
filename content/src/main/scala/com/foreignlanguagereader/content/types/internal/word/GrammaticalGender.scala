@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.content.types.internal.word
 
+import cats.implicits._
 import play.api.libs.json.{Reads, Writes}
 
 object GrammaticalGender extends Enumeration {
@@ -11,4 +12,7 @@ object GrammaticalGender extends Enumeration {
   implicit val reads: Reads[GrammaticalGender] =
     Reads.enumNameReads(GrammaticalGender)
   implicit val writes: Writes[GrammaticalGender] = Writes.enumNameWrites
+
+  def fromString(s: String): Option[GrammaticalGender] =
+    GrammaticalGender.values.find(_.toString === s)
 }

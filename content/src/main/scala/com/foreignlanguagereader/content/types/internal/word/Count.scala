@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.content.types.internal.word
 
+import cats.implicits._
 import play.api.libs.json.{Reads, Writes}
 
 object Count extends Enumeration {
@@ -10,4 +11,7 @@ object Count extends Enumeration {
 
   implicit val reads: Reads[Count] = Reads.enumNameReads(Count)
   implicit val writes: Writes[Count] = Writes.enumNameWrites
+
+  def fromString(s: String): Option[Count] =
+    Count.values.find(_.toString === s)
 }

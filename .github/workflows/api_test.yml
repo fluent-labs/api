@@ -47,11 +47,10 @@ jobs:
       run: docker build . -t api
 
     - name: Enforce security rules
-      uses: anchore/scan-action@v2
+      uses: anchore/scan-action@2.0.3
       id: scan
       with:
         image: "api:latest"
-        fail-build: true
         acs-report-enable: true
 
     - name: Upload scan report

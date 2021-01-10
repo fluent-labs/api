@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.content.types.internal.word
 
+import cats.implicits._
 import play.api.libs.json.{Reads, Writes}
 
 object WordTense extends Enumeration {
@@ -13,4 +14,7 @@ object WordTense extends Enumeration {
 
   implicit val reads: Reads[WordTense] = Reads.enumNameReads(WordTense)
   implicit val writes: Writes[WordTense] = Writes.enumNameWrites
+
+  def fromString(s: String): Option[WordTense] =
+    WordTense.values.find(_.toString === s)
 }
