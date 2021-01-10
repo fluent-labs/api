@@ -127,7 +127,8 @@ object ProjectDependencies {
       Dependencies.prometheusClient,
       Dependencies.prometheusHotspot,
       Dependencies.prometheusCommon,
-      Dependencies.h2
+      Dependencies.h2,
+      Dependencies.postgres
     )
 
   val contentDependencies: Seq[ModuleID] = commonDependencies ++ Seq(
