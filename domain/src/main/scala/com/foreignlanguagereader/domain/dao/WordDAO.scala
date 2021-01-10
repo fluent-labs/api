@@ -2,8 +2,8 @@ package com.foreignlanguagereader.domain.dao
 
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
+import com.foreignlanguagereader.domain.client.database.DatabaseConnection.dc.profile.api._
 import com.foreignlanguagereader.domain.repository.EnumImplicits._
-import slick.jdbc.H2Profile.api._
 import slick.lifted.ProvenShape
 
 case class WordDAO(

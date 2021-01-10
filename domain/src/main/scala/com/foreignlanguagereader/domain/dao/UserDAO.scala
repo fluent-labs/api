@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.domain.dao
 
-import slick.jdbc.H2Profile.api._
+import com.foreignlanguagereader.domain.client.database.DatabaseConnection.dc.profile.api._
 import slick.lifted.ProvenShape
 
 case class UserDAO(
