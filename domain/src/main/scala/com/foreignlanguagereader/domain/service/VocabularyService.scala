@@ -1,7 +1,5 @@
 package com.foreignlanguagereader.domain.service
 
-import cats.data.Nested
-import cats.implicits._
 import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.common.CircuitBreakerAttempt
 import com.foreignlanguagereader.domain.repository.WordRepository
@@ -14,6 +12,10 @@ class VocabularyService @Inject() (
     val wordRepository: WordRepository,
     implicit val ec: ExecutionContext
 ) {
+  def setup(): Unit = {
+    wordRepository.setup()
+  }
+
   def getAllWords: Future[Seq[Word]] = {
     wordRepository.getAllWords
       .map({
@@ -37,4 +39,6 @@ class VocabularyService @Inject() (
         )
       )
   }
+
+  setup()
 }
