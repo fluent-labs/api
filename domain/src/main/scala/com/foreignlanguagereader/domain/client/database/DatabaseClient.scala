@@ -13,7 +13,7 @@ import scala.concurrent.ExecutionContext
 class DatabaseClient @Inject() (
     val system: ActorSystem,
     config: Configuration,
-    db: DatabaseConnectionHolder,
+    db: DatabaseConnection,
     metrics: MetricsReporter
 ) {
   implicit val ec: ExecutionContext =
