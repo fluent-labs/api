@@ -78,7 +78,6 @@ jobs:
         uses: anchore/scan-action@v2
         with:
           image: "lkjaero/foreign-language-reader-api:LATEST"
-          fail-build: true
           acs-report-enable: true
 
       - name: Push production docker image

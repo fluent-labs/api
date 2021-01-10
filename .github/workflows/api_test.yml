@@ -51,7 +51,6 @@ jobs:
       id: scan
       with:
         image: "api:latest"
-        fail-build: true
         acs-report-enable: true
 
     - name: Upload scan report
