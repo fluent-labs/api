@@ -12,7 +12,6 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class DatabaseClient @Inject() (
     val system: ActorSystem,
-    config: Configuration,
     db: DatabaseConnection,
     metrics: MetricsReporter
 ) {

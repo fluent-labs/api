@@ -24,6 +24,10 @@ object Metric extends Enumeration {
    */
 
   // Requests
+  val DATABASE_CALLS: Value = Value("database_calls")
+  val ACTIVE_DATABASE_REQUESTS: Value = Value(
+    "active_database_requests"
+  )
   val ELASTICSEARCH_CALLS: Value = Value("elasticsearch_calls")
   val ACTIVE_ELASTICSEARCH_REQUESTS: Value = Value(
     "active_elasticsearch_requests"
@@ -34,11 +38,13 @@ object Metric extends Enumeration {
   val ACTIVE_WEBSTER_REQUESTS: Value = Value("active_webster_requests")
 
   // Errors
+  val DATABASE_FAILURES: Value = Value("database_failures")
   val ELASTICSEARCH_FAILURES: Value = Value("elasticsearch_failures")
   val GOOGLE_FAILURES: Value = Value("google_failures")
   val WEBSTER_FAILURES: Value = Value("webster_failures")
 
   // Duration
+  val DATABASE_LATENCY_SECONDS: Value = Value("database_latency_seconds")
   val ELASTICSEARCH_LATENCY_SECONDS: Value = Value(
     "elasticsearch_latency_seconds"
   )
