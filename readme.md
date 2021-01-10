@@ -2,9 +2,6 @@
 A site for learning to read foreign languages.
 Note: This is a work in progress. Part of the reason I'm doing it is to build an entire application from the ground up.
 
-## Where is the site?
-Infrastructure has been disabled for now until development is complete. Why pay for it when nobody is using it?
-
 ## Parts
 ### Frontend
 A React application that allows users to enter text and see which words they don't know.
