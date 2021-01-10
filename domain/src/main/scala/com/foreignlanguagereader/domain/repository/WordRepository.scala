@@ -6,7 +6,7 @@ import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.domain.client.common.CircuitBreakerResult
 import com.foreignlanguagereader.domain.client.database.DatabaseClient
-import com.foreignlanguagereader.domain.dao.WordDAO
+import com.foreignlanguagereader.domain.dao.{WordDAO, WordSchema}
 import play.api.Logger
 import slick.jdbc.H2Profile.api._
 
@@ -19,13 +19,13 @@ class WordRepository @Inject() (
 ) {
   val logger: Logger = Logger(this.getClass)
 
-  val word = TableQuery[WordDAO]
+  val word = TableQuery[WordSchema]
 
   def setup(): Unit = {
     logger.info("Running setup")
     val setupQuery = DBIO.seq(
       word.schema.createIfNotExists,
-      word += (Language.ENGLISH, "test", PartOfSpeech.NOUN, "test", None, None, false, None, "test")
+      word += WordDAO(Language.ENGLISH, "test", PartOfSpeech.NOUN, "test")
     )
     val setupFuture: Future[CircuitBreakerResult[Unit]] =
       Nested(
