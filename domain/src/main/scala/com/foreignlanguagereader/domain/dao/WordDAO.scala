@@ -14,6 +14,7 @@ case class WordDAO(
 )
 
 class WordSchema(tag: Tag) extends Table[WordDAO](tag, "Word") {
+  def id: Rep[Int] = column[Int]("id", O.PrimaryKey, O.AutoInc)
   def language: Rep[Language] = column[Language]("language")
   def token: Rep[String] = column[String]("token")
   def wordTag: Rep[PartOfSpeech] = column[PartOfSpeech]("tag")
