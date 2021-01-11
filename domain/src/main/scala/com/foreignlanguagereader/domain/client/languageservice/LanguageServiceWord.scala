@@ -5,8 +5,7 @@ import play.api.libs.json.{Format, Json}
 case class LanguageServiceWord(
     token: String,
     tag: String,
-    lemma: String,
-    definitions: List[String]
+    lemma: String
 )
 
 object LanguageServiceWord {
