@@ -3,7 +3,7 @@ package com.foreignlanguagereader.domain.client.common
 import akka.actor.ActorSystem
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Reads}
-import play.api.libs.ws.WSClient
+import play.api.libs.ws.{BodyWritable, WSClient}
 
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -46,6 +46,31 @@ case class RestClient(
             logger.error(error)
             throw new IllegalArgumentException(error)
         }
+    }
+  }
+
+  def post[T: BodyWritable, U: ClassTag](
+      url: String,
+      body: T,
+      onError: Throwable => Unit
+  )(implicit reads: Reads[U]): Future[CircuitBreakerResult[U]] = {
+    logger.info(s"Calling url $url")
+    breaker.withBreaker(onError) {
+      ws.url(url)
+        // Doubled so that the circuit breaker will handle it.
+        .withRequestTimeout(timeout * 2)
+        .withHttpHeaders(headers: _*)
+        .post(body)
+        .map(responseBody => {
+          responseBody.json.validate[U] match {
+            case JsSuccess(result, _) => result
+            case JsError(errors) =>
+              val error =
+                s"Failed to parse response from $url: ${responseBody.body} errors: $errors"
+              logger.error(error)
+              throw new IllegalArgumentException(error)
+          }
+        })
     }
   }
 }

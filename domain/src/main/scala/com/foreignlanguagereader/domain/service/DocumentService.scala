@@ -9,8 +9,10 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerNonAttempt
 }
 import com.foreignlanguagereader.domain.client.google.GoogleCloudClient
+import com.foreignlanguagereader.domain.client.languageservice.LanguageServiceClient
 import com.foreignlanguagereader.domain.service.definition.DefinitionService
 import com.google.inject.Inject
+
 import javax.inject
 import play.api.Logger
 
@@ -19,6 +21,7 @@ import scala.concurrent.{ExecutionContext, Future}
 @inject.Singleton
 class DocumentService @Inject() (
     val googleCloudClient: GoogleCloudClient,
+    languageServiceClient: LanguageServiceClient,
     val definitionService: DefinitionService,
     implicit val ec: ExecutionContext
 ) {
@@ -44,7 +47,7 @@ class DocumentService @Inject() (
   def tokenizeDocument(
       language: Language,
       document: String
-  ): Future[Set[Word]] = getWordsFromGoogleCloud(language, document)
+  ): Future[Set[Word]] = getWordsFromLanguageService(language, document)
 
   def getWordsFromGoogleCloud(
       language: Language,
@@ -54,6 +57,19 @@ class DocumentService @Inject() (
       .getWordsForDocument(language, document)
       .map {
         case CircuitBreakerAttempt(result)  => result
+        case CircuitBreakerNonAttempt()     => Set[Word]()
+        case CircuitBreakerFailedAttempt(e) => throw e
+      }
+  }
+
+  def getWordsFromLanguageService(
+      language: Language,
+      document: String
+  ): Future[Set[Word]] = {
+    languageServiceClient
+      .getWordsForDocument(language, document)
+      .map {
+        case CircuitBreakerAttempt(result)  => result.toSet
         case CircuitBreakerNonAttempt()     => Set[Word]()
         case CircuitBreakerFailedAttempt(e) => throw e
       }
