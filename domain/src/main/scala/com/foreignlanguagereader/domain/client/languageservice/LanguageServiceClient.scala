@@ -14,10 +14,9 @@ import com.foreignlanguagereader.domain.client.common.{
   RestClientBuilder
 }
 import com.foreignlanguagereader.domain.metrics.MetricsReporter
-import com.foreignlanguagereader.dto.v1.document.DocumentRequest
 import com.foreignlanguagereader.dto.v1.health.ReadinessStatus.ReadinessStatus
+import play.api.libs.json.{JsObject, Json}
 import play.api.{Configuration, Logger}
-import play.libs.{Json => JavaJson}
 
 import java.util.concurrent.TimeUnit
 import javax.inject.{Inject, Singleton}
@@ -38,6 +37,7 @@ class LanguageServiceClient @Inject() (
   val timeout: FiniteDuration =
     Duration(config.get[Int]("language-service.timeout"), TimeUnit.SECONDS)
   val baseUrl: String = config.get[String]("language-service.url")
+  val port: Int = config.get[Int]("language-service.port")
 
   val client: RestClient =
     clientBuilder.buildClient("LanguageServiceClient", timeout = timeout)
@@ -49,10 +49,10 @@ class LanguageServiceClient @Inject() (
     val timer =
       metrics.reportLanguageServiceRequestStarted(language)
     val request =
-      JavaJson.stringify(JavaJson.toJson(new DocumentRequest(document)))
+      Json.obj("text" -> document)
     val result = client
-      .post[String, List[LanguageServiceWord]](
-        s"http://$baseUrl/v1/tagging/${language.toString}/document",
+      .post[JsObject, List[LanguageServiceWord]](
+        s"http://$baseUrl:$port/v1/tagging/${language.toString}/document",
         request,
         e => {
           logger.error(
