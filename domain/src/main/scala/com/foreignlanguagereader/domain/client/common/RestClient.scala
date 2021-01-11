@@ -55,21 +55,22 @@ case class RestClient(
       onError: Throwable => Unit
   )(implicit reads: Reads[U]): Future[CircuitBreakerResult[U]] = {
     logger.info(s"Calling url $url")
-    val typeName = implicitly[ClassTag[U]].runtimeClass.getSimpleName
     breaker.withBreaker(onError) {
       ws.url(url)
         // Doubled so that the circuit breaker will handle it.
         .withRequestTimeout(timeout * 2)
         .withHttpHeaders(headers: _*)
         .post(body)
-        .map(_.json.validate[U])
-        .map {
-          case JsSuccess(result, _) => result
-          case JsError(errors) =>
-            val error = s"Failed to parse $typeName from $url: $errors"
-            logger.error(error)
-            throw new IllegalArgumentException(error)
-        }
+        .map(responseBody => {
+          responseBody.json.validate[U] match {
+            case JsSuccess(result, _) => result
+            case JsError(errors) =>
+              val error =
+                s"Failed to parse response from $url: ${responseBody.body} errors: $errors"
+              logger.error(error)
+              throw new IllegalArgumentException(error)
+          }
+        })
     }
   }
 }
