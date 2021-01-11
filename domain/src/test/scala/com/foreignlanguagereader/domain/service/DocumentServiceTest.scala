@@ -16,6 +16,7 @@ import com.foreignlanguagereader.domain.client.common.{
   CircuitBreakerNonAttempt
 }
 import com.foreignlanguagereader.domain.client.google.GoogleCloudClient
+import com.foreignlanguagereader.domain.client.languageservice.LanguageServiceClient
 import com.foreignlanguagereader.domain.service.definition.DefinitionService
 import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
@@ -25,6 +26,8 @@ import scala.concurrent.{ExecutionContext, Future}
 class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
   val mockGoogleCloudClient: GoogleCloudClient =
     mock[GoogleCloudClient]
+  val mockLanguageService: LanguageServiceClient =
+    mock[LanguageServiceClient]
   val mockDefinitionService: DefinitionService =
     mock[DefinitionService]
   val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
@@ -32,6 +35,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
   val documentService =
     new DocumentService(
       mockGoogleCloudClient,
+      mockLanguageService,
       mockDefinitionService,
       ec
     )
@@ -39,7 +43,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
   describe("A document service") {
     it("reacts correctly to an empty document") {
       when(
-        mockGoogleCloudClient
+        mockLanguageService
           .getWordsForDocument(Language.CHINESE, "some words")
       ).thenReturn(Future.successful(CircuitBreakerAttempt(Set())))
 
@@ -50,7 +54,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
 
     it("reacts correctly to the circuit breaker being closed") {
       when(
-        mockGoogleCloudClient
+        mockLanguageService
           .getWordsForDocument(Language.CHINESE, "some words")
       ).thenReturn(Future.successful(CircuitBreakerNonAttempt()))
 
@@ -59,9 +63,9 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         .map(result => assert(result.isEmpty))
     }
 
-    it("throws errors from google cloud") {
+    it("throws errors from language service") {
       when(
-        mockGoogleCloudClient
+        mockLanguageService
           .getWordsForDocument(Language.CHINESE_TRADITIONAL, "some words")
       ).thenReturn(
         Future.apply(
@@ -108,7 +112,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         processedToken = "phrase"
       )
       when(
-        mockGoogleCloudClient
+        mockLanguageService
           .getWordsForDocument(Language.ENGLISH, "test phrase")
       ).thenReturn(
         Future.apply(CircuitBreakerAttempt(Set(testWord, phraseWord)))
