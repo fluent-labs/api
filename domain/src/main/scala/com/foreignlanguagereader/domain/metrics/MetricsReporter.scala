@@ -125,6 +125,32 @@ class MetricsReporter @Inject() (holder: MetricHolder, config: Configuration) {
     holder.report(Metric.GOOGLE_FAILURES)
   }
 
+  // Language service
+  def reportLanguageServiceRequestStarted(
+      language: Language
+  ): Option[Histogram.Timer] = {
+    holder.inc(Metric.ACTIVE_LANGUAGE_SERVICE_REQUESTS)
+    holder.report(Metric.LANGUAGE_SERVICE_CALLS, language.toString)
+    holder.startTimer(
+      Metric.LANGUAGE_SERVICE_LATENCY_SECONDS,
+      Seq(language.toString)
+    )
+  }
+  def reportLanguageServiceRequestFinished(
+      timer: Option[Histogram.Timer]
+  ): Unit = {
+    timer.map(_.observeDuration())
+    holder.dec(Metric.ACTIVE_LANGUAGE_SERVICE_REQUESTS)
+  }
+
+  def reportLanguageServiceFailure(
+      timer: Option[Histogram.Timer],
+      language: Language
+  ): Unit = {
+    timer.map(_.observeDuration())
+    holder.report(Metric.LANGUAGE_SERVICE_FAILURES, language.toString)
+  }
+
   // Webster
   def reportWebsterRequestStarted(
       dictionary: WebsterDictionary
