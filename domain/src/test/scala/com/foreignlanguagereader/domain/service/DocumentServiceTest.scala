@@ -45,7 +45,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       when(
         mockLanguageService
           .getWordsForDocument(Language.CHINESE, "some words")
-      ).thenReturn(Future.successful(CircuitBreakerAttempt(Set())))
+      ).thenReturn(Future.successful(CircuitBreakerAttempt(List())))
 
       documentService
         .getWordsForDocument(Language.CHINESE, Language.CHINESE, "some words")
@@ -115,7 +115,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         mockLanguageService
           .getWordsForDocument(Language.ENGLISH, "test phrase")
       ).thenReturn(
-        Future.apply(CircuitBreakerAttempt(Set(testWord, phraseWord)))
+        Future.apply(CircuitBreakerAttempt(List(testWord, phraseWord)))
       )
 
       val testDefinition = EnglishDefinition(
