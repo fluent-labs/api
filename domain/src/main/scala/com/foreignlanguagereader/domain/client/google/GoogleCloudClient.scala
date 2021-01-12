@@ -130,7 +130,7 @@ class GoogleCloudClient @Inject() (
       case Tag.PUNCT => PartOfSpeech.PUNCTUATION
       case Tag.VERB  => PartOfSpeech.VERB
       case Tag.X     => PartOfSpeech.OTHER
-      case Tag.AFFIX => PartOfSpeech.AFFIX
+      case Tag.AFFIX => PartOfSpeech.ADJECTIVE
       case _         => PartOfSpeech.UNKNOWN
     }
 

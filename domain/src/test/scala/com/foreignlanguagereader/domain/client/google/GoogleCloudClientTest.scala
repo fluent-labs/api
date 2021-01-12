@@ -132,7 +132,7 @@ class GoogleCloudClientTest extends AsyncFunSpec with MockitoSugar {
         assert(
           client
             .googlePartOfSpeechToDomainPartOfSpeech(Tag.AFFIX)
-            == PartOfSpeech.AFFIX
+            == PartOfSpeech.ADJECTIVE
         )
         assert(
           client
