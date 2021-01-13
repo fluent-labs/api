@@ -1,11 +1,11 @@
 name: Baseline
 # Pull requests are judged by how they impact coverage and security.
-# This sets the baseline so we can see the impact of each individual pull request by comparing it against master.
+# This sets the baseline so we can see the impact of each individual pull request by comparing it against main.
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   coverage:
@@ -30,7 +30,7 @@ jobs:
       with:
         flags: unittest
 
-  # This needs a master reference, not a closed pull request reference. Keep it here.
+  # This needs a main reference, not a closed pull request reference. Keep it here.
   security:
     runs-on: ubuntu-latest
     name: Security scan
