@@ -3,7 +3,6 @@ package com.foreignlanguagereader.api.controller.v1.language
 import com.foreignlanguagereader.api.controller.v1.PlaySpec
 import com.foreignlanguagereader.api.error.ServiceException
 import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.foreignlanguagereader.domain.metrics.label.RequestPath
 import com.foreignlanguagereader.domain.service.DocumentService
