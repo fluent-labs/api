@@ -49,7 +49,7 @@ case class RestClient(
     }
   }
 
-  def post[T: BodyWritable, U: ClassTag](
+  def post[T: BodyWritable, U](
       url: String,
       body: T,
       onError: Throwable => Unit

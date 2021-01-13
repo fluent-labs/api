@@ -4,6 +4,7 @@ import akka.actor.ActorSystem
 import cats.data.Nested
 import cats.implicits._
 import com.foreignlanguagereader.content.types.Language.Language
+import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.{
   PartOfSpeech,
   Word
@@ -36,6 +37,7 @@ class LanguageServiceClient @Inject() (
 
   val timeout: FiniteDuration =
     Duration(config.get[Int]("language-service.timeout"), TimeUnit.SECONDS)
+  val scheme: String = config.get[String]("language-service.scheme")
   val baseUrl: String = config.get[String]("language-service.url")
   val port: Int = config.get[Int]("language-service.port")
 
@@ -52,7 +54,7 @@ class LanguageServiceClient @Inject() (
       Json.obj("text" -> document)
     val result = client
       .post[JsObject, List[LanguageServiceWord]](
-        s"http://$baseUrl:$port/v1/tagging/${language.toString}/document",
+        s"$scheme://$baseUrl:$port/v1/tagging/${language.toString}/document",
         request,
         e => {
           logger.error(
@@ -69,8 +71,8 @@ class LanguageServiceClient @Inject() (
           Word(
             language = language,
             token = word.token,
-            tag =
-              PartOfSpeech.fromString(word.tag).getOrElse(PartOfSpeech.UNKNOWN),
+            tag = LanguageServiceClient
+              .spacyPartOfSpeechToDomainPartOfSpeech(word.tag),
             lemma = word.lemma,
             definitions = List(),
             gender = None,
@@ -85,4 +87,30 @@ class LanguageServiceClient @Inject() (
   }
 
   def health(): ReadinessStatus = client.breaker.health()
+}
+
+object LanguageServiceClient {
+  def spacyPartOfSpeechToDomainPartOfSpeech(tag: String): PartOfSpeech =
+    tag match {
+      case "ADJ"   => PartOfSpeech.ADJECTIVE
+      case "ADP"   => PartOfSpeech.ADPOSITION
+      case "ADV"   => PartOfSpeech.ADVERB
+      case "AUX"   => PartOfSpeech.AUXILIARY
+      case "CONJ"  => PartOfSpeech.CONJUNCTION
+      case "CCONJ" => PartOfSpeech.COORDINATING_CONJUNCTION
+      case "DET"   => PartOfSpeech.DETERMINER
+      case "INTJ"  => PartOfSpeech.INTERJECTION
+      case "NOUN"  => PartOfSpeech.NOUN
+      case "NUM"   => PartOfSpeech.NUMBER
+      case "PART"  => PartOfSpeech.PARTICLE
+      case "PRON"  => PartOfSpeech.PRONOUN
+      case "PROPN" => PartOfSpeech.PROPER_NOUN
+      case "PUNCT" => PartOfSpeech.PUNCTUATION
+      case "SCONJ" => PartOfSpeech.SUBORDINATING_CONJUNCTION
+      case "SYM"   => PartOfSpeech.SYMBOL
+      case "VERB"  => PartOfSpeech.VERB
+      case "X"     => PartOfSpeech.OTHER
+      case "SPACE" => PartOfSpeech.SPACE
+      case _       => PartOfSpeech.UNKNOWN
+    }
 }
