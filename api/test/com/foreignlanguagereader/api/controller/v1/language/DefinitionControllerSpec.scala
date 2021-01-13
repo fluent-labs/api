@@ -56,11 +56,6 @@ class DefinitionControllerSpec extends PlaySpec with MockitoSugar {
 
       status(goodResponse) mustBe OK
       contentAsString(goodResponse) must include("[]")
-
-      verify(mockMetricsReporter)
-        .reportRequestStarted("GET", RequestPath.DEFINITIONS)
-      verify(mockMetricsReporter)
-        .reportRequestFinished(mockTimer)
     }
 
     "appropriately handle bad requests from the router" in {
@@ -83,11 +78,6 @@ class DefinitionControllerSpec extends PlaySpec with MockitoSugar {
 
       status(badResponse) mustBe 400
       contentAsString(badResponse) must include("{\"message\":\"ELEPHANT\"}")
-
-      verify(mockMetricsReporter)
-        .reportRequestStarted("GET", RequestPath.DEFINITIONS)
-      verify(mockMetricsReporter)
-        .reportRequestFinished(mockTimer)
     }
   }
 }

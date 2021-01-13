@@ -63,11 +63,6 @@ class DocumentControllerSpec extends PlaySpec with MockitoSugar {
 
       status(goodResponse) mustBe OK
       contentAsString(goodResponse) must include("[]")
-
-      verify(mockMetricsReporter)
-        .reportRequestStarted("POST", RequestPath.DOCUMENT)
-      verify(mockMetricsReporter)
-        .reportRequestFinished(mockTimer)
     }
 
     "appropriately handle bad requests from the router" in {
@@ -87,12 +82,6 @@ class DocumentControllerSpec extends PlaySpec with MockitoSugar {
       contentAsString(badResponse) must include(
         "{\"message\":\"Invalid request body, please try again\"}"
       )
-
-      verify(mockMetricsReporter)
-        .reportRequestStarted("POST", RequestPath.DOCUMENT)
-      verify(mockMetricsReporter).reportRequestFinished(mockTimer)
-      verify(mockMetricsReporter)
-        .reportBadRequest(RequestPath.DOCUMENT)
     }
   }
 }
