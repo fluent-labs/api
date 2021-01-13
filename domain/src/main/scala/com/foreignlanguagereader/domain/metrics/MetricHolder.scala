@@ -29,8 +29,12 @@ class MetricHolder {
   val labeledCounters: Map[Metric, Counter] =
     MetricHolder.initializeLabeledMetric(
       Map(
+        Metric.DATABASE_CALLS -> List("method"),
+        Metric.DATABASE_FAILURES -> List("method"),
         Metric.ELASTICSEARCH_CALLS -> List("method"),
         Metric.ELASTICSEARCH_FAILURES -> List("method"),
+        Metric.LANGUAGE_SERVICE_CALLS -> List("language"),
+        Metric.LANGUAGE_SERVICE_FAILURES -> List("language"),
         Metric.WEBSTER_CALLS -> List("dictionary"),
         Metric.WEBSTER_FAILURES -> List("dictionary"),
         Metric.REQUEST_COUNT -> List("route"),
@@ -51,8 +55,10 @@ class MetricHolder {
     MetricHolder.initializeUnlabeledMetric(
       List(
         Metric.ACTIVE_REQUESTS,
+        Metric.ACTIVE_DATABASE_REQUESTS,
         Metric.ACTIVE_ELASTICSEARCH_REQUESTS,
         Metric.ACTIVE_GOOGLE_REQUESTS,
+        Metric.ACTIVE_LANGUAGE_SERVICE_REQUESTS,
         Metric.ACTIVE_WEBSTER_REQUESTS
       )
     )(
@@ -63,8 +69,10 @@ class MetricHolder {
     MetricHolder.initializeLabeledMetric(
       Map(
         Metric.REQUESTS_LATENCY_SECONDS -> List("method", "path"),
+        Metric.DATABASE_LATENCY_SECONDS -> List("query"),
         Metric.ELASTICSEARCH_LATENCY_SECONDS -> List("action"),
         Metric.GOOGLE_LATENCY_SECONDS -> List("api"),
+        Metric.LANGUAGE_SERVICE_LATENCY_SECONDS -> List("language"),
         Metric.WEBSTER_LATENCY_SECONDS -> List("dictionary")
       )
     )(MetricHolder.buildTimer)

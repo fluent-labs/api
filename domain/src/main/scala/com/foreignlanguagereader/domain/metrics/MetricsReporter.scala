@@ -2,6 +2,7 @@ package com.foreignlanguagereader.domain.metrics
 
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
+import com.foreignlanguagereader.domain.metrics.label.DatabaseMethod.DatabaseMethod
 import com.foreignlanguagereader.domain.metrics.label.ElasticsearchMethod.ElasticsearchMethod
 import com.foreignlanguagereader.domain.metrics.label.RequestPath.RequestPath
 import com.foreignlanguagereader.domain.metrics.label.WebsterDictionary.WebsterDictionary
@@ -55,6 +56,31 @@ class MetricsReporter @Inject() (holder: MetricHolder, config: Configuration) {
    * Downstream dependency RED metrics
    */
 
+  // Database
+  def reportDatabaseRequestStarted(
+      method: DatabaseMethod
+  ): Option[Histogram.Timer] = {
+    holder.inc(Metric.ACTIVE_DATABASE_REQUESTS)
+    holder.report(Metric.DATABASE_CALLS, method.toString)
+    holder.startTimer(
+      Metric.DATABASE_LATENCY_SECONDS,
+      Seq(method.toString)
+    )
+  }
+  def reportDatabaseRequestFinished(
+      timer: Option[Histogram.Timer]
+  ): Unit = {
+    timer.map(_.observeDuration())
+    holder.dec(Metric.ACTIVE_DATABASE_REQUESTS)
+  }
+  def reportDatabaseFailure(
+      timer: Option[Histogram.Timer],
+      method: DatabaseMethod
+  ): Unit = {
+    timer.map(_.observeDuration())
+    holder.report(Metric.DATABASE_FAILURES, method.toString)
+  }
+
   // Elasticsearch
   def reportElasticsearchRequestStarted(
       method: ElasticsearchMethod
@@ -97,6 +123,32 @@ class MetricsReporter @Inject() (holder: MetricHolder, config: Configuration) {
   def reportGoogleFailure(timer: Option[Histogram.Timer]): Unit = {
     timer.map(_.observeDuration())
     holder.report(Metric.GOOGLE_FAILURES)
+  }
+
+  // Language service
+  def reportLanguageServiceRequestStarted(
+      language: Language
+  ): Option[Histogram.Timer] = {
+    holder.inc(Metric.ACTIVE_LANGUAGE_SERVICE_REQUESTS)
+    holder.report(Metric.LANGUAGE_SERVICE_CALLS, language.toString)
+    holder.startTimer(
+      Metric.LANGUAGE_SERVICE_LATENCY_SECONDS,
+      Seq(language.toString)
+    )
+  }
+  def reportLanguageServiceRequestFinished(
+      timer: Option[Histogram.Timer]
+  ): Unit = {
+    timer.map(_.observeDuration())
+    holder.dec(Metric.ACTIVE_LANGUAGE_SERVICE_REQUESTS)
+  }
+
+  def reportLanguageServiceFailure(
+      timer: Option[Histogram.Timer],
+      language: Language
+  ): Unit = {
+    timer.map(_.observeDuration())
+    holder.report(Metric.LANGUAGE_SERVICE_FAILURES, language.toString)
   }
 
   // Webster

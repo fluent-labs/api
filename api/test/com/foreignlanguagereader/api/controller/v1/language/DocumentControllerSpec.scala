@@ -3,7 +3,6 @@ package com.foreignlanguagereader.api.controller.v1.language
 import com.foreignlanguagereader.api.controller.v1.PlaySpec
 import com.foreignlanguagereader.api.error.ServiceException
 import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.foreignlanguagereader.domain.metrics.label.RequestPath
 import com.foreignlanguagereader.domain.service.DocumentService
@@ -64,11 +63,6 @@ class DocumentControllerSpec extends PlaySpec with MockitoSugar {
 
       status(goodResponse) mustBe OK
       contentAsString(goodResponse) must include("[]")
-
-      verify(mockMetricsReporter)
-        .reportRequestStarted("POST", RequestPath.DOCUMENT)
-      verify(mockMetricsReporter)
-        .reportRequestFinished(mockTimer)
     }
 
     "appropriately handle bad requests from the router" in {
@@ -88,12 +82,6 @@ class DocumentControllerSpec extends PlaySpec with MockitoSugar {
       contentAsString(badResponse) must include(
         "{\"message\":\"Invalid request body, please try again\"}"
       )
-
-      verify(mockMetricsReporter)
-        .reportRequestStarted("POST", RequestPath.DOCUMENT)
-      verify(mockMetricsReporter).reportRequestFinished(mockTimer)
-      verify(mockMetricsReporter)
-        .reportBadRequest(RequestPath.DOCUMENT)
     }
   }
 }
