@@ -89,8 +89,17 @@ class UserController @Inject() (
       login: Login
   ): Future[Result] = {
     val user = User(login.getUsername, login.getPassword)
-    userService.register(user)
-    Future.successful(Ok("Registered"))
+    val email = user.email
+    userService.getUser(email) match {
+      case None =>
+        userService.register(user)
+        Future.successful(Ok("Registered"))
+      case Some(_) =>
+        logger.error(
+          s"User $email cannot be registered because they already have an account"
+        )
+        Future.successful(Conflict(s"User $email already exists"))
+    }
   }
 
   def handleInvalidRegistration(
