@@ -1,5 +1,6 @@
 import sbtassembly.AssemblyPlugin.autoImport.assemblyMergeStrategy
 import Dependencies._
+import sbt.Keys.resolvers
 
 name := "foreign-language-reader-parent"
 scalaVersion in ThisBuild := "2.12.12"
@@ -18,7 +19,8 @@ lazy val settings = Seq(
   publishConfiguration := publishConfiguration.value.withOverwrite(true),
   publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(
     true
-  )
+  ),
+  resolvers += "atlassian" at "https://packages.atlassian.com/maven-public/"
 )
 
 lazy val global = project
