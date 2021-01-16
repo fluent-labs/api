@@ -60,6 +60,7 @@ class UserController @Inject() (
     logger.error(
       s"Invalid login request: $errors"
     )
+    metrics.reportFailedLogin()
     metrics.reportBadRequest(RequestPath.LOGIN)
     Future {
       BadRequest(
