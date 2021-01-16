@@ -17,8 +17,10 @@ object ApiMetricReporter {
       case definitionsRegex()     => RequestPath.DEFINITIONS
       case documentRegex()        => RequestPath.DOCUMENT
       case "/health"              => RequestPath.HEALTH
+      case "/v1/user/login"       => RequestPath.LOGIN
       case "/metrics"             => RequestPath.METRICS
       case "/readiness"           => RequestPath.READINESS
+      case "/v1/user/register"    => RequestPath.REGISTER
       case "/v1/vocabulary/words" => RequestPath.WORDS
       case _                      => RequestPath.UNKNOWN
     }
