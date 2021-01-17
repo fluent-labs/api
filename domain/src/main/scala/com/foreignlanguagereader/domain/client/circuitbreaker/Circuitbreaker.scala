@@ -1,8 +1,7 @@
-package com.foreignlanguagereader.domain.client.common
+package com.foreignlanguagereader.domain.client.circuitbreaker
 
 import akka.actor.ActorSystem
 import akka.pattern.{CircuitBreaker, CircuitBreakerOpenException}
-import cats.Functor
 import com.foreignlanguagereader.dto.v1.health.ReadinessStatus
 import com.foreignlanguagereader.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.Logger
@@ -89,24 +88,4 @@ class Circuitbreaker(
     case Success(result)    => !isSuccess(result)
     case Failure(exception) => isFailure(exception)
   }
-}
-
-sealed trait CircuitBreakerResult[T]
-case class CircuitBreakerAttempt[T](result: T) extends CircuitBreakerResult[T]
-case class CircuitBreakerFailedAttempt[T](e: Throwable)
-    extends CircuitBreakerResult[T]
-case class CircuitBreakerNonAttempt[T]() extends CircuitBreakerResult[T]
-
-object CircuitBreakerResult {
-  implicit def functor: Functor[CircuitBreakerResult] =
-    new Functor[CircuitBreakerResult] {
-      override def map[A, B](
-          fa: CircuitBreakerResult[A]
-      )(f: A => B): CircuitBreakerResult[B] =
-        fa match {
-          case CircuitBreakerNonAttempt()     => CircuitBreakerNonAttempt()
-          case CircuitBreakerFailedAttempt(e) => CircuitBreakerFailedAttempt(e)
-          case CircuitBreakerAttempt(result)  => CircuitBreakerAttempt(f(result))
-        }
-    }
 }
