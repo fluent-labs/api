@@ -123,11 +123,11 @@ class AWSCognitoClient @Inject() (
       .username(email)
       .clientId(clientId)
       .password(password)
-      .secretHash(calculateHash(email))
+      .secretHash(calculateHash(List(email, clientId)))
       .build()
   }
 
-  private[this] def calculateHash(username: String): String = {
+  private[this] def calculateHash(inputs: List[String]): String = {
     val mac = Mac.getInstance(HMAC_SHA256_ALGORITHM)
     mac.init(
       new SecretKeySpec(
@@ -136,9 +136,12 @@ class AWSCognitoClient @Inject() (
       )
     )
 
-    mac.update(username.getBytes(StandardCharsets.UTF_8))
-    val rawHmac = mac.doFinal(clientId.getBytes(StandardCharsets.UTF_8))
-    java.util.Base64.getEncoder.encodeToString(rawHmac)
+    // All but last item
+    inputs.init.foreach(input =>
+      mac.update(input.getBytes(StandardCharsets.UTF_8))
+    )
+    val finalHash = mac.doFinal(inputs.last.getBytes(StandardCharsets.UTF_8))
+    java.util.Base64.getEncoder.encodeToString(finalHash)
   }
 
   private[this] def performCall[T](
