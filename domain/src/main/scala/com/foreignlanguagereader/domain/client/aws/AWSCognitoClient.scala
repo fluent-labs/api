@@ -49,21 +49,14 @@ class AWSCognitoClient @Inject() (
       .region(Region.US_WEST_2)
       .build()
 
-  def signup(
+  def login(
       email: String,
       password: String
-  ): Future[CircuitBreakerResult[SignUpResponse]] = {
-    val timer = metrics.reportCognitoRequestStarted(CognitoRequestType.SIGNUP)
-    breaker.withBreaker(e => {
-      metrics.reportCognitoFailure(timer, CognitoRequestType.SIGNUP)
-      logger.error(s"Failed to create user $email: ${e.getMessage}", e)
-    }) {
-      Future {
-        val result =
-          identityProviderClient.signUp(makeSignupRequest(email, password))
-        metrics.reportCognitoRequestFinished(timer)
-        result
-      }
+  ): Future[CircuitBreakerResult[RespondToAuthChallengeRequest]] = {
+    val secretHash = calculateHash(email)
+    initiateAuthRequest(email, secretHash).flatMap {
+      case CircuitBreakerAttempt(initiateAuthResult) =>
+        respondToAuthChallengeRequest(initiateAuthResult, password, secretHash)
     }
   }
 
@@ -93,6 +86,19 @@ class AWSCognitoClient @Inject() (
       .authParameters(parameters)
       .build()
   }
+
+  private[this] def respondToAuthChallengeRequest(
+      initiateAuthResult: InitiateAuthResponse,
+      password: String,
+      secretHash: String
+  ): Future[CircuitBreakerResult[RespondToAuthChallengeRequest]] = ???
+
+  private[this] def makeRespondToAuthChallengeRequest(
+      initiateAuthResult: InitiateAuthResponse,
+      password: String,
+      secretHash: String
+  ): RespondToAuthChallengeRequest = ???
+
   def signup(
       email: String,
       password: String
