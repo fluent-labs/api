@@ -67,6 +67,16 @@ class AWSCognitoClient @Inject() (
     }
   }
 
+  def signup(
+      email: String,
+      password: String
+  ): Future[CircuitBreakerResult[SignUpResponse]] =
+    performCall(
+      () => identityProviderClient.signUp(makeSignupRequest(email, password)),
+      CognitoRequestType.SIGNUP,
+      e => s"Failed to create user $email: ${e.getMessage}"
+    )
+
   private[this] def makeSignupRequest(email: String, password: String) = {
     val attributes = List(
       AttributeType
@@ -97,5 +107,25 @@ class AWSCognitoClient @Inject() (
     mac.update(username.getBytes(StandardCharsets.UTF_8))
     val rawHmac = mac.doFinal(clientId.getBytes(StandardCharsets.UTF_8))
     java.util.Base64.getEncoder.encodeToString(rawHmac)
+  }
+
+  private[this] def performCall[T](
+      call: () => T,
+      requestType: CognitoRequestType,
+      errorMessage: Throwable => String
+  ): Future[CircuitBreakerResult[T]] = {
+    val timer = metrics.reportCognitoRequestStarted(requestType)
+    breaker.withBreaker(e => {
+      metrics
+        .reportCognitoFailure(timer, requestType)
+      logger.error(errorMessage.apply(e), e)
+    }) {
+      Future {
+        val result = call.apply
+        metrics.reportCognitoRequestFinished(timer)
+        result
+      }
+    }
+
   }
 }
