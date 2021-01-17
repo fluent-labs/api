@@ -1,6 +1,10 @@
 package com.foreignlanguagereader.domain.client.common
 
 import akka.actor.ActorSystem
+import com.foreignlanguagereader.domain.client.circuitbreaker.{
+  CircuitBreakerResult,
+  Circuitbreaker
+}
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Reads}
 import play.api.libs.ws.{BodyWritable, WSClient}

@@ -1,7 +1,11 @@
 package com.foreignlanguagereader.domain.client.elasticsearch
 
 import com.foreignlanguagereader.content.types.internal.ElasticsearchCacheable
-import com.foreignlanguagereader.domain.client.common._
+import com.foreignlanguagereader.domain.client.circuitbreaker.{
+  CircuitBreakerAttempt,
+  CircuitBreakerFailedAttempt,
+  CircuitBreakerNonAttempt
+}
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.{
   ElasticsearchCacheRequest,
   ElasticsearchSearchRequest,

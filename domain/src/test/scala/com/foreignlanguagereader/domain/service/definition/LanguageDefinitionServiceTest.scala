@@ -17,7 +17,7 @@ import com.foreignlanguagereader.content.types.internal.word.{
   Word
 }
 import com.foreignlanguagereader.domain.client.MirriamWebsterClient
-import com.foreignlanguagereader.domain.client.common.CircuitBreakerResult
+import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerResult
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchSearchRequest
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher

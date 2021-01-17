@@ -6,8 +6,8 @@ import com.foreignlanguagereader.content.types.external.definition.webster.{
   WebsterSpanishDefinitionEntry
 }
 import com.foreignlanguagereader.content.types.internal.word.Word
+import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerResult
 import com.foreignlanguagereader.domain.client.common.{
-  CircuitBreakerResult,
   RestClient,
   RestClientBuilder
 }

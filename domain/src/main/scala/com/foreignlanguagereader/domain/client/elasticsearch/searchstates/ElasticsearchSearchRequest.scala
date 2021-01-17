@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
-import com.foreignlanguagereader.domain.client.common.CircuitBreakerResult
+import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerResult
 import org.elasticsearch.action.search.{MultiSearchRequest, SearchRequest}
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.builder.SearchSourceBuilder

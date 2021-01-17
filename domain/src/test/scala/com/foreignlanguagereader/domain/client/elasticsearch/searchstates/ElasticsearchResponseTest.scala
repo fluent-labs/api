@@ -4,7 +4,7 @@ import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
-import com.foreignlanguagereader.domain.client.common.{
+import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,
   CircuitBreakerNonAttempt,
   CircuitBreakerResult

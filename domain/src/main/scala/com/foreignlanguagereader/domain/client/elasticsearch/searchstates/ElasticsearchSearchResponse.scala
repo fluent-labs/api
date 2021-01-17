@@ -3,7 +3,7 @@ package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 import cats.data.Nested
 import cats.implicits._
 import com.foreignlanguagereader.content.types.internal.ElasticsearchCacheable
-import com.foreignlanguagereader.domain.client.common.{
+import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,
   CircuitBreakerNonAttempt,

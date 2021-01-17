@@ -11,7 +11,7 @@ import com.foreignlanguagereader.content.types.internal.word.GrammaticalGender.G
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.WordTense.WordTense
 import com.foreignlanguagereader.content.types.internal.word._
-import com.foreignlanguagereader.domain.client.common.{
+import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerResult,
   Circuitbreaker
 }

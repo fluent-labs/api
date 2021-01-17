@@ -6,7 +6,7 @@ import com.foreignlanguagereader.content.types.external.definition.cedict.CEDICT
 import com.foreignlanguagereader.content.types.internal.definition.ChineseDefinition
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.Word
-import com.foreignlanguagereader.domain.client.common.{
+import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerFailedAttempt,
   CircuitBreakerResult
 }
