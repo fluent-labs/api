@@ -1,3 +1,5 @@
 package com.foreignlanguagereader.domain.user
 
-case class User(email: String, password: String)
+import com.mohiva.play.silhouette.api.Identity
+
+case class User(email: String, password: String) extends Identity

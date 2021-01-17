@@ -158,24 +158,25 @@ object ProjectDependencies {
     Dependencies.opencc4j
   )
 
-  val domainDependencies: Seq[ModuleID] = commonDependencies ++ Seq(
-    // Dependency injection
-    guice,
-    // Used to generate elasticsearch matchers
-    Dependencies.elasticsearchHighLevelClient,
-    Dependencies.oslib,
-    // Testing
-    Dependencies.mockito,
-    Dependencies.scalatestPlay,
-    Dependencies.elasticsearchContainer,
-    // Clients
-    Dependencies.opencc4j,
-    Dependencies.googleCloudClient,
-    // Metrics
-    Dependencies.prometheusClient,
-    Dependencies.prometheusHotspot,
-    Dependencies.playSlick
-  )
+  val domainDependencies: Seq[ModuleID] =
+    commonDependencies ++ silhouetteDependencies ++ Seq(
+      // Dependency injection
+      guice,
+      // Used to generate elasticsearch matchers
+      Dependencies.elasticsearchHighLevelClient,
+      Dependencies.oslib,
+      // Testing
+      Dependencies.mockito,
+      Dependencies.scalatestPlay,
+      Dependencies.elasticsearchContainer,
+      // Clients
+      Dependencies.opencc4j,
+      Dependencies.googleCloudClient,
+      // Metrics
+      Dependencies.prometheusClient,
+      Dependencies.prometheusHotspot,
+      Dependencies.playSlick
+    )
 
   val dtoDependencies: Seq[ModuleID] = commonDependencies
 
