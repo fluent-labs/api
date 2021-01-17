@@ -1,12 +1,14 @@
 package com.foreignlanguagereader.domain.client.aws
 
 import akka.actor.ActorSystem
-import com.foreignlanguagereader.domain.client.common.{
+import com.foreignlanguagereader.domain.client.circuitbreaker.{
+  CircuitBreakerAttempt,
   CircuitBreakerResult,
   Circuitbreaker
 }
 import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.foreignlanguagereader.domain.metrics.label.CognitoRequestType
+import com.foreignlanguagereader.domain.metrics.label.CognitoRequestType.CognitoRequestType
 import play.api.Logger
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient
@@ -15,6 +17,7 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.{
   AuthFlowType,
   InitiateAuthRequest,
   InitiateAuthResponse,
+  RespondToAuthChallengeRequest,
   SignUpRequest,
   SignUpResponse
 }
@@ -46,9 +49,6 @@ class AWSCognitoClient @Inject() (
       .region(Region.US_WEST_2)
       .build()
 
-  val logger: Logger = Logger(this.getClass)
-  val breaker: Circuitbreaker = new Circuitbreaker(system, ec, "Cognito")
-
   def signup(
       email: String,
       password: String
@@ -67,6 +67,32 @@ class AWSCognitoClient @Inject() (
     }
   }
 
+  private[this] def initiateAuthRequest(
+      email: String,
+      secretHash: String
+  ): Future[CircuitBreakerResult[InitiateAuthResponse]] =
+    performCall(
+      () =>
+        identityProviderClient.initiateAuth(
+          makeInitiateAuthRequest(email, secretHash)
+        ),
+      CognitoRequestType.INITIATE_AUTH_REQUEST,
+      e => s"Failed to log in user $email: ${e.getMessage}"
+    )
+
+  private[this] def makeInitiateAuthRequest(
+      email: String,
+      secretHash: String
+  ): InitiateAuthRequest = {
+    val parameters =
+      Map("SECRET_HASH" -> secretHash, "USERNAME" -> email).asJava
+    InitiateAuthRequest
+      .builder()
+      .clientId(clientId)
+      .authFlow(AuthFlowType.USER_SRP_AUTH)
+      .authParameters(parameters)
+      .build()
+  }
   def signup(
       email: String,
       password: String
