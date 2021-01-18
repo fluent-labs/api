@@ -98,6 +98,49 @@ class AWSCognitoClient @Inject() (
       password: String,
       secretHash: String
   ): RespondToAuthChallengeRequest = ???
+  def buildPasswordAuthenticationKey(
+      challegeParameters: Map[String, String],
+      password: String
+  ): Option[Array[Byte]] =
+    for (
+      userId <- challegeParameters.get("USER_ID_FOR_SRP");
+      srpB <- challegeParameters.get("SRP_B");
+      b <- Some(new BigInteger(srpB, hexadecimalBase))
+      if !b.mod(N).equals(BigInteger.ZERO);
+      salt <- challegeParameters.get("SALT")
+    )
+      yield getPasswordAuthenticationKey(
+        userId,
+        password,
+        b,
+        new BigInteger(salt, hexadecimalBase)
+      )
+
+  def getPasswordAuthenticationKey(
+      userId: String,
+      userPassword: String,
+      b: BigInteger,
+      salt: BigInteger
+  ): Array[Byte] = ???
+
+  def getHmac(
+      key: Array[Byte],
+      challegeParameters: Map[String, String],
+      dateString: String
+  ): Option[Array[Byte]] = {
+    for (
+      userId <- challegeParameters.get("USER_ID_FOR_SRP");
+      secretBlock <-
+        challegeParameters.get("SECRET_BLOCK").map(raw => base64Decode(raw))
+    )
+      yield calculateHash(
+        key,
+        List[String](userPoolId, userId, secretBlock, dateString)
+      )
+  }
+
+  def base64Decode(input: String): String
+  def base64Encode(input: Array[Byte]): String
 
   def signup(
       email: String,
@@ -123,25 +166,31 @@ class AWSCognitoClient @Inject() (
       .username(email)
       .clientId(clientId)
       .password(password)
-      .secretHash(calculateHash(List(email, clientId)))
+      .secretHash(calculateEmailHash(email))
       .build()
   }
 
-  private[this] def calculateHash(inputs: List[String]): String = {
-    val mac = Mac.getInstance(HMAC_SHA256_ALGORITHM)
-    mac.init(
-      new SecretKeySpec(
+  private[this] def calculateEmailHash(email: String): String = {
+    java.util.Base64.getEncoder.encodeToString(
+      calculateHash(
         secretKey.getBytes(StandardCharsets.UTF_8),
-        HMAC_SHA256_ALGORITHM
+        List(email, clientId)
       )
     )
+  }
+
+  private[this] def calculateHash(
+      secretKey: Array[Byte],
+      inputs: List[String]
+  ): Array[Byte] = {
+    val mac = Mac.getInstance(HMAC_SHA256_ALGORITHM)
+    mac.init(new SecretKeySpec(secretKey, HMAC_SHA256_ALGORITHM))
 
     // All but last item
     inputs.init.foreach(input =>
       mac.update(input.getBytes(StandardCharsets.UTF_8))
     )
-    val finalHash = mac.doFinal(inputs.last.getBytes(StandardCharsets.UTF_8))
-    java.util.Base64.getEncoder.encodeToString(finalHash)
+    mac.doFinal(inputs.last.getBytes(StandardCharsets.UTF_8))
   }
 
   private[this] def performCall[T](
