@@ -88,16 +88,57 @@ class AWSCognitoClient @Inject() (
   }
 
   private[this] def respondToAuthChallengeRequest(
-      initiateAuthResult: InitiateAuthResponse,
+      challenge: InitiateAuthResponse,
+      username: String,
       password: String,
       secretHash: String
-  ): Future[CircuitBreakerResult[RespondToAuthChallengeRequest]] = ???
+  ): Future[CircuitBreakerResult[RespondToAuthChallengeResponse]] =
+    performCall(
+      () =>
+        identityProviderClient.respondToAuthChallenge(
+          makeRespondToAuthChallengeRequest(
+            challenge,
+            username,
+            password,
+            secretHash
+          )
+        ),
+      CognitoRequestType.RESPOND_TO_AUTH_CHALLENGE,
+      e => s"Failed to log in user $username: ${e.getMessage}"
+    )
 
   private[this] def makeRespondToAuthChallengeRequest(
-      initiateAuthResult: InitiateAuthResponse,
+      challenge: InitiateAuthResponse,
+      username: String,
       password: String,
       secretHash: String
-  ): RespondToAuthChallengeRequest = ???
+  ): RespondToAuthChallengeRequest = {
+    val challengeParameters = challenge.challengeParameters().asScala.toMap
+    val timestamp = dateFormat.format(new Date())
+
+    val authResponses =
+      for (
+        key <- buildPasswordAuthenticationKey(challengeParameters, password);
+        hmac <- getHmac(key, challengeParameters, timestamp);
+        secretBlock <- challengeParameters.get("SECRET_BLOCK")
+      )
+        yield Map(
+          "PASSWORD_CLAIM_SECRET_BLOCK" -> secretBlock,
+          "PASSWORD_CLAIM_SIGNATURE" -> base64Encode(hmac),
+          "TIMESTAMP" -> timestamp,
+          "USERNAME" -> username,
+          "SECRET_HASH" -> secretHash
+        )
+
+    RespondToAuthChallengeRequest
+      .builder()
+      .challengeName(challenge.challengeName())
+      .clientId(clientId)
+      .session(challenge.session())
+      .challengeResponses(authResponses.getOrElse(Map()).asJava)
+      .build()
+  }
+
   def buildPasswordAuthenticationKey(
       challegeParameters: Map[String, String],
       password: String
