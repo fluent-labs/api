@@ -1,8 +1,12 @@
 package com.foreignlanguagereader.domain.client.aws
 
 import akka.actor.ActorSystem
+import cats.data.Nested
+import cats.implicits._
 import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,
+  CircuitBreakerFailedAttempt,
+  CircuitBreakerNonAttempt,
   CircuitBreakerResult,
   Circuitbreaker
 }
@@ -18,11 +22,15 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.{
   InitiateAuthRequest,
   InitiateAuthResponse,
   RespondToAuthChallengeRequest,
+  RespondToAuthChallengeResponse,
   SignUpRequest,
   SignUpResponse
 }
 
+import java.math.BigInteger
 import java.nio.charset.StandardCharsets
+import java.text.SimpleDateFormat
+import java.util.{Date, Locale, SimpleTimeZone}
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.{Inject, Singleton}
@@ -38,8 +46,37 @@ class AWSCognitoClient @Inject() (
   // Secret, generate in AWS SDK
   val clientId = ""
   val secretKey = ""
+  val userPoolId: String =
+    "something_else".split("_", 2)(1)
 
+  val hexadecimalBase = 16
   val HMAC_SHA256_ALGORITHM = "HmacSHA256"
+  val HEX_N: String =
+    "FFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD1" +
+      "29024E088A67CC74020BBEA63B139B22514A08798E3404DD" +
+      "EF9519B3CD3A431B302B0A6DF25F14374FE1356D6D51C245" +
+      "E485B576625E7EC6F44C42E9A637ED6B0BFF5CB6F406B7ED" +
+      "EE386BFB5A899FA5AE9F24117C4B1FE649286651ECE45B3D" +
+      "C2007CB8A163BF0598DA48361C55D39A69163FA8FD24CF5F" +
+      "83655D23DCA3AD961C62F356208552BB9ED529077096966D" +
+      "670C354E4ABC9804F1746C08CA18217C32905E462E36CE3B" +
+      "E39E772C180E86039B2783A2EC07A28FB5C55DF06F4C52C9" +
+      "DE2BCBF6955817183995497CEA956AE515D2261898FA0510" +
+      "15728E5A8AAAC42DAD33170D04507A33A85521ABDF1CBA64" +
+      "ECFB850458DBEF0A8AEA71575D060C7DB3970F85A6E1E4C7" +
+      "ABF5AE8CDB0933D71E8C94E04A25619DCEE3D2261AD2EE6B" +
+      "F12FFA06D98A0864D87602733EC86A64521F2B18177B200C" +
+      "BBE117577A615D6C770988C0BAD946E208E24FA074E5AB31" +
+      "43DB5BFCE0FD108E4B82D120A93AD2CAFFFFFFFFFFFFFFFF"
+  val N = new BigInteger(HEX_N, hexadecimalBase)
+  val dateFormat: SimpleDateFormat = {
+    val simpleDateFormat =
+      new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy", Locale.US)
+    simpleDateFormat.setTimeZone(
+      new SimpleTimeZone(SimpleTimeZone.UTC_TIME, "UTC")
+    )
+    simpleDateFormat
+  }
 
   val logger: Logger = Logger(this.getClass)
   val breaker: Circuitbreaker = new Circuitbreaker(system, ec, "Cognito")
@@ -52,12 +89,23 @@ class AWSCognitoClient @Inject() (
   def login(
       email: String,
       password: String
-  ): Future[CircuitBreakerResult[RespondToAuthChallengeRequest]] = {
-    val secretHash = calculateHash(email)
-    initiateAuthRequest(email, secretHash).flatMap {
-      case CircuitBreakerAttempt(initiateAuthResult) =>
-        respondToAuthChallengeRequest(initiateAuthResult, password, secretHash)
-    }
+  ): Future[CircuitBreakerResult[String]] = {
+    val secretHash = calculateEmailHash(email)
+    val response: Future[CircuitBreakerResult[RespondToAuthChallengeResponse]] =
+      initiateAuthRequest(email, secretHash).flatMap {
+        case CircuitBreakerAttempt(initiateAuthResult) =>
+          respondToAuthChallengeRequest(
+            initiateAuthResult,
+            email,
+            password,
+            secretHash
+          )
+        case CircuitBreakerFailedAttempt(e) =>
+          Future.successful(CircuitBreakerFailedAttempt(e))
+        case CircuitBreakerNonAttempt() =>
+          Future.successful(CircuitBreakerNonAttempt())
+      }
+    Nested(response).map(_.authenticationResult().idToken()).value
   }
 
   private[this] def initiateAuthRequest(
