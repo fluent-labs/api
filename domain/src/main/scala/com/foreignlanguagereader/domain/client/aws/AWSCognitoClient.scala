@@ -228,8 +228,8 @@ class AWSCognitoClient @Inject() (
       )
   }
 
-  def base64Decode(input: String): String
-  def base64Encode(input: Array[Byte]): String
+  def base64Decode(input: String): String = input // TODO
+  def base64Encode(input: Array[Byte]): String = input.toString // TODO
 
   def signup(
       email: String,
