@@ -2,7 +2,6 @@ package com.foreignlanguagereader.domain.metrics
 
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.domain.metrics.label.CognitoRequestType.CognitoRequestType
 import com.foreignlanguagereader.domain.metrics.label.DatabaseMethod.DatabaseMethod
 import com.foreignlanguagereader.domain.metrics.label.ElasticsearchMethod.ElasticsearchMethod
 import com.foreignlanguagereader.domain.metrics.label.RequestPath.RequestPath
@@ -57,31 +56,6 @@ class MetricsReporter @Inject() (holder: MetricHolder, config: Configuration) {
   /*
    * Downstream dependency RED metrics
    */
-
-  // Cognito
-  def reportCognitoRequestStarted(
-      method: CognitoRequestType
-  ): Option[Histogram.Timer] = {
-    holder.inc(Metric.ACTIVE_COGNITO_REQUESTS)
-    holder.report(Metric.COGNITO_CALLS, method.toString)
-    holder.startTimer(
-      Metric.COGNITO_LATENCY_SECONDS,
-      Seq(method.toString)
-    )
-  }
-  def reportCognitoRequestFinished(
-      timer: Option[Histogram.Timer]
-  ): Unit = {
-    timer.map(_.observeDuration())
-    holder.dec(Metric.ACTIVE_COGNITO_REQUESTS)
-  }
-  def reportCognitoFailure(
-      timer: Option[Histogram.Timer],
-      method: CognitoRequestType
-  ): Unit = {
-    timer.map(_.observeDuration())
-    holder.report(Metric.COGNITO_FAILURES, method.toString)
-  }
 
   // Database
   def reportDatabaseRequestStarted(

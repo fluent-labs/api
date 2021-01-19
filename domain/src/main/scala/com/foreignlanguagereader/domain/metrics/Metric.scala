@@ -26,8 +26,6 @@ object Metric extends Enumeration {
    */
 
   // Requests
-  val COGNITO_CALLS: Value = Value("cognito_calls")
-  val ACTIVE_COGNITO_REQUESTS: Value = Value("active_cognito_requests")
   val DATABASE_CALLS: Value = Value("database_calls")
   val ACTIVE_DATABASE_REQUESTS: Value = Value(
     "active_database_requests"
@@ -46,7 +44,6 @@ object Metric extends Enumeration {
   val ACTIVE_WEBSTER_REQUESTS: Value = Value("active_webster_requests")
 
   // Errors
-  val COGNITO_FAILURES: Value = Value("cognito_failures")
   val DATABASE_FAILURES: Value = Value("database_failures")
   val ELASTICSEARCH_FAILURES: Value = Value("elasticsearch_failures")
   val GOOGLE_FAILURES: Value = Value("google_failures")
@@ -54,7 +51,6 @@ object Metric extends Enumeration {
   val WEBSTER_FAILURES: Value = Value("webster_failures")
 
   // Duration
-  val COGNITO_LATENCY_SECONDS: Value = Value("cognito_latency_seconds")
   val DATABASE_LATENCY_SECONDS: Value = Value("database_latency_seconds")
   val ELASTICSEARCH_LATENCY_SECONDS: Value = Value(
     "elasticsearch_latency_seconds"

@@ -6,7 +6,6 @@ import sbt._
  */
 
 object Dependencies {
-  val awsVersion = "2.15.66"
   val elasticsearchVersion = "7.10.1"
   val hadoopVersion = "2.7.4"
   val jacksonVersion = "2.11.3"
@@ -85,10 +84,6 @@ object Dependencies {
     "com.mohiva" %% "play-silhouette-persistence" % "7.0.0"
   val silhouetteTestkit =
     "com.mohiva" %% "play-silhouette-testkit" % "7.0.0" % "test"
-  val cognitoIdentity =
-    "software.amazon.awssdk" % "cognitoidentity" % awsVersion
-  val cognitoIdentityProvider =
-    "software.amazon.awssdk" % "cognitoidentityprovider" % awsVersion
 
   // Hacks for guava incompatibility
   val hadoopMapreduceClient =
@@ -180,10 +175,7 @@ object ProjectDependencies {
       // Metrics
       Dependencies.prometheusClient,
       Dependencies.prometheusHotspot,
-      Dependencies.playSlick,
-      // Auth
-      Dependencies.cognitoIdentity,
-      Dependencies.cognitoIdentityProvider
+      Dependencies.playSlick
     )
 
   val dtoDependencies: Seq[ModuleID] = commonDependencies
