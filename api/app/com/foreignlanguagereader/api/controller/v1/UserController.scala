@@ -8,14 +8,7 @@ import com.foreignlanguagereader.domain.user.User
 import com.foreignlanguagereader.dto.v1.user.Login
 import play.api.Logger
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{
-  JsError,
-  JsPath,
-  JsSuccess,
-  JsValue,
-  JsonValidationError,
-  Reads
-}
+import play.api.libs.json._
 import play.api.mvc._
 import play.libs.{Json => JavaJson}
 
@@ -47,8 +40,7 @@ class UserController @Inject() (
     }
 
   def handleLogin(login: Login): Future[Result] = {
-    val user = User(login.getUsername, login.getPassword)
-    userService.login(user) match {
+    userService.login(login.getUsername, login.getPassword) match {
       case Some(_) => Future.successful(Ok("Logged in"))
       case None    => Future.successful(Unauthorized("Login unsuccessful"))
     }
@@ -88,17 +80,15 @@ class UserController @Inject() (
   def handleRegistration(
       login: Login
   ): Future[Result] = {
-    val user = User(login.getUsername, login.getPassword)
-    val email = user.email
-    userService.getUser(email) match {
+    userService.getUser(login.getUsername) match {
       case None =>
-        userService.register(user)
+        userService.register(User(login.getUsername, login.getPassword, ""))
         Future.successful(Ok("Registered"))
       case Some(_) =>
         logger.error(
-          s"User $email cannot be registered because they already have an account"
+          s"User ${login.getUsername} cannot be registered because they already have an account"
         )
-        Future.successful(Conflict(s"User $email already exists"))
+        Future.successful(Conflict(s"User ${login.getUsername} already exists"))
     }
   }
 
