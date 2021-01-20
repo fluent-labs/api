@@ -77,12 +77,6 @@ class SilhouetteModule extends AbstractModule {
     // Replace this with the bindings to your concrete DAOs
     bind(classOf[DelegableAuthInfoDAO[PasswordInfo]])
       .toInstance(new InMemoryAuthInfoDAO[PasswordInfo])
-    bind(classOf[DelegableAuthInfoDAO[OAuth1Info]])
-      .toInstance(new InMemoryAuthInfoDAO[OAuth1Info])
-    bind(classOf[DelegableAuthInfoDAO[OAuth2Info]])
-      .toInstance(new InMemoryAuthInfoDAO[OAuth2Info])
-    bind(classOf[DelegableAuthInfoDAO[OpenIDInfo]])
-      .toInstance(new InMemoryAuthInfoDAO[OpenIDInfo])
   }
 
   /**
