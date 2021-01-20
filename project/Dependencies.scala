@@ -27,6 +27,7 @@ object Dependencies {
 
   // Language helpers
   val cats = "org.typelevel" %% "cats-core" % "2.0.0"
+  val ficus = "com.iheart" %% "ficus" % "1.4.3"
   val lombok = "org.projectlombok" % "lombok" % "1.18.16"
 
   // Logging
@@ -150,7 +151,8 @@ object ProjectDependencies {
       Dependencies.prometheusHotspot,
       Dependencies.prometheusCommon,
       Dependencies.h2,
-      Dependencies.postgres
+      Dependencies.postgres,
+      Dependencies.ficus
     )
 
   val contentDependencies: Seq[ModuleID] = commonDependencies ++ Seq(
