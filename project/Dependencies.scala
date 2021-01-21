@@ -27,7 +27,6 @@ object Dependencies {
 
   // Language helpers
   val cats = "org.typelevel" %% "cats-core" % "2.0.0"
-  val ficus = "com.iheart" %% "ficus" % "1.4.3"
   val lombok = "org.projectlombok" % "lombok" % "1.18.16"
 
   // Logging
@@ -76,16 +75,6 @@ object Dependencies {
   val playSlickEvolutions =
     "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion
 
-  // Authentication
-  val silhouette = "com.mohiva" %% "play-silhouette" % "7.0.0"
-  val silhouetteBcrypt =
-    "com.mohiva" %% "play-silhouette-password-bcrypt" % "7.0.0"
-  val silhouetteCrypto = "com.mohiva" %% "play-silhouette-crypto-jca" % "7.0.0"
-  val silhouettePersistence =
-    "com.mohiva" %% "play-silhouette-persistence" % "7.0.0"
-  val silhouetteTestkit =
-    "com.mohiva" %% "play-silhouette-testkit" % "7.0.0" % "test"
-
   // Hacks for guava incompatibility
   val hadoopMapreduceClient =
     "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "2.7.2"
@@ -122,14 +111,6 @@ object ProjectDependencies {
     Dependencies.mockito
   )
 
-  val silhouetteDependencies = Seq(
-    Dependencies.silhouette,
-    Dependencies.silhouetteBcrypt,
-    Dependencies.silhouetteCrypto,
-    Dependencies.silhouettePersistence,
-    Dependencies.silhouetteTestkit
-  )
-
   val forcedDependencies = Seq(
     Dependencies.hadoopMapreduceClient,
     Dependencies.jacksonScala,
@@ -146,13 +127,12 @@ object ProjectDependencies {
   )
 
   val apiDependencies: Seq[ModuleID] =
-    commonDependencies ++ playDependencies ++ log4jDependencies ++ silhouetteDependencies ++ Seq(
+    commonDependencies ++ playDependencies ++ log4jDependencies ++ Seq(
       Dependencies.prometheusClient,
       Dependencies.prometheusHotspot,
       Dependencies.prometheusCommon,
       Dependencies.h2,
-      Dependencies.postgres,
-      Dependencies.ficus
+      Dependencies.postgres
     )
 
   val contentDependencies: Seq[ModuleID] = commonDependencies ++ Seq(
@@ -161,7 +141,7 @@ object ProjectDependencies {
   )
 
   val domainDependencies: Seq[ModuleID] =
-    commonDependencies ++ silhouetteDependencies ++ Seq(
+    commonDependencies ++ Seq(
       // Dependency injection
       guice,
       // Used to generate elasticsearch matchers
