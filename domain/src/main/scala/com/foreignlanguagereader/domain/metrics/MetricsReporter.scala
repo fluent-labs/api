@@ -51,10 +51,10 @@ class MetricsReporter @Inject() (holder: MetricHolder, config: Configuration) {
     holder.report(Metric.REQUEST_FAILURES, path.toString)
   def reportBadRequest(path: RequestPath): Unit =
     holder.report(Metric.BAD_REQUEST_DATA, path.toString)
-  def reportUnauthenticatedRequest(): Unit =
-    holder.report(Metric.UNAUTHENTICATED_REQUEST)
-  def reportBadRequestToken(): Unit =
-    holder.report(Metric.BAD_REQUEST_TOKEN)
+  def reportUnauthenticatedRequest(path: RequestPath): Unit =
+    holder.report(Metric.UNAUTHENTICATED_REQUEST, path.toString)
+  def reportBadRequestToken(path: RequestPath): Unit =
+    holder.report(Metric.BAD_REQUEST_TOKEN, path.toString)
 
   /*
    * Downstream dependency RED metrics

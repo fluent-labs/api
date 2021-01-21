@@ -25,9 +25,7 @@ class MetricHolder {
     MetricHolder.initializeUnlabeledMetric(
       List(
         Metric.GOOGLE_CALLS,
-        Metric.GOOGLE_FAILURES,
-        Metric.UNAUTHENTICATED_REQUEST,
-        Metric.BAD_REQUEST_TOKEN
+        Metric.GOOGLE_FAILURES
       )
     )(MetricHolder.buildCounter)
 
@@ -52,7 +50,9 @@ class MetricHolder {
         Metric.DEFINITIONS_SEARCHED -> List("source"),
         Metric.DEFINITIONS_NOT_FOUND -> List("source"),
         Metric.DEFINITIONS_SEARCHED_IN_CACHE -> List("source"),
-        Metric.DEFINITIONS_NOT_FOUND_IN_CACHE -> List("source")
+        Metric.DEFINITIONS_NOT_FOUND_IN_CACHE -> List("source"),
+        Metric.UNAUTHENTICATED_REQUEST -> List("route"),
+        Metric.BAD_REQUEST_TOKEN -> List("route")
       )
     )(MetricHolder.buildCounter)
 
