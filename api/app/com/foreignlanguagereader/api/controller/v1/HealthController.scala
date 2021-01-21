@@ -1,5 +1,9 @@
 package com.foreignlanguagereader.api.controller.v1
 
+import com.foreignlanguagereader.api.authentication.{
+  AuthenticatedAction,
+  AuthenticatedRequest
+}
 import com.foreignlanguagereader.domain.client.MirriamWebsterClient
 import com.foreignlanguagereader.domain.client.database.DatabaseClient
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchClient
@@ -20,6 +24,7 @@ class HealthController @Inject() (
     databaseClient: DatabaseClient,
     elasticsearchClient: ElasticsearchClient,
     websterClient: MirriamWebsterClient,
+    authenticatedAction: AuthenticatedAction,
     implicit val ec: ExecutionContext
 ) extends BaseController {
 
@@ -69,4 +74,17 @@ class HealthController @Inject() (
     )
     writer.toString
   }
+
+  def checkAuthentication: Action[AnyContent] =
+    authenticatedAction((request: AuthenticatedRequest[AnyContent]) => {
+      val claim = request.jwt
+      val token = Map[String, String](
+        "Audience" -> claim.audience.getOrElse(Set()).mkString(", "),
+        "Content" -> claim.content,
+        "Expiration" -> claim.expiration.getOrElse(0).toString,
+        "Issuer" -> claim.issuer.getOrElse("Unknown issuer"),
+        "Subject" -> claim.subject.getOrElse("Unknown subject")
+      )
+      Ok(Json.toJson(token))
+    })
 }
