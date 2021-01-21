@@ -70,7 +70,7 @@ class AuthenticationService @Inject() (config: Configuration) {
         // Use jwkProvider to load the JWKS data and return the JWK
         jwtHeader.keyId.map { k =>
           Try(jwkProvider.get(k))
-        } getOrElse Failure(new Exception("Unable to retrieve kid"))
+        } getOrElse Failure(new Exception("Unable to retrieve JWK"))
     }
 
   // Validates the claims inside the token. 'isValid' checks the issuedAt, expiresAt,
