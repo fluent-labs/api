@@ -1,6 +1,5 @@
 import sbtassembly.AssemblyPlugin.autoImport.assemblyMergeStrategy
 import Dependencies._
-import sbt.Keys.resolvers
 
 name := "foreign-language-reader-parent"
 scalaVersion in ThisBuild := "2.12.12"
