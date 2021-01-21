@@ -7,7 +7,7 @@ import com.foreignlanguagereader.content.types.internal.definition.SpanishDefini
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.MirriamWebsterClient
-import com.foreignlanguagereader.domain.client.common.CircuitBreakerResult
+import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerResult
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
 import com.foreignlanguagereader.domain.metrics.MetricsReporter
 

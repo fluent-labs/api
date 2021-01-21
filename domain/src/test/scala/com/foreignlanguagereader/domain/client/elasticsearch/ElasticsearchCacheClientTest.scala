@@ -8,7 +8,7 @@ import com.foreignlanguagereader.content.types.internal.definition.{
   EnglishDefinition
 }
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
-import com.foreignlanguagereader.domain.client.common.{
+import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,
   CircuitBreakerResult

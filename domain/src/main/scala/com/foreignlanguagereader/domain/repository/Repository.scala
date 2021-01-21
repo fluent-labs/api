@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.domain.repository
 
-import com.foreignlanguagereader.domain.client.common.{
+import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,
   CircuitBreakerNonAttempt

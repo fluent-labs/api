@@ -10,7 +10,7 @@ import com.foreignlanguagereader.content.types.internal.word.{
   PartOfSpeech,
   Word
 }
-import com.foreignlanguagereader.domain.client.common.{
+import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,
   CircuitBreakerNonAttempt

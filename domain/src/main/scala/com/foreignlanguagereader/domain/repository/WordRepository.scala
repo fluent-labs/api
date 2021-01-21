@@ -2,7 +2,7 @@ package com.foreignlanguagereader.domain.repository
 
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
-import com.foreignlanguagereader.domain.client.common.CircuitBreakerResult
+import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerResult
 import com.foreignlanguagereader.domain.client.database.DatabaseClient
 import com.foreignlanguagereader.domain.dao.{WordDAO, WordSchema}
 import play.api.Logger

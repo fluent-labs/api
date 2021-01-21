@@ -6,14 +6,14 @@ import sbt._
  */
 
 object Dependencies {
-  val scalatestVersion = "3.2.2"
-  val jacksonVersion = "2.11.3"
-  val playSlickVersion = "5.0.0"
-  val log4jVersion = "2.14.0"
   val elasticsearchVersion = "7.10.1"
-  val sparkVersion = "3.0.1"
   val hadoopVersion = "2.7.4"
+  val jacksonVersion = "2.11.3"
+  val log4jVersion = "2.14.0"
+  val playSlickVersion = "5.0.0"
   val prometheusVersion = "0.9.0"
+  val scalatestVersion = "3.2.2"
+  val sparkVersion = "3.0.1"
 
   // Testing
   val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
@@ -28,6 +28,7 @@ object Dependencies {
   val cats = "org.typelevel" %% "cats-core" % "2.0.0"
   val lombok = "org.projectlombok" % "lombok" % "1.18.16"
 
+  // Logging
   val log4jImplementation =
     "org.apache.logging.log4j" % "log4j-slf4j-impl" % log4jVersion
   val log4jApi = "org.apache.logging.log4j" % "log4j-api" % log4jVersion
@@ -35,13 +36,14 @@ object Dependencies {
   val log4jJson =
     "org.apache.logging.log4j" % "log4j-layout-template-json" % log4jVersion
 
+  // Metrics
   val prometheusClient = "io.prometheus" % "simpleclient" % prometheusVersion
   val prometheusCommon =
     "io.prometheus" % "simpleclient_common" % prometheusVersion
   val prometheusHotspot =
     "io.prometheus" % "simpleclient_hotspot" % prometheusVersion
 
-  // Spark
+  // Content batch jobs
   val sparkCore =
     "org.apache.spark" %% "spark-core" % sparkVersion
   val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
@@ -65,6 +67,7 @@ object Dependencies {
   val googleCloudClient =
     "com.google.cloud" % "google-cloud-language" % "1.101.9"
 
+  // Database
   val h2 = "com.h2database" % "h2" % "1.4.192"
   val postgres = "org.postgresql" % "postgresql" % "42.2.18"
   val playSlick = "com.typesafe.play" %% "play-slick" % playSlickVersion
@@ -136,24 +139,25 @@ object ProjectDependencies {
     Dependencies.opencc4j
   )
 
-  val domainDependencies: Seq[ModuleID] = commonDependencies ++ Seq(
-    // Dependency injection
-    guice,
-    // Used to generate elasticsearch matchers
-    Dependencies.elasticsearchHighLevelClient,
-    Dependencies.oslib,
-    // Testing
-    Dependencies.mockito,
-    Dependencies.scalatestPlay,
-    Dependencies.elasticsearchContainer,
-    // Clients
-    Dependencies.opencc4j,
-    Dependencies.googleCloudClient,
-    // Metrics
-    Dependencies.prometheusClient,
-    Dependencies.prometheusHotspot,
-    Dependencies.playSlick
-  )
+  val domainDependencies: Seq[ModuleID] =
+    commonDependencies ++ Seq(
+      // Dependency injection
+      guice,
+      // Used to generate elasticsearch matchers
+      Dependencies.elasticsearchHighLevelClient,
+      Dependencies.oslib,
+      // Testing
+      Dependencies.mockito,
+      Dependencies.scalatestPlay,
+      Dependencies.elasticsearchContainer,
+      // Clients
+      Dependencies.opencc4j,
+      Dependencies.googleCloudClient,
+      // Metrics
+      Dependencies.prometheusClient,
+      Dependencies.prometheusHotspot,
+      Dependencies.playSlick
+    )
 
   val dtoDependencies: Seq[ModuleID] = commonDependencies
 

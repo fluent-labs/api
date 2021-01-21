@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.domain.client.database
 
 import akka.actor.ActorSystem
-import com.foreignlanguagereader.domain.client.common.{
+import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerResult,
   Circuitbreaker
 }

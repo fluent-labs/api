@@ -6,10 +6,10 @@ import com.foreignlanguagereader.content.types.internal.definition.Definition
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.Word
-import com.foreignlanguagereader.domain.client.common.CircuitBreakerResult
+import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerResult
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchSearchRequest
-import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import play.api.Logger
 import play.api.libs.json.{Reads, Writes}
 

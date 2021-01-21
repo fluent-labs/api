@@ -8,7 +8,7 @@ import com.foreignlanguagereader.content.types.internal.word.{
   PartOfSpeech,
   WordTense
 }
-import com.foreignlanguagereader.domain.client.common.CircuitBreakerAttempt
+import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerAttempt
 import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.google.cloud.language.v1.AnalyzeSyntaxRequest
 import com.google.cloud.language.v1.PartOfSpeech.{

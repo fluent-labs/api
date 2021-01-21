@@ -3,7 +3,7 @@ package com.foreignlanguagereader.domain.service
 import cats.implicits._
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.internal.word.Word
-import com.foreignlanguagereader.domain.client.common.{
+import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,
   CircuitBreakerNonAttempt

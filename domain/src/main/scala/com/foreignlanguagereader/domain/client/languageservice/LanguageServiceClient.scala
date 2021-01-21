@@ -9,8 +9,8 @@ import com.foreignlanguagereader.content.types.internal.word.{
   PartOfSpeech,
   Word
 }
+import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerResult
 import com.foreignlanguagereader.domain.client.common.{
-  CircuitBreakerResult,
   RestClient,
   RestClientBuilder
 }

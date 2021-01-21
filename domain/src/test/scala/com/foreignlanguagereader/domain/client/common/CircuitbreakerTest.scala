@@ -1,6 +1,13 @@
 package com.foreignlanguagereader.domain.client.common
 
 import cats.implicits._
+import com.foreignlanguagereader.domain.client.circuitbreaker.{
+  CircuitBreakerAttempt,
+  CircuitBreakerFailedAttempt,
+  CircuitBreakerNonAttempt,
+  CircuitBreakerResult,
+  Circuitbreaker
+}
 import com.foreignlanguagereader.dto.v1.health.ReadinessStatus
 import com.typesafe.config.ConfigFactory
 import org.mockito.MockitoSugar

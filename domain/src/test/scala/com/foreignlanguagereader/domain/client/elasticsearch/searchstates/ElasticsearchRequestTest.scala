@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
 import com.foreignlanguagereader.content.types.internal.definition.Definition
-import com.foreignlanguagereader.domain.client.common.CircuitBreakerAttempt
+import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerAttempt
 import org.elasticsearch.action.search.{MultiSearchRequest, SearchRequest}
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.builder.SearchSourceBuilder
