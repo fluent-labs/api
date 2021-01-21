@@ -23,7 +23,12 @@ import scala.util.{Failure, Success, Try}
 class MetricHolder {
   val unlabeledCounters: Map[Metric, Counter] =
     MetricHolder.initializeUnlabeledMetric(
-      List(Metric.GOOGLE_CALLS, Metric.GOOGLE_FAILURES)
+      List(
+        Metric.GOOGLE_CALLS,
+        Metric.GOOGLE_FAILURES,
+        Metric.UNAUTHENTICATED_REQUEST,
+        Metric.BAD_REQUEST_TOKEN
+      )
     )(MetricHolder.buildCounter)
 
   val labeledCounters: Map[Metric, Counter] =
