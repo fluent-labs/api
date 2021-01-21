@@ -7,6 +7,5 @@ lazy val dependencies = project
   .in(file("."))
   .settings(
     libraryDependencies ++= ProjectDependencies.allDependencies,
-    dependencyOverrides ++= ProjectDependencies.forcedDependencies,
-    resolvers += "atlassian" at "https://packages.atlassian.com/maven-public/"
+    dependencyOverrides ++= ProjectDependencies.forcedDependencies
   )

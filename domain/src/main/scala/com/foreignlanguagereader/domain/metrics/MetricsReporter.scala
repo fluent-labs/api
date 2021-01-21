@@ -51,7 +51,6 @@ class MetricsReporter @Inject() (holder: MetricHolder, config: Configuration) {
     holder.report(Metric.REQUEST_FAILURES, path.toString)
   def reportBadRequest(path: RequestPath): Unit =
     holder.report(Metric.BAD_REQUEST_DATA, path.toString)
-  def reportFailedLogin(): Unit = holder.report(Metric.FAILED_LOGIN)
 
   /*
    * Downstream dependency RED metrics
