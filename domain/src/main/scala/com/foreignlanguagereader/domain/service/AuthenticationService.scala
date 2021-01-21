@@ -14,7 +14,7 @@ import scala.util.{Failure, Success, Try}
   * Taken from https://auth0.com/blog/build-and-secure-a-scala-play-framework-api/
   * @param config
   */
-class AuthService @Inject() (config: Configuration) {
+class AuthenticationService @Inject() (config: Configuration) {
 
   implicit val clock: Clock = Clock.systemUTC
 
