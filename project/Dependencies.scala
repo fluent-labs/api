@@ -74,6 +74,11 @@ object Dependencies {
   val playSlickEvolutions =
     "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion
 
+  // Auth
+  val jwtPlay = "com.pauldijou" %% "jwt-play" % "4.3.0"
+  val jwtCore = "com.pauldijou" %% "jwt-core" % "4.3.0"
+  val jwksRsa = "com.auth0" % "jwks-rsa" % "0.15.0"
+
   // Hacks for guava incompatibility
   val hadoopMapreduceClient =
     "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "2.7.2"
@@ -156,7 +161,11 @@ object ProjectDependencies {
       // Metrics
       Dependencies.prometheusClient,
       Dependencies.prometheusHotspot,
-      Dependencies.playSlick
+      Dependencies.playSlick,
+      // Auth
+      Dependencies.jwtCore,
+      Dependencies.jwtPlay,
+      Dependencies.jwksRsa
     )
 
   val dtoDependencies: Seq[ModuleID] = commonDependencies
