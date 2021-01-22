@@ -15,6 +15,8 @@ object Metric extends Enumeration {
   val REQUEST_FAILURES: Value = Value("request_failures")
   val BAD_REQUEST_DATA: Value =
     Value("bad_request_data") // Likely indicates issues on the frontend
+  val UNAUTHENTICATED_REQUEST: Value = Value("unauthenticated_request")
+  val BAD_REQUEST_TOKEN: Value = Value("bad_request_token")
 
   // Duration
   val REQUESTS_LATENCY_SECONDS: Value = Value("requests_latency_seconds")
