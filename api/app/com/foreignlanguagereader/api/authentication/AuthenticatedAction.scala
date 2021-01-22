@@ -54,13 +54,7 @@ class AuthenticatedAction @Inject() (
           metrics.reportBadRequestToken(path)
           unauthorizedResponse
       }
-    } getOrElse {
-      metrics.reportUnauthenticatedRequest(path)
-      logger.error(
-        s"Unauthenticated request to endpoint requiring authentication: ${request.path}"
-      )
-      unauthorizedResponse
-    }
+    } getOrElse unauthorizedResponse
   }
 
   private[this] def extractBearerToken[A](
