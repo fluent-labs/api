@@ -39,4 +39,16 @@ class DefinitionService @Inject() (
       case Language.SPANISH =>
         spanishDefinitionService.getDefinitions(definitionLanguage, word)
     }
+
+  def getDefinitions(
+      wordLanguage: Language,
+      definitionLanguage: Language,
+      words: List[Word]
+  ): Future[Map[Word, List[Definition]]] = {
+    Future
+      .traverse(words)(word =>
+        getDefinition(wordLanguage, definitionLanguage, word)
+      )
+      .map(definitions => words.zip(definitions).toMap)
+  }
 }
