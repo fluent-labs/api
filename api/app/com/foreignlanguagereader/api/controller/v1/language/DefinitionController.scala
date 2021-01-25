@@ -60,7 +60,7 @@ class DefinitionController @Inject() (
   }
 
   implicit val definitionsRequestReader: Reads[DefinitionsRequest] =
-    (JsPath \ "text")
+    (JsPath \ "words")
       .read[List[String]]
       .map(words => new DefinitionsRequest(words.asJava))
 
