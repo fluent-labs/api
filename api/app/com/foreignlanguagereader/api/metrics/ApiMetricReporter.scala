@@ -8,12 +8,15 @@ import scala.util.matching.Regex
 
 object ApiMetricReporter {
   val languageRegex: String = s"[${Language.values.mkString("|")}]+"
-  val definitionsRegex: Regex =
+  val definitionRegex: Regex =
     s"/v1/language/definition/$languageRegex/[^/]+/?".r
+  val definitionsRegex: Regex =
+    s"/v1/language/definitions/$languageRegex/$languageRegex/?".r
   val documentRegex: Regex = s"/v1/language/document/$languageRegex/?".r
 
   def getLabelFromPath(path: String): RequestPath =
     path match {
+      case definitionRegex()      => RequestPath.DEFINITION
       case definitionsRegex()     => RequestPath.DEFINITIONS
       case documentRegex()        => RequestPath.DOCUMENT
       case "/health"              => RequestPath.HEALTH

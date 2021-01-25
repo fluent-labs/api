@@ -28,10 +28,10 @@ class DefinitionController @Inject() (
 
   def definition(wordLanguage: Language, word: String): Action[AnyContent] =
     Action.async {
-      getDefinitions(wordLanguage, Language.ENGLISH, word)
+      getDefinition(wordLanguage, Language.ENGLISH, word)
     }
 
-  def getDefinitions(
+  def getDefinition(
       wordLanguage: Language,
       definitionLanguage: Language,
       word: String
