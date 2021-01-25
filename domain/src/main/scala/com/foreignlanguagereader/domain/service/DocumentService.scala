@@ -35,19 +35,7 @@ class DocumentService @Inject() (
       definitionLanguage: Language,
       document: String
   ): Future[List[Word]] =
-    tokenizeDocument(wordLanguage, document).flatMap(words => {
-      words.toList
-        .traverse(word =>
-          definitionService
-            .getDefinition(wordLanguage, definitionLanguage, word)
-            .map(d => word.copy(definitions = d))
-        )
-    })
-
-  def tokenizeDocument(
-      language: Language,
-      document: String
-  ): Future[Set[Word]] = getWordsFromLanguageService(language, document)
+    getWordsFromLanguageService(wordLanguage, document)
 
   def getWordsFromGoogleCloud(
       language: Language,
