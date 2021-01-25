@@ -17,7 +17,6 @@ import com.foreignlanguagereader.domain.client.circuitbreaker.{
 }
 import com.foreignlanguagereader.domain.client.google.GoogleCloudClient
 import com.foreignlanguagereader.domain.client.languageservice.LanguageServiceClient
-import com.foreignlanguagereader.domain.service.definition.DefinitionService
 import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
 
@@ -28,15 +27,12 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
     mock[GoogleCloudClient]
   val mockLanguageService: LanguageServiceClient =
     mock[LanguageServiceClient]
-  val mockDefinitionService: DefinitionService =
-    mock[DefinitionService]
   val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 
   val documentService =
     new DocumentService(
       mockGoogleCloudClient,
       mockLanguageService,
-      mockDefinitionService,
       ec
     )
 
@@ -117,36 +113,6 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         Future.apply(CircuitBreakerAttempt(List(testWord, phraseWord)))
       )
 
-      val testDefinition = EnglishDefinition(
-        subdefinitions = List("test"),
-        ipa = "",
-        tag = PartOfSpeech.NOUN,
-        examples = None,
-        wordLanguage = Language.ENGLISH,
-        definitionLanguage = Language.SPANISH,
-        source = DefinitionSource.MULTIPLE,
-        token = "test"
-      )
-      when(
-        mockDefinitionService
-          .getDefinition(Language.ENGLISH, Language.SPANISH, testWord)
-      ).thenReturn(Future.successful(List(testDefinition)))
-
-      val phraseDefinition = EnglishDefinition(
-        subdefinitions = List("phrase"),
-        ipa = "",
-        tag = PartOfSpeech.VERB,
-        examples = None,
-        wordLanguage = Language.ENGLISH,
-        definitionLanguage = Language.SPANISH,
-        source = DefinitionSource.MULTIPLE,
-        token = "phrase"
-      )
-      when(
-        mockDefinitionService
-          .getDefinition(Language.ENGLISH, Language.SPANISH, phraseWord)
-      ).thenReturn(Future.successful(List(phraseDefinition)))
-
       documentService
         .getWordsForDocument(Language.ENGLISH, "test phrase")
         .map(result => {
@@ -154,11 +120,8 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
           val test = result.head
           val phrase = result(1)
 
-          assert(test == testWord.copy(definitions = List(testDefinition)))
-          assert(
-            phrase == phraseWord
-              .copy(definitions = List(phraseDefinition))
-          )
+          assert(test == testWord)
+          assert(phrase == phraseWord)
         })
     }
   }

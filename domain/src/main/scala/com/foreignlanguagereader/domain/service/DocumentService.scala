@@ -9,7 +9,6 @@ import com.foreignlanguagereader.domain.client.circuitbreaker.{
 }
 import com.foreignlanguagereader.domain.client.google.GoogleCloudClient
 import com.foreignlanguagereader.domain.client.languageservice.LanguageServiceClient
-import com.foreignlanguagereader.domain.service.definition.DefinitionService
 import com.google.inject.Inject
 
 import javax.inject
@@ -21,7 +20,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class DocumentService @Inject() (
     val googleCloudClient: GoogleCloudClient,
     languageServiceClient: LanguageServiceClient,
-    val definitionService: DefinitionService,
     implicit val ec: ExecutionContext
 ) {
   val logger: Logger = Logger(this.getClass)
