@@ -26,7 +26,7 @@ import com.foreignlanguagereader.domain.fetcher.spanish.{
   WebsterSpanishToEnglishFetcher,
   WiktionarySpanishFetcher
 }
-import com.foreignlanguagereader.domain.metrics.{Metric, MetricsReporter}
+import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar
 import org.scalatest.FutureOutcome
@@ -120,6 +120,30 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
               .toDefinition(PartOfSpeech.NOUN)
           )
         }
+    }
+
+    it("will not return results if they are not for the correct word") {
+      when(
+        elasticsearchClientMock
+          .findFromCacheOrRefetch(
+            any(classOf[ElasticsearchSearchRequest[WiktionaryDefinitionEntry]])
+          )(
+            any(classOf[ClassTag[WiktionaryDefinitionEntry]]),
+            any(classOf[Reads[WiktionaryDefinitionEntry]]),
+            any(classOf[Writes[WiktionaryDefinitionEntry]])
+          )
+      ).thenReturn(
+        Future
+          .successful(
+            List(dummyWiktionaryDefinition)
+          )
+      )
+      defaultDefinitionService
+        .getDefinitions(Language.ENGLISH, token)
+        .foreach { results =>
+          assert(results.isEmpty)
+        }
+      succeed
     }
 
     it("does not break if no results are found") {
@@ -301,7 +325,7 @@ class LanguageDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
         )
 
         customizedEnricher
-          .getDefinitions(Language.ENGLISH, token)
+          .getDefinitions(Language.ENGLISH, test)
           .map { results =>
             assert(results.length == 1)
             assert(
