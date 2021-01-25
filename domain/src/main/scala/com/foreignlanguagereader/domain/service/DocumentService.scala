@@ -65,12 +65,12 @@ class DocumentService @Inject() (
   def getWordsFromLanguageService(
       language: Language,
       document: String
-  ): Future[Set[Word]] = {
+  ): Future[List[Word]] = {
     languageServiceClient
       .getWordsForDocument(language, document)
       .map {
-        case CircuitBreakerAttempt(result)  => result.toSet
-        case CircuitBreakerNonAttempt()     => Set[Word]()
+        case CircuitBreakerAttempt(result)  => result
+        case CircuitBreakerNonAttempt()     => List[Word]()
         case CircuitBreakerFailedAttempt(e) => throw e
       }
   }
