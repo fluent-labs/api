@@ -48,7 +48,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       ).thenReturn(Future.successful(CircuitBreakerAttempt(List())))
 
       documentService
-        .getWordsForDocument(Language.CHINESE, Language.CHINESE, "some words")
+        .getWordsForDocument(Language.CHINESE, "some words")
         .map(result => assert(result.isEmpty))
     }
 
@@ -59,7 +59,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       ).thenReturn(Future.successful(CircuitBreakerNonAttempt()))
 
       documentService
-        .getWordsForDocument(Language.CHINESE, Language.CHINESE, "some words")
+        .getWordsForDocument(Language.CHINESE, "some words")
         .map(result => assert(result.isEmpty))
     }
 
@@ -74,7 +74,6 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       )
       documentService
         .getWordsForDocument(
-          Language.CHINESE_TRADITIONAL,
           Language.CHINESE_TRADITIONAL,
           "some words"
         )
@@ -149,7 +148,7 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
       ).thenReturn(Future.successful(List(phraseDefinition)))
 
       documentService
-        .getWordsForDocument(Language.ENGLISH, Language.SPANISH, "test phrase")
+        .getWordsForDocument(Language.ENGLISH, "test phrase")
         .map(result => {
           assert(result.size == 2)
           val test = result.head
