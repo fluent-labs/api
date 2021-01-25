@@ -107,7 +107,9 @@ trait LanguageDefinitionService[T <: Definition] {
     metrics.reportDefinitionsSearched(source)
     Future
       .traverse(preprocessWordForRequest(word))(token =>
-        getDefinitionsForToken(definitionLanguage, source, token)
+        getDefinitionsForToken(definitionLanguage, source, token).map(
+          definitions => definitions.filter(d => d.token.equals(token.token))
+        )
       )
       .map(_.flatten)
       .map(result => {
