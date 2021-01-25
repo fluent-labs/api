@@ -44,11 +44,11 @@ class DefinitionService @Inject() (
       wordLanguage: Language,
       definitionLanguage: Language,
       words: List[Word]
-  ): Future[Map[Word, List[Definition]]] = {
+  ): Future[Map[String, List[Definition]]] = {
     Future
       .traverse(words)(word =>
         getDefinition(wordLanguage, definitionLanguage, word)
       )
-      .map(definitions => words.zip(definitions).toMap)
+      .map(definitions => words.map(_.token).zip(definitions).toMap)
   }
 }
