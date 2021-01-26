@@ -1,10 +1,6 @@
 package com.foreignlanguagereader.domain.service
 
 import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.internal.definition.{
-  DefinitionSource,
-  EnglishDefinition
-}
 import com.foreignlanguagereader.content.types.internal.word
 import com.foreignlanguagereader.content.types.internal.word.{
   PartOfSpeech,

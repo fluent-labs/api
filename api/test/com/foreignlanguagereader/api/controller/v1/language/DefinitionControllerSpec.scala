@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.api.controller.v1.language
 
 import com.foreignlanguagereader.api.controller.v1.PlaySpec
+import com.foreignlanguagereader.api.error.ServiceException
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.metrics.MetricsReporter
@@ -52,7 +53,7 @@ class DefinitionControllerSpec extends PlaySpec with MockitoSugar {
 
       val mockTimer = Some(mock[Histogram.Timer])
       when(
-        mockMetricsReporter.reportRequestStarted("GET", RequestPath.DEFINITIONS)
+        mockMetricsReporter.reportRequestStarted("GET", RequestPath.DEFINITION)
       ).thenReturn(mockTimer)
 
       val request = FakeRequest(GET, goodRequest)
@@ -74,7 +75,7 @@ class DefinitionControllerSpec extends PlaySpec with MockitoSugar {
 
       val mockTimer = Some(mock[Histogram.Timer])
       when(
-        mockMetricsReporter.reportRequestStarted("GET", RequestPath.DEFINITIONS)
+        mockMetricsReporter.reportRequestStarted("GET", RequestPath.DEFINITION)
       ).thenReturn(mockTimer)
 
       val request = FakeRequest(GET, badLanguageRequest)
@@ -122,6 +123,28 @@ class DefinitionControllerSpec extends PlaySpec with MockitoSugar {
 
       status(goodResponse) mustBe OK
       contentAsString(goodResponse) must include("{}")
+    }
+
+    "appropriately handle bad requests from the router" in {
+
+      val mockTimer = Some(mock[Histogram.Timer])
+      when(
+        mockMetricsReporter.reportRequestStarted(
+          "POST",
+          RequestPath.DEFINITIONS
+        )
+      ).thenReturn(mockTimer)
+
+      val badRequest =
+        JavaJson.stringify(JavaJson.toJson(new ServiceException("Uh oh")))
+      val request =
+        FakeRequest(POST, goodRequest).withJsonBody(Json.parse(badRequest))
+      val badResponse = route(app, request).get
+
+      status(badResponse) mustBe 400
+      contentAsString(badResponse) must include(
+        "{\"message\":\"Invalid request body, please try again\"}"
+      )
     }
   }
 }
