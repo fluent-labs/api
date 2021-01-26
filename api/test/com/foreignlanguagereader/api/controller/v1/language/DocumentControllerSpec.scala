@@ -45,7 +45,6 @@ class DocumentControllerSpec extends PlaySpec with MockitoSugar {
         mockDocumentService
           .getWordsForDocument(
             Language.ENGLISH,
-            Language.ENGLISH,
             document
           )
       ).thenReturn(Future.successful(List()))

@@ -7,5 +7,6 @@ GET    /readiness    com.foreignlanguagereader.api.controller.v1.HealthControlle
 GET    /auth    com.foreignlanguagereader.api.controller.v1.HealthController.checkAuthentication
 
 GET    /v1/language/definition/:wordlanguage/:word/ com.foreignlanguagereader.api.controller.v1.language.DefinitionController.definition(wordlanguage: com.foreignlanguagereader.content.types.Language.Language, word: String)
+POST   /v1/language/definitions/:wordlanguage/:definitionLanguage/ com.foreignlanguagereader.api.controller.v1.language.DefinitionController.definitions(wordlanguage: com.foreignlanguagereader.content.types.Language.Language, definitionLanguage: com.foreignlanguagereader.content.types.Language.Language)
 POST   /v1/language/document/:wordlanguage/ com.foreignlanguagereader.api.controller.v1.language.DocumentController.document(wordlanguage: com.foreignlanguagereader.content.types.Language.Language)
 GET    /v1/vocabulary/words com.foreignlanguagereader.api.controller.v1.vocabulary.VocabularyController.getAllWords

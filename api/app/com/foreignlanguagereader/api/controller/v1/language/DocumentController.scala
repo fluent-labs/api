@@ -27,22 +27,17 @@ class DocumentController @Inject() (
   implicit val documentRequestReader: Reads[DocumentRequest] =
     (JsPath \ "text").read[String].map(text => new DocumentRequest(text))
 
-  def document(wordLanguage: Language): Action[JsValue] =
-    document(wordLanguage, Language.ENGLISH)
-
   def document(
-      wordLanguage: Language,
-      definitionLanguage: Language
+      wordLanguage: Language
   ): Action[JsValue] =
     Action.async(parse.json) { request =>
       {
-        metrics.reportLearnerLanguage(wordLanguage, definitionLanguage)
+        metrics.reportLearnerLanguage(wordLanguage, Language.UNKNOWN)
         request.body.validate[DocumentRequest] match {
           case JsSuccess(documentRequest: DocumentRequest, _) =>
             documentService
               .getWordsForDocument(
                 wordLanguage,
-                definitionLanguage,
                 documentRequest.getText
               )
               .map(words => {
