@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.content.types.external.definition.webster
 
+import com.foreignlanguagereader.content.formatters.WebsterFormatter
 import com.foreignlanguagereader.content.types.external.definition.webster.common.WebsterPartOfSpeech.WebsterPartOfSpeech
 import com.foreignlanguagereader.content.types.external.definition.webster.common.{
   WebsterDefinition,
@@ -38,7 +39,7 @@ trait WebsterDefinitionEntryBase {
       .flatMap(_.definingText.text)
 
     if (d.nonEmpty) d.toList else shortDefinitions.toList
-  }
+  }.map(d => WebsterFormatter.format(d))
 
   val examples: Option[List[String]] = {
     //definitions: Seq[WebsterDefinition]
@@ -55,7 +56,7 @@ trait WebsterDefinitionEntryBase {
       // Verbal Illustration means examples, so we can just get the text.
       .map(_.text)
     if (e.isEmpty) None else Some(e.toList)
-  }
+  }.map(_.map(d => WebsterFormatter.format(d)))
 
   // TODO - find out how frequent this is.
   val pronunciation: String = {
