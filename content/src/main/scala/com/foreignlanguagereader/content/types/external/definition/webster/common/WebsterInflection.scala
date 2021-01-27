@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.content.types.external.definition.webster.common
 
+import com.foreignlanguagereader.content.formatters.WebsterFormatter
 import com.foreignlanguagereader.content.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
@@ -18,7 +19,14 @@ object WebsterInflection {
       (JsPath \ "ifc").readNullable[String] and
       (JsPath \ "il").readNullable[String] and
       (JsPath \ "prs").readNullable[WebsterPronunciation]
-  )(WebsterInflection.apply _)
+  )((iff, ifc, il, prs) =>
+    WebsterInflection.apply(
+      iff.map(WebsterFormatter.format),
+      ifc.map(WebsterFormatter.format),
+      il.map(WebsterFormatter.format),
+      prs
+    )
+  )
   implicit val helper: JsonSequenceHelper[WebsterInflection] =
     new JsonSequenceHelper[WebsterInflection]
 }

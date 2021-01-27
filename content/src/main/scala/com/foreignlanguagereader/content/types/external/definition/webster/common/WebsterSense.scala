@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.content.types.external.definition.webster.common
 
+import com.foreignlanguagereader.content.formatters.WebsterFormatter
 import com.foreignlanguagereader.content.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -31,7 +32,18 @@ object WebsterSense {
       .readNullable[String] and (JsPath \ "sls")
       .readNullable[List[String]] and (JsPath \ "vrs")
       .readNullable[List[WebsterVariant]](WebsterVariant.helper.readsList)
-  )(WebsterSense.apply _)
+  )((dt, ins, lbs, prs, sdsense, sgram, sls, vrs) =>
+    WebsterSense.apply(
+      dt,
+      ins,
+      lbs.map(_.map(WebsterFormatter.format)),
+      prs,
+      sdsense,
+      sgram.map(WebsterFormatter.format),
+      sls.map(_.map(WebsterFormatter.format)),
+      vrs
+    )
+  )
   implicit val writes: Writes[WebsterSense] = Json.writes[WebsterSense]
   implicit val helper: JsonSequenceHelper[WebsterSense] =
     new JsonSequenceHelper[WebsterSense]
@@ -62,7 +74,19 @@ object WebsterDividedSense {
       .readNullable[String] and (JsPath \ "sls")
       .readNullable[List[String]] and (JsPath \ "vrs")
       .readNullable[List[WebsterVariant]](WebsterVariant.helper.readsList)
-  )(WebsterDividedSense.apply _)
+  )((sd, dt, ins, lbs, prs, sgram, sls, vrs) =>
+    WebsterDividedSense
+      .apply(
+        WebsterFormatter.format(sd),
+        dt,
+        ins,
+        lbs.map(_.map(WebsterFormatter.format)),
+        prs,
+        sgram.map(WebsterFormatter.format),
+        sls.map(_.map(WebsterFormatter.format)),
+        vrs
+      )
+  )
   implicit val writes: Writes[WebsterDividedSense] =
     Json.writes[WebsterDividedSense]
   implicit val helper: JsonSequenceHelper[WebsterDividedSense] =

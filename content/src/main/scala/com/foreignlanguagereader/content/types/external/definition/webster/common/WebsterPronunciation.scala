@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.content.types.external.definition.webster.common
 
+import com.foreignlanguagereader.content.formatters.WebsterFormatter
 import com.foreignlanguagereader.content.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
@@ -21,7 +22,16 @@ object WebsterPronunciation {
       (JsPath \ "sound")
         .readNullable[WebsterPronunciationSound] and
       (JsPath \ "ipa").readNullable[String]
-  )(WebsterPronunciation.apply _)
+  )((mw, l, l2, pun, sound, ipa) =>
+    WebsterPronunciation.apply(
+      mw.map(WebsterFormatter.format),
+      l.map(WebsterFormatter.format),
+      l2.map(WebsterFormatter.format),
+      pun.map(WebsterFormatter.format),
+      sound,
+      ipa.map(WebsterFormatter.format)
+    )
+  )
   implicit val writes: Writes[WebsterPronunciation] =
     Json.writes[WebsterPronunciation]
   implicit val helper: JsonSequenceHelper[WebsterPronunciation] =

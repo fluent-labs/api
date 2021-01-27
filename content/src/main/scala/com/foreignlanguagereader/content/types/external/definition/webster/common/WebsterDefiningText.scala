@@ -125,7 +125,16 @@ object WebsterCalledAlsoTarget {
         WebsterPronunciation.helper.readsList
       ) and
       (JsPath \ "psl").readNullable[String]
-  )(WebsterCalledAlsoTarget.apply _)
+  )((cat, catref, pn, prs, psl) =>
+    WebsterCalledAlsoTarget
+      .apply(
+        cat.map(WebsterFormatter.format),
+        catref.map(WebsterFormatter.format),
+        pn.map(WebsterFormatter.format),
+        prs,
+        psl.map(WebsterFormatter.format)
+      )
+  )
   implicit val writes: Writes[WebsterCalledAlsoTarget] =
     Json.writes[WebsterCalledAlsoTarget]
   implicit val helper: JsonSequenceHelper[WebsterCalledAlsoTarget] =
@@ -160,7 +169,7 @@ object WebsterSupplementalNote {
         }
       }
 
-      WebsterSupplementalNote(text.head, example)
+      WebsterSupplementalNote(WebsterFormatter.format(text.head), example)
     })
     .filter(JsonValidationError("Text is a required field"))(d =>
       d.text.nonEmpty
