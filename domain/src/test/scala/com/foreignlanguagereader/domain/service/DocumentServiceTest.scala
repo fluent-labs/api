@@ -44,9 +44,51 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         .map(result => assert(result.isEmpty))
     }
 
+    it(
+      "falls back to google cloud when the language service circuitbreaker is open"
+    ) {
+      when(
+        mockLanguageService
+          .getWordsForDocument(Language.CHINESE, "some words")
+      ).thenReturn(Future.successful(CircuitBreakerNonAttempt()))
+      when(
+        mockGoogleCloudClient
+          .getWordsForDocument(Language.CHINESE, "some words")
+      ).thenReturn(Future.successful(CircuitBreakerAttempt(List())))
+
+      documentService
+        .getWordsForDocument(Language.CHINESE, "some words")
+        .map(result => assert(result.isEmpty))
+    }
+
+    it(
+      "falls back to google cloud when the language service fails"
+    ) {
+      when(
+        mockLanguageService
+          .getWordsForDocument(Language.CHINESE_TRADITIONAL, "some words")
+      ).thenReturn(
+        Future.apply(
+          CircuitBreakerFailedAttempt(new IllegalArgumentException("Uh oh"))
+        )
+      )
+      when(
+        mockGoogleCloudClient
+          .getWordsForDocument(Language.CHINESE, "some words")
+      ).thenReturn(Future.successful(CircuitBreakerAttempt(List())))
+
+      documentService
+        .getWordsForDocument(Language.CHINESE, "some words")
+        .map(result => assert(result.isEmpty))
+    }
+
     it("reacts correctly to the circuit breaker being closed") {
       when(
         mockLanguageService
+          .getWordsForDocument(Language.CHINESE, "some words")
+      ).thenReturn(Future.successful(CircuitBreakerNonAttempt()))
+      when(
+        mockGoogleCloudClient
           .getWordsForDocument(Language.CHINESE, "some words")
       ).thenReturn(Future.successful(CircuitBreakerNonAttempt()))
 
@@ -55,9 +97,17 @@ class DocumentServiceTest extends AsyncFunSpec with MockitoSugar {
         .map(result => assert(result.isEmpty))
     }
 
-    it("throws errors from language service") {
+    it("throws errors from when both services have failed") {
       when(
         mockLanguageService
+          .getWordsForDocument(Language.CHINESE_TRADITIONAL, "some words")
+      ).thenReturn(
+        Future.apply(
+          CircuitBreakerFailedAttempt(new IllegalArgumentException("Uh oh"))
+        )
+      )
+      when(
+        mockGoogleCloudClient
           .getWordsForDocument(Language.CHINESE_TRADITIONAL, "some words")
       ).thenReturn(
         Future.apply(

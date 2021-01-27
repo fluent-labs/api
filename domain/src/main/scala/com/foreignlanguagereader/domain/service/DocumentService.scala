@@ -31,31 +31,17 @@ class DocumentService @Inject() (
       wordLanguage: Language,
       document: String
   ): Future[List[Word]] =
-    getWordsFromLanguageService(wordLanguage, document)
-
-  def getWordsFromGoogleCloud(
-      language: Language,
-      document: String
-  ): Future[Set[Word]] = {
-    googleCloudClient
-      .getWordsForDocument(language, document)
-      .map {
-        case CircuitBreakerAttempt(result)  => result
-        case CircuitBreakerNonAttempt()     => Set[Word]()
-        case CircuitBreakerFailedAttempt(e) => throw e
-      }
-  }
-
-  def getWordsFromLanguageService(
-      language: Language,
-      document: String
-  ): Future[List[Word]] = {
     languageServiceClient
-      .getWordsForDocument(language, document)
+      .getWordsForDocument(wordLanguage, document)
+      .map {
+        case CircuitBreakerAttempt(result) =>
+          Future.successful(CircuitBreakerAttempt(result))
+        case _ => googleCloudClient.getWordsForDocument(wordLanguage, document)
+      }
+      .flatten
       .map {
         case CircuitBreakerAttempt(result)  => result
         case CircuitBreakerNonAttempt()     => List[Word]()
         case CircuitBreakerFailedAttempt(e) => throw e
       }
-  }
 }

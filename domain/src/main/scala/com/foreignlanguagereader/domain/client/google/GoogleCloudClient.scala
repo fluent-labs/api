@@ -48,7 +48,7 @@ class GoogleCloudClient @Inject() (
   def getWordsForDocument(
       language: Language,
       document: String
-  ): Future[CircuitBreakerResult[Set[Word]]] = {
+  ): Future[CircuitBreakerResult[List[Word]]] = {
     logger.info(s"Getting tokens in $language from Google cloud: $document")
 
     val doc =
@@ -96,7 +96,7 @@ class GoogleCloudClient @Inject() (
       case Language.SPANISH             => "es"
     }
 
-  def convertTokensToWord(language: Language, tokens: Seq[Token]): Set[Word] =
+  def convertTokensToWord(language: Language, tokens: List[Token]): List[Word] =
     tokens
       .map(token =>
         word.Word(
@@ -114,7 +114,6 @@ class GoogleCloudClient @Inject() (
           processedToken = token.getText.getContent
         )
       )
-      .toSet
 
   def googlePartOfSpeechToDomainPartOfSpeech(tag: Tag): PartOfSpeech =
     tag match {
