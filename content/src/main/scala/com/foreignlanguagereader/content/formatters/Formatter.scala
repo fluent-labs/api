@@ -1,7 +1,5 @@
 package com.foreignlanguagereader.content.formatters
 
-import com.foreignlanguagereader.content.formatters.WebsterFormatter.removalPatterns
-
 /**
   * Motivation:
   * Many content sources include their own formatting.
@@ -17,11 +15,10 @@ trait Formatter {
     removalPatterns.map(pattern => pattern -> "").toMap ++ replacementPatterns
 
   def format(input: String): String = {
-    var acc = input
-    patterns.foreach {
-      case (pattern, replacement) => acc = acc.replaceAll(pattern, replacement)
+    patterns.keySet.fold(input) {
+      case (acc, pattern) =>
+        acc.replaceAll(pattern, patterns.getOrElse(pattern, ""))
     }
-    acc
   }
 
   // Convenience methods
