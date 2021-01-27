@@ -63,28 +63,28 @@
                 ],
                 "examples": [
                   {
-                    "text": "She is studying for her math/spelling/history {it}test{/it}."
+                    "text": "She is studying for her math/spelling/history *test*."
                   },
                   {
-                    "text": "I passed/failed/flunked my biology {it}test{/it}."
+                    "text": "I passed/failed/flunked my biology *test*."
                   },
                   {
-                    "text": "The teacher sat at his desk grading {it}tests{/it}."
+                    "text": "The teacher sat at his desk grading *tests*."
                   },
                   {
-                    "text": "a driver's/driving {it}test{/it} [=a test that is used to see if someone is able to safely drive a car]"
+                    "text": "a driver's/driving *test* "
                   },
                   {
-                    "text": "an IQ {it}test{/it}"
+                    "text": "an IQ *test*"
                   },
                   {
-                    "text": "{it}test{/it} questions"
+                    "text": "*test* questions"
                   },
                   {
-                    "text": "The {it}test{/it} will be on [=the questions on the test will be about] the first three chapters of the book."
+                    "text": "The *test* will be on  the first three chapters of the book."
                   },
                   {
-                    "text": "We {phrase}took/had a test{/phrase} on European capitals. = ({it}Brit{/it}) We {phrase}did a test{/phrase} on European capitals."
+                    "text": "We {phrase}took/had a test{/phrase} on European capitals. = (*Brit*) We {phrase}did a test{/phrase} on European capitals."
                   },
                   {
                     "text": "The college relies on {phrase}test scores{/phrase} in its admissions process."
@@ -102,28 +102,28 @@
                 ],
                 "examples": [
                   {
-                    "text": "The {it}test{/it} showed/revealed a problem with your liver function."
+                    "text": "The *test* showed/revealed a problem with your liver function."
                   },
                   {
-                    "text": "a vision/hearing {it}test{/it} [=a test that shows how well you see/hear]"
+                    "text": "a vision/hearing *test* "
                   },
                   {
-                    "text": "a urine {it}test{/it} [=a test that examines a person's urine for evidence of disease or illegal drugs]"
+                    "text": "a urine *test* "
                   },
                   {
-                    "text": "allergy {it}tests{/it} [=tests that show what you are allergic to]"
+                    "text": "allergy *tests* "
                   },
                   {
-                    "text": "All applicants must pass a {phrase}drug test{/phrase}. [=a test that examines a person's blood or urine for evidence of illegal drugs]"
+                    "text": "All applicants must pass a {phrase}drug test{/phrase}. "
                   },
                   {
                     "text": "The doctor will call you with the {phrase}test results{/phrase}."
                   },
                   {
-                    "text": "They went to the drug store to buy a {phrase}pregnancy test{/phrase}. [=a device that reacts to a woman's urine in a way that shows whether or not she is pregnant]"
+                    "text": "They went to the drug store to buy a {phrase}pregnancy test{/phrase}. "
                   },
                   {
-                    "text": "a {phrase}DNA test{/phrase} [=a test that examines DNA and that is used to identify someone or to show that people are relatives]"
+                    "text": "a {phrase}DNA test{/phrase} "
                   }
                 ]
               }
@@ -135,10 +135,10 @@
                 ],
                 "examples": [
                   {
-                    "text": "The {it}test{/it} indicated high levels of lead in the soil."
+                    "text": "The *test* indicated high levels of lead in the soil."
                   },
                   {
-                    "text": "routine water {it}tests{/it}"
+                    "text": "routine water *tests*"
                   }
                 ]
               }
@@ -153,13 +153,13 @@
                 ],
                 "examples": [
                   {
-                    "text": "lab/laboratory {it}tests{/it}"
+                    "text": "lab/laboratory *tests*"
                   },
                   {
-                    "text": "underground nuclear {it}tests{/it}"
+                    "text": "underground nuclear *tests*"
                   },
                   {
-                    "text": "a {it}test{/it} of a new vaccine"
+                    "text": "a *test* of a new vaccine"
                   },
                   {
                     "text": "{phrase}Taste tests{/phrase} revealed that people prefer this brand of cola over that one."
@@ -177,10 +177,10 @@
                 ],
                 "examples": [
                   {
-                    "text": "a {it}test{/it} of will/strength/character"
+                    "text": "a *test* of will/strength/character"
                   },
                   {
-                    "text": "The real/true {it}test{/it} of your ability as a skier is whether you can ski well on very hard snow."
+                    "text": "The real/true *test* of your ability as a skier is whether you can ski well on very hard snow."
                   }
                 ]
               }
@@ -216,13 +216,13 @@
                     ],
                     "examples": [
                       {
-                        "text": "The team has been playing well so far, but tomorrow's game will really {it}put them to the test{/it}. [=will really test them]"
+                        "text": "The team has been playing well so far, but tomorrow's game will really *put them to the test*. "
                       },
                       {
-                        "text": "A trip through the desert will {it}put{/it} the truck {it}to the test{/it}."
+                        "text": "A trip through the desert will *put* the truck *to the test*."
                       },
                       {
-                        "text": "We decided to {it}put{/it} the idea/theory {it}to the test{/it} [=to test the theory] with a little experiment."
+                        "text": "We decided to *put* the idea/theory *to the test*  with a little experiment."
                       }
                     ]
                   }
@@ -245,7 +245,7 @@
                     ],
                     "examples": [
                       {
-                        "text": "Great art/literature/music can {it}stand the test of time{/it}."
+                        "text": "Great art/literature/music can *stand the test of time*."
                       }
                     ]
                   }
@@ -333,10 +333,10 @@
                 ],
                 "examples": [
                   {
-                    "text": "Weekly quizzes will {it}test{/it} your understanding of the material."
+                    "text": "Weekly quizzes will *test* your understanding of the material."
                   },
                   {
-                    "text": "The students will all be {it}tested{/it} again at the end of the school year."
+                    "text": "The students will all be *tested* again at the end of the school year."
                   }
                 ]
               },
@@ -351,13 +351,13 @@
                 ],
                 "examples": [
                   {
-                    "text": "The school nurse will be {it}testing{/it} students' hearing next week."
+                    "text": "The school nurse will be *testing* students' hearing next week."
                   },
                   {
-                    "text": "The athletes knew that tournament officials would be {it}testing for{/it} (the presence of) illegal drugs."
+                    "text": "The athletes knew that tournament officials would be *testing for* (the presence of) illegal drugs."
                   },
                   {
-                    "text": "She {phrase}tested positive/negative{/phrase} {it}for{/it} AIDS."
+                    "text": "She {phrase}tested positive/negative{/phrase} *for* AIDS."
                   }
                 ]
               }
@@ -371,7 +371,7 @@
                 ],
                 "examples": [
                   {
-                    "text": "The water gets {it}tested{/it} regularly."
+                    "text": "The water gets *tested* regularly."
                   }
                 ]
               }
@@ -386,16 +386,16 @@
                 ],
                 "examples": [
                   {
-                    "text": "Only one of the vehicles they {it}tested{/it} performed well in wet conditions."
+                    "text": "Only one of the vehicles they *tested* performed well in wet conditions."
                   },
                   {
-                    "text": "Researchers are currently {it}testing{/it} (the safety of) the vaccine."
+                    "text": "Researchers are currently *testing* (the safety of) the vaccine."
                   },
                   {
-                    "text": "The vaccine has not been {it}tested{/it} on humans yet."
+                    "text": "The vaccine has not been *tested* on humans yet."
                   },
                   {
-                    "text": "We designed a series of experiments to {it}test{/it} our hypothesis."
+                    "text": "We designed a series of experiments to *test* our hypothesis."
                   }
                 ]
               },
@@ -411,16 +411,16 @@
                 ],
                 "examples": [
                   {
-                    "text": "The stress is {it}testing{/it} the strength of our relationship."
+                    "text": "The stress is *testing* the strength of our relationship."
                   },
                   {
-                    "text": "The scandal is {it}testing{/it} the country's faith in its leadership."
+                    "text": "The scandal is *testing* the country's faith in its leadership."
                   },
                   {
-                    "text": "Life's ordeals {it}test{/it} us."
+                    "text": "Life's ordeals *test* us."
                   },
                   {
-                    "text": "You're {it}testing{/it} my patience. [=you are starting to make me annoyed or upset]"
+                    "text": "You're *testing* my patience. "
                   }
                 ]
               },
@@ -444,10 +444,10 @@
                     ],
                     "examples": [
                       {
-                        "text": "The company is {it}testing the waters{/it} with a new online version of the product."
+                        "text": "The company is *testing the waters* with a new online version of the product."
                       },
                       {
-                        "text": "She's {it}testing the waters{/it} for a presidential bid."
+                        "text": "She's *testing the waters* for a presidential bid."
                       }
                     ]
                   }
@@ -504,7 +504,7 @@
                 ],
                 "examples": [
                   {
-                    "text": "a nuclear {it}test ban{/it} treaty"
+                    "text": "a nuclear *test ban* treaty"
                   }
                 ]
               }
@@ -601,7 +601,7 @@
                 ],
                 "examples": [
                   {
-                    "text": "Would you like to take the car for a {it}test drive{/it}?"
+                    "text": "Would you like to take the car for a *test drive*?"
                   }
                 ]
               }
@@ -736,7 +736,7 @@
                 ],
                 "examples": [
                   {
-                    "text": "They did a {it}test run{/it} of the new software."
+                    "text": "They did a *test run* of the new software."
                   }
                 ]
               }

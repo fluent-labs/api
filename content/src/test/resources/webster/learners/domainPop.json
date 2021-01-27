@@ -54,23 +54,23 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to suddenly break open or come away from something often with a short, loud noise "
+                  "to suddenly break open or come away from something often with a short, loud noise "
                 ],
                 "examples": [
                   {
-                    "text": "The balloon {it}popped{/it}. [={it}burst{/it}]"
+                    "text": "The balloon *popped*. "
                   },
                   {
-                    "text": "We heard the sound of corks {it}popping{/it} as the celebration began."
+                    "text": "We heard the sound of corks *popping* as the celebration began."
                   },
                   {
-                    "text": "One of the buttons {it}popped{/it} off my sweater."
+                    "text": "One of the buttons *popped* off my sweater."
                   },
                   {
-                    "text": "Don't {it}pop{/it} that balloon!"
+                    "text": "Don't *pop* that balloon!"
                   },
                   {
-                    "text": "She {it}popped{/it} the cork on the champagne. [=she opened the bottle of champagne by removing the cork]"
+                    "text": "She *popped* the cork on the champagne. "
                   }
                 ]
               }
@@ -78,11 +78,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to make a short, loud noise "
+                  "to make a short, loud noise "
                 ],
                 "examples": [
                   {
-                    "text": "Guns were {it}popping{/it} in the distance."
+                    "text": "Guns were *popping* in the distance."
                   }
                 ]
               },
@@ -93,14 +93,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to cook (popcorn) "
+                  "to cook (popcorn) "
                 ],
                 "examples": [
                   {
-                    "text": "We {it}popped{/it} some popcorn in the microwave."
+                    "text": "We *popped* some popcorn in the microwave."
                   },
                   {
-                    "text": "The popcorn is done {it}popping{/it}."
+                    "text": "The popcorn is done *popping*."
                   }
                 ]
               }
@@ -110,26 +110,26 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to come from, into, or out of a place suddenly or briefly "
+                  "to come from, into, or out of a place suddenly or briefly "
                 ],
                 "examples": [
                   {
-                    "text": "I didn't mean to say that—it just {it}popped{/it} out."
+                    "text": "I didn't mean to say that—it just *popped* out."
                   },
                   {
-                    "text": "Her shoulder {it}popped{/it} out of its socket."
+                    "text": "Her shoulder *popped* out of its socket."
                   },
                   {
-                    "text": "He opened the box, and out {it}popped{/it} a mouse."
+                    "text": "He opened the box, and out *popped* a mouse."
                   },
                   {
-                    "text": "A funny thought just {it}popped{/it} into my head. [=I just thought of something funny]"
+                    "text": "A funny thought just *popped* into my head. "
                   },
                   {
-                    "text": "The cathedral suddenly {it}popped{/it} into view. [=I could suddenly see the cathedral]"
+                    "text": "The cathedral suddenly *popped* into view. "
                   },
                   {
-                    "text": "Her father {it}pops{/it} in and out of her life. [=her father is sometimes involved in her life and sometimes not]"
+                    "text": "Her father *pops* in and out of her life. "
                   }
                 ]
               }
@@ -137,26 +137,26 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to go to or from a place quickly, suddenly, or briefly "
+                  "to go to or from a place quickly, suddenly, or briefly "
                 ],
                 "examples": [
                   {
-                    "text": "If you are busy, I can {it}pop{/it} back in later."
+                    "text": "If you are busy, I can *pop* back in later."
                   },
                   {
-                    "text": "She {it}popped{/it} over for a cup of tea. = ({it}Brit{/it}) She {it}popped{/it} round for a cup of tea."
+                    "text": "She *popped* over for a cup of tea. = (*Brit*) She *popped* round for a cup of tea."
                   },
                   {
-                    "text": "My neighbor {it}popped{/it} in for a visit."
+                    "text": "My neighbor *popped* in for a visit."
                   },
                   {
-                    "text": "I need to {it}pop{/it} into the drugstore for some film."
+                    "text": "I need to *pop* into the drugstore for some film."
                   },
                   {
-                    "text": "She {it}popped{/it} out for a minute. She should be back soon."
+                    "text": "She *popped* out for a minute. She should be back soon."
                   },
                   {
-                    "text": "I'll {it}pop{/it} down to the post office during my break."
+                    "text": "I'll *pop* down to the post office during my break."
                   }
                 ]
               },
@@ -169,20 +169,20 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to put (something) in, into, or onto a place suddenly or briefly "
+                  "to put (something) in, into, or onto a place suddenly or briefly "
                 ],
                 "examples": [
                   {
-                    "text": "She {it}popped{/it} a CD in the player."
+                    "text": "She *popped* a CD in the player."
                   },
                   {
-                    "text": "He {it}popped{/it} a quarter in the jukebox."
+                    "text": "He *popped* a quarter in the jukebox."
                   },
                   {
-                    "text": "I {it}popped{/it} a grape into my mouth."
+                    "text": "I *popped* a grape into my mouth."
                   },
                   {
-                    "text": "He {it}popped{/it} [={it}stuck{/it}] his head out the window."
+                    "text": "He *popped*  his head out the window."
                   }
                 ]
               },
@@ -199,11 +199,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to hit (someone) "
+                  "to hit (someone) "
                 ],
                 "examples": [
                   {
-                    "text": "I felt like {it}popping{/it} him (one)."
+                    "text": "I felt like *popping* him (one)."
                   }
                 ]
               },
@@ -218,14 +218,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to hit a pop fly "
+                  "to hit a pop fly "
                 ],
                 "examples": [
                   {
-                    "text": "He {it}popped{/it} [={it}popped up{/it}] to the second baseman in the first inning."
+                    "text": "He *popped*  to the second baseman in the first inning."
                   },
                   {
-                    "text": "The batter {phrase}popped out{/phrase}. [=hit a pop fly that was caught for an out]"
+                    "text": "The batter {phrase}popped out{/phrase}. "
                   }
                 ]
               },
@@ -239,11 +239,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to open and drink (a bottle or can of beer) "
+                  "to open and drink (a bottle or can of beer) "
                 ],
                 "examples": [
                   {
-                    "text": "They stopped at a bar to {it}pop{/it} a few beers after work."
+                    "text": "They stopped at a bar to *pop* a few beers after work."
                   }
                 ]
               },
@@ -267,11 +267,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to die especially in a sudden or unexpected way "
+                      "to die especially in a sudden or unexpected way "
                     ],
                     "examples": [
                       {
-                        "text": "The old man {it}popped off{/it} before he could rewrite his will."
+                        "text": "The old man *popped off* before he could rewrite his will."
                       }
                     ]
                   }
@@ -281,11 +281,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to talk loudly or angrily to someone "
+                      "to talk loudly or angrily to someone "
                     ],
                     "examples": [
                       {
-                        "text": "The hockey player was ejected from the game for {it}popping off{/it} to the referee."
+                        "text": "The hockey player was ejected from the game for *popping off* to the referee."
                       }
                     ]
                   },
@@ -307,11 +307,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to put on (clothing) quickly "
+                      "to put on (clothing) quickly "
                     ],
                     "examples": [
                       {
-                        "text": "{it}pop on{/it} a hat"
+                        "text": "*pop on* a hat"
                       }
                     ]
                   }
@@ -330,11 +330,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to open suddenly and quickly "
+                      "to open suddenly and quickly "
                     ],
                     "examples": [
                       {
-                        "text": "The suitcase/lid {it}popped open{/it}."
+                        "text": "The suitcase/lid *popped open*."
                       }
                     ]
                   }
@@ -344,14 +344,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to open (something) suddenly and quickly "
+                      "to open (something) suddenly and quickly "
                     ],
                     "examples": [
                       {
-                        "text": "She {it}popped{/it} the umbrella {it}open{/it}."
+                        "text": "She *popped* the umbrella *open*."
                       },
                       {
-                        "text": "He {it}popped open{/it} a cold beer."
+                        "text": "He *popped open* a cold beer."
                       }
                     ]
                   }
@@ -370,14 +370,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to take a lot of pills regularly "
+                      "to take a lot of pills regularly "
                     ],
                     "examples": [
                       {
-                        "text": "I've been {it}popping pills{/it} all week for this cold."
+                        "text": "I've been *popping pills* all week for this cold."
                       },
                       {
-                        "text": "He spends his time getting drunk and {it}popping pills{/it}."
+                        "text": "He spends his time getting drunk and *popping pills*."
                       }
                     ]
                   },
@@ -399,11 +399,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to ask someone to marry you "
+                      "to ask someone to marry you "
                     ],
                     "examples": [
                       {
-                        "text": "He {it}popped the question{/it} on Christmas Day."
+                        "text": "He *popped the question* on Christmas Day."
                       }
                     ]
                   },
@@ -425,17 +425,17 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to appear in usually a sudden or unexpected way "
+                      "to appear in usually a sudden or unexpected way "
                     ],
                     "examples": [
                       {
-                        "text": "Coffee shops seem to be {it}popping up{/it} everywhere."
+                        "text": "Coffee shops seem to be *popping up* everywhere."
                       },
                       {
-                        "text": "New evidence has been {it}popping up{/it} every day in the trial."
+                        "text": "New evidence has been *popping up* every day in the trial."
                       },
                       {
-                        "text": "Problems kept {it}popping up{/it}."
+                        "text": "Problems kept *popping up*."
                       }
                     ]
                   }
@@ -445,12 +445,12 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to hit a high fly ball that does not go very far {bc}to hit a pop fly ",
+                      "to hit a high fly ball that does not go very far to hit a pop fly ",
                       "{dx}see also {dxt|pop-up||}{/dx}"
                     ],
                     "examples": [
                       {
-                        "text": "The batter {it}popped up{/it} [={it}popped{/it}] to the second baseman."
+                        "text": "The batter *popped up*  to the second baseman."
                       }
                     ]
                   },
@@ -506,11 +506,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}a short, loud sound "
+                  "a short, loud sound "
                 ],
                 "examples": [
                   {
-                    "text": "We heard a loud {it}pop{/it} when the lights went out."
+                    "text": "We heard a loud *pop* when the lights went out."
                   }
                 ]
               },
@@ -521,14 +521,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}{sx|soda pop||} "
+                  "{sx|soda pop||} "
                 ],
                 "examples": [
                   {
-                    "text": "a bottle of {it}pop{/it} [={it}soda{/it}]"
+                    "text": "a bottle of *pop* "
                   },
                   {
-                    "text": "Two {it}pops{/it}, please."
+                    "text": "Two *pops*, please."
                   }
                 ]
               },
@@ -541,7 +541,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}{sx|pop fly||}"
+                  "{sx|pop fly||}"
                 ]
               },
               "senseSpecificGrammaticalLabel": "count",
@@ -563,11 +563,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}for each one {bc}{sx|apiece||} "
+                      "for each one {sx|apiece||} "
                     ],
                     "examples": [
                       {
-                        "text": "The tickets are selling at $50 {it}a pop{/it}."
+                        "text": "The tickets are selling at $50 *a pop*."
                       }
                     ]
                   },
@@ -590,11 +590,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to try to hit (someone) "
+                      "to try to hit (someone) "
                     ],
                     "examples": [
                       {
-                        "text": "Some drunk {it}took a pop at{/it} me."
+                        "text": "Some drunk *took a pop at* me."
                       }
                     ]
                   }
@@ -604,11 +604,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to criticize (someone) publicly "
+                      "to criticize (someone) publicly "
                     ],
                     "examples": [
                       {
-                        "text": "He {it}took a pop at{/it} his rival."
+                        "text": "He *took a pop at* his rival."
                       }
                     ]
                   },
@@ -655,11 +655,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}of or relating to things that are popular and often talked about on television, in newspapers, etc. "
+                  "of or relating to things that are popular and often talked about on television, in newspapers, etc. "
                 ],
                 "examples": [
                   {
-                    "text": "{it}pop{/it} culture/psychology/fiction"
+                    "text": "*pop* culture/psychology/fiction"
                   }
                 ]
               }
@@ -669,14 +669,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}of or relating to popular music "
+                  "of or relating to popular music "
                 ],
                 "examples": [
                   {
-                    "text": "{it}pop{/it} rock"
+                    "text": "*pop* rock"
                   },
                   {
-                    "text": "a {it}pop{/it} singer/star [=a person who sings popular music]"
+                    "text": "a *pop* singer/star "
                   }
                 ]
               }
@@ -725,11 +725,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}music that is popular "
+                  "music that is popular "
                 ],
                 "examples": [
                   {
-                    "text": "The radio station plays {it}pop{/it}."
+                    "text": "The radio station plays *pop*."
                   }
                 ]
               },
@@ -740,7 +740,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}an orchestra that plays popular music"
+                  "an orchestra that plays popular music"
                 ]
               },
               "senseSpecificGrammaticalLabel": "noncount",
@@ -792,7 +792,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}a person's father"
+                  "a person's father"
                 ]
               },
               "senseSpecificGrammaticalLabel": "count"
@@ -884,7 +884,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}a drink consisting of soda water, flavoring, and a sweet syrup "
+                  "a drink consisting of soda water, flavoring, and a sweet syrup "
                 ],
                 "calledAlso": [
                   {
@@ -895,7 +895,7 @@
                       },
                       {
                         "calledAlsoTargetText": "soda",
-                        "areaOfUsage": "({it}chiefly US{/it}) "
+                        "areaOfUsage": "(*chiefly US*) "
                       }
                     ]
                   }
@@ -938,7 +938,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}art in which common objects (such as road signs, hamburgers, comic strips, or soup cans) are used or shown"
+                  "art in which common objects (such as road signs, hamburgers, comic strips, or soup cans) are used or shown"
                 ]
               }
             }
@@ -982,11 +982,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}having eyes that stick out "
+                  "having eyes that stick out "
                 ],
                 "examples": [
                   {
-                    "text": "{it}pop-eyed{/it} bullfrogs"
+                    "text": "*pop-eyed* bullfrogs"
                   }
                 ]
               }
@@ -996,11 +996,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}having eyes that are open very wide because of surprise, fear, excitement, etc. "
+                  "having eyes that are open very wide because of surprise, fear, excitement, etc. "
                 ],
                 "examples": [
                   {
-                    "text": "He stared {it}pop-eyed{/it} as the huge wave came straight towards the boat."
+                    "text": "He stared *pop-eyed* as the huge wave came straight towards the boat."
                   }
                 ]
               }
@@ -1045,7 +1045,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}a very high fly ball that does not go very far "
+                  "a very high fly ball that does not go very far "
                 ],
                 "calledAlso": [
                   {
@@ -1059,7 +1059,7 @@
                 ],
                 "examples": [
                   {
-                    "text": "He hit a high {it}pop fly{/it} to the second baseman."
+                    "text": "He hit a high *pop fly* to the second baseman."
                   }
                 ]
               },
