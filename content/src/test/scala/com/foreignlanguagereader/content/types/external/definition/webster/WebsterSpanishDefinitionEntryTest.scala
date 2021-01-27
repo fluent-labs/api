@@ -25,7 +25,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
       val ipa = "ˈænəm{it}ə{/it}l"
       val token = "animal"
       val subdefinitions =
-        List("{bc}animal ", "{sx|brute||} {bc}{a_link|bruto} ", ", ", "  ")
+        List("animal ", "{sx|brute||} {a_link|bruto} ", ", ", "  ")
       val examples = None
 
       it("can be read from the webster payload") {
@@ -35,6 +35,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         assert(example.token == token)
         assert(example.subdefinitions == subdefinitions)
         assert(example.tag.contains(tag))
+        assert(example.examples == examples)
         assert(example.examples == examples)
       }
 
@@ -86,8 +87,8 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         assert(pop.token == "pero")
         assert(
           pop.subdefinitions == List(
-            "{bc}{a_link|fault}, {a_link|defect} ",
-            "{bc}{a_link|objection}"
+            "{a_link|fault}, {a_link|defect} ",
+            "{a_link|objection}"
           )
         )
         assert(pop.tag.contains(PartOfSpeech.NOUN))
@@ -115,17 +116,17 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         assert(perro.token == "perro")
         assert(
           perro.subdefinitions == List(
-            "{bc}{a_link|dog}, {a_link|bitch} ",
-            "{bc}stray dog",
-            "{bc}{a_link|hot dog}",
-            "{bc}{a_link|retriever}",
-            "{bc}{a_link|lapdog}",
-            "{bc}{a_link|guard dog}",
-            "{bc}{a_link|guide dog}",
-            "{bc}{a_link|sheepdog}",
-            "{bc}police dog",
-            "{bc}tracking dog",
-            "{bc}{a_link|dachshund}"
+            "{a_link|dog}, {a_link|bitch} ",
+            "stray dog",
+            "{a_link|hot dog}",
+            "{a_link|retriever}",
+            "{a_link|lapdog}",
+            "{a_link|guard dog}",
+            "{a_link|guide dog}",
+            "{a_link|sheepdog}",
+            "police dog",
+            "tracking dog",
+            "{a_link|dachshund}"
           )
         )
         assert(perro.tag.contains(PartOfSpeech.NOUN))
@@ -153,13 +154,13 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         assert(pop.token == "pop")
         assert(
           pop.subdefinitions == List(
-            "{sx|burst||} {bc}{a_link|reventarse}, {a_link|estallar}",
-            "{bc}{a_link|saltar} (dícese de un corcho)",
-            "{bc}{a_link|ir}, {a_link|venir}, o aparecer abruptamente ",
-            "{sx|protrude||} {bc}{a_link|salirse}, {a_link|saltarse} ",
-            "{bc}proponerle matrimonio a alguien",
-            "{sx|burst||} {bc}{a_link|reventar}",
-            "{bc}sacar o meter abruptamente "
+            "{sx|burst||} {a_link|reventarse}, {a_link|estallar}",
+            "{a_link|saltar} (dícese de un corcho)",
+            "{a_link|ir}, {a_link|venir}, o aparecer abruptamente ",
+            "{sx|protrude||} {a_link|salirse}, {a_link|saltarse} ",
+            "proponerle matrimonio a alguien",
+            "{sx|burst||} {a_link|reventar}",
+            "sacar o meter abruptamente "
           )
         )
         assert(pop.tag.contains(PartOfSpeech.VERB))
@@ -196,7 +197,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         val perro = webster(1)
         assert(perro.token == "porque'")
         assert(
-          perro.subdefinitions == List("{bc}{a_link|reason}, {a_link|cause} ")
+          perro.subdefinitions == List("{a_link|reason}, {a_link|cause} ")
         )
         assert(perro.tag.contains(PartOfSpeech.NOUN))
         assert(perro.examples.contains(List("no explicó el porqué")))
@@ -223,8 +224,8 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         assert(perro.token == "vale")
         assert(
           perro.subdefinitions == List(
-            "{bc}{a_link|voucher}",
-            "{sx|pagaré||} {bc}promissory note, {a_link|IOU}"
+            "{a_link|voucher}",
+            "{sx|pagaré||} promissory note, {a_link|IOU}"
           )
         )
         assert(perro.tag.contains(PartOfSpeech.NOUN))

@@ -43,26 +43,26 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}a person or way of behaving that is seen as a model that should be followed "
+                  "a person or way of behaving that is seen as a model that should be followed "
                 ],
                 "examples": [
                   {
-                    "text": "He was inspired by the {it}example{/it} of his older brother. [=he wanted to do what his older brother did]"
+                    "text": "He was inspired by the *example* of his older brother. "
                   },
                   {
-                    "text": "You should try to follow her {it}example{/it}. [=try to do as she does]"
+                    "text": "You should try to follow her *example*. "
                   },
                   {
-                    "text": "Let that be an {it}example{/it} to you! [=let that show you what you should or should not do]"
+                    "text": "Let that be an *example* to you! "
                   },
                   {
-                    "text": "He set a good/bad {it}example{/it} for the rest of us."
+                    "text": "He set a good/bad *example* for the rest of us."
                   },
                   {
-                    "text": "It's up to you to {phrase}set an example{/phrase}. [=to behave in a way that shows other people how to behave]"
+                    "text": "It's up to you to {phrase}set an example{/phrase}. "
                   },
                   {
-                    "text": "She chooses to {phrase}lead by example{/phrase}. [=to lead by behaving in a way that shows others how to behave]"
+                    "text": "She chooses to {phrase}lead by example{/phrase}. "
                   }
                 ]
               }
@@ -72,11 +72,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}someone or something that is mentioned to help explain what you are saying or to show that a general statement is true "
+                  "someone or something that is mentioned to help explain what you are saying or to show that a general statement is true "
                 ],
                 "examples": [
                   {
-                    "text": "She gave/offered several {it}examples{/it} to show that the program is effective."
+                    "text": "She gave/offered several *examples* to show that the program is effective."
                   }
                 ]
               }
@@ -84,17 +84,17 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}something or someone chosen from a group in order to show what the whole group is like "
+                  "something or someone chosen from a group in order to show what the whole group is like "
                 ],
                 "examples": [
                   {
-                    "text": "We've chosen three {it}examples{/it} of contemporary architecture for closer study."
+                    "text": "We've chosen three *examples* of contemporary architecture for closer study."
                   },
                   {
-                    "text": "a classic {it}example{/it} of a Persian rug"
+                    "text": "a classic *example* of a Persian rug"
                   },
                   {
-                    "text": "a fine/prime {it}example{/it} of the artist's work"
+                    "text": "a fine/prime *example* of the artist's work"
                   }
                 ]
               }
@@ -104,11 +104,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}a phrase or sentence that shows how a word is used "
+                  "a phrase or sentence that shows how a word is used "
                 ],
                 "examples": [
                   {
-                    "text": "The dictionary includes thousands of {it}examples{/it}."
+                    "text": "The dictionary includes thousands of *examples*."
                   }
                 ]
               }
@@ -116,11 +116,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}something (such as a problem that a student has to solve) that is used to teach how a rule or process works "
+                  "something (such as a problem that a student has to solve) that is used to teach how a rule or process works "
                 ],
                 "examples": [
                   {
-                    "text": "arithmetic {it}examples{/it}"
+                    "text": "arithmetic *examples*"
                   }
                 ]
               }
@@ -179,11 +179,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}very typical "
+                  "very typical "
                 ],
                 "examples": [
                   {
-                    "text": "The scandal is a {phrase}textbook{/phrase} [={it}classic, perfect{/it}] {phrase}case/example{/phrase} of corporate greed."
+                    "text": "The scandal is a {phrase}textbook{/phrase}  {phrase}case/example{/phrase} of corporate greed."
                   }
                 ]
               }
@@ -264,23 +264,23 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to go or come after or behind (someone or something) "
+                  "to go or come after or behind (someone or something) "
                 ],
                 "examples": [
                   {
-                    "text": "She {it}followed{/it} us into the kitchen."
+                    "text": "She *followed* us into the kitchen."
                   },
                   {
-                    "text": "The dog {it}followed{/it} the children home."
+                    "text": "The dog *followed* the children home."
                   },
                   {
-                    "text": "The exit is right this way. Just {it}follow{/it} me."
+                    "text": "The exit is right this way. Just *follow* me."
                   },
                   {
-                    "text": "The children went home and the dog {it}followed{/it} behind."
+                    "text": "The children went home and the dog *followed* behind."
                   },
                   {
-                    "text": "If one sheep goes through the gate, the rest will {it}follow{/it}."
+                    "text": "If one sheep goes through the gate, the rest will *follow*."
                   }
                 ]
               }
@@ -288,17 +288,17 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to go after or behind (someone) secretly and watch to find out what happens "
+                  "to go after or behind (someone) secretly and watch to find out what happens "
                 ],
                 "examples": [
                   {
-                    "text": "He hired a private detective to {it}follow{/it} his wife everywhere. [=to secretly find out where she went and what she did]"
+                    "text": "He hired a private detective to *follow* his wife everywhere. "
                   },
                   {
-                    "text": "{it}follow{/it} a suspect"
+                    "text": "*follow* a suspect"
                   },
                   {
-                    "text": "I think that someone is {it}following{/it} us. = I think we're being {it}followed{/it}."
+                    "text": "I think that someone is *following* us. = I think we're being *followed*."
                   }
                 ]
               },
@@ -309,23 +309,23 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to come after (something) in time or place or as part of a series "
+                  "to come after (something) in time or place or as part of a series "
                 ],
                 "examples": [
                   {
-                    "text": "Spring {it}follows{/it} winter. = Winter {it}is followed{/it} by spring."
+                    "text": "Spring *follows* winter. = Winter *is followed* by spring."
                   },
                   {
-                    "text": "The number 15 {it}follows{/it} 14."
+                    "text": "The number 15 *follows* 14."
                   },
                   {
-                    "text": "Her accident was {it}followed{/it} by a long period of recovery."
+                    "text": "Her accident was *followed* by a long period of recovery."
                   },
                   {
-                    "text": "First came the student speeches, and the presentation of awards {it}followed{/it}."
+                    "text": "First came the student speeches, and the presentation of awards *followed*."
                   },
                   {
-                    "text": "({it}formal){/it} The war ended. {phrase}There followed{/phrase} [={it}then came{/it}; then there was] a long period of rebuilding."
+                    "text": "(*formal)* The war ended. {phrase}There followed{/phrase}  a long period of rebuilding."
                   }
                 ]
               }
@@ -333,7 +333,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to have or do something after (something else)"
+                  "to have or do something after (something else)"
                 ]
               },
               "senseSpecificGrammaticalLabel": "+ obj"
@@ -343,14 +343,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to happen after and as a result of (something) "
+                  "to happen after and as a result of (something) "
                 ],
                 "examples": [
                   {
-                    "text": "Rioting {it}followed{/it} the unjust verdict."
+                    "text": "Rioting *followed* the unjust verdict."
                   },
                   {
-                    "text": "If you work hard, success will/must surely {it}follow{/it}."
+                    "text": "If you work hard, success will/must surely *follow*."
                   }
                 ]
               }
@@ -358,11 +358,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to be true or seem to be true because of something "
+                  "to be true or seem to be true because of something "
                 ],
                 "examples": [
                   {
-                    "text": "From the evidence given, several conclusions {it}follow{/it}. = Several conclusions {it}follow{/it} from the evidence given. [=we can make several conclusions based on the evidence given]"
+                    "text": "From the evidence given, several conclusions *follow*. = Several conclusions *follow* from the evidence given. "
                   }
                 ]
               },
@@ -373,26 +373,26 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to be guided by (something) "
+                  "to be guided by (something) "
                 ],
                 "examples": [
                   {
-                    "text": "You should {it}follow{/it} [={it}obey{/it}] your conscience."
+                    "text": "You should *follow*  your conscience."
                   },
                   {
-                    "text": "{it}follow{/it} your instincts"
+                    "text": "*follow* your instincts"
                   },
                   {
-                    "text": "{it}follow{/it} my advice"
+                    "text": "*follow* my advice"
                   },
                   {
-                    "text": "She must learn to {it}follow{/it} instructions."
+                    "text": "She must learn to *follow* instructions."
                   },
                   {
-                    "text": "We must {it}follow{/it} the evidence wherever it leads."
+                    "text": "We must *follow* the evidence wherever it leads."
                   },
                   {
-                    "text": "You should {phrase}follow her example{/phrase}. = You should {it}follow{/it} the example she set. [=you should do what she did]"
+                    "text": "You should {phrase}follow her example{/phrase}. = You should *follow* the example she set. "
                   }
                 ]
               }
@@ -400,11 +400,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to do the same thing as (someone) "
+                  "to do the same thing as (someone) "
                 ],
                 "examples": [
                   {
-                    "text": "She {it}followed{/it} her father (by going) into medicine. = She {it}followed{/it} her father by becoming a doctor."
+                    "text": "She *followed* her father (by going) into medicine. = She *followed* her father by becoming a doctor."
                   }
                 ]
               }
@@ -414,14 +414,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to move forward on (a road, a path, etc.) "
+                  "to move forward on (a road, a path, etc.) "
                 ],
                 "examples": [
                   {
-                    "text": "{it}Follow{/it} that path, and you will come to a log cabin."
+                    "text": "*Follow* that path, and you will come to a log cabin."
                   },
                   {
-                    "text": "You should {it}follow{/it} the main highway until you see signs for the stadium."
+                    "text": "You should *follow* the main highway until you see signs for the stadium."
                   }
                 ]
               },
@@ -432,14 +432,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to be on or next to (something) for a distance "
+                  "to be on or next to (something) for a distance "
                 ],
                 "examples": [
                   {
-                    "text": "The path {it}follows{/it} the river pretty closely."
+                    "text": "The path *follows* the river pretty closely."
                   },
                   {
-                    "text": "The road {it}follows{/it} the curve of the hill."
+                    "text": "The road *follows* the curve of the hill."
                   }
                 ]
               },
@@ -453,11 +453,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to keep your eyes or attention on (something) "
+                  "to keep your eyes or attention on (something) "
                 ],
                 "examples": [
                   {
-                    "text": "{it}Follow{/it} the bouncing ball."
+                    "text": "*Follow* the bouncing ball."
                   }
                 ]
               }
@@ -465,17 +465,17 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to give close attention to what happens in (something) "
+                  "to give close attention to what happens in (something) "
                 ],
                 "examples": [
                   {
-                    "text": "He {it}followed{/it} her career with interest."
+                    "text": "He *followed* her career with interest."
                   },
                   {
-                    "text": "{it}follow{/it} football"
+                    "text": "*follow* football"
                   },
                   {
-                    "text": "The book {it}follows{/it} his political career from its humble beginnings to his election as president."
+                    "text": "The book *follows* his political career from its humble beginnings to his election as president."
                   }
                 ]
               }
@@ -483,11 +483,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to be a fan of (a team) {bc}{sx|support||} "
+                  "to be a fan of (a team) {sx|support||} "
                 ],
                 "examples": [
                   {
-                    "text": "He {it}follows{/it} Manchester United."
+                    "text": "He *follows* Manchester United."
                   }
                 ]
               },
@@ -500,17 +500,17 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to understand the sense or logic of (something or someone) "
+                  "to understand the sense or logic of (something or someone) "
                 ],
                 "examples": [
                   {
-                    "text": "I found it hard to {it}follow{/it} the twists and turns of the movie's complicated plot."
+                    "text": "I found it hard to *follow* the twists and turns of the movie's complicated plot."
                   },
                   {
-                    "text": "I'm sorry—I don't {it}follow{/it} your argument/reasoning. = I'm sorry—I don't {it}follow{/it} you. [=I don't understand you]"
+                    "text": "I'm sorry—I don't *follow* your argument/reasoning. = I'm sorry—I don't *follow* you. "
                   },
                   {
-                    "text": "I'm sorry—I don't {it}follow{/it}. [=I don't understand]"
+                    "text": "I'm sorry—I don't *follow*. "
                   }
                 ]
               }
@@ -529,11 +529,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}someone or something that has been so successful that it is very difficult for the person or thing coming next to be as good "
+                      "someone or something that has been so successful that it is very difficult for the person or thing coming next to be as good "
                     ],
                     "examples": [
                       {
-                        "text": "Yesterday's thrilling victory will be {it}a tough act to follow{/it}."
+                        "text": "Yesterday's thrilling victory will be *a tough act to follow*."
                       }
                     ]
                   }
@@ -558,11 +558,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to go wherever (someone) goes "
+                      "to go wherever (someone) goes "
                     ],
                     "examples": [
                       {
-                        "text": "The little boy {it}followed{/it} his mother {it}around{/it} all day."
+                        "text": "The little boy *followed* his mother *around* all day."
                       }
                     ]
                   }
@@ -623,11 +623,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to play a card of the same suit (such as hearts or spades) as the card that was played just before "
+                      "to play a card of the same suit (such as hearts or spades) as the card that was played just before "
                     ],
                     "examples": [
                       {
-                        "text": "Jane played a spade, and Roger {it}followed suit{/it}."
+                        "text": "Jane played a spade, and Roger *followed suit*."
                       }
                     ]
                   },
@@ -640,14 +640,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to do the same thing that someone else has just done "
+                      "to do the same thing that someone else has just done "
                     ],
                     "examples": [
                       {
-                        "text": "His brother went to medical school, and he {it}followed suit{/it}."
+                        "text": "His brother went to medical school, and he *followed suit*."
                       },
                       {
-                        "text": "After one airline lowers their fares, the other airlines usually {it}follow suit{/it}."
+                        "text": "After one airline lowers their fares, the other airlines usually *follow suit*."
                       }
                     ]
                   }
@@ -684,14 +684,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to complete an activity or process that has been started "
+                      "to complete an activity or process that has been started "
                     ],
                     "examples": [
                       {
-                        "text": "He always starts the school year off studying and working hard, but he doesn't {it}follow through{/it}. [=he doesn't continue to study and work hard]"
+                        "text": "He always starts the school year off studying and working hard, but he doesn't *follow through*. "
                       },
                       {
-                        "text": "He doesn't {it}follow{/it} his good intentions {it}through{/it}. [=although he makes plans to do things, he doesn't actually do them]"
+                        "text": "He doesn't *follow* his good intentions *through*. "
                       }
                     ]
                   }
@@ -701,15 +701,15 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to keep your arms, legs, etc., moving after you hit or kick a ball {bc}to complete a stroke or swing ",
+                      "to keep your arms, legs, etc., moving after you hit or kick a ball to complete a stroke or swing ",
                       "{dx}see also {dxt|follow-through||}{/dx}"
                     ],
                     "examples": [
                       {
-                        "text": "You should {it}follow through{/it} on your backhand."
+                        "text": "You should *follow through* on your backhand."
                       },
                       {
-                        "text": "Don't forget to {it}follow through{/it} when you putt."
+                        "text": "Don't forget to *follow through* when you putt."
                       }
                     ]
                   },
@@ -731,7 +731,7 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to follow (something) with something similar, related, or additional"
+                      "to follow (something) with something similar, related, or additional"
                     ]
                   }
                 }
@@ -740,14 +740,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to try to get more information about (something) "
+                      "to try to get more information about (something) "
                     ],
                     "examples": [
                       {
-                        "text": "The police {it}followed up (on){/it} the leads."
+                        "text": "The police *followed up (on)* the leads."
                       },
                       {
-                        "text": "The references in the book were too vague to {it}follow up{/it}."
+                        "text": "The references in the book were too vague to *follow up*."
                       }
                     ]
                   }
@@ -755,18 +755,18 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to do something in response to (something) {bc}to take appropriate action about (something) ",
+                      "to do something in response to (something) to take appropriate action about (something) ",
                       "{dx}see also {dxt|follow-up||}{/dx}"
                     ],
                     "examples": [
                       {
-                        "text": "Police {it}followed up{/it} the complaints with several arrests."
+                        "text": "Police *followed up* the complaints with several arrests."
                       },
                       {
-                        "text": "He complained several times, but the police never {it}followed up{/it}."
+                        "text": "He complained several times, but the police never *followed up*."
                       },
                       {
-                        "text": "He says that the police failed to {it}follow up on{/it} his complaints."
+                        "text": "He says that the police failed to *follow up on* his complaints."
                       }
                     ]
                   }
@@ -785,11 +785,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to go in a straight or obvious course "
+                      "to go in a straight or obvious course "
                     ],
                     "examples": [
                       {
-                        "text": "Just {it}follow your nose{/it} until you get there; you can't miss it."
+                        "text": "Just *follow your nose* until you get there; you can't miss it."
                       }
                     ]
                   }
@@ -799,11 +799,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to proceed without a definite plan {bc}to do what seems right or best without careful planning "
+                      "to proceed without a definite plan to do what seems right or best without careful planning "
                     ],
                     "examples": [
                       {
-                        "text": "You don't need my advice—just {it}follow your nose{/it}."
+                        "text": "You don't need my advice—just *follow your nose*."
                       }
                     ]
                   }
@@ -813,11 +813,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to go toward the place where a smell is coming from "
+                      "to go toward the place where a smell is coming from "
                     ],
                     "examples": [
                       {
-                        "text": "I {it}followed my nose{/it} to the kitchen, where dinner was cooking."
+                        "text": "I *followed my nose* to the kitchen, where dinner was cooking."
                       }
                     ]
                   }
@@ -912,17 +912,17 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to guide someone to a place especially by going in front "
+                  "to guide someone to a place especially by going in front "
                 ],
                 "examples": [
                   {
-                    "text": "You {it}lead{/it} and we'll follow right behind you."
+                    "text": "You *lead* and we'll follow right behind you."
                   },
                   {
-                    "text": "He {it}led{/it} [={it}took{/it}] me into a room in the back of the house."
+                    "text": "He *led*  me into a room in the back of the house."
                   },
                   {
-                    "text": "You {it}lead{/it} us and we'll follow right behind you."
+                    "text": "You *lead* us and we'll follow right behind you."
                   }
                 ]
               }
@@ -930,14 +930,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to go or be at the front part of (something) "
+                  "to go or be at the front part of (something) "
                 ],
                 "examples": [
                   {
-                    "text": "The veterans will {it}lead{/it} a parade down Main Street."
+                    "text": "The veterans will *lead* a parade down Main Street."
                   },
                   {
-                    "text": "{it}lead{/it} a march"
+                    "text": "*lead* a march"
                   }
                 ]
               },
@@ -948,20 +948,20 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to lie or go in a specified direction "
+                  "to lie or go in a specified direction "
                 ],
                 "examples": [
                   {
-                    "text": "The path {it}leads{/it} uphill."
+                    "text": "The path *leads* uphill."
                   },
                   {
-                    "text": "This road doesn't {it}lead{/it} to the village as we thought it did."
+                    "text": "This road doesn't *lead* to the village as we thought it did."
                   },
                   {
-                    "text": "a set of stairs that {it}leads{/it} down to the basement"
+                    "text": "a set of stairs that *leads* down to the basement"
                   },
                   {
-                    "text": "There was a path {it}leading{/it} (off) from the meadow into the woods."
+                    "text": "There was a path *leading* (off) from the meadow into the woods."
                   }
                 ]
               },
@@ -972,32 +972,32 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to guide the actions of a person or group {bc}to be in charge of a person, group, activity, etc. "
+                  "to guide the actions of a person or group to be in charge of a person, group, activity, etc. "
                 ],
                 "examples": [
                   {
-                    "text": "We need to elect someone who can {it}lead{/it}."
+                    "text": "We need to elect someone who can *lead*."
                   },
                   {
-                    "text": "bosses who {phrase}lead by example{/phrase} [=who show employees how they should act by acting that way themselves]"
+                    "text": "bosses who {phrase}lead by example{/phrase} "
                   },
                   {
-                    "text": "She {it}leads{/it} her employees by setting a good example for them."
+                    "text": "She *leads* her employees by setting a good example for them."
                   },
                   {
-                    "text": "She {it}led{/it} a successful boycott of the store."
+                    "text": "She *led* a successful boycott of the store."
                   },
                   {
-                    "text": "{it}lead{/it} an expedition"
+                    "text": "*lead* an expedition"
                   },
                   {
-                    "text": "A visiting professor will be {it}leading{/it} the seminar."
+                    "text": "A visiting professor will be *leading* the seminar."
                   },
                   {
-                    "text": "{it}lead{/it} [={it}direct{/it}] an orchestra"
+                    "text": "*lead*  an orchestra"
                   },
                   {
-                    "text": "She {it}led{/it} the children in a song. [=she sang a song and the children sang with her]"
+                    "text": "She *led* the children in a song. "
                   }
                 ]
               }
@@ -1007,11 +1007,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to cause (a person, group, etc.) to do something or to follow some course of action "
+                  "to cause (a person, group, etc.) to do something or to follow some course of action "
                 ],
                 "examples": [
                   {
-                    "text": "Her interest in art {it}led{/it} her into the field of art history."
+                    "text": "Her interest in art *led* her into the field of art history."
                   }
                 ]
               },
@@ -1022,29 +1022,29 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to be first, best, or ahead in a race or competition "
+                  "to be first, best, or ahead in a race or competition "
                 ],
                 "examples": [
                   {
-                    "text": "the team that is currently {it}leading{/it} in the pennant race"
+                    "text": "the team that is currently *leading* in the pennant race"
                   },
                   {
-                    "text": "At the end of the fourth inning, the Red Sox {it}led{/it} by two runs."
+                    "text": "At the end of the fourth inning, the Red Sox *led* by two runs."
                   },
                   {
-                    "text": "{it}lead{/it} a race"
+                    "text": "*lead* a race"
                   },
                   {
-                    "text": "They {it}led{/it} their opponents by 20 points at the end of the third quarter."
+                    "text": "They *led* their opponents by 20 points at the end of the third quarter."
                   },
                   {
-                    "text": "the team that is {it}leading{/it} the league [=the team that is in first place]"
+                    "text": "the team that is *leading* the league "
                   },
                   {
-                    "text": "a batter who {it}leads{/it} the league in home runs [=who has hit more home runs than any other batter]"
+                    "text": "a batter who *leads* the league in home runs "
                   },
                   {
-                    "text": "a runner who is {phrase}leading the pack/field{/phrase} [=a runner who is ahead of the group of other runners]"
+                    "text": "a runner who is {phrase}leading the pack/field{/phrase} "
                   }
                 ]
               }
@@ -1054,23 +1054,23 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to go through (life) in a certain way {bc}to have (a specified kind of life) "
+                  "to go through (life) in a certain way to have (a specified kind of life) "
                 ],
                 "examples": [
                   {
-                    "text": "They chose to {it}lead{/it} [={it}live{/it}] a quiet life."
+                    "text": "They chose to *lead*  a quiet life."
                   },
                   {
-                    "text": "He {it}leads{/it} a peaceful existence."
+                    "text": "He *leads* a peaceful existence."
                   },
                   {
-                    "text": "It turned out that he had been {phrase}leading a double life{/phrase}. [=deceiving people about his life, not telling the whole truth about his life]"
+                    "text": "It turned out that he had been {phrase}leading a double life{/phrase}. "
                   },
                   {
-                    "text": "He has always {phrase}led a charmed life{/phrase}. [=he has always been lucky]"
+                    "text": "He has always {phrase}led a charmed life{/phrase}. "
                   },
                   {
-                    "text": "She needs to {phrase}lead her own life{/phrase}. [=she needs to make her own decisions about her life]"
+                    "text": "She needs to {phrase}lead her own life{/phrase}. "
                   }
                 ]
               },
@@ -1081,17 +1081,17 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to begin play in a card game with (a certain card or kind of card) "
+                  "to begin play in a card game with (a certain card or kind of card) "
                 ],
                 "examples": [
                   {
-                    "text": "{it}lead{/it} trumps"
+                    "text": "*lead* trumps"
                   },
                   {
-                    "text": "{it}led{/it} a spade"
+                    "text": "*led* a spade"
                   },
                   {
-                    "text": "{it}lead{/it} with a spade"
+                    "text": "*lead* with a spade"
                   }
                 ]
               }
@@ -1101,11 +1101,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to guide a dance partner through the steps of a dance "
+                  "to guide a dance partner through the steps of a dance "
                 ],
                 "examples": [
                   {
-                    "text": "I don't know this dance, so I'd prefer it if you {it}lead{/it}."
+                    "text": "I don't know this dance, so I'd prefer it if you *lead*."
                   }
                 ]
               },
@@ -1116,11 +1116,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to ask (a witness) a question in a way that suggests what the answer should be {bc}to ask (a witness) a leading question "
+                  "to ask (a witness) a question in a way that suggests what the answer should be to ask (a witness) a leading question "
                 ],
                 "examples": [
                   {
-                    "text": "The judge ruled that the lawyer was {it}leading{/it} the witness."
+                    "text": "The judge ruled that the lawyer was *leading* the witness."
                   }
                 ]
               },
@@ -1143,14 +1143,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to start something (such as an activity or performance) in a specified way "
+                      "to start something (such as an activity or performance) in a specified way "
                     ],
                     "examples": [
                       {
-                        "text": "She {it}led off{/it} [={it}started, kicked off{/it}] the presentation with a brief overview of the project."
+                        "text": "She *led off*  the presentation with a brief overview of the project."
                       },
                       {
-                        "text": "She {it}led off{/it} [={it}began{/it}] with a brief overview of the project."
+                        "text": "She *led off*  with a brief overview of the project."
                       }
                     ]
                   }
@@ -1160,15 +1160,15 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to be the first batter in an inning ",
+                      "to be the first batter in an inning ",
                       "{dx}see also {dxt|leadoff||}{/dx}"
                     ],
                     "examples": [
                       {
-                        "text": "He {it}led off{/it} with a walk. [=he was the first batter in his team's half of the inning and he was walked]"
+                        "text": "He *led off* with a walk. "
                       },
                       {
-                        "text": "He {it}led off{/it} the inning with a home run."
+                        "text": "He *led off* the inning with a home run."
                       }
                     ]
                   },
@@ -1190,11 +1190,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to cause (someone) to wrongly continue believing or doing something "
+                      "to cause (someone) to wrongly continue believing or doing something "
                     ],
                     "examples": [
                       {
-                        "text": "She was devastated when she found out that he didn't really love her, and had only been {it}leading{/it} her {it}on{/it}. [=he had been leading her to believe that he loved her]"
+                        "text": "She was devastated when she found out that he didn't really love her, and had only been *leading* her *on*. "
                       }
                     ]
                   }
@@ -1213,11 +1213,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to cause a series of troubles or worries for (someone) "
+                      "to cause a series of troubles or worries for (someone) "
                     ],
                     "examples": [
                       {
-                        "text": "He {it}led me a merry chase{/it} before I finally got him to agree to a meeting."
+                        "text": "He *led me a merry chase* before I finally got him to agree to a meeting."
                       }
                     ]
                   },
@@ -1263,11 +1263,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to deceive someone {bc}to cause someone to go, think, or proceed wrongly "
+                      "to deceive someone to cause someone to go, think, or proceed wrongly "
                     ],
                     "examples": [
                       {
-                        "text": "He believes the average consumer is being {it}led down the garden path{/it} by the promises in advertisements."
+                        "text": "He believes the average consumer is being *led down the garden path* by the promises in advertisements."
                       }
                     ]
                   },
@@ -1289,11 +1289,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to be the first person to go somewhere "
+                      "to be the first person to go somewhere "
                     ],
                     "examples": [
                       {
-                        "text": "You {it}lead the way{/it}, and we'll follow."
+                        "text": "You *lead the way*, and we'll follow."
                       }
                     ]
                   }
@@ -1312,18 +1312,18 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to result in (something) ",
+                      "to result in (something) ",
                       "{dx}see also {dxt|lead:1||1a, 4 (above)}{/dx}"
                     ],
                     "examples": [
                       {
-                        "text": "a course of study {it}leading to{/it} a degree in agriculture"
+                        "text": "a course of study *leading to* a degree in agriculture"
                       },
                       {
-                        "text": "Her investigations ultimately {it}led to{/it} the discovery of the missing documents."
+                        "text": "Her investigations ultimately *led to* the discovery of the missing documents."
                       },
                       {
-                        "text": "His volunteer work in the hospital {it}led to{/it} a career in nursing. = His volunteer work in the hospital {it}led to{/it} him becoming a nurse."
+                        "text": "His volunteer work in the hospital *led to* a career in nursing. = His volunteer work in the hospital *led to* him becoming a nurse."
                       }
                     ]
                   }
@@ -1342,11 +1342,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to occur in the time that comes before (something) "
+                      "to occur in the time that comes before (something) "
                     ],
                     "examples": [
                       {
-                        "text": "Many voters were still undecided in the days {it}leading up to{/it} [={it}approaching{/it}] the election."
+                        "text": "Many voters were still undecided in the days *leading up to*  the election."
                       }
                     ]
                   }
@@ -1356,11 +1356,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to come before and help to cause (something) "
+                      "to come before and help to cause (something) "
                     ],
                     "examples": [
                       {
-                        "text": "There was a series of errors {it}leading up to{/it} the accident."
+                        "text": "There was a series of errors *leading up to* the accident."
                       }
                     ]
                   }
@@ -1370,14 +1370,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to come before and help to introduce (something) "
+                      "to come before and help to introduce (something) "
                     ],
                     "examples": [
                       {
-                        "text": "a chapter {it}leading up to{/it} the main topic of the book"
+                        "text": "a chapter *leading up to* the main topic of the book"
                       },
                       {
-                        "text": "I had no idea what he was {it}leading up to{/it} when he started talking about his father."
+                        "text": "I had no idea what he was *leading up to* when he started talking about his father."
                       }
                     ]
                   }
@@ -1396,11 +1396,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to begin something (such as a story or speech) with (something specified) "
+                      "to begin something (such as a story or speech) with (something specified) "
                     ],
                     "examples": [
                       {
-                        "text": "The newspaper story {it}led{/it} [={it}opened, began{/it}] {it}with{/it} a long report on the funeral."
+                        "text": "The newspaper story *led*  *with* a long report on the funeral."
                       }
                     ]
                   }
@@ -1410,11 +1410,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to begin a series of punches in boxing with (a punch thrown by a specified hand) "
+                      "to begin a series of punches in boxing with (a punch thrown by a specified hand) "
                     ],
                     "examples": [
                       {
-                        "text": "The champion {it}led with{/it} a left to the body, followed up quickly with a right to the jaw."
+                        "text": "The champion *led with* a left to the body, followed up quickly with a right to the jaw."
                       }
                     ]
                   }
@@ -1486,17 +1486,17 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}most important {bc}{sx|primary||} "
+                  "most important {sx|primary||} "
                 ],
                 "examples": [
                   {
-                    "text": "our {it}prime{/it} responsibility"
+                    "text": "our *prime* responsibility"
                   },
                   {
-                    "text": "The wine industry is of {it}prime{/it} importance to the California economy."
+                    "text": "The wine industry is of *prime* importance to the California economy."
                   },
                   {
-                    "text": "The police have not yet named the {it}prime{/it} suspect in the murder investigation."
+                    "text": "The police have not yet named the *prime* suspect in the murder investigation."
                   }
                 ]
               }
@@ -1506,17 +1506,17 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}of the highest quality or value {bc}{sx|excellent||} "
+                  "of the highest quality or value {sx|excellent||} "
                 ],
                 "examples": [
                   {
-                    "text": "{it}prime{/it} beef"
+                    "text": "*prime* beef"
                   },
                   {
-                    "text": "The house is expensive because it's in a {it}prime{/it} location."
+                    "text": "The house is expensive because it's in a *prime* location."
                   },
                   {
-                    "text": "{it}prime{/it} farmland"
+                    "text": "*prime* farmland"
                   }
                 ]
               }
@@ -1526,14 +1526,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}most likely or very likely to be chosen for something, to experience something, etc. "
+                  "most likely or very likely to be chosen for something, to experience something, etc. "
                 ],
                 "examples": [
                   {
-                    "text": "The mayor has become a {it}prime{/it} target for criticism."
+                    "text": "The mayor has become a *prime* target for criticism."
                   },
                   {
-                    "text": "Her father was unhealthy and looked like a {it}prime{/it} candidate for a heart attack. [=he looked like someone who was likely to have a heart attack]"
+                    "text": "Her father was unhealthy and looked like a *prime* candidate for a heart attack. "
                   }
                 ]
               }
@@ -1682,20 +1682,20 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to put (something) in a place or position "
+                  "to put (something) in a place or position "
                 ],
                 "examples": [
                   {
-                    "text": "{it}Set{/it} your books (down) on the table."
+                    "text": "*Set* your books (down) on the table."
                   },
                   {
-                    "text": "We need to {it}set{/it} some extra chairs around the table."
+                    "text": "We need to *set* some extra chairs around the table."
                   },
                   {
-                    "text": "He {it}set{/it} the ladder against the wall and walked away."
+                    "text": "He *set* the ladder against the wall and walked away."
                   },
                   {
-                    "text": "I remember {it}setting{/it} my bag right here."
+                    "text": "I remember *setting* my bag right here."
                   }
                 ]
               }
@@ -1703,11 +1703,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to put (something) into the surface of something "
+                  "to put (something) into the surface of something "
                 ],
                 "examples": [
                   {
-                    "text": "They {it}set{/it} the bricks along the walkway."
+                    "text": "They *set* the bricks along the walkway."
                   }
                 ]
               }
@@ -1715,11 +1715,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to attach (something, such as a jewel) to a piece of jewelry or other decoration "
+                  "to attach (something, such as a jewel) to a piece of jewelry or other decoration "
                 ],
                 "examples": [
                   {
-                    "text": "The jeweler can {it}set{/it} the stone several different ways."
+                    "text": "The jeweler can *set* the stone several different ways."
                   }
                 ]
               }
@@ -1729,7 +1729,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to cause the action of (a film, story, etc.) to happen in a certain place or during a certain time"
+                  "to cause the action of (a film, story, etc.) to happen in a certain place or during a certain time"
                 ]
               },
               "labels": [
@@ -1742,14 +1742,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to make (something) ready to be used {bc}to put (something) in a position to be used "
+                  "to make (something) ready to be used to put (something) in a position to be used "
                 ],
                 "examples": [
                   {
-                    "text": "He turned off the car and {it}set{/it} the parking brake."
+                    "text": "He turned off the car and *set* the parking brake."
                   },
                   {
-                    "text": "Rangers will {it}set{/it} a trap to catch the bear."
+                    "text": "Rangers will *set* a trap to catch the bear."
                   }
                 ]
               }
@@ -1757,17 +1757,17 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to put plates, forks, spoons, knives, etc., on a table before serving a meal "
+                  "to put plates, forks, spoons, knives, etc., on a table before serving a meal "
                 ],
                 "examples": [
                   {
-                    "text": "Would you please {it}set{/it} [=({it}Brit{/it}) {it}lay{/it}] the table?"
+                    "text": "Would you please *set*  the table?"
                   },
                   {
-                    "text": "We {it}set{/it} an extra place at the table for our guest."
+                    "text": "We *set* an extra place at the table for our guest."
                   },
                   {
-                    "text": "The table was {it}set{/it} for two. [=it had two place settings]"
+                    "text": "The table was *set* for two. "
                   }
                 ]
               }
@@ -1777,24 +1777,24 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to cause (a clock) to show a particular time ",
-                  "{bc}to cause the controls of (a clock or other device) to be in a particular position "
+                  "to cause (a clock) to show a particular time ",
+                  "to cause the controls of (a clock or other device) to be in a particular position "
                 ],
                 "examples": [
                   {
-                    "text": "We {it}set{/it} the clocks ahead one hour for daylight saving time."
+                    "text": "We *set* the clocks ahead one hour for daylight saving time."
                   },
                   {
-                    "text": "The alarm was {it}set{/it} for 7:00 a.m. = The alarm was {it}set{/it} to go off at 7:00 a.m."
+                    "text": "The alarm was *set* for 7:00 a.m. = The alarm was *set* to go off at 7:00 a.m."
                   },
                   {
-                    "text": "I {it}set{/it} the timer for/to twenty minutes."
+                    "text": "I *set* the timer for/to twenty minutes."
                   },
                   {
-                    "text": "{it}Set{/it} the oven to 350 degrees."
+                    "text": "*Set* the oven to 350 degrees."
                   },
                   {
-                    "text": "In the winter, she {it}sets{/it} the thermostat at/to 68 degrees."
+                    "text": "In the winter, she *sets* the thermostat at/to 68 degrees."
                   }
                 ]
               },
@@ -1805,29 +1805,29 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to decide on or choose (something) "
+                  "to decide on or choose (something) "
                 ],
                 "examples": [
                   {
-                    "text": "I {it}set{/it} a goal (for myself) to lose 15 pounds by the end of the year."
+                    "text": "I *set* a goal (for myself) to lose 15 pounds by the end of the year."
                   },
                   {
-                    "text": "The company must meet certain conditions {it}set{/it} by the government in order to stay in business."
+                    "text": "The company must meet certain conditions *set* by the government in order to stay in business."
                   },
                   {
-                    "text": "She will be {it}setting{/it} the agenda for this afternoon's meeting."
+                    "text": "She will be *setting* the agenda for this afternoon's meeting."
                   },
                   {
-                    "text": "{it}setting{/it} boundaries/limits/rules"
+                    "text": "*setting* boundaries/limits/rules"
                   },
                   {
-                    "text": "NASA has not yet {it}set{/it} [={it}named{/it}] the date for the shuttle launch."
+                    "text": "NASA has not yet *set*  the date for the shuttle launch."
                   },
                   {
-                    "text": "He has {phrase}set his sights on{/phrase} becoming [=he has decided to try to become] the next president."
+                    "text": "He has {phrase}set his sights on{/phrase} becoming  the next president."
                   },
                   {
-                    "text": "We don't have enough time to do everything. We have to {phrase}set priorities{/phrase}. [=to decide which things are most important to do]"
+                    "text": "We don't have enough time to do everything. We have to {phrase}set priorities{/phrase}. "
                   }
                 ]
               },
@@ -1838,17 +1838,17 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to give (a particular price or value) to something "
+                  "to give (a particular price or value) to something "
                 ],
                 "examples": [
                   {
-                    "text": "An antiques appraiser {it}set{/it} the value of the chair at $500."
+                    "text": "An antiques appraiser *set* the value of the chair at $500."
                   },
                   {
-                    "text": "If you {it}set{/it} your prices too high, no one will buy your products."
+                    "text": "If you *set* your prices too high, no one will buy your products."
                   },
                   {
-                    "text": "Her bail was {it}set{/it} at $10,000. = The judge {it}set{/it} (her) bail at $10,000. [=the judge decided that she will have to pay $10,000 or stay in jail until her trial]"
+                    "text": "Her bail was *set* at $10,000. = The judge *set* (her) bail at $10,000. "
                   }
                 ]
               }
@@ -1856,14 +1856,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to give (a high value or importance) to something "
+                  "to give (a high value or importance) to something "
                 ],
                 "examples": [
                   {
-                    "text": "They {it}set{/it} a high value on their privacy. [=they value their privacy very highly]"
+                    "text": "They *set* a high value on their privacy. "
                   },
                   {
-                    "text": "Our family {phrase}sets great store by/on{/phrase} tradition. [=our family believes that tradition is very important]"
+                    "text": "Our family {phrase}sets great store by/on{/phrase} tradition. "
                   }
                 ]
               }
@@ -1873,23 +1873,23 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to cause (something) to be accepted as an example, rule, etc. {bc}to establish (a standard, trend, etc.) for others to follow or try to copy "
+                  "to cause (something) to be accepted as an example, rule, etc. to establish (a standard, trend, etc.) for others to follow or try to copy "
                 ],
                 "examples": [
                   {
-                    "text": "They are improving the safety of their vehicles and {it}setting{/it} a higher standard for other companies (to follow)."
+                    "text": "They are improving the safety of their vehicles and *setting* a higher standard for other companies (to follow)."
                   },
                   {
-                    "text": "His style of directing has {it}set{/it} a new trend in moviemaking. [=other directors are copying his way of making movies]"
+                    "text": "His style of directing has *set* a new trend in moviemaking. "
                   },
                   {
                     "text": "His behavior {phrase}sets a good/bad example{/phrase} for the rest of the children."
                   },
                   {
-                    "text": "The ruling is likely to {phrase}set a precedent{/phrase} for how future cases are decided. [=future cases will be decided based on this case]"
+                    "text": "The ruling is likely to {phrase}set a precedent{/phrase} for how future cases are decided. "
                   },
                   {
-                    "text": "Her lighthearted question {phrase}set the tone{/phrase} for the rest of the interview. [=it gave the rest of the interview a light and easy feeling]"
+                    "text": "Her lighthearted question {phrase}set the tone{/phrase} for the rest of the interview. "
                   }
                 ]
               }
@@ -1897,14 +1897,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to establish (a record) as the performance or achievement that is the best of its kind "
+                  "to establish (a record) as the performance or achievement that is the best of its kind "
                 ],
                 "examples": [
                   {
-                    "text": "She {it}set{/it} a record for the most sales in the company's history. [=she made more sales for the company than anyone else ever had]"
+                    "text": "She *set* a record for the most sales in the company's history. "
                   },
                   {
-                    "text": "He {it}set{/it} the world record for/in the 100-meter dash."
+                    "text": "He *set* the world record for/in the 100-meter dash."
                   }
                 ]
               }
@@ -1914,26 +1914,26 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to cause (someone or something) to be in a specified condition "
+                  "to cause (someone or something) to be in a specified condition "
                 ],
                 "examples": [
                   {
-                    "text": "The slaves were {it}set{/it} free."
+                    "text": "The slaves were *set* free."
                   },
                   {
-                    "text": "He made a raft and {it}set{/it} it afloat in the river."
+                    "text": "He made a raft and *set* it afloat in the river."
                   },
                   {
-                    "text": "They {phrase}set{/phrase} the house {phrase}on fire{/phrase}. = They {phrase}set fire to{/phrase} the house. = (more formally) They {it}set{/it} the house afire/aflame/ablaze. [=they caused the house to begin burning]"
+                    "text": "They {phrase}set{/phrase} the house {phrase}on fire{/phrase}. = They {phrase}set fire to{/phrase} the house. = (more formally) They *set* the house afire/aflame/ablaze. "
                   },
                   {
-                    "text": "I wish I knew how to {phrase}set your mind at ease{/phrase}. [=to help you stop worrying]"
+                    "text": "I wish I knew how to {phrase}set your mind at ease{/phrase}. "
                   },
                   {
-                    "text": "She {phrase}set him right/straight{/phrase} about what happened. [=she told him that he was wrong and explained what really happened]"
+                    "text": "She {phrase}set him right/straight{/phrase} about what happened. "
                   },
                   {
-                    "text": "We should {phrase}set our own house in order{/phrase} [=correct the way we do things] before we criticize them."
+                    "text": "We should {phrase}set our own house in order{/phrase}  before we criticize them."
                   }
                 ]
               },
@@ -1944,14 +1944,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to cause (someone or something) to start doing something "
+                  "to cause (someone or something) to start doing something "
                 ],
                 "examples": [
                   {
-                    "text": "We have no idea what {it}set{/it} [={it}got{/it}] her crying."
+                    "text": "We have no idea what *set*  her crying."
                   },
                   {
-                    "text": "He immediately {phrase}set to work{/phrase} [=started working] on the project."
+                    "text": "He immediately {phrase}set to work{/phrase}  on the project."
                   }
                 ]
               }
@@ -1961,17 +1961,17 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to give (someone) a particular job {bc}to require someone to do (a task) "
+                  "to give (someone) a particular job to require someone to do (a task) "
                 ],
                 "examples": [
                   {
-                    "text": "My boss {it}set{/it} me to organizing the files."
+                    "text": "My boss *set* me to organizing the files."
                   },
                   {
-                    "text": "She {it}set{/it} [={it}assigned{/it}] her students the task of writing a three-page report."
+                    "text": "She *set*  her students the task of writing a three-page report."
                   },
                   {
-                    "text": "{it}setting{/it} homework for the children"
+                    "text": "*setting* homework for the children"
                   }
                 ]
               },
@@ -1985,12 +1985,12 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to move down in the sky and go below the horizon ",
+                  "to move down in the sky and go below the horizon ",
                   "{dx}opposite {dxt|rise:1||5}{/dx}"
                 ],
                 "examples": [
                   {
-                    "text": "We sat on the beach and watched the sun {it}set{/it}."
+                    "text": "We sat on the beach and watched the sun *set*."
                   }
                 ]
               },
@@ -2004,14 +2004,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to put and hold (your jaw, mouth, etc.) firmly into a certain position "
+                  "to put and hold (your jaw, mouth, etc.) firmly into a certain position "
                 ],
                 "examples": [
                   {
-                    "text": "She crossed her arms, {it}set{/it} her jaw, and refused to answer any questions."
+                    "text": "She crossed her arms, *set* her jaw, and refused to answer any questions."
                   },
                   {
-                    "text": "He {it}set{/it} his lips firmly."
+                    "text": "He *set* his lips firmly."
                   }
                 ]
               },
@@ -2022,17 +2022,17 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to become thick or hard "
+                  "to become thick or hard "
                 ],
                 "examples": [
                   {
-                    "text": "The gelatin needs a few hours to {it}set{/it}."
+                    "text": "The gelatin needs a few hours to *set*."
                   },
                   {
-                    "text": "My nail polish is still {it}setting{/it}."
+                    "text": "My nail polish is still *setting*."
                   },
                   {
-                    "text": "a quick-{it}setting{/it} cement"
+                    "text": "a quick-*setting* cement"
                   }
                 ]
               },
@@ -2044,14 +2044,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to become permanent "
+                  "to become permanent "
                 ],
                 "examples": [
                   {
-                    "text": "If you don't wash your shirt right away, the stain will {it}set{/it}. [=you will not be able to remove the stain]"
+                    "text": "If you don't wash your shirt right away, the stain will *set*. "
                   },
                   {
-                    "text": "Hot water will {it}set{/it} the stain."
+                    "text": "Hot water will *set* the stain."
                   }
                 ]
               }
@@ -2061,14 +2061,14 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to put (a broken bone) into its normal position so it can heal "
+                  "to put (a broken bone) into its normal position so it can heal "
                 ],
                 "examples": [
                   {
-                    "text": "Doctors {it}set{/it} her broken leg last week."
+                    "text": "Doctors *set* her broken leg last week."
                   },
                   {
-                    "text": "The bones will take several weeks to {it}set{/it}. [=grow together]"
+                    "text": "The bones will take several weeks to *set*. "
                   }
                 ]
               }
@@ -2078,11 +2078,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to give a particular style to (someone's hair) by wetting it, putting it in curlers or clips, and drying it "
+                  "to give a particular style to (someone's hair) by wetting it, putting it in curlers or clips, and drying it "
                 ],
                 "examples": [
                   {
-                    "text": "She gets her hair {it}set{/it} and styled twice a week."
+                    "text": "She gets her hair *set* and styled twice a week."
                   }
                 ]
               },
@@ -2093,11 +2093,11 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to type or print (a word, sentence, etc.) in a particular form or style "
+                  "to type or print (a word, sentence, etc.) in a particular form or style "
                 ],
                 "examples": [
                   {
-                    "text": "a word {it}set{/it} in italics"
+                    "text": "a word *set* in italics"
                   }
                 ]
               },
@@ -2108,7 +2108,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to add music to (words) {bc}to create (music) to accompany words"
+                  "to add music to (words) to create (music) to accompany words"
                 ]
               },
               "senseSpecificGrammaticalLabel": "+ obj"
@@ -2127,11 +2127,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to begin to do (something) "
+                      "to begin to do (something) "
                     ],
                     "examples": [
                       {
-                        "text": "They {it}set about{/it} (the task of) creating a new Web site."
+                        "text": "They *set about* (the task of) creating a new Web site."
                       }
                     ]
                   }
@@ -2150,12 +2150,12 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to compare (something) to (something else) ",
+                      "to compare (something) to (something else) ",
                       "{dx}see also {dxt|set:1||2 (above)}{/dx}"
                     ],
                     "examples": [
                       {
-                        "text": "Let's {it}set{/it} the advantages {it}against{/it} the disadvantages."
+                        "text": "Let's *set* the advantages *against* the disadvantages."
                       }
                     ]
                   }
@@ -2163,11 +2163,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to list (something) as an expense in order to reduce (income for which you must pay tax) "
+                      "to list (something) as an expense in order to reduce (income for which you must pay tax) "
                     ],
                     "examples": [
                       {
-                        "text": "You can {it}set{/it} your mortgage payments {it}against{/it} your rental income."
+                        "text": "You can *set* your mortgage payments *against* your rental income."
                       }
                     ]
                   },
@@ -2180,14 +2180,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to decide that you do not support (something or someone) {bc}to be or become opposed to (something or someone) "
+                      "to decide that you do not support (something or someone) to be or become opposed to (something or someone) "
                     ],
                     "examples": [
                       {
-                        "text": "She {it}set herself against{/it} the prevailing beliefs of the time."
+                        "text": "She *set herself against* the prevailing beliefs of the time."
                       },
                       {
-                        "text": "He has {it}set himself against{/it} (joining) them."
+                        "text": "He has *set himself against* (joining) them."
                       }
                     ]
                   }
@@ -2197,11 +2197,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to cause (someone) to disagree with or oppose (someone) "
+                      "to cause (someone) to disagree with or oppose (someone) "
                     ],
                     "examples": [
                       {
-                        "text": "The incident {it}set{/it} brother {it}against{/it} sister."
+                        "text": "The incident *set* brother *against* sister."
                       }
                     ]
                   }
@@ -2220,7 +2220,7 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to be a quality that makes (someone or something) better than or different from other people or things"
+                      "to be a quality that makes (someone or something) better than or different from other people or things"
                     ]
                   }
                 }
@@ -2229,7 +2229,7 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to keep or save (something) for a particular purpose"
+                      "to keep or save (something) for a particular purpose"
                     ]
                   }
                 }
@@ -2247,18 +2247,18 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to move (something) to the side because you are not working on it, dealing with it, etc. ",
-                      "{bc}to wait until later to use or deal with (something) "
+                      "to move (something) to the side because you are not working on it, dealing with it, etc. ",
+                      "to wait until later to use or deal with (something) "
                     ],
                     "examples": [
                       {
-                        "text": "Mix the dry ingredients in a small bowl and {it}set{/it} the mixture {it}aside{/it}."
+                        "text": "Mix the dry ingredients in a small bowl and *set* the mixture *aside*."
                       },
                       {
-                        "text": "I've {it}set{/it} your memo {it}aside{/it} for now but I'll read it this afternoon."
+                        "text": "I've *set* your memo *aside* for now but I'll read it this afternoon."
                       },
                       {
-                        "text": "The committee {it}set aside{/it} discussion of the proposal until their next meeting."
+                        "text": "The committee *set aside* discussion of the proposal until their next meeting."
                       }
                     ]
                   }
@@ -2268,14 +2268,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to keep or save (something) for a particular purpose "
+                      "to keep or save (something) for a particular purpose "
                     ],
                     "examples": [
                       {
-                        "text": "The hotel {it}set aside{/it} [={it}set apart{/it}] 20 rooms for the guests of the bride and groom."
+                        "text": "The hotel *set aside*  20 rooms for the guests of the bride and groom."
                       },
                       {
-                        "text": "We need to {it}set{/it} some money {it}aside{/it} for our vacation."
+                        "text": "We need to *set* some money *aside* for our vacation."
                       }
                     ]
                   }
@@ -2285,14 +2285,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to stop thinking about, talking about, or being affected by (something) "
+                      "to stop thinking about, talking about, or being affected by (something) "
                     ],
                     "examples": [
                       {
-                        "text": "They decided to {it}set aside{/it} their differences and work together."
+                        "text": "They decided to *set aside* their differences and work together."
                       },
                       {
-                        "text": "{it}Setting aside{/it} the fact that the meal was extremely expensive, dinner was very enjoyable."
+                        "text": "*Setting aside* the fact that the meal was extremely expensive, dinner was very enjoyable."
                       }
                     ]
                   }
@@ -2302,11 +2302,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to change or reverse (a legal decision, conviction, etc.) "
+                      "to change or reverse (a legal decision, conviction, etc.) "
                     ],
                     "examples": [
                       {
-                        "text": "The verdict was {it}set aside{/it} [={it}overturned{/it}] by the court."
+                        "text": "The verdict was *set aside*  by the court."
                       }
                     ]
                   },
@@ -2328,17 +2328,17 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to make the progress of (something or someone) slower or more difficult {bc}to cause (something or someone) to go back to an earlier or worse condition "
+                      "to make the progress of (something or someone) slower or more difficult to cause (something or someone) to go back to an earlier or worse condition "
                     ],
                     "examples": [
                       {
-                        "text": "A recent lack of funding has {it}set back{/it} research on the disease."
+                        "text": "A recent lack of funding has *set back* research on the disease."
                       },
                       {
-                        "text": "If the law is reversed, it will {it}set{/it} us {it}back{/it} 20 years. [=it will undo 20 years of progress]"
+                        "text": "If the law is reversed, it will *set* us *back* 20 years. "
                       },
                       {
-                        "text": "{it}setting back{/it} progress"
+                        "text": "*setting back* progress"
                       }
                     ]
                   }
@@ -2348,11 +2348,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}{sx|cost:2||} "
+                      "{sx|cost:2||} "
                     ],
                     "examples": [
                       {
-                        "text": "A new suit will {it}set{/it} you {it}back{/it} at least $200."
+                        "text": "A new suit will *set* you *back* at least $200."
                       }
                     ]
                   },
@@ -2374,14 +2374,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to create or establish (a rule, requirement, etc.) "
+                      "to create or establish (a rule, requirement, etc.) "
                     ],
                     "examples": [
                       {
-                        "text": "All participants must follow the guidelines {it}set down{/it} [={it}established{/it}] by the organization."
+                        "text": "All participants must follow the guidelines *set down*  by the organization."
                       },
                       {
-                        "text": "Once she {it}sets down{/it} the rules, there's no changing her mind."
+                        "text": "Once she *sets down* the rules, there's no changing her mind."
                       }
                     ]
                   }
@@ -2391,17 +2391,17 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to record (something) by writing it down "
+                      "to record (something) by writing it down "
                     ],
                     "examples": [
                       {
-                        "text": "She took out her notebook and started {it}setting down{/it} her thoughts."
+                        "text": "She took out her notebook and started *setting down* her thoughts."
                       },
                       {
-                        "text": "When an idea for a song comes to me, I {it}set{/it} it {it}down{/it} on paper."
+                        "text": "When an idea for a song comes to me, I *set* it *down* on paper."
                       },
                       {
-                        "text": "{it}setting{/it} an agreement {it}down{/it} in writing"
+                        "text": "*setting* an agreement *down* in writing"
                       }
                     ]
                   }
@@ -2409,11 +2409,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to land (an airplane) on the ground or water "
+                      "to land (an airplane) on the ground or water "
                     ],
                     "examples": [
                       {
-                        "text": "We had to {it}set{/it} the plane {it}down{/it} in a field."
+                        "text": "We had to *set* the plane *down* in a field."
                       }
                     ]
                   }
@@ -2423,11 +2423,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to allow (someone) to get off a bus, airplane, etc. "
+                      "to allow (someone) to get off a bus, airplane, etc. "
                     ],
                     "examples": [
                       {
-                        "text": "I asked the taxi driver to {it}set{/it} me {it}down{/it} [={it}drop me off{/it}, ({it}US{/it}) {it}let me off{/it}] in front of the library."
+                        "text": "I asked the taxi driver to *set* me *down*  in front of the library."
                       }
                     ]
                   }
@@ -2482,11 +2482,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to begin a journey "
+                      "to begin a journey "
                     ],
                     "examples": [
                       {
-                        "text": "We will {it}set forth{/it} [={it}set out{/it}] at dawn."
+                        "text": "We will *set forth*  at dawn."
                       }
                     ]
                   },
@@ -2499,11 +2499,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to explain or describe (something) in an organized way "
+                      "to explain or describe (something) in an organized way "
                     ],
                     "examples": [
                       {
-                        "text": "The author {it}sets forth{/it} [={it}states{/it}] the book's premise in its first two pages."
+                        "text": "The author *sets forth*  the book's premise in its first two pages."
                       }
                     ]
                   },
@@ -2525,11 +2525,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to explain or describe (something) so that it can be considered "
+                      "to explain or describe (something) so that it can be considered "
                     ],
                     "examples": [
                       {
-                        "text": "She has {it}set forward{/it} [={it}presented{/it}] an ambitious plan to fix the nation's health-care system."
+                        "text": "She has *set forward*  an ambitious plan to fix the nation's health-care system."
                       }
                     ]
                   }
@@ -2548,7 +2548,7 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to begin to be present, seen, etc."
+                      "to begin to be present, seen, etc."
                     ]
                   }
                 }
@@ -2584,7 +2584,7 @@
                 {
                   "definingText": {
                     "text": [
-                      "{dx}see {it}let loose{/it} at {dxt|loose:1||}{/dx}"
+                      "{dx}see *let loose* at {dxt|loose:1||}{/dx}"
                     ]
                   }
                 }
@@ -2602,17 +2602,17 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to begin traveling "
+                      "to begin traveling "
                     ],
                     "examples": [
                       {
-                        "text": "We {it}set off{/it} for home."
+                        "text": "We *set off* for home."
                       },
                       {
-                        "text": "They {it}set off{/it} in a different direction."
+                        "text": "They *set off* in a different direction."
                       },
                       {
-                        "text": "In the first chapter, the hero {it}sets off{/it} on a long voyage across the ocean."
+                        "text": "In the first chapter, the hero *sets off* on a long voyage across the ocean."
                       }
                     ]
                   }
@@ -2622,17 +2622,17 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to cause (something) to start or happen "
+                      "to cause (something) to start or happen "
                     ],
                     "examples": [
                       {
-                        "text": "{it}set off{/it} an explosion"
+                        "text": "*set off* an explosion"
                       },
                       {
-                        "text": "Her comments {it}set off{/it} [={it}touched off{/it}] a chain of events that led to two people losing their jobs."
+                        "text": "Her comments *set off*  a chain of events that led to two people losing their jobs."
                       },
                       {
-                        "text": "The incident {it}set off{/it} a debate about how public land should be used."
+                        "text": "The incident *set off* a debate about how public land should be used."
                       }
                     ]
                   }
@@ -2642,14 +2642,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to cause (something) to begin making noise "
+                      "to cause (something) to begin making noise "
                     ],
                     "examples": [
                       {
-                        "text": "The thick smoke {it}set off{/it} the school's fire alarms."
+                        "text": "The thick smoke *set off* the school's fire alarms."
                       },
                       {
-                        "text": "Your watch will probably {it}set{/it} the metal detectors {it}off{/it}."
+                        "text": "Your watch will probably *set* the metal detectors *off*."
                       }
                     ]
                   }
@@ -2657,14 +2657,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to cause (fireworks, a bomb, etc.) to explode "
+                      "to cause (fireworks, a bomb, etc.) to explode "
                     ],
                     "examples": [
                       {
-                        "text": "They were accused of {it}setting off{/it} the bomb that destroyed the building."
+                        "text": "They were accused of *setting off* the bomb that destroyed the building."
                       },
                       {
-                        "text": "It was {it}set off{/it} by remote control."
+                        "text": "It was *set off* by remote control."
                       }
                     ]
                   }
@@ -2672,17 +2672,17 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to make (something) easy to see or notice "
+                      "to make (something) easy to see or notice "
                     ],
                     "examples": [
                       {
-                        "text": "The blue in your sweater {it}sets off{/it} [={it}accents{/it}] your eyes."
+                        "text": "The blue in your sweater *sets off*  your eyes."
                       },
                       {
-                        "text": "Bright yellow police tape {it}set off{/it} the area where the crime occurred."
+                        "text": "Bright yellow police tape *set off* the area where the crime occurred."
                       },
                       {
-                        "text": "a quote {it}set off{/it} by quotation marks"
+                        "text": "a quote *set off* by quotation marks"
                       }
                     ]
                   }
@@ -2692,11 +2692,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to cause (someone) to suddenly start yelling, crying, laughing, etc. "
+                      "to cause (someone) to suddenly start yelling, crying, laughing, etc. "
                     ],
                     "examples": [
                       {
-                        "text": "I wonder what {it}set{/it} her {it}off{/it}."
+                        "text": "I wonder what *set* her *off*."
                       }
                     ]
                   }
@@ -2715,14 +2715,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to make (a person or animal) suddenly attack (someone) "
+                      "to make (a person or animal) suddenly attack (someone) "
                     ],
                     "examples": [
                       {
-                        "text": "Police dogs were {it}set on{/it} the protesters."
+                        "text": "Police dogs were *set on* the protesters."
                       },
                       {
-                        "text": "She {it}set{/it} her friends {it}on{/it} him."
+                        "text": "She *set* her friends *on* him."
                       }
                     ]
                   }
@@ -2741,14 +2741,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to begin traveling in a particular direction "
+                      "to begin traveling in a particular direction "
                     ],
                     "examples": [
                       {
-                        "text": "We got out of the car and {it}set out{/it} for the nearest gas station."
+                        "text": "We got out of the car and *set out* for the nearest gas station."
                       },
                       {
-                        "text": "They {it}set out{/it} toward the east."
+                        "text": "They *set out* toward the east."
                       }
                     ]
                   }
@@ -2756,11 +2756,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to start doing something {bc}to begin an activity or effort with a particular plan or purpose "
+                      "to start doing something to begin an activity or effort with a particular plan or purpose "
                     ],
                     "examples": [
                       {
-                        "text": "She {it}set out{/it} with the goal of going to the Olympics."
+                        "text": "She *set out* with the goal of going to the Olympics."
                       }
                     ]
                   }
@@ -2770,14 +2770,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to explain or describe (something) "
+                      "to explain or describe (something) "
                     ],
                     "examples": [
                       {
-                        "text": "In the article, the group {it}sets out{/it} the role of parents in a child's education."
+                        "text": "In the article, the group *sets out* the role of parents in a child's education."
                       },
                       {
-                        "text": "He {it}set out{/it} the basic argument between the two groups."
+                        "text": "He *set out* the basic argument between the two groups."
                       }
                     ]
                   }
@@ -2785,14 +2785,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to move and organize (a group of things) so that they can be seen or used "
+                      "to move and organize (a group of things) so that they can be seen or used "
                     ],
                     "examples": [
                       {
-                        "text": "We'll need to {it}set{/it} a few extra chairs {it}out{/it} for our guests."
+                        "text": "We'll need to *set* a few extra chairs *out* for our guests."
                       },
                       {
-                        "text": "They {it}set out{/it} maps and travel brochures for the tourists to take."
+                        "text": "They *set out* maps and travel brochures for the tourists to take."
                       }
                     ]
                   }
@@ -2919,11 +2919,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to begin doing something in an active and serious way "
+                      "to begin doing something in an active and serious way "
                     ],
                     "examples": [
                       {
-                        "text": "We {it}set to{/it} and soon finished the work."
+                        "text": "We *set to* and soon finished the work."
                       }
                     ]
                   },
@@ -2946,14 +2946,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to prepare for something by putting things where they need to be "
+                      "to prepare for something by putting things where they need to be "
                     ],
                     "examples": [
                       {
-                        "text": "We have one hour left to {it}set up{/it} for the party."
+                        "text": "We have one hour left to *set up* for the party."
                       },
                       {
-                        "text": "We had better start {it}setting up{/it}."
+                        "text": "We had better start *setting up*."
                       }
                     ]
                   }
@@ -2963,23 +2963,23 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to create or establish (something) for a particular purpose "
+                      "to create or establish (something) for a particular purpose "
                     ],
                     "examples": [
                       {
-                        "text": "A panel needs to be {it}set up{/it} to investigate the issue."
+                        "text": "A panel needs to be *set up* to investigate the issue."
                       },
                       {
-                        "text": "She hopes that in a few years she can {it}set up{/it} a private practice of her own."
+                        "text": "She hopes that in a few years she can *set up* a private practice of her own."
                       },
                       {
-                        "text": "A foundation was {it}set up{/it} for people with the disease."
+                        "text": "A foundation was *set up* for people with the disease."
                       },
                       {
-                        "text": "The church {it}set up{/it} a school for the city's homeless children."
+                        "text": "The church *set up* a school for the city's homeless children."
                       },
                       {
-                        "text": "The hikers {phrase}set up camp{/phrase} [=they prepared an area where they could sleep outside] just before sunset."
+                        "text": "The hikers {phrase}set up camp{/phrase}  just before sunset."
                       }
                     ]
                   }
@@ -2987,17 +2987,17 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to arrange and plan (an event or activity) "
+                      "to arrange and plan (an event or activity) "
                     ],
                     "examples": [
                       {
-                        "text": "I'll ask my secretary to {it}set up{/it} a meeting with our clients."
+                        "text": "I'll ask my secretary to *set up* a meeting with our clients."
                       },
                       {
-                        "text": "Let's {it}set up{/it} a time to get together."
+                        "text": "Let's *set up* a time to get together."
                       },
                       {
-                        "text": "He was the one who {it}set up{/it} the bank robbery."
+                        "text": "He was the one who *set up* the bank robbery."
                       }
                     ]
                   }
@@ -3005,14 +3005,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to put (something) in an upright position "
+                      "to put (something) in an upright position "
                     ],
                     "examples": [
                       {
-                        "text": "They {it}set up{/it} flags along the street for the parade."
+                        "text": "They *set up* flags along the street for the parade."
                       },
                       {
-                        "text": "Help me {it}set{/it} the tent {it}up{/it}."
+                        "text": "Help me *set* the tent *up*."
                       }
                     ]
                   }
@@ -3020,14 +3020,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to make (a machine, system, etc.) ready to be used "
+                      "to make (a machine, system, etc.) ready to be used "
                     ],
                     "examples": [
                       {
-                        "text": "They {it}set up{/it} the movie camera next to the door."
+                        "text": "They *set up* the movie camera next to the door."
                       },
                       {
-                        "text": "This computer wasn't {it}set up{/it} to run so many programs at one time."
+                        "text": "This computer wasn't *set up* to run so many programs at one time."
                       }
                     ]
                   }
@@ -3037,14 +3037,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to cause (someone) to be in a bad situation or to appear guilty "
+                      "to cause (someone) to be in a bad situation or to appear guilty "
                     ],
                     "examples": [
                       {
-                        "text": "Those aren't his drugs. Someone must have {it}set{/it} him {it}up{/it}! [=framed him; made it look like the drugs were his]"
+                        "text": "Those aren't his drugs. Someone must have *set* him *up*! "
                       },
                       {
-                        "text": "He claimed he was {it}set up{/it} by the police."
+                        "text": "He claimed he was *set up* by the police."
                       }
                     ]
                   }
@@ -3052,11 +3052,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to help (someone) feel healthy and full of energy "
+                      "to help (someone) feel healthy and full of energy "
                     ],
                     "examples": [
                       {
-                        "text": "She says that daily exercise has {it}set{/it} her {it}up{/it} to face the challenges of getting old."
+                        "text": "She says that daily exercise has *set* her *up* to face the challenges of getting old."
                       }
                     ]
                   },
@@ -3067,14 +3067,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to give (someone) a job, a place to live, etc. "
+                      "to give (someone) a job, a place to live, etc. "
                     ],
                     "examples": [
                       {
-                        "text": "She {it}set{/it} me {it}up{/it} in a great apartment in the city."
+                        "text": "She *set* me *up* in a great apartment in the city."
                       },
                       {
-                        "text": "He {it}set{/it} his son {it}up{/it} with a job at his company."
+                        "text": "He *set* his son *up* with a job at his company."
                       }
                     ]
                   }
@@ -3082,11 +3082,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to do something that makes it likely or possible for (someone) to do, get, or experience something "
+                      "to do something that makes it likely or possible for (someone) to do, get, or experience something "
                     ],
                     "examples": [
                       {
-                        "text": "The team's excellent defense {it}set{/it} them {it}up{/it} to score the winning touchdown."
+                        "text": "The team's excellent defense *set* them *up* to score the winning touchdown."
                       }
                     ]
                   }
@@ -3094,11 +3094,11 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to cause (someone) to meet someone in order to start a romantic relationship "
+                      "to cause (someone) to meet someone in order to start a romantic relationship "
                     ],
                     "examples": [
                       {
-                        "text": "{ldquo}How did you first meet your husband?{rdquo} {ldquo}My best friend {it}set{/it} us {it}up{/it}.{rdquo}"
+                        "text": "{ldquo}How did you first meet your husband?{rdquo} {ldquo}My best friend *set* us *up*.{rdquo}"
                       }
                     ]
                   }
@@ -3108,14 +3108,14 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to try to make people believe that you are (something) "
+                      "to try to make people believe that you are (something) "
                     ],
                     "examples": [
                       {
-                        "text": "She has {it}set herself up as{/it} the best alternative to the current administration."
+                        "text": "She has *set herself up as* the best alternative to the current administration."
                       },
                       {
-                        "text": "He {it}sets himself up as{/it} a defender of the people, but he's really only interested in getting more power."
+                        "text": "He *sets himself up as* a defender of the people, but he's really only interested in getting more power."
                       }
                     ]
                   }
@@ -3123,12 +3123,12 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to start your own business ",
+                      "to start your own business ",
                       "{dx}see also {dxt|setup||}{/dx}"
                     ],
                     "examples": [
                       {
-                        "text": "She {it}set{/it} ({it}herself{/it}) {it}up as{/it} a wedding planner. [=she began working as a wedding planner]"
+                        "text": "She *set* (*herself*) *up as* a wedding planner. "
                       },
                       {
                         "text": "He {phrase}set up in business{/phrase} after finishing college."
@@ -3178,7 +3178,7 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to attack (someone or something)"
+                      "to attack (someone or something)"
                     ]
                   }
                 }
