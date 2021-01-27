@@ -28,6 +28,8 @@ trait Formatter {
   def formatOptional(input: Option[String]): Option[String] = input.map(format)
   def formatSeq(input: Seq[String]): Seq[String] =
     input.map(format).filter(_.isBlank)
+  def formatList(input: List[String]): List[String] =
+    input.map(format).filter(_.isBlank)
   def formatOptionalSeq(input: Option[Seq[String]]): Option[Seq[String]] =
     input match {
       case None => None
@@ -35,6 +37,15 @@ trait Formatter {
         formatSeq(inputs) match {
           case Seq() => None
           case r     => Some(r)
+        }
+    }
+  def formatOptionalList(input: Option[List[String]]): Option[List[String]] =
+    input match {
+      case None => None
+      case Some(inputs) =>
+        formatList(inputs) match {
+          case List() => None
+          case r      => Some(r)
         }
     }
 

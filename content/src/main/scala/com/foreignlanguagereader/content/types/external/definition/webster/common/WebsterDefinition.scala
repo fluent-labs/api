@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.content.types.external.definition.webster.common
 
+import com.foreignlanguagereader.content.formatters.WebsterFormatter
 import com.foreignlanguagereader.content.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -41,7 +42,10 @@ object WebsterDefinition {
         }
       case None => None
     }
-    WebsterDefinition(senseSequence, verbDivider)
+    WebsterDefinition(
+      senseSequence,
+      WebsterFormatter.formatOptional(verbDivider)
+    )
   }
 
   implicit val reads: Reads[WebsterDefinition] = ((JsPath \ "sseq")

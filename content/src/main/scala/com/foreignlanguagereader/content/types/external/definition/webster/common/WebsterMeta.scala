@@ -30,11 +30,11 @@ object WebsterMeta {
     WebsterMeta.apply(
       WebsterFormatter.format(id),
       WebsterFormatter.format(uuid),
-      sort.map(WebsterFormatter.format),
-      lang.map(WebsterFormatter.format),
+      WebsterFormatter.formatOptional(sort),
+      WebsterFormatter.formatOptional(lang),
       src,
       WebsterFormatter.format(section),
-      stems.map(WebsterFormatter.format),
+      WebsterFormatter.formatSeq(stems),
       offensive
     )
   )

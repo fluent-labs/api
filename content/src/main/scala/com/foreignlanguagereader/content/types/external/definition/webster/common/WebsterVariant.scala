@@ -19,7 +19,11 @@ object WebsterVariant {
         WebsterPronunciation.helper.readsList
       ))((va, vl, prs) =>
     WebsterVariant
-      .apply(WebsterFormatter.format(va), vl.map(WebsterFormatter.format), prs)
+      .apply(
+        WebsterFormatter.format(va),
+        WebsterFormatter.formatOptional(vl),
+        prs
+      )
   )
   implicit val writes: Writes[WebsterVariant] = Json.writes[WebsterVariant]
   implicit val helper: JsonSequenceHelper[WebsterVariant] =

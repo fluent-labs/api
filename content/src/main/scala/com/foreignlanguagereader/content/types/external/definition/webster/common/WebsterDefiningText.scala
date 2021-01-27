@@ -49,7 +49,7 @@ object WebsterDefiningText {
         }
 
       WebsterDefiningText(
-        text.map(WebsterFormatter.format),
+        WebsterFormatter.formatSeq(text),
         bnw,
         ca,
         snote,

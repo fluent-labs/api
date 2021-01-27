@@ -21,9 +21,9 @@ object WebsterInflection {
       (JsPath \ "prs").readNullable[WebsterPronunciation]
   )((iff, ifc, il, prs) =>
     WebsterInflection.apply(
-      iff.map(WebsterFormatter.format),
-      ifc.map(WebsterFormatter.format),
-      il.map(WebsterFormatter.format),
+      WebsterFormatter.formatOptional(iff),
+      WebsterFormatter.formatOptional(ifc),
+      WebsterFormatter.formatOptional(il),
       prs
     )
   )

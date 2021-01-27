@@ -24,12 +24,12 @@ object WebsterPronunciation {
       (JsPath \ "ipa").readNullable[String]
   )((mw, l, l2, pun, sound, ipa) =>
     WebsterPronunciation.apply(
-      mw.map(WebsterFormatter.format),
-      l.map(WebsterFormatter.format),
-      l2.map(WebsterFormatter.format),
-      pun.map(WebsterFormatter.format),
+      WebsterFormatter.formatOptional(mw),
+      WebsterFormatter.formatOptional(l),
+      WebsterFormatter.formatOptional(l2),
+      WebsterFormatter.formatOptional(pun),
       sound,
-      ipa.map(WebsterFormatter.format)
+      WebsterFormatter.formatOptional(ipa)
     )
   )
   implicit val writes: Writes[WebsterPronunciation] =
@@ -61,14 +61,13 @@ case class WebsterPronunciationSound(
 }
 object WebsterPronunciationSound {
   def createWithDefaults(
-      audio: String,
-      ref: Option[String]
+      audio: String
   ): WebsterPronunciationSound =
     WebsterPronunciationSound(audio)
   implicit val reads: Reads[WebsterPronunciationSound] = (
     (JsPath \ "audio").read[String] and
       (JsPath \ "ref").readNullable[String]
-  )(WebsterPronunciationSound.createWithDefaults _)
+  )((audio, _) => WebsterPronunciationSound(WebsterFormatter.format(audio)))
   implicit val writes: Writes[WebsterPronunciationSound] =
     Json.writes[WebsterPronunciationSound]
   implicit val helper: JsonSequenceHelper[WebsterPronunciationSound] =

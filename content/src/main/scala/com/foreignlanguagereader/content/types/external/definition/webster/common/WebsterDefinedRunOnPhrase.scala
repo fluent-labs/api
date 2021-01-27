@@ -33,10 +33,10 @@ object WebsterDefinedRunOnPhrase {
       .apply(
         WebsterFormatter.format(drp),
         deff,
-        lbs.map(_.map(WebsterFormatter.format)),
+        WebsterFormatter.formatOptionalSeq(lbs),
         prs,
-        psl.map(WebsterFormatter.format),
-        sls.map(_.map(WebsterFormatter.format)),
+        WebsterFormatter.formatOptional(psl),
+        WebsterFormatter.formatOptionalSeq(sls),
         vrs
       )
   )

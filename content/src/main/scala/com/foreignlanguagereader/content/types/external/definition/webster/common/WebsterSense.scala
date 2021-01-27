@@ -36,11 +36,11 @@ object WebsterSense {
     WebsterSense.apply(
       dt,
       ins,
-      lbs.map(_.map(WebsterFormatter.format)),
+      WebsterFormatter.formatOptionalList(lbs),
       prs,
       sdsense,
-      sgram.map(WebsterFormatter.format),
-      sls.map(_.map(WebsterFormatter.format)),
+      WebsterFormatter.formatOptional(sgram),
+      WebsterFormatter.formatOptionalList(sls),
       vrs
     )
   )
@@ -80,10 +80,10 @@ object WebsterDividedSense {
         WebsterFormatter.format(sd),
         dt,
         ins,
-        lbs.map(_.map(WebsterFormatter.format)),
+        WebsterFormatter.formatOptionalList(lbs),
         prs,
-        sgram.map(WebsterFormatter.format),
-        sls.map(_.map(WebsterFormatter.format)),
+        WebsterFormatter.formatOptional(sgram),
+        WebsterFormatter.formatOptionalList(sls),
         vrs
       )
   )
