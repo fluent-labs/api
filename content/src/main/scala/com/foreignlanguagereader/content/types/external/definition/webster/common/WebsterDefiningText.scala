@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.content.types.external.definition.webster.common
 
+import com.foreignlanguagereader.content.formatters.WebsterFormatter
 import com.foreignlanguagereader.content.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -25,7 +26,7 @@ object WebsterDefiningText {
 
       val text: List[String] =
         WebsterNestedArrayHelper.getOrNone[String](lookup.get("text")) match {
-          case Some(t) => t
+          case Some(t) => t.map(WebsterFormatter.format)
           case None    => List()
         }
       val bnw: Option[List[WebsterBiographicalNameWrap]] =
@@ -47,7 +48,13 @@ object WebsterDefiningText {
           case None    => None
         }
 
-      WebsterDefiningText(text, bnw, ca, snote, vis)
+      WebsterDefiningText(
+        text.map(WebsterFormatter.format),
+        bnw,
+        ca,
+        snote,
+        vis
+      )
     })
     .filter(JsonValidationError("Text is a required field"))(d =>
       d.text.nonEmpty
@@ -71,7 +78,14 @@ object WebsterBiographicalNameWrap {
       (JsPath \ "prs").readNullable[List[WebsterPronunciation]](
         WebsterPronunciation.helper.readsList
       )
-  )(WebsterBiographicalNameWrap.apply _)
+  )((pname, sname, altname, prs) =>
+    WebsterBiographicalNameWrap.apply(
+      pname.map(WebsterFormatter.format),
+      sname.map(WebsterFormatter.format),
+      altname.map(WebsterFormatter.format),
+      prs
+    )
+  )
   implicit val writes: Writes[WebsterBiographicalNameWrap] =
     Json.writes[WebsterBiographicalNameWrap]
   implicit val helper: JsonSequenceHelper[WebsterBiographicalNameWrap] =
@@ -88,7 +102,9 @@ object WebsterCalledAlso {
       (JsPath \ "cats")
         .readNullable[List[WebsterCalledAlsoTarget]](
           WebsterCalledAlsoTarget.helper.readsList
-        ))(WebsterCalledAlso.apply _)
+        ))((intro, cats) =>
+      WebsterCalledAlso.apply(intro.map(WebsterFormatter.format), cats)
+    )
   implicit val writes: Writes[WebsterCalledAlso] =
     Json.writes[WebsterCalledAlso]
 }
@@ -159,7 +175,9 @@ object WebsterSupplementalNote {
 case class WebsterVerbalIllustration(text: String)
 object WebsterVerbalIllustration {
   implicit val reads: Reads[WebsterVerbalIllustration] =
-    (JsPath \ "t").read[String].map(t => WebsterVerbalIllustration(t))
+    (JsPath \ "t")
+      .read[String]
+      .map(t => WebsterVerbalIllustration(WebsterFormatter.format(t)))
   implicit val writes: Writes[WebsterVerbalIllustration] =
     Json.writes[WebsterVerbalIllustration]
   implicit val helper: JsonSequenceHelper[WebsterVerbalIllustration] =
