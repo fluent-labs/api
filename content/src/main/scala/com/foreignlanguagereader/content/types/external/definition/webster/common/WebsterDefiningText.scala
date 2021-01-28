@@ -26,8 +26,14 @@ object WebsterDefiningText {
 
       val text: List[String] =
         WebsterNestedArrayHelper.getOrNone[String](lookup.get("text")) match {
-          case Some(t) => t.map(WebsterFormatter.format)
-          case None    => List()
+          case Some(t) =>
+            t.flatMap(
+                _.split(
+                  "\\{bc\\}"
+                ) // Used by webster to indicate multiple definitions
+              )
+              .filter(!_.isBlank)
+          case None => List()
         }
       val bnw: Option[List[WebsterBiographicalNameWrap]] =
         WebsterNestedArrayHelper
