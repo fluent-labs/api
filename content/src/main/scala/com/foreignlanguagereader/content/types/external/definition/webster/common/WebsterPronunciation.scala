@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.content.types.external.definition.webster.common
 
+import com.foreignlanguagereader.content.formatters.WebsterFormatter
 import com.foreignlanguagereader.content.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
@@ -21,7 +22,16 @@ object WebsterPronunciation {
       (JsPath \ "sound")
         .readNullable[WebsterPronunciationSound] and
       (JsPath \ "ipa").readNullable[String]
-  )(WebsterPronunciation.apply _)
+  )((mw, l, l2, pun, sound, ipa) =>
+    WebsterPronunciation.apply(
+      WebsterFormatter.formatOptional(mw),
+      WebsterFormatter.formatOptional(l),
+      WebsterFormatter.formatOptional(l2),
+      WebsterFormatter.formatOptional(pun),
+      sound,
+      WebsterFormatter.formatOptional(ipa)
+    )
+  )
   implicit val writes: Writes[WebsterPronunciation] =
     Json.writes[WebsterPronunciation]
   implicit val helper: JsonSequenceHelper[WebsterPronunciation] =
@@ -51,14 +61,13 @@ case class WebsterPronunciationSound(
 }
 object WebsterPronunciationSound {
   def createWithDefaults(
-      audio: String,
-      ref: Option[String]
+      audio: String
   ): WebsterPronunciationSound =
     WebsterPronunciationSound(audio)
   implicit val reads: Reads[WebsterPronunciationSound] = (
     (JsPath \ "audio").read[String] and
       (JsPath \ "ref").readNullable[String]
-  )(WebsterPronunciationSound.createWithDefaults _)
+  )((audio, _) => WebsterPronunciationSound(WebsterFormatter.format(audio)))
   implicit val writes: Writes[WebsterPronunciationSound] =
     Json.writes[WebsterPronunciationSound]
   implicit val helper: JsonSequenceHelper[WebsterPronunciationSound] =

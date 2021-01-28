@@ -9,13 +9,13 @@ class WebsterDefiningTextTest extends AnyFunSpec {
       val webster =
         "[[\"text\",\"{bc}a person or way of behaving that is seen as a model that should be followed \"],[\"wsgram\",\"count\"],[\"vis\",[{\"t\":\"He was inspired by the {it}example{/it} of his older brother. [=he wanted to do what his older brother did]\"},{\"t\":\"You should try to follow her {it}example{/it}. [=try to do as she does]\"},{\"t\":\"Let that be an {it}example{/it} to you! [=let that show you what you should or should not do]\"},{\"t\":\"He set a good/bad {it}example{/it} for the rest of us.\"},{\"t\":\"It's up to you to {phrase}set an example{/phrase}. [=to behave in a way that shows other people how to behave]\"}]],[\"wsgram\",\"noncount\"],[\"vis\",[{\"t\":\"She chooses to {phrase}lead by example{/phrase}. [=to lead by behaving in a way that shows others how to behave]\"}]]]"
       val domain =
-        "{\"text\":[\"{bc}a person or way of behaving that is seen as a model that should be followed \"],\"examples\":[{\"text\":\"He was inspired by the {it}example{/it} of his older brother. [=he wanted to do what his older brother did]\"},{\"text\":\"You should try to follow her {it}example{/it}. [=try to do as she does]\"},{\"text\":\"Let that be an {it}example{/it} to you! [=let that show you what you should or should not do]\"},{\"text\":\"He set a good/bad {it}example{/it} for the rest of us.\"},{\"text\":\"It's up to you to {phrase}set an example{/phrase}. [=to behave in a way that shows other people how to behave]\"},{\"text\":\"She chooses to {phrase}lead by example{/phrase}. [=to lead by behaving in a way that shows others how to behave]\"}]}"
+        "{\"text\":[\"a person or way of behaving that is seen as a model that should be followed\"],\"examples\":[{\"text\":\"He was inspired by the *example* of his older brother.\"},{\"text\":\"You should try to follow her *example*.\"},{\"text\":\"Let that be an *example* to you!\"},{\"text\":\"He set a good/bad *example* for the rest of us.\"},{\"text\":\"It's up to you to {phrase}set an example{/phrase}.\"},{\"text\":\"She chooses to {phrase}lead by example{/phrase}.\"}]}"
       it("can be read from JSON") {
         val definingText =
           Json.parse(webster).validate[WebsterDefiningText].get
         assert(definingText.text.size == 1)
         assert(
-          definingText.text.head == "{bc}a person or way of behaving that is seen as a model that should be followed "
+          definingText.text.head == "a person or way of behaving that is seen as a model that should be followed"
         )
       }
 
@@ -31,7 +31,7 @@ class WebsterDefiningTextTest extends AnyFunSpec {
       val webster =
         "[[\"bnw\",{\"pname\":\"Charles Lut*widge\",\"prs\":[{\"mw\":\"ˈlət-wij\",\"sound\":{\"audio\":\"bixdod04\",\"ref\":\"c\",\"stat\":\"1\"}}]}],[\"text\",\"1832–1898 pseudonym\"],[\"bnw\",{\"altname\":\"Lewis Car*roll\",\"prs\":[{\"mw\":\"ˈker-əl\",\"sound\":{\"audio\":\"bixdod05\",\"ref\":\"c\",\"stat\":\"1\"}},{\"mw\":\"ˈka-rəl\"}]}],[\"text\",\" English mathematician and writer\"]]"
       val domain =
-        "{\"text\":[\"1832–1898 pseudonym\",\" English mathematician and writer\"],\"biographicalName\":[{\"personalName\":\"Charles Lut*widge\",\"pronunciations\":[{\"writtenPronunciation\":\"ˈlət-wij\",\"sound\":{\"audio\":\"bixdod04\",\"language\":\"en\",\"country\":\"us\"}}]},{\"alternateName\":\"Lewis Car*roll\",\"pronunciations\":[{\"writtenPronunciation\":\"ˈker-əl\",\"sound\":{\"audio\":\"bixdod05\",\"language\":\"en\",\"country\":\"us\"}},{\"writtenPronunciation\":\"ˈka-rəl\"}]}]}"
+        "{\"text\":[\"1832–1898 pseudonym\",\"English mathematician and writer\"],\"biographicalName\":[{\"personalName\":\"Charles Lut*widge\",\"pronunciations\":[{\"writtenPronunciation\":\"ˈlət-wij\",\"sound\":{\"audio\":\"bixdod04\",\"language\":\"en\",\"country\":\"us\"}}]},{\"alternateName\":\"Lewis Car*roll\",\"pronunciations\":[{\"writtenPronunciation\":\"ˈker-əl\",\"sound\":{\"audio\":\"bixdod05\",\"language\":\"en\",\"country\":\"us\"}},{\"writtenPronunciation\":\"ˈka-rəl\"}]}]}"
 
       it("can be read from JSON") {
         val definingText =
@@ -57,7 +57,7 @@ class WebsterDefiningTextTest extends AnyFunSpec {
       val webster =
         "[[\"text\",\"{bc}a drink consisting of soda water, flavoring, and a sweet syrup \"],[\"ca\",{\"intro\":\"called also\",\"cats\":[{\"cat\":\"pop\"},{\"psl\":\"({it}chiefly US{/it}) \",\"cat\":\"soda\"}]}]]"
       val domain =
-        "{\"text\":[\"{bc}a drink consisting of soda water, flavoring, and a sweet syrup \"],\"calledAlso\":[{\"intro\":\"called also\",\"calledAlsoTargets\":[{\"calledAlsoTargetText\":\"pop\"},{\"calledAlsoTargetText\":\"soda\",\"areaOfUsage\":\"({it}chiefly US{/it}) \"}]}]}"
+        "{\"text\":[\"a drink consisting of soda water, flavoring, and a sweet syrup\"],\"calledAlso\":[{\"intro\":\"called also\",\"calledAlsoTargets\":[{\"calledAlsoTargetText\":\"pop\"},{\"calledAlsoTargetText\":\"soda\",\"areaOfUsage\":\"(*chiefly US*)\"}]}]}"
 
       it("can be read from JSON") {
         val definingText =
@@ -70,7 +70,7 @@ class WebsterDefiningTextTest extends AnyFunSpec {
         assert(calledAlso.head.calledAlsoTargets.isDefined)
         val calledAlsoTargets = calledAlso.head.calledAlsoTargets.get
         assert(calledAlsoTargets(1).areaOfUsage.isDefined)
-        assert(calledAlsoTargets(1).areaOfUsage.get == "({it}chiefly US{/it}) ")
+        assert(calledAlsoTargets(1).areaOfUsage.get == "(*chiefly US*)")
       }
 
       it("can be written back out to JSON") {
@@ -85,7 +85,7 @@ class WebsterDefiningTextTest extends AnyFunSpec {
       val webster =
         "[[\"text\",\"{bc}any of a genus ({it}Trichechus{\\/it} of the family Trichechidae) of large, herbivorous, aquatic mammals that inhabit warm coastal and inland waters of the southeastern U.S., West Indies, northern South America, and West Africa and have a rounded body, a small head with a squarish snout, paddle-shaped flippers usually with vestigial nails, and a flattened, rounded tail used for propulsion \"],[\"snote\",[[\"t\",\"Manatees are {d_link|sirenians|sirenian} related to and resembling the {d_link|dugong|dugong} but differing most notably in the shape of the tail.\"],[\"vis\",[{\"t\":\"An aquatic relative of the elephant, {wi}manatees{\\/wi} grow up to nine feet long and can weigh 1,000 pounds.\",\"aq\":{\"auth\":\"Felicity Barringer\"}}]]]]]"
       val domain =
-        "{\"text\":[\"{bc}any of a genus ({it}Trichechus{/it} of the family Trichechidae) of large, herbivorous, aquatic mammals that inhabit warm coastal and inland waters of the southeastern U.S., West Indies, northern South America, and West Africa and have a rounded body, a small head with a squarish snout, paddle-shaped flippers usually with vestigial nails, and a flattened, rounded tail used for propulsion \"],\"supplementalNote\":[{\"text\":\"Manatees are {d_link|sirenians|sirenian} related to and resembling the {d_link|dugong|dugong} but differing most notably in the shape of the tail.\",\"example\":[{\"text\":\"An aquatic relative of the elephant, {wi}manatees{/wi} grow up to nine feet long and can weigh 1,000 pounds.\"}]}]}"
+        "{\"text\":[\"any of a genus (*Trichechus* of the family Trichechidae) of large, herbivorous, aquatic mammals that inhabit warm coastal and inland waters of the southeastern U.S., West Indies, northern South America, and West Africa and have a rounded body, a small head with a squarish snout, paddle-shaped flippers usually with vestigial nails, and a flattened, rounded tail used for propulsion\"],\"supplementalNote\":[{\"text\":\"Manatees are {d_link|sirenians|sirenian} related to and resembling the {d_link|dugong|dugong} but differing most notably in the shape of the tail.\",\"example\":[{\"text\":\"An aquatic relative of the elephant, {wi}manatees{/wi} grow up to nine feet long and can weigh 1,000 pounds.\"}]}]}"
 
       it("can be read from JSON") {
         val definingText =

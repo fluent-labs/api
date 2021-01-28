@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.content.types.external.definition.webster.common
 
+import com.foreignlanguagereader.content.formatters.WebsterFormatter
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
@@ -19,5 +20,7 @@ object WebsterHeadwordInfo {
       (JsPath \ "altprs").readNullable[List[WebsterPronunciation]](
         WebsterPronunciation.helper.readsList
       )
-  )(WebsterHeadwordInfo.apply _)
+  )((hw, prs, altprs) =>
+    WebsterHeadwordInfo.apply(WebsterFormatter.format(hw), prs, altprs)
+  )
 }
