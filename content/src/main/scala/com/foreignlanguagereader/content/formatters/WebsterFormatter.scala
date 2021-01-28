@@ -5,9 +5,14 @@ import play.api.Logger
 object WebsterFormatter extends Formatter {
   val logger: Logger = Logger(this.getClass)
 
+  // TODO
+  // {d_link|dugong|dugong}
+  // {wi}
+  // {phrase}
+
   override val removalPatterns: Set[String] =
     Set(
-      "\\[=[^]]*\\]", // Not sure what this is, undocumented but usuallly connected to phrases
+      "\\[=[^]]*\\]", // Not sure what this is, undocumented but usually connected to phrases
       "\\{bc\\}",
       "\\{sc\\}",
       "\\{\\/sc\\}",
@@ -20,8 +25,9 @@ object WebsterFormatter extends Formatter {
   override val replacementPatterns: Map[String, String] =
     Map(
       "\\{b\\}" -> boldOpeningTag,
-      "\\{\\/b\\}" -> boldClosingTag,
+      "\\{\\\\\\/b\\}" -> boldClosingTag,
       "\\{it\\}" -> italicsOpeningTag,
+      "\\{\\\\\\/it\\}" -> italicsClosingTag,
       "\\{\\/it\\}" -> italicsClosingTag,
       "\\{ldquo\\}" -> "\"",
       "\\{rdquo\\}" -> "\""

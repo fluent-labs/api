@@ -11,22 +11,41 @@ trait Formatter {
   val removalPatterns: Set[String]
   val replacementPatterns: Map[String, String]
 
+  val italicsOpeningTag = "*"
+  val italicsClosingTag = "*"
+  val boldOpeningTag = "**"
+  val boldClosingTag = "**"
+
+  val punctuationMatches = "[,;]+"
+
   lazy val patterns: Map[String, String] =
     removalPatterns.map(pattern => pattern -> "").toMap ++ replacementPatterns
 
   def format(input: String): String = {
-    patterns.keySet.fold(input) {
+    val replaced = patterns.keySet.fold(input) {
       case (acc, pattern) =>
         acc.replaceAll(pattern, patterns.getOrElse(pattern, ""))
     }
+    removeDuplicateSpaces(replaced).trim
+  }
+
+  def removeDuplicateSpaces(input: String): String =
+    repeatUntilSettled(input, _.replaceAll("  ", " "))
+
+  def repeatUntilSettled(
+      before: String,
+      operation: String => String
+  ): String = {
+    val after = operation.apply(before)
+    if (before == after) after else repeatUntilSettled(after, operation)
   }
 
   // Convenience methods
   def formatOptional(input: Option[String]): Option[String] = input.map(format)
   def formatSeq(input: Seq[String]): Seq[String] =
-    input.map(format).filter(_.isBlank)
+    input.map(format).filter(!_.isBlank).filter(!_.matches(punctuationMatches))
   def formatList(input: List[String]): List[String] =
-    input.map(format).filter(_.isBlank)
+    input.map(format).filter(!_.isBlank)
   def formatOptionalSeq(input: Option[Seq[String]]): Option[Seq[String]] =
     input match {
       case None => None
@@ -45,9 +64,4 @@ trait Formatter {
           case r      => Some(r)
         }
     }
-
-  val italicsOpeningTag = "*"
-  val italicsClosingTag = "*"
-  val boldOpeningTag = "**"
-  val boldClosingTag = "**"
 }
