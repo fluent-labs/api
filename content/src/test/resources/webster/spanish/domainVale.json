@@ -33,7 +33,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}{a_link|valle} "
+                  "{a_link|valle}"
                 ]
               }
             }
@@ -68,7 +68,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}{a_link|voucher}"
+                  "{a_link|voucher}"
                 ]
               }
             }
@@ -77,7 +77,7 @@
             {
               "definingText": {
                 "text": [
-                  "{sx|pagaré||} {bc}promissory note, {a_link|IOU}"
+                  "{sx|pagaré||}", "promissory note, {a_link|IOU}"
                 ]
               }
             }
@@ -123,7 +123,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}{a_link|cumin}"
+                  "{a_link|cumin}"
                 ]
               }
             }
@@ -132,7 +132,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}not to matter to someone "
+                  "not to matter to someone"
                 ],
                 "examples": [
                   {
@@ -196,7 +196,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to {a_link|be worth} "
+                  "to {a_link|be worth}"
                 ],
                 "examples": [
                   {
@@ -216,7 +216,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to {a_link|cost} "
+                  "to {a_link|cost}"
                 ],
                 "examples": [
                   {
@@ -230,7 +230,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to {a_link|earn}, to {a_link|gain} "
+                  "to {a_link|earn}, to {a_link|gain}"
                 ],
                 "examples": [
                   {
@@ -244,7 +244,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to {a_link|protect}, to {a_link|aid} "
+                  "to {a_link|protect}, to {a_link|aid}"
                 ],
                 "examples": [
                   {
@@ -258,7 +258,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to be equal to"
+                  "to be equal to"
                 ]
               }
             }
@@ -271,7 +271,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to have value "
+                  "to have value"
                 ],
                 "examples": [
                   {
@@ -285,7 +285,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to be valid, to {a_link|count} "
+                  "to be valid, to {a_link|count}"
                 ],
                 "examples": [
                   {
@@ -299,7 +299,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}to {a_link|assert oneself}"
+                  "to {a_link|assert oneself}"
                 ]
               },
               "variations": [
@@ -313,7 +313,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}it's better "
+                  "it's better"
                 ],
                 "examples": [
                   {
@@ -342,7 +342,7 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to {a_link|take advantage of}"
+                      "to {a_link|take advantage of}"
                     ]
                   },
                   "variations": [
@@ -356,7 +356,7 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to look after oneself"
+                      "to look after oneself"
                     ]
                   },
                   "variations": [
@@ -374,7 +374,7 @@
                 {
                   "definingText": {
                     "text": [
-                      "{bc}to be fair "
+                      "to be fair"
                     ],
                     "examples": [
                       {

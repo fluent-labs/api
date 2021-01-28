@@ -1,11 +1,11 @@
 [
   {
-    "meta": {
-      "id": "pop:1",
-      "uuid": "f6984ba6-01eb-48c3-958e-0405c842934c",
-      "source": "learners",
-      "section": "alpha",
-      "stems": [
+    "meta":{
+      "id":"pop:1",
+      "uuid":"f6984ba6-01eb-48c3-958e-0405c842934c",
+      "source":"learners",
+      "section":"alpha",
+      "stems":[
         "pop",
         "pop the question",
         "popped",
@@ -20,87 +20,87 @@
         "eyes pop",
         "popped out"
       ],
-      "offensive": false
+      "offensive":false
     },
-    "headwordInfo": {
-      "headword": "pop",
-      "pronunciations": [
+    "headwordInfo":{
+      "headword":"pop",
+      "pronunciations":[
         {
-          "sound": {
-            "audio": "pop00001",
-            "language": "en",
-            "country": "us"
+          "sound":{
+            "audio":"pop00001",
+            "language":"en",
+            "country":"us"
           },
           "ipa":"ˈpɑːp"
         }
       ]
     },
-    "partOfSpeech": "verb",
-    "inflections": [
+    "partOfSpeech":"verb",
+    "inflections":[
       {
-        "inflection": "pops"
+        "inflection":"pops"
       },
       {
-        "inflection": "popped"
+        "inflection":"popped"
       },
       {
-        "inflection": "pop*ping"
+        "inflection":"pop*ping"
       }
     ],
-    "definitions": [
+    "definitions":[
       {
-        "senseSequence": [
+        "senseSequence":[
           [
             {
-              "definingText": {
-                "text": [
-                  "to suddenly break open or come away from something often with a short, loud noise "
+              "definingText":{
+                "text":[
+                  "to suddenly break open or come away from something often with a short, loud noise"
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "The balloon *popped*. "
+                    "text":"The balloon *popped*."
                   },
                   {
-                    "text": "We heard the sound of corks *popping* as the celebration began."
+                    "text":"We heard the sound of corks *popping* as the celebration began."
                   },
                   {
-                    "text": "One of the buttons *popped* off my sweater."
+                    "text":"One of the buttons *popped* off my sweater."
                   },
                   {
-                    "text": "Don't *pop* that balloon!"
+                    "text":"Don't *pop* that balloon!"
                   },
                   {
-                    "text": "She *popped* the cork on the champagne. "
+                    "text":"She *popped* the cork on the champagne."
                   }
                 ]
               }
             },
             {
-              "definingText": {
-                "text": [
-                  "to make a short, loud noise "
+              "definingText":{
+                "text":[
+                  "to make a short, loud noise"
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "Guns were *popping* in the distance."
+                    "text":"Guns were *popping* in the distance."
                   }
                 ]
               },
-              "senseSpecificGrammaticalLabel": "no obj"
+              "senseSpecificGrammaticalLabel":"no obj"
             }
           ],
           [
             {
-              "definingText": {
-                "text": [
-                  "to cook (popcorn) "
+              "definingText":{
+                "text":[
+                  "to cook (popcorn)"
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "We *popped* some popcorn in the microwave."
+                    "text":"We *popped* some popcorn in the microwave."
                   },
                   {
-                    "text": "The popcorn is done *popping*."
+                    "text":"The popcorn is done *popping*."
                   }
                 ]
               }
@@ -108,107 +108,107 @@
           ],
           [
             {
-              "definingText": {
-                "text": [
-                  "to come from, into, or out of a place suddenly or briefly "
+              "definingText":{
+                "text":[
+                  "to come from, into, or out of a place suddenly or briefly"
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "I didn't mean to say that—it just *popped* out."
+                    "text":"I didn't mean to say that—it just *popped* out."
                   },
                   {
-                    "text": "Her shoulder *popped* out of its socket."
+                    "text":"Her shoulder *popped* out of its socket."
                   },
                   {
-                    "text": "He opened the box, and out *popped* a mouse."
+                    "text":"He opened the box, and out *popped* a mouse."
                   },
                   {
-                    "text": "A funny thought just *popped* into my head. "
+                    "text":"A funny thought just *popped* into my head."
                   },
                   {
-                    "text": "The cathedral suddenly *popped* into view. "
+                    "text":"The cathedral suddenly *popped* into view."
                   },
                   {
-                    "text": "Her father *pops* in and out of her life. "
+                    "text":"Her father *pops* in and out of her life."
                   }
                 ]
               }
             },
             {
-              "definingText": {
-                "text": [
-                  "to go to or from a place quickly, suddenly, or briefly "
+              "definingText":{
+                "text":[
+                  "to go to or from a place quickly, suddenly, or briefly"
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "If you are busy, I can *pop* back in later."
+                    "text":"If you are busy, I can *pop* back in later."
                   },
                   {
-                    "text": "She *popped* over for a cup of tea. = (*Brit*) She *popped* round for a cup of tea."
+                    "text":"She *popped* over for a cup of tea. = (*Brit*) She *popped* round for a cup of tea."
                   },
                   {
-                    "text": "My neighbor *popped* in for a visit."
+                    "text":"My neighbor *popped* in for a visit."
                   },
                   {
-                    "text": "I need to *pop* into the drugstore for some film."
+                    "text":"I need to *pop* into the drugstore for some film."
                   },
                   {
-                    "text": "She *popped* out for a minute. She should be back soon."
+                    "text":"She *popped* out for a minute. She should be back soon."
                   },
                   {
-                    "text": "I'll *pop* down to the post office during my break."
+                    "text":"I'll *pop* down to the post office during my break."
                   }
                 ]
               },
-              "labels": [
+              "labels":[
                 "always followed by an adverb or preposition"
               ]
             }
           ],
           [
             {
-              "definingText": {
-                "text": [
-                  "to put (something) in, into, or onto a place suddenly or briefly "
+              "definingText":{
+                "text":[
+                  "to put (something) in, into, or onto a place suddenly or briefly"
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "She *popped* a CD in the player."
+                    "text":"She *popped* a CD in the player."
                   },
                   {
-                    "text": "He *popped* a quarter in the jukebox."
+                    "text":"He *popped* a quarter in the jukebox."
                   },
                   {
-                    "text": "I *popped* a grape into my mouth."
+                    "text":"I *popped* a grape into my mouth."
                   },
                   {
-                    "text": "He *popped*  his head out the window."
+                    "text":"He *popped* his head out the window."
                   }
                 ]
               },
-              "labels": [
+              "labels":[
                 "always followed by an adverb or preposition"
               ],
-              "senseSpecificGrammaticalLabel": "+ obj",
-              "subjectStatusLabels": [
+              "senseSpecificGrammaticalLabel":"+ obj",
+              "subjectStatusLabels":[
                 "informal"
               ]
             }
           ],
           [
             {
-              "definingText": {
-                "text": [
-                  "to hit (someone) "
+              "definingText":{
+                "text":[
+                  "to hit (someone)"
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "I felt like *popping* him (one)."
+                    "text":"I felt like *popping* him (one)."
                   }
                 ]
               },
-              "senseSpecificGrammaticalLabel": "+ obj",
-              "subjectStatusLabels": [
+              "senseSpecificGrammaticalLabel":"+ obj",
+              "subjectStatusLabels":[
                 "US",
                 "informal"
               ]
@@ -216,39 +216,39 @@
           ],
           [
             {
-              "definingText": {
-                "text": [
-                  "to hit a pop fly "
+              "definingText":{
+                "text":[
+                  "to hit a pop fly"
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "He *popped*  to the second baseman in the first inning."
+                    "text":"He *popped* to the second baseman in the first inning."
                   },
                   {
-                    "text": "The batter {phrase}popped out{/phrase}. "
+                    "text":"The batter {phrase}popped out{/phrase}."
                   }
                 ]
               },
-              "senseSpecificGrammaticalLabel": "no obj",
-              "subjectStatusLabels": [
+              "senseSpecificGrammaticalLabel":"no obj",
+              "subjectStatusLabels":[
                 "baseball"
               ]
             }
           ],
           [
             {
-              "definingText": {
-                "text": [
-                  "to open and drink (a bottle or can of beer) "
+              "definingText":{
+                "text":[
+                  "to open and drink (a bottle or can of beer)"
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "They stopped at a bar to *pop* a few beers after work."
+                    "text":"They stopped at a bar to *pop* a few beers after work."
                   }
                 ]
               },
-              "senseSpecificGrammaticalLabel": "+ obj",
-              "subjectStatusLabels": [
+              "senseSpecificGrammaticalLabel":"+ obj",
+              "subjectStatusLabels":[
                 "US",
                 "informal"
               ]
@@ -257,21 +257,21 @@
         ]
       }
     ],
-    "definedRunOns": [
+    "definedRunOns":[
       {
-        "definedRunOnPhrase": "pop off",
-        "definition": [
+        "definedRunOnPhrase":"pop off",
+        "definition":[
           {
-            "senseSequence": [
+            "senseSequence":[
               [
                 {
-                  "definingText": {
-                    "text": [
-                      "to die especially in a sudden or unexpected way "
+                  "definingText":{
+                    "text":[
+                      "to die especially in a sudden or unexpected way"
                     ],
-                    "examples": [
+                    "examples":[
                       {
-                        "text": "The old man *popped off* before he could rewrite his will."
+                        "text":"The old man *popped off* before he could rewrite his will."
                       }
                     ]
                   }
@@ -279,17 +279,17 @@
               ],
               [
                 {
-                  "definingText": {
-                    "text": [
-                      "to talk loudly or angrily to someone "
+                  "definingText":{
+                    "text":[
+                      "to talk loudly or angrily to someone"
                     ],
-                    "examples": [
+                    "examples":[
                       {
-                        "text": "The hockey player was ejected from the game for *popping off* to the referee."
+                        "text":"The hockey player was ejected from the game for *popping off* to the referee."
                       }
                     ]
                   },
-                  "subjectStatusLabels": [
+                  "subjectStatusLabels":[
                     "US"
                   ]
                 }
@@ -299,19 +299,19 @@
         ]
       },
       {
-        "definedRunOnPhrase": "pop on",
-        "definition": [
+        "definedRunOnPhrase":"pop on",
+        "definition":[
           {
-            "senseSequence": [
+            "senseSequence":[
               [
                 {
-                  "definingText": {
-                    "text": [
-                      "to put on (clothing) quickly "
+                  "definingText":{
+                    "text":[
+                      "to put on (clothing) quickly"
                     ],
-                    "examples": [
+                    "examples":[
                       {
-                        "text": "*pop on* a hat"
+                        "text":"*pop on* a hat"
                       }
                     ]
                   }
@@ -322,19 +322,19 @@
         ]
       },
       {
-        "definedRunOnPhrase": "pop open",
-        "definition": [
+        "definedRunOnPhrase":"pop open",
+        "definition":[
           {
-            "senseSequence": [
+            "senseSequence":[
               [
                 {
-                  "definingText": {
-                    "text": [
-                      "to open suddenly and quickly "
+                  "definingText":{
+                    "text":[
+                      "to open suddenly and quickly"
                     ],
-                    "examples": [
+                    "examples":[
                       {
-                        "text": "The suitcase/lid *popped open*."
+                        "text":"The suitcase/lid *popped open*."
                       }
                     ]
                   }
@@ -342,16 +342,16 @@
               ],
               [
                 {
-                  "definingText": {
-                    "text": [
-                      "to open (something) suddenly and quickly "
+                  "definingText":{
+                    "text":[
+                      "to open (something) suddenly and quickly"
                     ],
-                    "examples": [
+                    "examples":[
                       {
-                        "text": "She *popped* the umbrella *open*."
+                        "text":"She *popped* the umbrella *open*."
                       },
                       {
-                        "text": "He *popped open* a cold beer."
+                        "text":"He *popped open* a cold beer."
                       }
                     ]
                   }
@@ -362,26 +362,26 @@
         ]
       },
       {
-        "definedRunOnPhrase": "pop pills",
-        "definition": [
+        "definedRunOnPhrase":"pop pills",
+        "definition":[
           {
-            "senseSequence": [
+            "senseSequence":[
               [
                 {
-                  "definingText": {
-                    "text": [
-                      "to take a lot of pills regularly "
+                  "definingText":{
+                    "text":[
+                      "to take a lot of pills regularly"
                     ],
-                    "examples": [
+                    "examples":[
                       {
-                        "text": "I've been *popping pills* all week for this cold."
+                        "text":"I've been *popping pills* all week for this cold."
                       },
                       {
-                        "text": "He spends his time getting drunk and *popping pills*."
+                        "text":"He spends his time getting drunk and *popping pills*."
                       }
                     ]
                   },
-                  "subjectStatusLabels": [
+                  "subjectStatusLabels":[
                     "informal"
                   ]
                 }
@@ -391,23 +391,23 @@
         ]
       },
       {
-        "definedRunOnPhrase": "pop the question",
-        "definition": [
+        "definedRunOnPhrase":"pop the question",
+        "definition":[
           {
-            "senseSequence": [
+            "senseSequence":[
               [
                 {
-                  "definingText": {
-                    "text": [
-                      "to ask someone to marry you "
+                  "definingText":{
+                    "text":[
+                      "to ask someone to marry you"
                     ],
-                    "examples": [
+                    "examples":[
                       {
-                        "text": "He *popped the question* on Christmas Day."
+                        "text":"He *popped the question* on Christmas Day."
                       }
                     ]
                   },
-                  "subjectStatusLabels": [
+                  "subjectStatusLabels":[
                     "informal"
                   ]
                 }
@@ -417,25 +417,25 @@
         ]
       },
       {
-        "definedRunOnPhrase": "pop up",
-        "definition": [
+        "definedRunOnPhrase":"pop up",
+        "definition":[
           {
-            "senseSequence": [
+            "senseSequence":[
               [
                 {
-                  "definingText": {
-                    "text": [
-                      "to appear in usually a sudden or unexpected way "
+                  "definingText":{
+                    "text":[
+                      "to appear in usually a sudden or unexpected way"
                     ],
-                    "examples": [
+                    "examples":[
                       {
-                        "text": "Coffee shops seem to be *popping up* everywhere."
+                        "text":"Coffee shops seem to be *popping up* everywhere."
                       },
                       {
-                        "text": "New evidence has been *popping up* every day in the trial."
+                        "text":"New evidence has been *popping up* every day in the trial."
                       },
                       {
-                        "text": "Problems kept *popping up*."
+                        "text":"Problems kept *popping up*."
                       }
                     ]
                   }
@@ -443,18 +443,19 @@
               ],
               [
                 {
-                  "definingText": {
-                    "text": [
-                      "to hit a high fly ball that does not go very far to hit a pop fly ",
+                  "definingText":{
+                    "text":[
+                      "to hit a high fly ball that does not go very far",
+                      "to hit a pop fly",
                       "{dx}see also {dxt|pop-up||}{/dx}"
                     ],
-                    "examples": [
+                    "examples":[
                       {
-                        "text": "The batter *popped up*  to the second baseman."
+                        "text":"The batter *popped up* to the second baseman."
                       }
                     ]
                   },
-                  "subjectStatusLabels": [
+                  "subjectStatusLabels":[
                     "baseball"
                   ]
                 }
@@ -464,88 +465,88 @@
         ]
       }
     ],
-    "shortDefinitions": [
+    "shortDefinitions":[
       "to suddenly break open or come away from something often with a short, loud noise",
       "to make a short, loud noise",
       "to cook (popcorn)"
     ]
   },
   {
-    "meta": {
-      "id": "pop:2",
-      "uuid": "65c65776-5b52-45cb-9be8-b60a25436b88",
-      "source": "learners",
-      "section": "alpha",
-      "stems": [
+    "meta":{
+      "id":"pop:2",
+      "uuid":"65c65776-5b52-45cb-9be8-b60a25436b88",
+      "source":"learners",
+      "section":"alpha",
+      "stems":[
         "pop",
         "a pop",
         "pops",
         "take a pop at"
       ],
-      "offensive": false
+      "offensive":false
     },
-    "headwordInfo": {
-      "headword": "pop",
+    "headwordInfo":{
+      "headword":"pop",
       "alternatePronunciations":[
         {
           "ipa":"ˈpɑːp"
         }
       ]
     },
-    "partOfSpeech": "noun",
-    "inflections": [
+    "partOfSpeech":"noun",
+    "inflections":[
       {
-        "inflection": "pops",
-        "inflectionLabel": "plural"
+        "inflection":"pops",
+        "inflectionLabel":"plural"
       }
     ],
-    "definitions": [
+    "definitions":[
       {
-        "senseSequence": [
+        "senseSequence":[
           [
             {
-              "definingText": {
-                "text": [
-                  "a short, loud sound "
+              "definingText":{
+                "text":[
+                  "a short, loud sound"
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "We heard a loud *pop* when the lights went out."
+                    "text":"We heard a loud *pop* when the lights went out."
                   }
                 ]
               },
-              "senseSpecificGrammaticalLabel": "count"
+              "senseSpecificGrammaticalLabel":"count"
             }
           ],
           [
             {
-              "definingText": {
-                "text": [
-                  "{sx|soda pop||} "
+              "definingText":{
+                "text":[
+                  "{sx|soda pop||}"
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "a bottle of *pop* "
+                    "text":"a bottle of *pop*"
                   },
                   {
-                    "text": "Two *pops*, please."
+                    "text":"Two *pops*, please."
                   }
                 ]
               },
-              "subjectStatusLabels": [
+              "subjectStatusLabels":[
                 "informal"
               ]
             }
           ],
           [
             {
-              "definingText": {
-                "text": [
+              "definingText":{
+                "text":[
                   "{sx|pop fly||}"
                 ]
               },
-              "senseSpecificGrammaticalLabel": "count",
-              "subjectStatusLabels": [
+              "senseSpecificGrammaticalLabel":"count",
+              "subjectStatusLabels":[
                 "baseball"
               ]
             }
@@ -553,25 +554,26 @@
         ]
       }
     ],
-    "definedRunOns": [
+    "definedRunOns":[
       {
-        "definedRunOnPhrase": "a pop",
-        "definition": [
+        "definedRunOnPhrase":"a pop",
+        "definition":[
           {
-            "senseSequence": [
+            "senseSequence":[
               [
                 {
-                  "definingText": {
-                    "text": [
-                      "for each one {sx|apiece||} "
+                  "definingText":{
+                    "text":[
+                      "for each one",
+                      "{sx|apiece||}"
                     ],
-                    "examples": [
+                    "examples":[
                       {
-                        "text": "The tickets are selling at $50 *a pop*."
+                        "text":"The tickets are selling at $50 *a pop*."
                       }
                     ]
                   },
-                  "subjectStatusLabels": [
+                  "subjectStatusLabels":[
                     "US",
                     "informal"
                   ]
@@ -582,19 +584,19 @@
         ]
       },
       {
-        "definedRunOnPhrase": "take a pop at",
-        "definition": [
+        "definedRunOnPhrase":"take a pop at",
+        "definition":[
           {
-            "senseSequence": [
+            "senseSequence":[
               [
                 {
-                  "definingText": {
-                    "text": [
-                      "to try to hit (someone) "
+                  "definingText":{
+                    "text":[
+                      "to try to hit (someone)"
                     ],
-                    "examples": [
+                    "examples":[
                       {
-                        "text": "Some drunk *took a pop at* me."
+                        "text":"Some drunk *took a pop at* me."
                       }
                     ]
                   }
@@ -602,17 +604,17 @@
               ],
               [
                 {
-                  "definingText": {
-                    "text": [
-                      "to criticize (someone) publicly "
+                  "definingText":{
+                    "text":[
+                      "to criticize (someone) publicly"
                     ],
-                    "examples": [
+                    "examples":[
                       {
-                        "text": "He *took a pop at* his rival."
+                        "text":"He *took a pop at* his rival."
                       }
                     ]
                   },
-                  "subjectStatusLabels": [
+                  "subjectStatusLabels":[
                     "chiefly British"
                   ]
                 }
@@ -622,44 +624,44 @@
         ]
       }
     ],
-    "shortDefinitions": [
+    "shortDefinitions":[
       "a short, loud sound",
       "soda pop",
       "pop fly"
     ]
   },
   {
-    "meta": {
-      "id": "pop:3",
-      "uuid": "3a5abe6a-c884-44f1-b9d5-ba4a9da92d05",
-      "source": "learners",
-      "section": "alpha",
-      "stems": [
+    "meta":{
+      "id":"pop:3",
+      "uuid":"3a5abe6a-c884-44f1-b9d5-ba4a9da92d05",
+      "source":"learners",
+      "section":"alpha",
+      "stems":[
         "pop"
       ],
-      "offensive": false
+      "offensive":false
     },
-    "headwordInfo": {
-      "headword": "pop",
+    "headwordInfo":{
+      "headword":"pop",
       "alternatePronunciations":[
         {
           "ipa":"ˈpɑːp"
         }
       ]
     },
-    "partOfSpeech": "adjective",
-    "definitions": [
+    "partOfSpeech":"adjective",
+    "definitions":[
       {
-        "senseSequence": [
+        "senseSequence":[
           [
             {
-              "definingText": {
-                "text": [
-                  "of or relating to things that are popular and often talked about on television, in newspapers, etc. "
+              "definingText":{
+                "text":[
+                  "of or relating to things that are popular and often talked about on television, in newspapers, etc."
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "*pop* culture/psychology/fiction"
+                    "text":"*pop* culture/psychology/fiction"
                   }
                 ]
               }
@@ -667,16 +669,16 @@
           ],
           [
             {
-              "definingText": {
-                "text": [
-                  "of or relating to popular music "
+              "definingText":{
+                "text":[
+                  "of or relating to popular music"
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "*pop* rock"
+                    "text":"*pop* rock"
                   },
                   {
-                    "text": "a *pop* singer/star "
+                    "text":"a *pop* singer/star"
                   }
                 ]
               }
@@ -685,66 +687,66 @@
         ]
       }
     ],
-    "shortDefinitions": [
+    "shortDefinitions":[
       "of or relating to things that are popular and often talked about on television, in newspapers, etc.",
       "of or relating to popular music"
     ]
   },
   {
-    "meta": {
-      "id": "pop:4",
-      "uuid": "3addb36f-e839-4de1-be08-4634a1b44619",
-      "source": "learners",
-      "section": "alpha",
-      "stems": [
+    "meta":{
+      "id":"pop:4",
+      "uuid":"3addb36f-e839-4de1-be08-4634a1b44619",
+      "source":"learners",
+      "section":"alpha",
+      "stems":[
         "pop",
         "a pop",
         "pops"
       ],
-      "offensive": false
+      "offensive":false
     },
-    "headwordInfo": {
-      "headword": "pop",
+    "headwordInfo":{
+      "headword":"pop",
       "alternatePronunciations":[
         {
           "ipa":"ˈpɑːp"
         }
       ]
     },
-    "partOfSpeech": "noun",
-    "inflections": [
+    "partOfSpeech":"noun",
+    "inflections":[
       {
-        "inflection": "pops",
-        "inflectionLabel": "plural"
+        "inflection":"pops",
+        "inflectionLabel":"plural"
       }
     ],
-    "definitions": [
+    "definitions":[
       {
-        "senseSequence": [
+        "senseSequence":[
           [
             {
-              "definingText": {
-                "text": [
-                  "music that is popular "
+              "definingText":{
+                "text":[
+                  "music that is popular"
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "The radio station plays *pop*."
+                    "text":"The radio station plays *pop*."
                   }
                 ]
               },
-              "senseSpecificGrammaticalLabel": "noncount"
+              "senseSpecificGrammaticalLabel":"noncount"
             }
           ],
           [
             {
-              "definingText": {
-                "text": [
+              "definingText":{
+                "text":[
                   "an orchestra that plays popular music"
                 ]
               },
-              "senseSpecificGrammaticalLabel": "noncount",
-              "subjectStatusLabels": [
+              "senseSpecificGrammaticalLabel":"noncount",
+              "subjectStatusLabels":[
                 "US"
               ]
             }
@@ -752,60 +754,60 @@
         ]
       }
     ],
-    "shortDefinitions": [
+    "shortDefinitions":[
       "music that is popular",
       "an orchestra that plays popular music—used in names"
     ]
   },
   {
-    "meta": {
-      "id": "pop:5",
-      "uuid": "5c3d2b71-e039-46cc-8b0a-789bb3f48768",
-      "source": "learners",
-      "section": "alpha",
-      "stems": [
+    "meta":{
+      "id":"pop:5",
+      "uuid":"5c3d2b71-e039-46cc-8b0a-789bb3f48768",
+      "source":"learners",
+      "section":"alpha",
+      "stems":[
         "pop",
         "a pop",
         "pops"
       ],
-      "offensive": false
+      "offensive":false
     },
-    "headwordInfo": {
-      "headword": "pop",
+    "headwordInfo":{
+      "headword":"pop",
       "alternatePronunciations":[
         {
           "ipa":"ˈpɑːp"
         }
       ]
     },
-    "partOfSpeech": "noun",
-    "inflections": [
+    "partOfSpeech":"noun",
+    "inflections":[
       {
-        "inflection": "pops",
-        "inflectionLabel": "plural"
+        "inflection":"pops",
+        "inflectionLabel":"plural"
       }
     ],
-    "definitions": [
+    "definitions":[
       {
-        "senseSequence": [
+        "senseSequence":[
           [
             {
-              "definingText": {
-                "text": [
+              "definingText":{
+                "text":[
                   "a person's father"
                 ]
               },
-              "senseSpecificGrammaticalLabel": "count"
+              "senseSpecificGrammaticalLabel":"count"
             }
           ],
           [
             {
-              "definingText": {
-                "text": [
+              "definingText":{
+                "text":[
                   "{dx}see also {dxt|mom-and-pop||}{/dx}"
                 ]
               },
-              "subjectStatusLabels": [
+              "subjectStatusLabels":[
                 "often humorous"
               ]
             }
@@ -813,33 +815,33 @@
         ]
       }
     ],
-    "shortDefinitions": [
+    "shortDefinitions":[
       "a person's father—usually singular",
       "—used as a form of address for an old man"
     ]
   },
   {
-    "meta": {
-      "id": "pop.",
-      "uuid": "e8b9168e-35b2-44c6-b950-b382535b06ef",
-      "source": "learners",
-      "section": "alpha",
-      "stems": [
+    "meta":{
+      "id":"pop.",
+      "uuid":"e8b9168e-35b2-44c6-b950-b382535b06ef",
+      "source":"learners",
+      "section":"alpha",
+      "stems":[
         "pop."
       ],
-      "offensive": false
+      "offensive":false
     },
-    "headwordInfo": {
-      "headword": "pop."
+    "headwordInfo":{
+      "headword":"pop."
     },
-    "partOfSpeech": "abbreviation",
-    "definitions": [
+    "partOfSpeech":"abbreviation",
+    "definitions":[
       {
-        "senseSequence": [
+        "senseSequence":[
           [
             {
-              "definingText": {
-                "text": [
+              "definingText":{
+                "text":[
                   "population"
                 ]
               }
@@ -848,60 +850,60 @@
         ]
       }
     ],
-    "shortDefinitions": [
+    "shortDefinitions":[
       "population"
     ]
   },
   {
-    "meta": {
-      "id": "soda pop",
-      "uuid": "b8a7f954-9a28-4a62-9f9d-5602a20df181",
-      "source": "learners",
-      "section": "alpha",
-      "stems": [
+    "meta":{
+      "id":"soda pop",
+      "uuid":"b8a7f954-9a28-4a62-9f9d-5602a20df181",
+      "source":"learners",
+      "section":"alpha",
+      "stems":[
         "soda pop",
         "soda pops",
         "pop",
         "soda"
       ],
-      "offensive": false
+      "offensive":false
     },
-    "headwordInfo": {
-      "headword": "soda pop"
+    "headwordInfo":{
+      "headword":"soda pop"
     },
-    "partOfSpeech": "noun",
-    "inflections": [
+    "partOfSpeech":"noun",
+    "inflections":[
       {
-        "inflection": "soda pops",
-        "inflectionCutback": "~ pops",
-        "inflectionLabel": "plural"
+        "inflection":"soda pops",
+        "inflectionCutback":"~ pops",
+        "inflectionLabel":"plural"
       }
     ],
-    "definitions": [
+    "definitions":[
       {
-        "senseSequence": [
+        "senseSequence":[
           [
             {
-              "definingText": {
-                "text": [
-                  "a drink consisting of soda water, flavoring, and a sweet syrup "
+              "definingText":{
+                "text":[
+                  "a drink consisting of soda water, flavoring, and a sweet syrup"
                 ],
-                "calledAlso": [
+                "calledAlso":[
                   {
-                    "intro": "called also",
-                    "calledAlsoTargets": [
+                    "intro":"called also",
+                    "calledAlsoTargets":[
                       {
-                        "calledAlsoTargetText": "pop"
+                        "calledAlsoTargetText":"pop"
                       },
                       {
-                        "calledAlsoTargetText": "soda",
-                        "areaOfUsage": "(*chiefly US*) "
+                        "calledAlsoTargetText":"soda",
+                        "areaOfUsage":"(*chiefly US*)"
                       }
                     ]
                   }
                 ]
               },
-              "subjectStatusLabels": [
+              "subjectStatusLabels":[
                 "US"
               ]
             }
@@ -909,35 +911,35 @@
         ]
       }
     ],
-    "shortDefinitions": [
+    "shortDefinitions":[
       "a drink consisting of soda water, flavoring, and a sweet syrup —called also pop, soda"
     ]
   },
   {
-    "meta": {
-      "id": "pop art",
-      "uuid": "9c8a6292-6afa-4366-9c67-eb4dcfc323fe",
-      "source": "learners",
-      "section": "alpha",
-      "stems": [
+    "meta":{
+      "id":"pop art",
+      "uuid":"9c8a6292-6afa-4366-9c67-eb4dcfc323fe",
+      "source":"learners",
+      "section":"alpha",
+      "stems":[
         "pop art",
         "pop artist",
         "pop arts",
         "pop artists"
       ],
-      "offensive": false
+      "offensive":false
     },
-    "headwordInfo": {
-      "headword": "pop art"
+    "headwordInfo":{
+      "headword":"pop art"
     },
-    "partOfSpeech": "noun",
-    "definitions": [
+    "partOfSpeech":"noun",
+    "definitions":[
       {
-        "senseSequence": [
+        "senseSequence":[
           [
             {
-              "definingText": {
-                "text": [
+              "definingText":{
+                "text":[
                   "art in which common objects (such as road signs, hamburgers, comic strips, or soup cans) are used or shown"
                 ]
               }
@@ -946,47 +948,47 @@
         ]
       }
     ],
-    "shortDefinitions": [
+    "shortDefinitions":[
       "art in which common objects (such as road signs, hamburgers, comic strips, or soup cans) are used or shown"
     ]
   },
   {
-    "meta": {
-      "id": "pop-eyed",
-      "uuid": "d939aae7-8396-4e1a-b39b-58a1f9e72a7d",
-      "source": "learners",
-      "section": "alpha",
-      "stems": [
+    "meta":{
+      "id":"pop-eyed",
+      "uuid":"d939aae7-8396-4e1a-b39b-58a1f9e72a7d",
+      "source":"learners",
+      "section":"alpha",
+      "stems":[
         "pop-eyed"
       ],
-      "offensive": false
+      "offensive":false
     },
-    "headwordInfo": {
-      "headword": "pop-eyed",
-      "pronunciations": [
+    "headwordInfo":{
+      "headword":"pop-eyed",
+      "pronunciations":[
         {
-          "sound": {
-            "audio": "popeye02",
-            "language": "en",
-            "country": "us"
+          "sound":{
+            "audio":"popeye02",
+            "language":"en",
+            "country":"us"
           },
           "ipa":"ˈpɑːpˌaɪd"
         }
       ]
     },
-    "partOfSpeech": "adjective",
-    "definitions": [
+    "partOfSpeech":"adjective",
+    "definitions":[
       {
-        "senseSequence": [
+        "senseSequence":[
           [
             {
-              "definingText": {
-                "text": [
-                  "having eyes that stick out "
+              "definingText":{
+                "text":[
+                  "having eyes that stick out"
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "*pop-eyed* bullfrogs"
+                    "text":"*pop-eyed* bullfrogs"
                   }
                 ]
               }
@@ -994,13 +996,13 @@
           ],
           [
             {
-              "definingText": {
-                "text": [
-                  "having eyes that are open very wide because of surprise, fear, excitement, etc. "
+              "definingText":{
+                "text":[
+                  "having eyes that are open very wide because of surprise, fear, excitement, etc."
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "He stared *pop-eyed* as the huge wave came straight towards the boat."
+                    "text":"He stared *pop-eyed* as the huge wave came straight towards the boat."
                   }
                 ]
               }
@@ -1009,61 +1011,61 @@
         ]
       }
     ],
-    "shortDefinitions": [
+    "shortDefinitions":[
       "having eyes that stick out",
       "having eyes that are open very wide because of surprise, fear, excitement, etc."
     ]
   },
   {
-    "meta": {
-      "id": "pop fly",
-      "uuid": "e81396ca-04b6-4fe5-9dc2-b68f3cca1c88",
-      "source": "learners",
-      "section": "alpha",
-      "stems": [
+    "meta":{
+      "id":"pop fly",
+      "uuid":"e81396ca-04b6-4fe5-9dc2-b68f3cca1c88",
+      "source":"learners",
+      "section":"alpha",
+      "stems":[
         "pop fly",
         "pop flies",
         "pop-up"
       ],
-      "offensive": false
+      "offensive":false
     },
-    "headwordInfo": {
-      "headword": "pop fly"
+    "headwordInfo":{
+      "headword":"pop fly"
     },
-    "partOfSpeech": "noun",
-    "inflections": [
+    "partOfSpeech":"noun",
+    "inflections":[
       {
-        "inflection": "pop flies",
-        "inflectionCutback": "~ flies",
-        "inflectionLabel": "plural"
+        "inflection":"pop flies",
+        "inflectionCutback":"~ flies",
+        "inflectionLabel":"plural"
       }
     ],
-    "definitions": [
+    "definitions":[
       {
-        "senseSequence": [
+        "senseSequence":[
           [
             {
-              "definingText": {
-                "text": [
-                  "a very high fly ball that does not go very far "
+              "definingText":{
+                "text":[
+                  "a very high fly ball that does not go very far"
                 ],
-                "calledAlso": [
+                "calledAlso":[
                   {
-                    "intro": "called also",
-                    "calledAlsoTargets": [
+                    "intro":"called also",
+                    "calledAlsoTargets":[
                       {
-                        "calledAlsoTargetText": "pop-up"
+                        "calledAlsoTargetText":"pop-up"
                       }
                     ]
                   }
                 ],
-                "examples": [
+                "examples":[
                   {
-                    "text": "He hit a high *pop fly* to the second baseman."
+                    "text":"He hit a high *pop fly* to the second baseman."
                   }
                 ]
               },
-              "subjectStatusLabels": [
+              "subjectStatusLabels":[
                 "baseball"
               ]
             }
@@ -1071,7 +1073,7 @@
         ]
       }
     ],
-    "shortDefinitions": [
+    "shortDefinitions":[
       "a very high fly ball that does not go very far —called also pop-up"
     ]
   }

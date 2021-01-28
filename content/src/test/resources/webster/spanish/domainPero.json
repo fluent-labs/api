@@ -31,7 +31,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}{a_link|fault}, {a_link|defect} "
+                  "{a_link|fault}, {a_link|defect}"
                 ],
                 "examples": [
                   {
@@ -45,7 +45,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}{a_link|objection}"
+                  "{a_link|objection}"
                 ]
               }
             }
@@ -90,7 +90,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}{a_link|but} "
+                  "{a_link|but}"
                 ],
                 "examples": [
                   {

@@ -17,7 +17,7 @@
       "headword": "animal",
       "pronunciations": [
         {
-          "writtenPronunciation": "ˈænəm{it}ə{/it}l"
+          "writtenPronunciation": "ˈænəm*ə*l"
         }
       ]
     },
@@ -29,7 +29,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}animal "
+                  "animal"
                 ]
               }
             }
@@ -38,9 +38,7 @@
             {
               "definingText": {
                 "text": [
-                  "{sx|brute||} {bc}{a_link|bruto} ",
-                  ", ",
-                  "  "
+                  "{sx|brute||}","{a_link|bruto}"
                 ]
               }
             }
@@ -76,7 +74,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}animal"
+                  "animal"
                 ]
               }
             }
@@ -85,7 +83,7 @@
             {
               "definingText": {
                 "text": [
-                  "{sx|estúpido||} {bc}{a_link|stupid}, {a_link|idiotic}"
+                  "{sx|estúpido||}","{a_link|stupid}, {a_link|idiotic}"
                 ]
               }
             }
@@ -94,7 +92,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}{a_link|rough}, {a_link|brutish}"
+                  "{a_link|rough}, {a_link|brutish}"
                 ]
               }
             }
@@ -131,7 +129,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}animal"
+                  "animal"
                 ]
               }
             }
@@ -166,7 +164,7 @@
             {
               "definingText": {
                 "text": [
-                  "{sx|idiota||} {bc}{a_link|idiot}, {a_link|fool}"
+                  "{sx|idiota||}","{a_link|idiot}, {a_link|fool}"
                 ]
               }
             }
@@ -175,7 +173,7 @@
             {
               "definingText": {
                 "text": [
-                  "{bc}{a_link|brute}, beastly person"
+                  "{a_link|brute}, beastly person"
                 ]
               }
             }

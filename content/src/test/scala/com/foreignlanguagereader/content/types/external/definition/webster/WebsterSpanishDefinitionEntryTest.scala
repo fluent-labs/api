@@ -22,10 +22,10 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         .toString()
 
       val tag = PartOfSpeech.NOUN
-      val ipa = "ˈænəm{it}ə{/it}l"
+      val ipa = "ˈænəm*ə*l"
       val token = "animal"
       val subdefinitions =
-        List("animal ", "{sx|brute||} {a_link|bruto} ", ", ", "  ")
+        List("animal", "{sx|brute||}", "{a_link|bruto}")
       val examples = None
 
       it("can be read from the webster payload") {
@@ -87,7 +87,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         assert(pop.token == "pero")
         assert(
           pop.subdefinitions == List(
-            "{a_link|fault}, {a_link|defect} ",
+            "{a_link|fault}, {a_link|defect}",
             "{a_link|objection}"
           )
         )
@@ -116,7 +116,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         assert(perro.token == "perro")
         assert(
           perro.subdefinitions == List(
-            "{a_link|dog}, {a_link|bitch} ",
+            "{a_link|dog}, {a_link|bitch}",
             "stray dog",
             "{a_link|hot dog}",
             "{a_link|retriever}",
@@ -154,13 +154,16 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         assert(pop.token == "pop")
         assert(
           pop.subdefinitions == List(
-            "{sx|burst||} {a_link|reventarse}, {a_link|estallar}",
+            "{sx|burst||}",
+            "{a_link|reventarse}, {a_link|estallar}",
             "{a_link|saltar} (dícese de un corcho)",
-            "{a_link|ir}, {a_link|venir}, o aparecer abruptamente ",
-            "{sx|protrude||} {a_link|salirse}, {a_link|saltarse} ",
+            "{a_link|ir}, {a_link|venir}, o aparecer abruptamente",
+            "{sx|protrude||}",
+            "{a_link|salirse}, {a_link|saltarse}",
             "proponerle matrimonio a alguien",
-            "{sx|burst||} {a_link|reventar}",
-            "sacar o meter abruptamente "
+            "{sx|burst||}",
+            "{a_link|reventar}",
+            "sacar o meter abruptamente"
           )
         )
         assert(pop.tag.contains(PartOfSpeech.VERB))
@@ -197,7 +200,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         val perro = webster(1)
         assert(perro.token == "porque'")
         assert(
-          perro.subdefinitions == List("{a_link|reason}, {a_link|cause} ")
+          perro.subdefinitions == List("{a_link|reason}, {a_link|cause}")
         )
         assert(perro.tag.contains(PartOfSpeech.NOUN))
         assert(perro.examples.contains(List("no explicó el porqué")))
@@ -225,7 +228,8 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         assert(
           perro.subdefinitions == List(
             "{a_link|voucher}",
-            "{sx|pagaré||} promissory note, {a_link|IOU}"
+            "{sx|pagaré||}",
+            "promissory note, {a_link|IOU}"
           )
         )
         assert(perro.tag.contains(PartOfSpeech.NOUN))
