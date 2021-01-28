@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.content.types.external.definition.webster
 
+import com.foreignlanguagereader.content.formatters.WebsterFormatter
 import com.foreignlanguagereader.content.types.Language
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
@@ -71,7 +72,18 @@ object WebsterSpanishDefinitionEntry {
         WebsterDefinedRunOnPhrase.helper.readsList
       ) and
       (JsPath \ "shortdef").read[List[String]](Reads.list[String])
-  )(WebsterSpanishDefinitionEntry.apply _)
+  )((meta, hwi, fl, ins, deff, dros, shortdef) =>
+    WebsterSpanishDefinitionEntry
+      .apply(
+        meta,
+        hwi,
+        WebsterFormatter.format(fl),
+        ins,
+        deff,
+        dros,
+        WebsterFormatter.formatList(shortdef)
+      )
+  )
   implicit val writes: Writes[WebsterSpanishDefinitionEntry] =
     Json.writes[WebsterSpanishDefinitionEntry]
   implicit val helper: JsonSequenceHelper[WebsterSpanishDefinitionEntry] =
