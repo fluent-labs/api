@@ -32,7 +32,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|because}"
+                  "{bc}{a_link|because}"
                 ]
               }
             }
@@ -41,7 +41,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|in order that}"
+                  "{bc}{a_link|in order that}"
                 ]
               },
               "variations": [
@@ -92,7 +92,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|reason}, {a_link|cause}"
+                  "{bc}{a_link|reason}, {a_link|cause} "
                 ],
                 "examples": [
                   {
@@ -150,7 +150,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|for}, {a_link|during}"
+                  "{bc}{a_link|for}, {a_link|during} "
                 ],
                 "examples": [
                   {
@@ -167,7 +167,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|around}, {a_link|during}"
+                  "{bc}{a_link|around}, {a_link|during} "
                 ],
                 "examples": [
                   {
@@ -187,7 +187,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|around} (a place)"
+                  "{bc}{a_link|around} (a place) "
                 ],
                 "examples": [
                   {
@@ -204,7 +204,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|by}, {a_link|through}, {a_link|along}"
+                  "{bc}{a_link|by}, {a_link|through}, {a_link|along} "
                 ],
                 "examples": [
                   {
@@ -230,7 +230,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|for}, for the sake of"
+                  "{bc}{a_link|for}, for the sake of "
                 ],
                 "examples": [
                   {
@@ -247,7 +247,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|because of}, {a_link|on account of}"
+                  "{bc}{a_link|because of}, {a_link|on account of} "
                 ],
                 "examples": [
                   {
@@ -267,7 +267,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|per}"
+                  "{bc}{a_link|per} "
                 ],
                 "examples": [
                   {
@@ -284,7 +284,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|for}, in exchange for, {a_link|instead of}"
+                  "{bc}{a_link|for}, in exchange for, {a_link|instead of} "
                 ],
                 "examples": [
                   {
@@ -301,7 +301,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|by means of}"
+                  "{bc}{a_link|by means of} "
                 ],
                 "examples": [
                   {
@@ -321,7 +321,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|as for}"
+                  "{bc}{a_link|as for} "
                 ],
                 "examples": [
                   {
@@ -335,7 +335,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|times}"
+                  "{bc}{a_link|times} "
                 ],
                 "examples": [
                   {
@@ -349,7 +349,7 @@
             {
               "definingText": {
                 "text": [
-                  "{sx|según||}","{a_link|from}, {a_link|according to}"
+                  "{sx|según||} {bc}{a_link|from}, {a_link|according to} "
                 ],
                 "examples": [
                   {
@@ -363,7 +363,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|as}, {a_link|for}"
+                  "{bc}{a_link|as}, {a_link|for} "
                 ],
                 "examples": [
                   {
@@ -377,7 +377,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|by}"
+                  "{bc}{a_link|by} "
                 ],
                 "examples": [
                   {
@@ -394,7 +394,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|for}, {a_link|in order to}"
+                  "{bc}{a_link|for}, {a_link|in order to} "
                 ],
                 "examples": [
                   {
@@ -408,7 +408,7 @@
             {
               "definingText": {
                 "text": [
-                  "to {a_link|be about to}"
+                  "{bc}to {a_link|be about to}"
                 ]
               },
               "variations": [
@@ -422,7 +422,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|percent}"
+                  "{bc}{a_link|percent}"
                 ]
               },
               "variations": [
@@ -436,7 +436,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|please}"
+                  "{bc}{a_link|please}"
                 ]
               },
               "variations": [
@@ -450,7 +450,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|therefore}, {a_link|consequently}"
+                  "{bc}{a_link|therefore}, {a_link|consequently}"
                 ]
               },
               "variations": [
@@ -464,7 +464,7 @@
             {
               "definingText": {
                 "text": [
-                  "why?"
+                  "{bc}why?"
                 ]
               },
               "variations": [
@@ -478,7 +478,7 @@
             {
               "definingText": {
                 "text": [
-                  "no matter how"
+                  "{bc}no matter how "
                 ],
                 "examples": [
                   {
@@ -497,7 +497,7 @@
             {
               "definingText": {
                 "text": [
-                  "just in case"
+                  "{bc}just in case"
                 ]
               },
               "variations": [
@@ -557,7 +557,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|more}"
+                  "{bc}{a_link|more} "
                 ],
                 "examples": [
                   {
@@ -571,7 +571,7 @@
             {
               "definingText": {
                 "text": [
-                  "at most"
+                  "{bc}at most"
                 ]
               },
               "variations": [
@@ -585,7 +585,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|extra}, {a_link|excess}"
+                  "{bc}{a_link|extra}, {a_link|excess}"
                 ]
               },
               "variations": [
@@ -599,7 +599,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|rather}"
+                  "{bc}{a_link|rather}"
                 ]
               },
               "variations": [
@@ -613,7 +613,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|more or less}, {a_link|approximately}"
+                  "{bc}{a_link|more or less}, {a_link|approximately}"
                 ]
               },
               "variations": [
@@ -627,7 +627,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|no matter how much}"
+                  "{bc}{a_link|no matter how much} "
                 ],
                 "examples": [
                   {
@@ -690,7 +690,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|a lot}, {a_link|many}, {a_link|much}"
+                  "{bc}{a_link|a lot}, {a_link|many}, {a_link|much} "
                 ],
                 "examples": [
                   {
@@ -707,7 +707,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|long}, a long time"
+                  "{bc}{a_link|long}, a long time "
                 ],
                 "examples": [
                   {
@@ -732,7 +732,7 @@
             {
               "definingText": {
                 "text": [
-                  "at most"
+                  "{bc}at most"
                 ]
               },
               "variations": [
@@ -746,7 +746,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|by far}"
+                  "{bc}{a_link|by far}"
                 ]
               },
               "variations": [
@@ -760,7 +760,7 @@
             {
               "definingText": {
                 "text": [
-                  "not at all, far from it"
+                  "{bc}not at all, far from it"
                 ]
               },
               "variations": [
@@ -774,7 +774,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|no matter how much}, (as) {a_link|much as}"
+                  "{bc}{a_link|no matter how much}, (as) {a_link|much as} "
                 ],
                 "examples": [
                   {
@@ -832,7 +832,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|yes}"
+                  "{bc}{a_link|yes} "
                 ],
                 "examples": [
                   {
@@ -849,7 +849,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|indeed}, {a_link|absolutely}"
+                  "{bc}{a_link|indeed}, {a_link|absolutely} "
                 ],
                 "examples": [
                   {
@@ -868,7 +868,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|because}, just because"
+                  "{bc}{a_link|because}, just because "
                 ],
                 "examples": [
                   {

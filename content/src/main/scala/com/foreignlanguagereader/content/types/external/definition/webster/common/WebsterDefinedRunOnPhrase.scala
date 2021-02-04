@@ -1,6 +1,5 @@
 package com.foreignlanguagereader.content.types.external.definition.webster.common
 
-import com.foreignlanguagereader.content.formatters.WebsterFormatter
 import com.foreignlanguagereader.content.util.JsonSequenceHelper
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
@@ -28,18 +27,7 @@ object WebsterDefinedRunOnPhrase {
       .readNullable[String] and (JsPath \ "sls")
       .readNullable[List[String]] and (JsPath \ "vrs")
       .readNullable[List[WebsterVariant]](WebsterVariant.helper.readsList)
-  )((drp, deff, lbs, prs, psl, sls, vrs) =>
-    WebsterDefinedRunOnPhrase
-      .apply(
-        WebsterFormatter.format(drp),
-        deff,
-        WebsterFormatter.formatOptionalSeq(lbs),
-        prs,
-        WebsterFormatter.formatOptional(psl),
-        WebsterFormatter.formatOptionalSeq(sls),
-        vrs
-      )
-  )
+  )(WebsterDefinedRunOnPhrase.apply _)
   implicit val writes: Writes[WebsterDefinedRunOnPhrase] =
     Json.writes[WebsterDefinedRunOnPhrase]
   implicit val helper: JsonSequenceHelper[WebsterDefinedRunOnPhrase] =
