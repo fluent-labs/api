@@ -1,6 +1,5 @@
 package com.foreignlanguagereader.content.types.external.definition.webster.common
 
-import com.foreignlanguagereader.content.formatters.WebsterFormatter
 import com.foreignlanguagereader.content.types.external.definition.webster.common.WebsterSource.WebsterSource
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
@@ -26,18 +25,7 @@ object WebsterMeta {
       (JsPath \ "section").read[String] and
       (JsPath \ "stems").read[Seq[String]](Reads.seq[String]) and
       (JsPath \ "offensive").read[Boolean]
-  )((id, uuid, sort, lang, src, section, stems, offensive) =>
-    WebsterMeta.apply(
-      WebsterFormatter.format(id),
-      WebsterFormatter.format(uuid),
-      WebsterFormatter.formatOptional(sort),
-      WebsterFormatter.formatOptional(lang),
-      src,
-      WebsterFormatter.format(section),
-      WebsterFormatter.formatSeq(stems),
-      offensive
-    )
-  )
+  )(WebsterMeta.apply _)
 }
 
 object WebsterSource extends Enumeration {

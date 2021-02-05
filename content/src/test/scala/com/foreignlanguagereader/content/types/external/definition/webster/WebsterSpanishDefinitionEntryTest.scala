@@ -25,7 +25,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
       val ipa = "ˈænəm*ə*l"
       val token = "animal"
       val subdefinitions =
-        List("animal", "{sx|brute||}", "{a_link|bruto}")
+        List("animal", "{sx|brute||} {a_link|bruto}")
       val examples = None
 
       it("can be read from the webster payload") {
@@ -35,7 +35,6 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         assert(example.token == token)
         assert(example.subdefinitions == subdefinitions)
         assert(example.tag.contains(tag))
-        assert(example.examples == examples)
         assert(example.examples == examples)
       }
 
@@ -154,15 +153,12 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         assert(pop.token == "pop")
         assert(
           pop.subdefinitions == List(
-            "{sx|burst||}",
-            "{a_link|reventarse}, {a_link|estallar}",
+            "{sx|burst||} {a_link|reventarse}, {a_link|estallar}",
             "{a_link|saltar} (dícese de un corcho)",
             "{a_link|ir}, {a_link|venir}, o aparecer abruptamente",
-            "{sx|protrude||}",
-            "{a_link|salirse}, {a_link|saltarse}",
+            "{sx|protrude||} {a_link|salirse}, {a_link|saltarse}",
             "proponerle matrimonio a alguien",
-            "{sx|burst||}",
-            "{a_link|reventar}",
+            "{sx|burst||} {a_link|reventar}",
             "sacar o meter abruptamente"
           )
         )
@@ -228,8 +224,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         assert(
           perro.subdefinitions == List(
             "{a_link|voucher}",
-            "{sx|pagaré||}",
-            "promissory note, {a_link|IOU}"
+            "{sx|pagaré||} promissory note, {a_link|IOU}"
           )
         )
         assert(perro.tag.contains(PartOfSpeech.NOUN))

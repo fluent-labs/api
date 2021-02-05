@@ -28,35 +28,40 @@ trait WebsterDefinitionEntryBase {
   }
 
   val subdefinitions: List[String] = {
-    val d = definitions
-    // senseSequence: Option[Seq[Seq[WebsterSense]]]
-    // remove the nones
-      .flatMap(_.senseSequence)
-      // Our data model needs them flattened to one list
-      .flatten
-      .flatten
-      // definingText: WebsterDefiningText => examples: Option[Seq[WebsterVerbalIllustration]]
-      .flatMap(_.definingText.text)
+    val d = WebsterFormatter.formatSeq(
+      definitions
+      // senseSequence: Option[Seq[Seq[WebsterSense]]]
+      // remove the nones
+        .flatMap(_.senseSequence)
+        // Our data model needs them flattened to one list
+        .flatten
+        .flatten
+        // definingText: WebsterDefiningText => examples: Option[Seq[WebsterVerbalIllustration]]
+        .flatMap(_.definingText.text)
+    )
 
-    if (d.nonEmpty) d.toList else shortDefinitions.toList
-  }.map(d => WebsterFormatter.format(d))
+    if (d.nonEmpty) d.toList
+    else WebsterFormatter.formatList(shortDefinitions.toList)
+  }
 
   val examples: Option[List[String]] = {
     //definitions: Seq[WebsterDefinition]
-    val e = definitions
-    // senseSequence: Option[Seq[Seq[WebsterSense]]]
-    // remove the nones
-      .flatMap(_.senseSequence)
-      // Our data model needs them flattened to one list
-      .flatten
-      .flatten
-      // definingText: WebsterDefiningText => examples: Option[Seq[WebsterVerbalIllustration]]
-      .flatMap(_.definingText.examples)
-      .flatten
-      // Verbal Illustration means examples, so we can just get the text.
-      .map(_.text)
+    val e = WebsterFormatter.formatSeq(
+      definitions
+      // senseSequence: Option[Seq[Seq[WebsterSense]]]
+      // remove the nones
+        .flatMap(_.senseSequence)
+        // Our data model needs them flattened to one list
+        .flatten
+        .flatten
+        // definingText: WebsterDefiningText => examples: Option[Seq[WebsterVerbalIllustration]]
+        .flatMap(_.definingText.examples)
+        .flatten
+        // Verbal Illustration means examples, so we can just get the text.
+        .map(_.text)
+    )
     if (e.isEmpty) None else Some(e.toList)
-  }.map(_.map(d => WebsterFormatter.format(d)))
+  }
 
   // TODO - find out how frequent this is.
   val pronunciation: String = {
@@ -71,7 +76,7 @@ trait WebsterDefinitionEntryBase {
       case None => None
     }
 
-    prons match {
+    val finalPron = prons match {
       case Some(p) => p.head
       case None =>
         headwordInfo.alternatePronunciations match {
@@ -81,6 +86,8 @@ trait WebsterDefinitionEntryBase {
           case None => ""
         }
     }
+
+    WebsterFormatter.format(finalPron)
   }
 
   // Id is either the token, or token:n where n is the nth definition for the token.

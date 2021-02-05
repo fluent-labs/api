@@ -44,7 +44,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|dog}, {a_link|bitch}"
+                  "{bc}{a_link|dog}, {a_link|bitch} "
                 ]
               }
             }
@@ -53,7 +53,7 @@
             {
               "definingText": {
                 "text": [
-                  "stray dog"
+                  "{bc}stray dog"
                 ]
               },
               "variations": [
@@ -67,7 +67,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|hot dog}"
+                  "{bc}{a_link|hot dog}"
                 ]
               },
               "variations": [
@@ -81,7 +81,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|retriever}"
+                  "{bc}{a_link|retriever}"
                 ]
               },
               "variations": [
@@ -95,7 +95,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|lapdog}"
+                  "{bc}{a_link|lapdog}"
                 ]
               },
               "variations": [
@@ -109,7 +109,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|guard dog}"
+                  "{bc}{a_link|guard dog}"
                 ]
               },
               "variations": [
@@ -123,7 +123,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|guide dog}"
+                  "{bc}{a_link|guide dog}"
                 ]
               },
               "variations": [
@@ -137,7 +137,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|sheepdog}"
+                  "{bc}{a_link|sheepdog}"
                 ]
               },
               "variations": [
@@ -151,7 +151,7 @@
             {
               "definingText": {
                 "text": [
-                  "police dog"
+                  "{bc}police dog"
                 ]
               },
               "variations": [
@@ -165,7 +165,7 @@
             {
               "definingText": {
                 "text": [
-                  "tracking dog"
+                  "{bc}tracking dog"
                 ]
               },
               "variations": [
@@ -179,7 +179,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|dachshund}"
+                  "{bc}{a_link|dachshund}"
                 ]
               },
               "variations": [
@@ -231,7 +231,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|common}, {a_link|everyday}"
+                  "{bc}{a_link|common}, {a_link|everyday}"
                 ]
               }
             }
@@ -240,7 +240,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|current}, {a_link|present}"
+                  "{bc}{a_link|current}, {a_link|present}"
                 ]
               }
             }
@@ -249,7 +249,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|cheap}, {a_link|trashy}"
+                  "{bc}{a_link|cheap}, {a_link|trashy}"
                 ]
               },
               "subjectStatusLabels": [
@@ -261,7 +261,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|mutt}"
+                  "{bc}{a_link|mutt}"
                 ]
               },
               "subjectStatusLabels": [
@@ -315,7 +315,7 @@
             {
               "definingText": {
                 "text": [
-                  "{sx|guarda||}", "{a_link|security guard}, {a_link|watchman}"
+                  "{sx|guarda||} {bc}{a_link|security guard}, {a_link|watchman}"
                 ]
               }
             }
@@ -324,7 +324,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|guardian}, {a_link|keeper}"
+                  "{bc}{a_link|guardian}, {a_link|keeper}"
                 ]
               }
             }
@@ -333,7 +333,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|watchdog}"
+                  "{bc}{a_link|watchdog}"
                 ]
               },
               "variations": [

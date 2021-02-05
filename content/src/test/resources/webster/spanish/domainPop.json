@@ -46,7 +46,7 @@
             {
               "definingText": {
                 "text": [
-                  "{sx|burst||}","{a_link|reventarse}, {a_link|estallar}"
+                  "{sx|burst||} {bc}{a_link|reventarse}, {a_link|estallar}"
                 ]
               }
             }
@@ -55,7 +55,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|saltar} (dícese de un corcho)"
+                  "{bc}{a_link|saltar} (dícese de un corcho)"
                 ]
               }
             }
@@ -64,7 +64,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|ir}, {a_link|venir}, o aparecer abruptamente"
+                  "{bc}{a_link|ir}, {a_link|venir}, o aparecer abruptamente "
                 ],
                 "examples": [
                   {
@@ -81,7 +81,7 @@
             {
               "definingText": {
                 "text": [
-                  "{sx|protrude||}","{a_link|salirse}, {a_link|saltarse}"
+                  "{sx|protrude||} {bc}{a_link|salirse}, {a_link|saltarse} "
                 ],
                 "examples": [
                   {
@@ -100,7 +100,7 @@
             {
               "definingText": {
                 "text": [
-                  "proponerle matrimonio a alguien"
+                  "{bc}proponerle matrimonio a alguien"
                 ]
               },
               "subjectStatusLabels": [
@@ -122,7 +122,7 @@
             {
               "definingText": {
                 "text": [
-                  "{sx|burst||}","{a_link|reventar}"
+                  "{sx|burst||} {bc}{a_link|reventar}"
                 ]
               }
             }
@@ -131,7 +131,7 @@
             {
               "definingText": {
                 "text": [
-                  "sacar o meter abruptamente"
+                  "{bc}sacar o meter abruptamente "
                 ],
                 "examples": [
                   {
@@ -177,7 +177,7 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|popular}"
+                  "{bc}{a_link|popular} "
                 ],
                 "examples": [
                   {
@@ -221,8 +221,8 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|estallido}",
-                  "{a_link|pequeño} (de un globo, etc.)"
+                  "{bc}{a_link|estallido} ",
+                  " {a_link|pequeño} (de un globo, etc.)"
                 ]
               }
             }
@@ -231,9 +231,8 @@
             {
               "definingText": {
                 "text": [
-                  "{sx|soda||}",
-                  "{a_link|refresco}",
-                  ", {a_link|gaseosa}"
+                  "{sx|soda||} {bc}{a_link|refresco} ",
+                  ", {a_link|gaseosa} "
                 ]
               }
             }
@@ -274,7 +273,7 @@
             {
               "definingText": {
                 "text": [
-                  "pop (music)"
+                  "{bc}pop (music)"
                 ]
               }
             }
@@ -315,8 +314,8 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|ventana}",
-                  "{a_link|emergente} (de una página web)"
+                  "{bc}{a_link|ventana} ",
+                  " {a_link|emergente} (de una página web)"
                 ]
               }
             }
@@ -365,7 +364,7 @@
             {
               "definingText": {
                 "text": [
-                  "soda"
+                  "{bc}soda "
                 ]
               },
               "variations": [
@@ -380,10 +379,10 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|gaseosa}",
-                  "; refresco",
-                  "; fresco",
-                  "; soda"
+                  "{bc}{a_link|gaseosa} ",
+                  "; refresco ",
+                  "; fresco ",
+                  "; soda "
                 ]
               },
               "variations": [
@@ -398,8 +397,8 @@
             {
               "definingText": {
                 "text": [
-                  "{a_link|refresco}",
-                  "con helado"
+                  "{bc}{a_link|refresco} ",
+                  " con helado"
                 ]
               },
               "variations": [
