@@ -22,7 +22,7 @@ class WebsterSpanishDefinitionEntryTest extends AnyFunSpec {
         .toString()
 
       val tag = PartOfSpeech.NOUN
-      val ipa = "ˈænəm{it}ə{/it}l"
+      val ipa = "ˈænəm*ə*l"
       val token = "animal"
       val subdefinitions =
         List("animal", "{sx|brute||} {a_link|bruto}")
