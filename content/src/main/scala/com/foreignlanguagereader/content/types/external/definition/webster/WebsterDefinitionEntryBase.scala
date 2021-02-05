@@ -76,7 +76,7 @@ trait WebsterDefinitionEntryBase {
       case None => None
     }
 
-    prons match {
+    val finalPron = prons match {
       case Some(p) => p.head
       case None =>
         headwordInfo.alternatePronunciations match {
@@ -86,6 +86,8 @@ trait WebsterDefinitionEntryBase {
           case None => ""
         }
     }
+
+    WebsterFormatter.format(finalPron)
   }
 
   // Id is either the token, or token:n where n is the nth definition for the token.
