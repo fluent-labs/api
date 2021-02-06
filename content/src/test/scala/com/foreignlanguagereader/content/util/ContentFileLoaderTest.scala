@@ -1,10 +1,8 @@
 package com.foreignlanguagereader.content.util
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
-import com.foreignlanguagereader.content.enrichers.chinese.{
-  ChinesePronunciationFromFile,
-  HskHolder
-}
+import com.foreignlanguagereader.content.difficulty.chinese.hsk.HskHolder
+import com.foreignlanguagereader.content.enrichers.chinese.ChinesePronunciationFromFile
 import org.scalatest.funspec.AnyFunSpec
 
 class ContentFileLoaderTest extends AnyFunSpec {

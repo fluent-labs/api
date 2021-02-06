@@ -1,8 +1,8 @@
 package com.foreignlanguagereader.content.types.internal.definition
 
+import com.foreignlanguagereader.content.difficulty.chinese.hsk.HSKDifficultyFinder
 import com.foreignlanguagereader.content.enrichers.chinese.{
   ChinesePronunciationGenerator,
-  HSKLevelFinder,
   SimplifiedTraditionalConverter
 }
 import com.foreignlanguagereader.content.types.Language
@@ -59,7 +59,7 @@ case class ChineseDefinition(
     }
 
   val hsk: HSKLevel = simplified match {
-    case Some(s) => HSKLevelFinder.getHSK(s)
+    case Some(s) => HSKDifficultyFinder.getDifficulty(s)
     case None    => HSKLevel.NONE
   }
 
