@@ -1,19 +1,7 @@
-package com.foreignlanguagereader.content.enrichers.chinese
+package com.foreignlanguagereader.content.difficulty.chinese.hsk
 
-import com.foreignlanguagereader.content.util.ContentFileLoader
 import com.foreignlanguagereader.dto.v1.definition.chinese.HSKLevel
-import com.github.houbb.opencc4j.util.ZhConverterUtil
 import play.api.libs.json.{Json, Reads}
-
-object HSKLevelFinder {
-  private[this] val hsk: HskHolder = ContentFileLoader
-    .loadJsonResourceFile[HskHolder]("/chinese/hsk.json")
-
-  def sentenceIsTraditional(sentence: String): Boolean =
-    ZhConverterUtil.isTraditional(sentence)
-
-  def getHSK(simplified: String): HSKLevel = hsk.getLevel(simplified)
-}
 
 case class HskHolder(
     hsk1: Set[String],
