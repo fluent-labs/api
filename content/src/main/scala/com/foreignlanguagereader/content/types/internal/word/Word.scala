@@ -21,10 +21,14 @@ case class Word(
     tense: Option[WordTense],
     processedToken: String
 ) {
-  lazy val toDTO: WordDTO = {
-    val defs = definitions.map(_.toDTO)
-    new WordDTO(token, tag.toString, lemma, defs.asJava)
-  }
+  lazy val toDTO: WordDTO =
+    new WordDTO(
+      token,
+      processedToken,
+      tag.toString,
+      lemma,
+      definitions.map(_.toDTO).asJava
+    )
 }
 object Word {
   def fromToken(token: String, language: Language): Word =
@@ -38,6 +42,8 @@ object Word {
       number = None,
       proper = None,
       tense = None,
-      processedToken = token
+      processedToken = Word.processToken(token)
     )
+
+  def processToken(token: String): String = token.toLowerCase
 }
