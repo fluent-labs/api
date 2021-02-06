@@ -42,6 +42,8 @@ object Word {
       number = None,
       proper = None,
       tense = None,
-      processedToken = token
+      processedToken = Word.processToken(token)
     )
+
+  def processToken(token: String): String = token.toLowerCase
 }
