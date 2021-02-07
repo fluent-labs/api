@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.content.types.internal.definition
 
 import cats.implicits._
+import com.foreignlanguagereader.dto.v1.definition.DefinitionSourceDTO
 import play.api.libs.json._
 
 /*
@@ -29,5 +30,17 @@ object DefinitionSource extends Enumeration {
         }
       def writes(source: DefinitionSource.DefinitionSource): JsString =
         JsString(source.toString)
+    }
+
+  def toDTO(source: DefinitionSource): DefinitionSourceDTO =
+    source match {
+      case CEDICT => DefinitionSourceDTO.CEDICT
+      case MIRRIAM_WEBSTER_LEARNERS =>
+        DefinitionSourceDTO.MIRRIAM_WEBSTER_LEARNERS
+      case MIRRIAM_WEBSTER_SPANISH =>
+        DefinitionSourceDTO.MIRRIAM_WEBSTER_SPANISH
+      case WIKTIONARY_SIMPLE_ENGLISH =>
+        DefinitionSourceDTO.WIKTIONARY_SIMPLE_ENGLISH
+      case _ => DefinitionSourceDTO.MULTIPLE
     }
 }

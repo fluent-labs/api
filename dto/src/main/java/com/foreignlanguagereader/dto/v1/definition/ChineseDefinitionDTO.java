@@ -12,9 +12,9 @@ public class ChineseDefinitionDTO extends DefinitionDTO {
     private String pronunciation;
     private HSKLevel hsk;
 
-    public ChineseDefinitionDTO(String id, List<String> subdefinitions, PartOfSpeechDTO tag, List<String> examples,
+    public ChineseDefinitionDTO(String id, List<String> subdefinitions, PartOfSpeechDTO tag, DefinitionSourceDTO source, List<String> examples,
                                 Optional<String> simplified, Optional<List<String>> traditional, String pronunciation, HSKLevel hsk) {
-        super(id, subdefinitions, tag, examples);
+        super(id, subdefinitions, tag, source, examples);
         this.simplified = simplified;
         this.traditional = traditional;
         this.pronunciation = pronunciation;
