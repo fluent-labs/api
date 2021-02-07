@@ -27,6 +27,7 @@ case class EnglishDefinition(
       id,
       subdefinitions.asJava,
       PartOfSpeech.toDTO(tag),
+      DefinitionSource.toDTO(source),
       examples.getOrElse(List()).asJava
     )
 }

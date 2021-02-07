@@ -10,7 +10,10 @@ import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
-import com.foreignlanguagereader.dto.v1.definition.ChineseDefinitionDTO
+import com.foreignlanguagereader.dto.v1.definition.{
+  ChineseDefinitionDTO,
+  DefinitionSourceDTO
+}
 import com.foreignlanguagereader.dto.v1.definition.chinese.{
   ChinesePronunciation,
   HSKLevel
@@ -68,6 +71,7 @@ case class ChineseDefinition(
       id,
       subdefinitions.asJava,
       PartOfSpeech.toDTO(tag),
+      DefinitionSource.toDTO(source),
       examples.getOrElse(List()).asJava,
       simplified.asJava,
       traditional.map(_.asJava).asJava,
