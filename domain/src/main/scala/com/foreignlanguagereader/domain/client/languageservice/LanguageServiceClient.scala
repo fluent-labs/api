@@ -79,7 +79,7 @@ class LanguageServiceClient @Inject() (
             number = None,
             tense = None,
             proper = None,
-            processedToken = word.token
+            processedToken = Word.processToken(word.token)
           )
         )
       )

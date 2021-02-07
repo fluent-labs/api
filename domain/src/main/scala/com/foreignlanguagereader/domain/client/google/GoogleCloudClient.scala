@@ -111,7 +111,7 @@ class GoogleCloudClient @Inject() (
           number = googleCountToDomainCount(token.getPartOfSpeech.getNumber),
           proper = isProperNoun(token.getPartOfSpeech.getProper),
           tense = googleTenseToDomainTense(token.getPartOfSpeech.getTense),
-          processedToken = token.getText.getContent
+          processedToken = Word.processToken(token.getText.getContent)
         )
       )
 
