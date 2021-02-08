@@ -13,16 +13,26 @@ trait Formatter {
 
   val punctuationMatches = "[,;]+"
 
-  lazy val patterns: Map[String, String] =
+  lazy val patternsForMarkdown: Map[String, String] =
     removalPatterns.map(pattern => pattern -> "").toMap ++ replacementPatterns
 
+  lazy val patternsForPlaintext: Set[String] =
+    removalPatterns ++ replacementPatterns.keySet
+
+  // Used for definition extraction
   def format(input: String): String = {
-    val replaced = patterns.keySet.fold(input) {
+    val replaced = patternsForMarkdown.keySet.fold(input) {
       case (acc, pattern) =>
-        acc.replaceAll(pattern, patterns.getOrElse(pattern, ""))
+        acc.replaceAll(pattern, patternsForMarkdown.getOrElse(pattern, ""))
     }
     removeDuplicateSpaces(replaced).trim
   }
+
+  // Used for word count
+  def removeFormatting(input: String): String =
+    removeDuplicateSpaces(patternsForPlaintext.fold(input) {
+      case (acc, pattern) => acc.replaceAll(pattern, "")
+    }).trim
 
   def removeDuplicateSpaces(input: String): String =
     repeatUntilSettled(input, _.replaceAll("  ", " "))
