@@ -32,6 +32,18 @@ class MediaWikiFormatterTest extends AnyFunSpec {
           assert(MediaWikiFormatter.format(original) == formatted)
         })
       }
+      describe("with links") {
+        it("properly unlinks normal links") {
+          val original = "[[link]]"
+          val formatted = "link"
+          assert(MediaWikiFormatter.format(original) == formatted)
+        }
+        it("removes category links") {
+          val original = "[[Category:en:Dictionaries]]"
+          val formatted = ""
+          assert(MediaWikiFormatter.format(original) == formatted)
+        }
+      }
       it("end to end") {
         val mediawiki =
           ContentFileLoader.loadResourceFile("/wiktionary/mediawiki1.txt")
