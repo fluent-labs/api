@@ -1,15 +1,15 @@
 {{also|Dictionary}}
-==English==
+## English
 {{wp|dab=Dictionary (disambiguation)|Dictionary}}
 
-===Alternative forms===
+### Alternative forms
 * {{alter|en|dictionnary||obsolete}}
 
-===Etymology===
+### Etymology
 {{root|en|ine-pro|*deyḱ-}}
 Borrowed from {{bor|en|ML.|dictiōnārium}}, from {{der|en|la|dictiōnārius}}, from {{m|la|dictiō||speaking}}, from {{m|la|dictus}}, perfect past participle of {{m|la|dīcō||speak}} + {{m|la|-ārium||room, place}}.
 
-===Pronunciation===
+### Pronunciation
 * {{a|RP}} {{IPA|en|/ˈdɪkʃ(ə)n(ə)ɹi/}}
 * {{a|GenAm|Canada}} {{enPR|dĭk'shə-nĕr-ē}}, {{IPA|en|/ˈdɪkʃəˌnɛɹi/}}
 * {{audio|en|en-us-dictionary.ogg|Audio (US, California)}}
@@ -17,7 +17,7 @@ Borrowed from {{bor|en|ML.|dictiōnārium}}, from {{der|en|la|dictiōnārius}}, 
 * {{hyphenation|en|dic|tion|ary}}
 * {{rhymes|en|ɪkʃənɛəɹi}}
 
-===Noun===
+### Noun
 {{en-noun}}
 
 # A [[reference work]] with a list of [[word]]s from one or more languages, normally ordered [[alphabetical]]ly, explaining each word's meaning, and sometimes containing information on its etymology, pronunciation, usage, translations, and other data.
@@ -307,14 +307,14 @@ Borrowed from {{bor|en|ML.|dictiōnārium}}, from {{der|en|la|dictiōnārius}}, 
 {{trans-mid}}
 {{trans-bottom}}
 
-===See also===
+### See also
 * {{l|en|encyclopedia}}
 * {{l|en|lexicon}}
 * {{l|en|thesaurus}}
 * {{l|en|vocabulary}}
 * {{l|en|wordlist}}
 
-===Verb===
+### Verb
 {{en-verb}}
 
 # {{lb|en|transitive}} To look up in a dictionary.
@@ -324,10 +324,10 @@ Borrowed from {{bor|en|ML.|dictiōnārium}}, from {{der|en|la|dictiōnārius}}, 
 # {{lb|en|intransitive|rare}} To [[compile]] a dictionary.
 #* {{quote-journal|en|year=1864|magazine=Blackwood's Edinburgh Magazine|volume=96|page=334|passage=They [dictionary-makers] may have had their romance at home — may have been crossed in love, and thence driven to '''dictionarying'''; may have been involved in domestic tragedies — who can say?}}
 
-===Further reading===
+### Further reading
 * {{R:OneLook}}
 
-===Anagrams===
+### Anagrams
 * {{anagrams|en|a=acdiinorty|indicatory}}
 
 [[Category:en:Dictionaries]]
