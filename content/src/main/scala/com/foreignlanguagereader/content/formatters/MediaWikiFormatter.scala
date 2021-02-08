@@ -15,6 +15,6 @@ object MediaWikiFormatter extends Formatter {
       "=".repeat(3) -> FormattingTags.levelThreeHeading,
       "=".repeat(2) -> FormattingTags.levelTwoHeading,
       "=".repeat(1) -> FormattingTags.levelOneHeading,
-      "----" -> "---"
+      "----" -> FormattingTags.horizontalRule
     )
 }

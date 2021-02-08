@@ -13,4 +13,6 @@ object FormattingTags {
   val levelFourHeading: String = "#".repeat(4)
   val levelFiveHeading: String = "#".repeat(5)
   val levelSixHeading: String = "#".repeat(6)
+
+  val horizontalRule = "---"
 }
