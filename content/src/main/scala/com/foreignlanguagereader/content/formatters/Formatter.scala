@@ -13,6 +13,10 @@ trait Formatter {
   val removalPatterns: Set[String]
   val replacementPatterns: ListMap[String, String]
 
+  // Custom hooks for anything that doesn't fit the regex model.
+  def preFormat(input: String): String = input
+  def postFormat(input: String): String = input
+
   val punctuationMatches = "[,;]+"
 
   lazy val patternsForMarkdown: ListMap[String, String] =
@@ -26,7 +30,12 @@ trait Formatter {
   // Used for definition extraction
   def format(input: String): String = {
     // Some patterns rely on beginning of the line
-    input.split("\n").map(formatLine).mkString("\n")
+    input
+      .split("\n")
+      .map(preFormat)
+      .map(formatLine)
+      .map(postFormat)
+      .mkString("\n")
   }
 
   def formatLine(input: String): String = {
@@ -38,7 +47,7 @@ trait Formatter {
   }
 
   // Used for word count
-  def removeFormatting(input: String): String =
+  def removeFormattingInLine(input: String): String =
     removeDuplicateSpaces(patternsForPlaintext.fold(input) {
       case (acc, pattern) => acc.replaceAll(pattern, "")
     }).trim
