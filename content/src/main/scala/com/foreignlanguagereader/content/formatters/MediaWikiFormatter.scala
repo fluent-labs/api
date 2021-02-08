@@ -8,9 +8,10 @@ object MediaWikiFormatter extends Formatter {
   def nEqualSigns(n: Int): String = s"={$n}"
   val optionalWhitespace = "[ ]*"
   val anythingButEqualSign = "([^=]+)"
+  val beginningOfLine = "^"
 
   def headerPattern(level: Int): String =
-    nEqualSigns(
+    beginningOfLine + nEqualSigns(
       level
     ) + optionalWhitespace + anythingButEqualSign + optionalWhitespace + nEqualSigns(
       level

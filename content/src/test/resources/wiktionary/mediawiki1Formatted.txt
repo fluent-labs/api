@@ -26,7 +26,7 @@ Borrowed from {{bor|en|ML.|dictiōnārium}}, from {{der|en|la|dictiōnārius}}, 
 #: {{syn|en|wordbook|Thesaurus:dictionary}}
 # {{lb|en|preceded by {{m|en|the}}}} A [[synchronic]] dictionary of a standardised language held to only contain words that are properly part of the language.
 #* {{quote-book|1=en|year=1930|author=Norman Lindsay|authorlink=Norman Lindsay|title=Redheap|publisher=Ure Smith|location=Sydney|year_published=1965|page=106|passage=`Look it up in **the dictionary**, and what do you find?'}}
-#* {{quote-book|1=en|year=2019|author=John Hughes|title=Life Pre-Intermediate Student's Book|publisher=National Geographic Learning|page=188|passage=By 1986 the name Walkman was included  as a word in **the** English **dictionary**.}}
+#* {{quote-book|1=en|year=2019|author=John Hughes|title=Life Pre-Intermediate Student's Book|publisher=National Geographic Learning|page=188|passage=By 1986 the name Walkman was included as a word in **the** English **dictionary**.}}
 # {{lb|en|by extension}} Any work that has a [[list]] of [[material]] organized alphabetically; e.g., [[biographic]]al dictionary, [[encyclopedic]] dictionary.
 # {{lb|en|computing}} An [[associative array]], a data structure where each value is referenced by a particular key, analogous to words and definitions in a physical dictionary.
 #: {{hyponyms|en|hash table}}

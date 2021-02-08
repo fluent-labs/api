@@ -25,6 +25,11 @@ trait Formatter {
 
   // Used for definition extraction
   def format(input: String): String = {
+    // Some patterns rely on beginning of the line
+    input.split("\n").map(formatLine).mkString("\n")
+  }
+
+  def formatLine(input: String): String = {
     val replaced = patternsForMarkdown.keySet.fold(input) {
       case (acc, pattern) =>
         acc.replaceAll(pattern, patternsForMarkdown.getOrElse(pattern, ""))
