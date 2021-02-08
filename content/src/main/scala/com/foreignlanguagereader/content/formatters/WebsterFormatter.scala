@@ -24,11 +24,11 @@ object WebsterFormatter extends Formatter {
 
   override val replacementPatterns: Map[String, String] =
     Map(
-      "\\{b\\}" -> boldOpeningTag,
-      "\\{\\\\\\/b\\}" -> boldClosingTag,
-      "\\{it\\}" -> italicsOpeningTag,
-      "\\{\\\\\\/it\\}" -> italicsClosingTag,
-      "\\{\\/it\\}" -> italicsClosingTag,
+      "\\{b\\}" -> FormattingTags.bold,
+      "\\{\\\\\\/b\\}" -> FormattingTags.bold,
+      "\\{it\\}" -> FormattingTags.italic,
+      "\\{\\\\\\/it\\}" -> FormattingTags.italic,
+      "\\{\\/it\\}" -> FormattingTags.italic,
       "\\{ldquo\\}" -> "\"",
       "\\{rdquo\\}" -> "\""
     )
