@@ -1,6 +1,7 @@
 package com.foreignlanguagereader.content.formatters
 
 import scala.collection.immutable.ListMap
+import scala.util.matching.Regex
 
 object MediaWikiFormatter extends Formatter {
   val squareOpenBracket = "\\["
@@ -43,4 +44,28 @@ object MediaWikiFormatter extends Formatter {
     )
 
   override val removalPatterns: Set[String] = Set()
+
+  val listPattern = "^[*#:]+"
+  val listLinePattern = s"$listPattern.*"
+  val listLineCaptureGroupPattern: Regex = s"($listPattern)(.*)".r
+
+  override def preFormat(line: String): String = {
+    if (line.matches(listLinePattern)) convertList(line) else line
+  }
+
+  def convertList(line: String): String = {
+    listLineCaptureGroupPattern
+      .findFirstMatchIn(line)
+      .map(m => {
+        val heading = m.group(1)
+        val indentationCount = heading.length - 1
+
+        val indentation = "  ".repeat(indentationCount)
+        val prefix = indentation + "- "
+        val text = m.group(2)
+
+        prefix + text
+      })
+      .getOrElse(line)
+  }
 }
