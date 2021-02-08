@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.content.formatters
 
+import com.foreignlanguagereader.content.util.ContentFileLoader
 import org.scalatest.funspec.AnyFunSpec
 
 class MediaWikiFormatterTest extends AnyFunSpec {
@@ -30,6 +31,14 @@ class MediaWikiFormatterTest extends AnyFunSpec {
           val formatted = "#".repeat(n) + " text"
           assert(MediaWikiFormatter.format(original) == formatted)
         })
+      }
+      it("end to end") {
+        val mediawiki =
+          ContentFileLoader.loadResourceFile("/wiktionary/mediawiki1.txt")
+        val formatted = ContentFileLoader.loadResourceFile(
+          "/wiktionary/mediawiki1Formatted.txt"
+        )
+        assert(MediaWikiFormatter.format(mediawiki) == formatted)
       }
     }
   }
