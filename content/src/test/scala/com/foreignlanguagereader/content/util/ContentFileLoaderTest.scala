@@ -15,7 +15,7 @@ class ContentFileLoaderTest extends AnyFunSpec {
       assert(goodFile.nonEmpty)
     }
     it("throws an exception if the file cannot be opened") {
-      assertThrows[MismatchedInputException] {
+      assertThrows[NullPointerException] {
         ContentFileLoader
           .loadJsonResourceFile[Seq[ChinesePronunciationFromFile]](
             "=/notfound.json"
