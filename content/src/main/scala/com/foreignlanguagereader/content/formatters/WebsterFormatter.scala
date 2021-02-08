@@ -2,6 +2,8 @@ package com.foreignlanguagereader.content.formatters
 
 import play.api.Logger
 
+import scala.collection.immutable.ListMap
+
 object WebsterFormatter extends Formatter {
   val logger: Logger = Logger(this.getClass)
 
@@ -22,13 +24,20 @@ object WebsterFormatter extends Formatter {
       "\\{\\/inf\\}"
     )
 
-  override val replacementPatterns: Map[String, String] =
-    Map(
-      "\\{b\\}" -> boldOpeningTag,
-      "\\{\\\\\\/b\\}" -> boldClosingTag,
-      "\\{it\\}" -> italicsOpeningTag,
-      "\\{\\\\\\/it\\}" -> italicsClosingTag,
-      "\\{\\/it\\}" -> italicsClosingTag,
+  val captureGroupAllUntilBracket = "([^\\\\{]*)"
+
+  val boldOpeningTag = "\\{b\\}" // {b}
+  val boldClosingTag = "\\{\\\\\\/b\\}" // {/b}
+
+  val italicOpeningTag = "\\{it\\}" // {it}
+  val italicClosingTagOne = "\\{\\/it\\}" // {/it}
+  val italicClosingTagTwo = "\\{\\\\\\/it\\}" // {\/it}
+
+  override val replacementPatterns: ListMap[String, String] =
+    ListMap(
+      s"$boldOpeningTag$captureGroupAllUntilBracket$boldClosingTag" -> s"${FormattingTags.bold}$$1${FormattingTags.bold}",
+      s"$italicOpeningTag$captureGroupAllUntilBracket$italicClosingTagOne" -> s"${FormattingTags.italic}$$1${FormattingTags.italic}",
+      s"$italicOpeningTag$captureGroupAllUntilBracket$italicClosingTagTwo" -> s"${FormattingTags.italic}$$1${FormattingTags.italic}",
       "\\{ldquo\\}" -> "\"",
       "\\{rdquo\\}" -> "\""
     )

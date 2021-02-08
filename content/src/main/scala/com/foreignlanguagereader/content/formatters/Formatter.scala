@@ -1,5 +1,7 @@
 package com.foreignlanguagereader.content.formatters
 
+import scala.collection.immutable.ListMap
+
 /**
   * Motivation:
   * Many content sources include their own formatting.
@@ -9,25 +11,46 @@ package com.foreignlanguagereader.content.formatters
   */
 trait Formatter {
   val removalPatterns: Set[String]
-  val replacementPatterns: Map[String, String]
+  val replacementPatterns: ListMap[String, String]
 
-  val italicsOpeningTag = "*"
-  val italicsClosingTag = "*"
-  val boldOpeningTag = "**"
-  val boldClosingTag = "**"
+  // Custom hooks for anything that doesn't fit the regex model.
+  def preFormat(input: String): String = input
+  def postFormat(input: String): String = input
 
   val punctuationMatches = "[,;]+"
 
-  lazy val patterns: Map[String, String] =
-    removalPatterns.map(pattern => pattern -> "").toMap ++ replacementPatterns
+  lazy val patternsForMarkdown: ListMap[String, String] =
+    ListMap(
+      removalPatterns.map(pattern => pattern -> "").toList: _*
+    ) ++ replacementPatterns
 
+  lazy val patternsForPlaintext: Set[String] =
+    removalPatterns ++ replacementPatterns.keySet
+
+  // Used for definition extraction
   def format(input: String): String = {
-    val replaced = patterns.keySet.fold(input) {
+    // Some patterns rely on beginning of the line
+    input
+      .split("\n")
+      .map(preFormat)
+      .map(formatLine)
+      .map(postFormat)
+      .mkString("\n")
+  }
+
+  def formatLine(input: String): String = {
+    val replaced = patternsForMarkdown.keySet.fold(input) {
       case (acc, pattern) =>
-        acc.replaceAll(pattern, patterns.getOrElse(pattern, ""))
+        acc.replaceAll(pattern, patternsForMarkdown.getOrElse(pattern, ""))
     }
     removeDuplicateSpaces(replaced).trim
   }
+
+  // Used for word count
+  def removeFormattingInLine(input: String): String =
+    removeDuplicateSpaces(patternsForPlaintext.fold(input) {
+      case (acc, pattern) => acc.replaceAll(pattern, "")
+    }).trim
 
   def removeDuplicateSpaces(input: String): String =
     repeatUntilSettled(input, _.replaceAll("  ", " "))

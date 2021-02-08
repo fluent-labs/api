@@ -3,10 +3,32 @@ package com.foreignlanguagereader.content.util
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Json, Reads}
 
+import java.io.{BufferedReader, InputStreamReader}
+import java.util.stream.Collectors
 import scala.util.{Failure, Success, Try}
 
 object ContentFileLoader {
   val logger: Logger = Logger(this.getClass)
+
+  def loadResourceFile(path: String): String = {
+    Try {
+      val file = this.getClass
+        .getResourceAsStream(path)
+      val parsed = new BufferedReader(new InputStreamReader(file))
+        .lines()
+        .collect(Collectors.joining("\n"))
+      file.close()
+      parsed
+    } match {
+      case Success(result) => result
+      case Failure(exception) =>
+        logger.info(
+          s"Failed to load content in $path: ${exception.getMessage}",
+          exception
+        )
+        throw exception
+    }
+  }
 
   /**
     * Loads a json file from the path, or fails trying.
@@ -19,29 +41,14 @@ object ContentFileLoader {
     * @return
     */
   def loadJsonResourceFile[T](path: String)(implicit rds: Reads[T]): T = {
-    Try {
-      val file = this.getClass
-        .getResourceAsStream(path)
-      val parsed = Json.parse(file).validate[T]
-      file.close()
-      parsed
-    } match {
-      case Success(result) =>
-        result match {
-          case JsSuccess(content, _) =>
-            logger.info(s"Successfully loaded content from $path")
-            content
-          case JsError(errors) =>
-            val error = s"Failed to parse content in $path: $errors"
-            logger.info(error)
-            throw new IllegalStateException(error)
-        }
-      case Failure(exception) =>
-        logger.info(
-          s"Failed to load content in $path: ${exception.getMessage}",
-          exception
-        )
-        throw exception
+    Json.parse(loadResourceFile(path)).validate[T] match {
+      case JsSuccess(content, _) =>
+        logger.info(s"Successfully loaded content from $path")
+        content
+      case JsError(errors) =>
+        val error = s"Failed to parse content in $path: $errors"
+        logger.info(error)
+        throw new IllegalStateException(error)
     }
   }
 }
