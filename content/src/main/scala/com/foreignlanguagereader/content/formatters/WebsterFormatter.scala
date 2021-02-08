@@ -24,13 +24,20 @@ object WebsterFormatter extends Formatter {
       "\\{\\/inf\\}"
     )
 
-      "\\{b\\}" -> FormattingTags.bold,
-      "\\{\\\\\\/b\\}" -> FormattingTags.bold,
-      "\\{it\\}" -> FormattingTags.italic,
-      "\\{\\\\\\/it\\}" -> FormattingTags.italic,
-      "\\{\\/it\\}" -> FormattingTags.italic,
+  val captureGroupAllUntilBracket = "([^\\\\{]*)"
+
+  val boldOpeningTag = "\\{b\\}" // {b}
+  val boldClosingTag = "\\{\\\\\\/b\\}" // {/b}
+
+  val italicOpeningTag = "\\{it\\}" // {it}
+  val italicClosingTagOne = "\\{\\/it\\}" // {/it}
+  val italicClosingTagTwo = "\\{\\\\\\/it\\}" // {\/it}
+
   override val replacementPatterns: ListMap[String, String] =
     ListMap(
+      s"$boldOpeningTag$captureGroupAllUntilBracket$boldClosingTag" -> s"${FormattingTags.bold}$$1${FormattingTags.bold}",
+      s"$italicOpeningTag$captureGroupAllUntilBracket$italicClosingTagOne" -> s"${FormattingTags.italic}$$1${FormattingTags.italic}",
+      s"$italicOpeningTag$captureGroupAllUntilBracket$italicClosingTagTwo" -> s"${FormattingTags.italic}$$1${FormattingTags.italic}",
       "\\{ldquo\\}" -> "\"",
       "\\{rdquo\\}" -> "\""
     )
