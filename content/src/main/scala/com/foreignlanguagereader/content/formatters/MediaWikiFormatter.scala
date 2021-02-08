@@ -3,7 +3,9 @@ package com.foreignlanguagereader.content.formatters
 import scala.collection.immutable.ListMap
 
 object MediaWikiFormatter extends Formatter {
-  override val removalPatterns: Set[String] = Set("#\n")
+  val squareOpenBracket = "\\["
+  val squareCloseBracket = "\\]"
+  val anythingButCloseBracket = s"[^$squareCloseBracket]+"
 
   def nEqualSigns(n: Int): String = s"={$n}"
   val optionalWhitespace = "[ ]*"
@@ -29,6 +31,10 @@ object MediaWikiFormatter extends Formatter {
       headerPattern(3) -> s"${FormattingTags.levelThreeHeading} $$1",
       headerPattern(2) -> s"${FormattingTags.levelTwoHeading} $$1",
       headerPattern(1) -> s"${FormattingTags.levelOneHeading} $$1",
-      "----" -> FormattingTags.horizontalRule
+      "----" -> FormattingTags.horizontalRule,
+      s"$squareOpenBracket${squareOpenBracket}Category$anythingButCloseBracket$squareCloseBracket$squareCloseBracket" -> "",
+      s"$squareOpenBracket$squareOpenBracket($anythingButCloseBracket)$squareCloseBracket$squareCloseBracket" -> "$1" // Generic links, [[link]] => link
     )
+
+  override val removalPatterns: Set[String] = Set()
 }
