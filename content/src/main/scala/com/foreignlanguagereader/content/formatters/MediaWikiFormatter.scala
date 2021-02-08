@@ -9,12 +9,12 @@ object MediaWikiFormatter extends Formatter {
       "'''''" -> FormattingTags.boldAndItalic,
       "'''" -> FormattingTags.bold,
       "''" -> FormattingTags.italic,
-      "=".repeat(6) -> "#".repeat(6),
-      "=".repeat(5) -> "#".repeat(5),
-      "=".repeat(4) -> "#".repeat(4),
-      "=".repeat(3) -> "#".repeat(3),
-      "=".repeat(2) -> "#".repeat(2),
-      "=".repeat(1) -> "#".repeat(1),
+      "=".repeat(6) -> FormattingTags.levelSixHeading,
+      "=".repeat(5) -> FormattingTags.levelFiveHeading,
+      "=".repeat(4) -> FormattingTags.levelFourHeading,
+      "=".repeat(3) -> FormattingTags.levelThreeHeading,
+      "=".repeat(2) -> FormattingTags.levelTwoHeading,
+      "=".repeat(1) -> FormattingTags.levelOneHeading,
       "----" -> "---"
     )
 }
