@@ -33,7 +33,13 @@ object MediaWikiFormatter extends Formatter {
       headerPattern(1) -> s"${FormattingTags.levelOneHeading} $$1",
       "----" -> FormattingTags.horizontalRule,
       s"$squareOpenBracket${squareOpenBracket}Category$anythingButCloseBracket$squareCloseBracket$squareCloseBracket" -> "",
-      s"$squareOpenBracket$squareOpenBracket($anythingButCloseBracket)$squareCloseBracket$squareCloseBracket" -> "$1" // Generic links, [[link]] => link
+      s"$squareOpenBracket$squareOpenBracket($anythingButCloseBracket)$squareCloseBracket$squareCloseBracket" -> "$1", // Generic links, [[link]] => link
+      "<u>" -> FormattingTags.underlineOpen,
+      "</u>" -> FormattingTags.underlineClose,
+      "<s>" -> FormattingTags.strikethrough,
+      "</s>" -> FormattingTags.strikethrough,
+      "<del>" -> FormattingTags.strikethrough,
+      "</del>" -> FormattingTags.strikethrough
     )
 
   override val removalPatterns: Set[String] = Set()

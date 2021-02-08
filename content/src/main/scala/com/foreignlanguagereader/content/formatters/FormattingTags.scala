@@ -5,6 +5,7 @@ object FormattingTags {
   val italic = "*"
   val bold = "**"
   val boldAndItalic = "***"
+  val strikethrough = "~~"
 
   // Headings
   val levelOneHeading: String = "#".repeat(1)
@@ -15,4 +16,8 @@ object FormattingTags {
   val levelSixHeading: String = "#".repeat(6)
 
   val horizontalRule = "---"
+
+  // HTML type tags
+  val underlineOpen = "<ins>"
+  val underlineClose = "</ins>"
 }
