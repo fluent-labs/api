@@ -1,0 +1,333 @@
+{{also|Dictionary}}
+==English==
+{{wp|dab=Dictionary (disambiguation)|Dictionary}}
+
+===Alternative forms===
+* {{alter|en|dictionnary||obsolete}}
+
+===Etymology===
+{{root|en|ine-pro|*deyḱ-}}
+Borrowed from {{bor|en|ML.|dictiōnārium}}, from {{der|en|la|dictiōnārius}}, from {{m|la|dictiō||speaking}}, from {{m|la|dictus}}, perfect past participle of {{m|la|dīcō||speak}} + {{m|la|-ārium||room, place}}.
+
+===Pronunciation===
+* {{a|RP}} {{IPA|en|/ˈdɪkʃ(ə)n(ə)ɹi/}}
+* {{a|GenAm|Canada}} {{enPR|dĭk'shə-nĕr-ē}}, {{IPA|en|/ˈdɪkʃəˌnɛɹi/}}
+* {{audio|en|en-us-dictionary.ogg|Audio (US, California)}}
+* {{audio|en|en-uk-dictionary.ogg|Audio (UK)}}
+* {{hyphenation|en|dic|tion|ary}}
+* {{rhymes|en|ɪkʃənɛəɹi}}
+
+===Noun===
+{{en-noun}}
+
+# A [[reference work]] with a list of [[word]]s from one or more languages, normally ordered [[alphabetical]]ly, explaining each word's meaning, and sometimes containing information on its etymology, pronunciation, usage, translations, and other data.
+#: {{ux|en|If you want to know the meaning of a word, look it up in the '''dictionary'''.}}
+#* {{quote-book|en|year=1988|author=Andrew Radford|title=Transformational grammar: a first course|location=Cambridge, UK|publisher=Cambridge University Press|page=339|chapter=7|passage=But what other kind(s) of syntactic information should be included in Lexical Entries? Traditional '''dictionaries''' such as Hornby's (1974) ''Oxford Advanced Learner's '''Dictionary''' of Current English'' include not only ''categorial'' information in their entries, but also information about the range of ''Complements'' which a given item permits (this information is represented by the use of a number/letter code).}}
+#: {{syn|en|wordbook|Thesaurus:dictionary}}
+# {{lb|en|preceded by {{m|en|the}}}} A [[synchronic]] dictionary of a standardised language held to only contain words that are properly part of the language.
+#* {{quote-book|1=en|year=1930|author=Norman Lindsay|authorlink=Norman Lindsay|title=Redheap|publisher=Ure Smith|location=Sydney|year_published=1965|page=106|passage=`Look it up in '''the dictionary''', and what do you find?'}}
+#* {{quote-book|1=en|year=2019|author=John Hughes|title=Life Pre-Intermediate Student's Book|publisher=National Geographic Learning|page=188|passage=By 1986 the name Walkman was included  as a word in '''the''' English '''dictionary'''.}}
+# {{lb|en|by extension}} Any work that has a [[list]] of [[material]] organized alphabetically; e.g., [[biographic]]al dictionary, [[encyclopedic]] dictionary.
+# {{lb|en|computing}} An [[associative array]], a data structure where each value is referenced by a particular key, analogous to words and definitions in a physical dictionary.
+#: {{hyponyms|en|hash table}}
+#* {{quote-book|en|year=2011|author=Jon Galloway, Phil Haack, Brad Wilson|title=Professional ASP.NET MVC 3|passage=User calls <code>RouteCollection.GetVirtualPath</code>, passing in a <code>RequestContext</code>, a '''dictionary''' of values, and an optional route name used to select the correct route to generate the URL.}}
+
+====Derived terms====
+{{der4|en
+|dicktionary
+|dictionaric
+|dictionarily
+|encyclopedic dictionary
+|explanatory dictionary
+|fictionary
+|pedagogical dictionary
+|Pictionary
+|pocket dictionary
+|pronunciation dictionary
+|reverse dictionary
+|rhyming dictionary
+|subdictionary
+|translating dictionary
+|translationary
+|visual dictionary
+}}
+
+====Related terms====
+* {{l|en|diction}}
+
+====Translations====
+{{trans-top|publication that explains the meanings of an ordered list of words}}
+* Abaza: {{t|abq|ажвар}}
+* Abkhaz: {{t|ab|ажәар}}
+* Adyghe: {{t|ady|гущыӏалъ}}
+* Afrikaans: {{t+|af|woordeboek}}
+* Akan: {{t-needed|ak}}
+* Albanian: {{t+|sq|fjalor|m}}
+* Ambonese Malay: {{t|abs|kamus}}
+* American Sign Language: {{t|ase|D@NearPalm-PalmDown-OpenB@CenterChesthigh-PalmUp CirclesMidlineContact}}
+* Amharic: {{t|am|መዝገበ ቃላት}}
+* Arabic: {{t+|ar|قَامُوس|m}}, {{t+|ar|مُعْجَم|m}}
+* Aragonese: {{t|an|diccionario|m}}
+* Armenian: {{t+|hy|բառարան}}
+*: Old Armenian: {{t|xcl|բառգիրք}}
+* Assamese: {{t|as|অভিধান}}
+* Asturian: {{t|ast|diccionariu|m}}
+* Avar: {{t|av|словарь}}, {{t|av|къамус}} {{q|dated}}
+* Aymara: {{t|ay|aru pirwa}}
+* Azerbaijani: {{t+|az|sözlük}}, {{t+|az|lüğət}}
+* Bashkir: {{t|ba|һүҙлек}}
+* Basque: {{t+|eu|hiztegi}}
+* Belarusian: {{t|be|сло́ўнік|m}}
+* Bengali: {{t+|bn|অভিধান}}, {{t|bn|ডিকশনারী}}, {{t|bn|ডিকশনারি}}
+* Bikol Central: {{t|bcl|diksyunaryo}}
+* Breton: {{t+|br|geriadur|m}}
+* Bulgarian: {{t+|bg|ре́чник|m}}
+* Burmese: {{t+|my|အဘိဓာန်}}
+* Buryat: {{t|bua|толи}}
+* Catalan: {{t+|ca|diccionari|m}}
+* Chakma: {{t|ccp|𑄇𑄧𑄙𑄖𑄢|tr=kadhātārā}}
+* Chechen: {{t|ce|словарь}}, {{t|ce|дошам}}, {{t|ce|лугӏат}}
+* Cherokee: {{t|chr|ᏗᏕᏠᏆᏍᏙᏗ}}
+* Chinese:
+*: Cantonese: {{t|yue|字典|tr=zi6 din2}}, {{t|yue|詞典}}, {{t|yue|词典|tr=ci4 din2}}
+*: Dungan: {{t|dng|хуадян}}, {{t|dng|цыдян}}, {{t|dng|зыдян}} {{q|character dictionary}}
+*: Mandarin: {{t+|cmn|字典|tr=zìdiǎn}} {{q|character dictionary}}, {{t+|cmn|詞典}}, {{t+|cmn|词典|tr=cídiǎn}}, {{t+|cmn|辭典}}, {{t+|cmn|辞典|tr=cídiǎn}} {{q|alternative forms}}
+*: Min Nan: {{t+|nan|字典|tr=lī-tián / jī-tián}}, {{t|nan|詞典}}, {{t|nan|词典|tr=sû-tián}}
+*: Wu: {{t|wuu|字典|tr=zr ti}}, {{t|wuu|詞典}}, {{t|wuu|词典|tr=zr ti}}
+* Chukchi: {{t|ckt|ысловар|tr=yslovar}}, {{t|ckt|вэтгавкаԓекаԓ|tr=vėtgavkaḷekaḷ}}
+* Chuvash: {{t|cv|словарь}}, {{t|cv|сӑмахсен кӗнеки}}, {{t|cv|сӑмахсар}}
+* Cornish: {{t|kw|gerlyver|m}}
+* Crimean Tatar: {{t|crh|luğat}}
+* Czech: {{t+|cs|slovník|m}}
+* Danish: {{t+|da|ordbog|c}}
+* Dargwa: {{t|dar|словарь}}
+* Dhivehi: {{t|dv|ބަސްފޮތް}}
+* Dutch: {{t+|nl|woordenboek|n}}, {{t+|nl|dictionaire|m}} {{q|formal}}
+* Dzongkha: {{t|dz|ཚིག་མཛོད}}
+* Eastern Mari: {{t|chm|мутер}}, {{t|chm|словарь}}
+* Erzya: {{t|myv|валкс}}
+* Esperanto: {{t+|eo|vortaro}}
+* Estonian: {{t+|et|sõnaraamat}}, {{t+|et|sõnastik}}
+* Evenki: {{t|evn|турэ̄рук}}
+* Faroese: {{t+|fo|orðabók|f}}
+* Finnish: {{t+|fi|sanakirja}}
+* Franco-Provençal: {{t|frp|dikchonéro}}
+* French: {{t+|fr|dictionnaire|m}}, {{t+|fr|dico|m}} {{q|informal}}
+*: Middle French: {{t|frm|dictionnaire|m}}
+* Fula:
+:* Adlam: {{t|ff|𞤧𞤢𞤺𞥆𞤭𞤼𞤮𞤪𞤣𞤫}}
+:* Latin: {{t|ff|saggitorde}}
+* Gagauz: {{t|gag|sözlük}}, {{t|gag|laflık}}
+* Galician: {{t+|gl|dicionario|m}}
+* Georgian: {{t+|ka|ლექსიკონი}}
+* German: {{t+|de|Wörterbuch|n}}, {{t+|de|Diktionär|n|m}}, {{t|de|Dictionnaire|m|n}}
+* Greek: {{t+|el|λεξικό|n}}
+*: Ancient: {{t|grc|λέξεις|f-p}}, {{t|grc|λεξῐκόν|n}}, {{t|grc|γλῶσσαι|f-p}}
+* Greenlandic: {{t+|kl|ordbogi}}
+* Guerrero Amuzgo: {{t|amu|tzoⁿ 'tzítyui' jñ'o}}
+* Gujarati: {{t|gu|શબ્દકોશ}}
+* Haitian Creole: {{t|ht|diksyonè}}
+* Hausa: {{t+|ha|ƙamus|m}}
+* Hawaiian: {{t|haw|puke wehewehe ‘ōlelo}}
+* Hebrew: {{t+|he|מילון|m|tr=milón|alt=מילון \ מִלּוֹן}}
+* Hiligaynon: {{t|hil|diksonaryo}}, {{t|hil|kapulungan}}
+* Hindi: {{t+|hi|शब्दकोश|m}}, {{t+|hi|शब्दकोष|m}}, {{t+|hi|कोश|m}}, {{t|hi|डिक्शनरी}}, {{t+|hi|डिश्कनरी|f}}, {{t+|hi|शब्दसंग्रह|m}}, {{t+|hi|शब्दवारिधि|m}}, {{t+|hi|अभिधान|m}}, {{t+|hi|अभिधानमाला|m}}, {{t|hi|लुग़त|m}}, {{t|hi|लुग़ात|m}}, {{t+|hi|लुगत|m}}, {{t+|hi|लुगात|m}}, {{t+|hi|फरहंग|m}}, {{t+|hi|निघंटु|m}}, {{t|hi|क़ामूस|m}}
+* Hopi: {{t|hop|lavaytutuveni}}
+* Hungarian: {{t+|hu|szótár}}
+* Hunsrik: {{t|hrx|Werterbuch|n}}
+* Icelandic: {{t+|is|orðabók|f}}
+* Ido: {{t+|io|vortolibro}}
+* Igbo: {{t|ig|nkowaokwu}}
+* Indonesian: {{t+|id|kamus}}
+* Ingush: {{t|inh|дошлорг}}
+* Interlingua: {{t+|ia|dictionario}}
+* Interlingue: {{t+|ie|dictionarium}}, {{t|ie|lexico}}
+* Inuktitut: {{t|iu|ᕿᒥᕐᕈᐊᑦ ᐅᓐᓂᖅᑐᖅ ᒥᑦᓯ ᑐᑭᐊ}}
+* Irish: {{t+|ga|foclóir|m}}
+* Italian: {{t+|it|dizionario|m}}, {{t+|it|vocabolario|m}}
+* Japanese: {{t+|ja|辞書|tr=じしょ, jisho}}, {{t+|ja|字書|tr=じしょ, jisho}}, {{t+|ja|辞典|tr=じてん, jiten}}, {{t+|ja|字典|tr=じてん, jiten}} {{q|character dictionary}}, {{t+|ja|字引|tr=じびき, jibiki}} {{q|character dictionary}}
+* Javanese: {{t|jv|bausastra}}
+* Kabardian: {{t|kbd|словарь}}, {{t|kbd|слъэвар}}, {{t|kbd|псалъалъэ}}
+* Kalmyk: {{t|xal|толь}}
+* Kannada: {{t+|kn|ನಿಘಂಟು}}, {{t+|kn|ಅರ್ಥಕೋಶ}}
+* Kapampangan: {{t|pam|talabaldugan}}
+* Karachay-Balkar: {{t|krc|сёзлюк}}
+* Karakalpak: {{t|kaa|soʻzlik}}
+* Karelian: {{t|krl|šanalo}}
+* Kashubian: {{t|csb|słowôrz|m}}
+* Kazakh: {{t+|kk|сөздік}}
+* Khakas: {{t|kjh|сӧстік}}
+* Khmer: {{t+|km|វចនានុក្រម}}, {{t+|km|បទានុក្រម}}
+* Kikuyu: {{t|ki|kamusi}}
+* Komi-Permyak: {{t|koi|кывчукӧр}}
+* Korean: {{t+|ko|사전}} ({{t+|ko|辭典}}), {{t+|ko|자서}} ({{t+|ko|字書}}), {{t+|ko|자전}} ({{t+|ko|字典}}) {{q|character dictionary}}
+* Kumyk: {{t|kum|сёзлюк|tr=syozlyuk}}
+* Kurdish:
+*: Central Kurdish: {{t+|ckb|فەرھەنگ}}, {{t|ckb|وْشەنامە}}, {{t|ckb|وْشەدان}}, {{t|ckb|قامووس}}
+*: Northern Kurdish: {{t+|kmr|ferheng|f}}, {{t+|kmr|peyvname|f}}, {{t+|kmr|bêjename|f}}, {{t+|kmr|qamûs|f}}
+* Kven: {{t|fkv|sanakirja}}
+* Kyrgyz: {{t+|ky|сөздүк}}
+* Lak: {{t|lbe|словарь}}
+* Lao: {{t+|lo|ວັດຈະນານຸກົມ}} <!-- {{t|lo|ປະທານຸກົມ}}) -->
+* Latgalian: {{t|ltg|vuordineica|f}}
+* Latin: {{t|la|dictiōnārium|n}}
+* Latvian: {{t+|lv|vārdnīca|f}}
+* Lezgi: {{t|lez|гафарган}}
+{{trans-mid}}
+* Ligurian: {{t|lij|dizionario|m}}
+* Limburgish: {{t+|li|diksjenaer}}, {{t+|li|waordebook}}
+* Lithuanian: {{t+|lt|žodynas|m}}
+* Low German:
+*: German Low German: {{t|nds-de|Wöörbook|n}}, {{t|nds-de|Woordenbook|n}}
+* Luhya: {{t|luy|ekamusi}}
+* Lule Sami: {{t|smj|báhkogirjje}}
+* Luxembourgish: {{t+|lb|Dictionnaire|m}}, {{t+|lb|Wierderbuch|n}}
+* Macedonian: {{t+|mk|ре́чник|m}}
+* Malagasy: {{t+|mg|rakibolana}}
+* Malay: {{t+|ms|kamus}}
+* Malayalam: {{t+|ml|നിഘണ്ടു}}
+* Maltese: {{t+|mt|dizzjunarju|m}}
+* Manchu: {{t|mnc|ᠪᡠᠯᡝᡴᡠ ᠪᡳᡨ᠌ᡥᡝ}}, {{t|mnc|ᡥᡝᡵᡤᡝᠨ ᡴᠣᠣᠯᡳ ᠪᡳᡨ᠌ᡥᡝ}}
+* Manx: {{t|gv|fockleyr|m}}
+* Maori: {{t|mi|pukapuka taki kupu}}
+* Marathi: {{t|mr|शब्दकोष|m}}, {{t|mr|विश्वकोष|m}}
+* Mauritian Creole: {{t|mfe|diksioner}}
+* Meru: {{t|mer|kamusi}}
+* Middle Persian: {{t|pal|𐭯𐭥𐭧𐭭𐭢|tr=frahang}}
+* Moksha: {{t|mdf|валкс}}
+* Mongolian:
+*: Cyrillic: {{t+|mn|толь бичиг}}, {{t+|mn|толь}}
+*: Mongolian: {{t|mn|ᠲᠣᠯᠢ ᠪᠢᠴᠢᠭ᠋}}, {{t|mn|ᠲᠣᠯᠢ}}
+* Nahuatl: {{t+|nah|tlahtōltecpantiliztli}}
+* Navajo: {{t|nv|naaltsoos saad bee siʼánígíí}}
+* Neapolitan: {{t|nap|dezziunario}}
+* Nenets:
+*: Tundra Nenets: {{t|yrk|словарь}}
+* Nepali: {{t+|ne|शब्दकोश}}
+* Nogai: {{t|nog|соьзлик}}
+* Norman: {{t|nrf|dictionnaithe}} {{q|Jersey}}
+* Northern Sami: {{t|se|sátnegirji}}
+* Norwegian:
+*: Bokmål: {{t+|nb|ordbok|m|f}}
+*: Nynorsk: {{t+|nn|ordbok|f}}
+* Novial: {{t|nov|lexike}}
+* Occitan: {{t+|oc|diccionari|m}}
+* Ojibwe: {{t|oj|ikidowini-mazina'igan}}
+* Oriya: {{t|or|ଅଭିଧାନ}}
+* Oromo: {{t|om|[[galmee jechootaa]]}}
+* Ossetian:
+*: Digor: {{t|os|дзурдуат}}
+*: Iron: {{t|os|дзырдуат}}
+* Papiamentu: {{t|pap|dikshonario}}
+* Pashto: {{t+|ps|قاموس|tr=qâmos}}, {{t|ps|وييپانګه|f|tr=wëyipânga}}
+* Persian: {{t+|fa|لغت‌نامه|tr=loğat-nâme}}, {{t+|fa|فرهنگ|tr=farhang}}, {{t+|fa|واژه‌نامه|tr=vâže-nâme}}, {{t+|fa|لغت|tr=loğat}}, {{t+|fa|قاموس|tr=qâmus}}
+* Plautdietsch: {{t|pdt|Wieedabuak|n}}
+* Polish: {{t+|pl|słownik|m-in}}, {{t+|pl|leksykon|m}}
+* Portuguese: {{t+|pt|dicionário|m}}
+* Punjabi: {{t+|pa|ਸ਼ਬਦਕੋਸ਼}}, {{t|pa|ਡਿਕਸ਼ਨਰੀ}}
+* Quechua: {{t|qu|simi qullqa}}
+* Romanian: {{t+|ro|dicționar|n}}
+* Romansch: {{t|rm|pledari|m}}, {{t|rm|dicziunari|m}}, {{t|rm|vocabulari|m}}, {{t|rm|glossari|m}}
+* Russian: {{t+|ru|слова́рь|m}}
+* Rusyn: {{t|rue|сло́вник|m}}
+* Rwanda-Rundi: {{t-needed|rw}}
+* Samogitian: {{t|sgs|žuodīns}}
+* Sanskrit: {{t+|sa|शब्दकोश|m}}, {{t+|sa|निघण्टु|m}}, {{t+|sa|अभिधान|n}}, {{t+|sa|शब्दसंग्रह|m}}
+* Sardinian: {{t|sc|dizionariu|m}}
+* Scots: {{t|sco|dictionar}}
+* Scottish Gaelic: {{t|gd|faclair|m}}
+* Serbo-Croatian:
+*: Cyrillic: {{t|sh|ре̑чнӣк|m}}, {{t|sh|рје̑чнӣк|m}}
+*: Roman: {{t+|sh|rȇčnīk|m}}, {{t+|sh|rjȇčnīk|m}}
+* Shona: {{t|sn|duramahwi}}, {{t|sn|duramazwi}}
+* Shor: {{t|cjs|сӧстӱк|tr=söstük}}
+* Sicilian: {{t+|scn|dizziunariu|m}}, {{t|scn|vocabbulariu|m}}
+* Silesian: {{t|szl|dykcjůnoř|m}}
+* Sindhi: {{t+check|sd|لغت|alt=لُغَتُ}}<!-- links didn't work for Sindhi-->, {{t|sd|कोश|tr=koś}}
+* Sinhalese: {{t|si|ශබ්ද කෝෂය}}, {{t|si|ශබ්දකෝෂය}}
+* Skolt Sami: {{t|sms|sääʹnnǩerjj}}
+* Slovak: {{t+|sk|slovník|m}}
+* Slovene: {{t+|sl|slovar|m}}
+* Somali: {{t+|so|qaamuus}}, {{t|so|abwan-ka}}
+* Sorbian:
+*: Lower Sorbian: {{t|dsb|słownik|m}}
+*: Upper Sorbian: {{t|hsb|słownik|m}}
+* Sotho: {{t+|st|bukantswe}}
+* Southern Altai: {{t|alt|сӧзлик}}
+* Southern Ohlone: {{t|css|riica pappel}}
+* Southern Sami: {{t|sma|baakoegærja}}
+* Spanish: {{t+|es|diccionario|m}}
+* Sranan Tongo: {{t|srn|wortubuku}}
+* Swahili: {{t+|sw|kamusi|c5}}
+* Swedish: {{t+|sv|ordbok|c}}, {{t+|sv|lexikon|n}}
+* Tabasaran: {{t|tab|словарь}}
+* Tagalog: {{t+|tl|talatinigan}}, {{t+|tl|diksyunaryo}}, {{t+|tl|diksiyonaryo}}
+* Tajik: {{t+|tg|луғат}}, {{t+|tg|фарҳанг}}, {{t|tg|қомус}}
+* Tamil: {{t+|ta|அகரமுதலி}}
+* Tatar: {{t+|tt|сүзлек}}
+* Telugu: {{t+|te|నిఘంటువు}}, {{t+|te|పదకోశము}}
+* Thai: {{t+|th|พจนานุกรม}}, {{t|th|ดิกชันนารี}}, {{t+|th|ดิก}}, {{t+|th|ปทานุกรม}}
+* Tibetan: {{t|bo|ཚིག་མཛོད}}
+* Tigrinya: {{t|ti|መዝገበ ቃላት}}
+* Tok Pisin: {{t+|tpi|dikseneri}}
+* Turkish: {{t+|tr|sözlük}}, {{t+|tr|lügat}} {{q|obsolete}}
+* Turkmen: {{t|tk|sözlük}}
+* Tuvan: {{t|tyv|словарь}}, {{t|tyv|сөстүк}}
+* Udmurt: {{t|udm|словарь}}, {{t|udm|кыллюкам}}, {{t|udm|кылсузьет}}
+* Ukrainian: {{t+|uk|словни́к|m}}
+* Urdu: {{t+|ur|لغت|f|tr=luġat}}, {{t|ur|ڈکشنری|tr=ḍikśanrī}}, {{t|ur|فرہنگ|tr=farhang}}, {{t|ur|شبدکوش|m|tr=śabdkoś}}, {{t+|ur|قاموس|m|tr=qāmūs}}
+* Uyghur: {{t+|ug|لۇغەت}}
+* Uzbek: {{t+|uz|lugʻat}}, {{t+|uz|qomus}}
+*: Cyrillic: {{t+|uz|луғат}}
+* Venda: {{t|ve|ṱhalusamaipfi}}
+* Veps: {{t|vep|vajehnik}}
+* Vietnamese: {{t+|vi|từ điển}}, {{t+|vi|tự điển}} ({{t+|vi|字典}}) {{q|dated, character dictionary}}
+* Volapük: {{t+|vo|vödabuk}}, {{t|vo|vödasbuk}} {{q|older term, now obsolete; compare {{l|de|Wörterbuch}}}}
+* Võro: {{t|vro|sõnaraamat}}
+* Wallisian: {{t|wls|tikisionalio}}
+* Walloon: {{t+|wa|motî}}
+* Welsh: {{t+|cy|geiriadur|m}}
+* West Frisian: {{t+|fy|wurdboek|n}}
+* Western Cham: {{t|cja|اينآلآڠ}}
+* Wolof: {{t|wo|diksoneer}}
+* Xhosa: {{t|xh|idikshinari|c5}}
+* Yakut: {{t|sah|тылдьыт}}
+* Yiddish: {{t+|yi|ווערטערבוך|n}}
+* Yoruba: {{t|yo|àtúmọ̀-èdè}}
+* Zazaki: {{t|zza|vatebend|m}}, {{t|zza|ferheng}}
+* Zhuang: {{t|za|sawloih}}
+* Zulu: {{t|zu|isichazimazwi|c4}}, {{t|zu|idikishaneli}}
+{{trans-bottom}}
+
+{{trans-see|associative array}}
+
+{{checktrans-top}}
+* Low German:
+*: German Low German: {{t-check|nds-de|Weerderbook|n}}
+{{trans-mid}}
+{{trans-bottom}}
+
+===See also===
+* {{l|en|encyclopedia}}
+* {{l|en|lexicon}}
+* {{l|en|thesaurus}}
+* {{l|en|vocabulary}}
+* {{l|en|wordlist}}
+
+===Verb===
+{{en-verb}}
+
+# {{lb|en|transitive}} To look up in a dictionary.
+# {{lb|en|transitive}} To add to a dictionary.
+#* {{quote-book|en|year=1866|author=William Henry Ward|title=The international day, night, and fog signal telegraph|page=12|passage=By a reference to the following '''dictionaried''' abbreviations, the simplicity and harmony of each sentence will be manifestly apparent; although it does not embrace everything, and could not, as it would be far too voluminous for general use.}}
+#* {{quote-book|en|year=2001|title=The Michigan Alumnus|page=25|passage=Should I use a word that a lot of people use but isn't in the dictionary? Uncle Phil would rather get a root canal than say he was scrapbooking, because the word isn't '''dictionaried'''.}}
+# {{lb|en|intransitive|rare}} To [[compile]] a dictionary.
+#* {{quote-journal|en|year=1864|magazine=Blackwood's Edinburgh Magazine|volume=96|page=334|passage=They [dictionary-makers] may have had their romance at home — may have been crossed in love, and thence driven to '''dictionarying'''; may have been involved in domestic tragedies — who can say?}}
+
+===Further reading===
+* {{R:OneLook}}
+
+===Anagrams===
+* {{anagrams|en|a=acdiinorty|indicatory}}
+
+[[Category:en:Dictionaries]]
