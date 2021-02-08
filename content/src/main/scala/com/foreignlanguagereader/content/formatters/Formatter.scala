@@ -1,5 +1,7 @@
 package com.foreignlanguagereader.content.formatters
 
+import scala.collection.immutable.ListMap
+
 /**
   * Motivation:
   * Many content sources include their own formatting.
@@ -9,12 +11,14 @@ package com.foreignlanguagereader.content.formatters
   */
 trait Formatter {
   val removalPatterns: Set[String]
-  val replacementPatterns: Map[String, String]
+  val replacementPatterns: ListMap[String, String]
 
   val punctuationMatches = "[,;]+"
 
-  lazy val patternsForMarkdown: Map[String, String] =
-    removalPatterns.map(pattern => pattern -> "").toMap ++ replacementPatterns
+  lazy val patternsForMarkdown: ListMap[String, String] =
+    ListMap(
+      removalPatterns.map(pattern => pattern -> "").toList: _*
+    ) ++ replacementPatterns
 
   lazy val patternsForPlaintext: Set[String] =
     removalPatterns ++ replacementPatterns.keySet

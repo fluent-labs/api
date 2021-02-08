@@ -1,11 +1,13 @@
 package com.foreignlanguagereader.content.formatters
 
+import scala.collection.immutable.ListMap
+
 object MediaWikiFormatter extends Formatter {
   override val removalPatterns: Set[String] = Set("#\n")
 
   // Order matters here, use the most specific patterns before more general ones
-  override val replacementPatterns: Map[String, String] =
-    Map(
+  override val replacementPatterns: ListMap[String, String] =
+    ListMap(
       "'''''" -> FormattingTags.boldAndItalic,
       "'''" -> FormattingTags.bold,
       "''" -> FormattingTags.italic,

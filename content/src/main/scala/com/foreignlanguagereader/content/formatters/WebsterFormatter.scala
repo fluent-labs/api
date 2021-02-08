@@ -2,6 +2,8 @@ package com.foreignlanguagereader.content.formatters
 
 import play.api.Logger
 
+import scala.collection.immutable.ListMap
+
 object WebsterFormatter extends Formatter {
   val logger: Logger = Logger(this.getClass)
 
@@ -22,13 +24,13 @@ object WebsterFormatter extends Formatter {
       "\\{\\/inf\\}"
     )
 
-  override val replacementPatterns: Map[String, String] =
-    Map(
       "\\{b\\}" -> FormattingTags.bold,
       "\\{\\\\\\/b\\}" -> FormattingTags.bold,
       "\\{it\\}" -> FormattingTags.italic,
       "\\{\\\\\\/it\\}" -> FormattingTags.italic,
       "\\{\\/it\\}" -> FormattingTags.italic,
+  override val replacementPatterns: ListMap[String, String] =
+    ListMap(
       "\\{ldquo\\}" -> "\"",
       "\\{rdquo\\}" -> "\""
     )
