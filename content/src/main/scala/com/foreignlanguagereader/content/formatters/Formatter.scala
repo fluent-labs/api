@@ -11,11 +11,6 @@ trait Formatter {
   val removalPatterns: Set[String]
   val replacementPatterns: Map[String, String]
 
-  val italicsOpeningTag = "*"
-  val italicsClosingTag = "*"
-  val boldOpeningTag = "**"
-  val boldClosingTag = "**"
-
   val punctuationMatches = "[,;]+"
 
   lazy val patterns: Map[String, String] =
