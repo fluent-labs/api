@@ -42,6 +42,16 @@ object TemplateExtractor {
       .withColumnRenamed("element_at(col, 2)", "arguments")
       .sort("name")
       .as[WiktionaryTemplateInstance]
+  }
+
+  def extractTemplateCount(
+      data: Dataset[WiktionaryTemplateInstance]
+  )(implicit spark: SparkSession): Dataset[WiktionaryTemplate] = {
+    import spark.implicits._
+
+    data.groupBy("name").count().sort(col("count").desc).as[WiktionaryTemplate]
+  }
+
   val extractTemplatesFromString: String => Array[Array[String]] =
     (input: String) =>
       templateRegex.r
