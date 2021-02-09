@@ -14,6 +14,17 @@ object TemplateExtractor {
 
   val templateRegex: String =
     leftBrace + leftBrace + notPipeCaptureGroup + pipe + notRightBraceCaptureGroup + rightBrace + rightBrace
+  def extractTemplatesFromBackup(path: String, resultPath: String)(implicit
+      spark: SparkSession
+  ): Unit = {
+    val templateInstances =
+      extractTemplateInstances(loadWiktionaryDump(path)).cache()
+    templateInstances.write.csv(s"$resultPath/instances.csv")
+
+    val templates = extractTemplateCount(templateInstances)
+    templates.write.csv(s"$resultPath/templates.csv")
+  }
+
   def loadWiktionaryDump(
       path: String
   )(implicit spark: SparkSession): Dataset[WiktionaryGenericText] = {
@@ -67,3 +78,4 @@ object TemplateExtractor {
 
 case class WiktionaryGenericText(text: String)
 case class WiktionaryTemplateInstance(name: String, arguments: String)
+case class WiktionaryTemplate(name: String, count: BigInt)
