@@ -14,6 +14,28 @@ object TemplateExtractor {
 
   val templateRegex: String =
     leftBrace + leftBrace + notPipeCaptureGroup + pipe + notRightBraceCaptureGroup + rightBrace + rightBrace
+
+  val backupsBasePath =
+    "s3a://foreign-language-reader-content/definitions/wiktionary/"
+
+  val backups = Map(
+    "simple" -> "simplewiktionary-20200301-pages-meta-current.xml"
+  )
+
+  def main(args: Array[String]): Unit = {
+    implicit val spark: SparkSession = SparkSession.builder
+      .appName(s"Wiktionary Template Extractor")
+      .getOrCreate()
+
+    backups.foreach {
+      case (dictionary, path) =>
+        extractTemplatesFromBackup(
+          s"$backupsBasePath/$path",
+          s"$backupsBasePath/templates/$dictionary"
+        )
+    }
+  }
+
   def extractTemplatesFromBackup(path: String, resultPath: String)(implicit
       spark: SparkSession
   ): Unit = {
