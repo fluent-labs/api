@@ -1,5 +1,10 @@
 package com.foreignlanguagereader.jobs.definitions
 
+import com.databricks.spark.xml._
+import org.apache.spark.sql.expressions.UserDefinedFunction
+import org.apache.spark.sql.functions.{col, element_at, posexplode, udf}
+import org.apache.spark.sql.{Dataset, SparkSession}
+
 object TemplateExtractor {
   val leftBrace = "\\{"
   val rightBrace = "\\}"
@@ -21,6 +26,22 @@ object TemplateExtractor {
       .withColumnRenamed("_VALUE", "text")
       .as[WiktionaryGenericText]
   }
+
+  def extractTemplateInstances(
+      data: Dataset[WiktionaryGenericText]
+  )(implicit spark: SparkSession): Dataset[WiktionaryTemplateInstance] = {
+    import spark.implicits._
+
+    data
+      .select(posexplode(regexp_extract_templates(col("text"))))
+      .select(
+        element_at(col("col"), 1),
+        element_at(col("col"), 2)
+      ) // Columns start at 1 not 0
+      .withColumnRenamed("element_at(col, 1)", "name")
+      .withColumnRenamed("element_at(col, 2)", "arguments")
+      .sort("name")
+      .as[WiktionaryTemplateInstance]
   val extractTemplatesFromString: String => Array[Array[String]] =
     (input: String) =>
       templateRegex.r
@@ -28,4 +49,11 @@ object TemplateExtractor {
         .matchData
         .map(m => Array(m.group(1), m.group(2)))
         .toArray
+
+  val regexp_extract_templates: UserDefinedFunction = udf(
+    extractTemplatesFromString
+  )
+}
+
 case class WiktionaryGenericText(text: String)
+case class WiktionaryTemplateInstance(name: String, arguments: String)
