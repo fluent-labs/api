@@ -5,6 +5,8 @@ import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions.{col, element_at, posexplode, udf}
 import org.apache.spark.sql.{Dataset, SparkSession}
 
+import scala.util.{Failure, Success, Try}
+
 object TemplateExtractor {
   val leftBrace = "\\{"
   val rightBrace = "\\}"
@@ -90,15 +92,20 @@ object TemplateExtractor {
 
   val extractTemplatesFromString: String => Array[Array[String]] =
     (input: String) =>
-      templateRegex.r
-        .findAllIn(input)
-        .matchData
-        .map(m => {
-          val templateName = m.group(1)
-          val arguments = if (m.groupCount == 2) m.group(2) else ""
-          Array(templateName, arguments)
-        })
-        .toArray
+      Try(
+        templateRegex.r
+          .findAllIn(input)
+          .matchData
+          .map(m => {
+            val templateName = m.group(1)
+            val arguments = if (m.groupCount == 2) m.group(2) else ""
+            Array(templateName, arguments)
+          })
+          .toArray
+      ) match {
+        case Success(value) => value
+        case Failure(_)     => Array(Array("Error", input))
+      }
 
   val regexp_extract_templates: UserDefinedFunction = udf(
     extractTemplatesFromString
