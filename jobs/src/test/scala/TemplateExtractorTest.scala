@@ -25,10 +25,14 @@ class TemplateExtractorTest extends AnyFunSpec {
       |* {{hyphenation|en|dic|tion|ary}}
       |* {{rhymes|en|ɪkʃənɛəɹi}}""".stripMargin
 
-  val entryraw: WiktionaryGenericText = WiktionaryGenericText(text)
-  val data: Dataset[WiktionaryGenericText] = Seq(entryraw).toDS()
+  val textWithNoArgumentsTemplate: String = text + "\n* {{test}}"
+  val emptyText = ""
 
-  describe("it can extract templates from an entry") {
+  def getDatasetFromText(input: String): Dataset[WiktionaryGenericText] =
+    Seq(WiktionaryGenericText(input)).toDS()
+
+  describe("it can extract templates with arguments from an entry") {
+    val data = getDatasetFromText(text)
     it("can get all instances of templates with their arguments") {
       val instances =
         TemplateExtractor.extractTemplateInstances(data).cache()
@@ -41,6 +45,44 @@ class TemplateExtractorTest extends AnyFunSpec {
 
       assert(counts.count() == 6L)
       assert(counts.filter(col("count") > 1).count() == 3L)
+    }
+
+    it("can gracefully handle templates with no arguments") {}
+  }
+
+  describe("it can extract templates without arguments from an entry") {
+    val data = getDatasetFromText(textWithNoArgumentsTemplate)
+    it("can get all instances of templates with their arguments") {
+      val instances =
+        TemplateExtractor.extractTemplateInstances(data).cache()
+
+      instances.show(10)
+      assert(instances.count() == 10L)
+    }
+
+    it("can count how many times a template was used") {
+      val instances = TemplateExtractor.extractTemplateInstances(data)
+      val counts = TemplateExtractor.extractTemplateCount(instances).cache()
+
+      counts.show(7)
+      assert(counts.count() == 7L)
+      assert(counts.filter(col("count") > 1).count() == 3L)
+    }
+  }
+
+  describe("it gracefully handles empty entries") {
+    val data = getDatasetFromText(emptyText)
+    it("can get all instances of templates with their arguments") {
+      val instances =
+        TemplateExtractor.extractTemplateInstances(data).cache()
+      assert(instances.count() == 0L)
+    }
+
+    it("can count how many times a template was used") {
+      val instances = TemplateExtractor.extractTemplateInstances(data)
+      val counts = TemplateExtractor.extractTemplateCount(instances).cache()
+
+      assert(counts.count() == 0L)
     }
   }
 }
