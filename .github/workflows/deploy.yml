@@ -75,7 +75,7 @@ jobs:
 
       - name: Enforce security rules
         id: scan
-        uses: anchore/scan-action@2.0.3
+        uses: anchore/scan-action@v2.0.4
         with:
           image: "lkjaero/foreign-language-reader-api:LATEST"
           acs-report-enable: true

@@ -47,7 +47,7 @@ jobs:
       run: docker build . -t api
 
     - name: Enforce security rules
-      uses: anchore/scan-action@2.0.3
+      uses: anchore/scan-action@v2.0.4
       id: scan
       with:
         image: "api:latest"
