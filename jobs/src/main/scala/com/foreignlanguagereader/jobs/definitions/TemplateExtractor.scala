@@ -9,11 +9,14 @@ object TemplateExtractor {
   val leftBrace = "\\{"
   val rightBrace = "\\}"
   val pipe = "\\|"
-  val notPipeCaptureGroup = "([^|\\{]+)"
-  val notRightBraceCaptureGroup = "([^\\}]*)"
+  val notPipeCaptureGroup: String = "([^" + pipe + rightBrace + "]+)"
+  val notRightBraceCaptureGroup: String =
+    "(" + pipe + "[^" + rightBrace + "]*)?"
 
   val templateRegex: String =
-    leftBrace + leftBrace + notPipeCaptureGroup + pipe + notRightBraceCaptureGroup + rightBrace + rightBrace
+    leftBrace + leftBrace + notPipeCaptureGroup + notRightBraceCaptureGroup + rightBrace + rightBrace
+
+  println(s"Template regex: $templateRegex")
 
   val backupsBasePath =
     "s3a://foreign-language-reader-content/definitions/wiktionary/"
@@ -90,7 +93,11 @@ object TemplateExtractor {
       templateRegex.r
         .findAllIn(input)
         .matchData
-        .map(m => Array(m.group(1), m.group(2)))
+        .map(m => {
+          val templateName = m.group(1)
+          val arguments = if (m.groupCount == 2) m.group(2) else ""
+          Array(templateName, arguments)
+        })
         .toArray
 
   val regexp_extract_templates: UserDefinedFunction = udf(
