@@ -1,4 +1,4 @@
-package com.foreignlanguagereader.jobs.definitions
+package com.foreignlanguagereader.jobs.definitions.exploration
 
 import com.databricks.spark.xml._
 import org.apache.spark.sql.expressions.UserDefinedFunction

@@ -1,11 +1,12 @@
-package com.foreignlanguagereader.jobs.definitions
+package com.foreignlanguagereader.jobs.definitions.source
 
 import com.foreignlanguagereader.content.types.external.definition.cedict.CEDICTDefinitionEntry
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
+import com.foreignlanguagereader.jobs.definitions.DefinitionsParsingJob
 import org.apache.spark.sql.{Dataset, SparkSession}
 
-import scala.util.{Failure, Success, Try}
 import scala.util.matching.Regex
+import scala.util.{Failure, Success, Try}
 
 object CEDICT
     extends DefinitionsParsingJob[CEDICTDefinitionEntry](

@@ -1,12 +1,11 @@
-package com.foreignlanguagereader.jobs.definitions
+package com.foreignlanguagereader.jobs.definitions.source
 
 import com.foreignlanguagereader.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
 import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
-import com.foreignlanguagereader.jobs.definitions.Wiktionary.{
-  extractSections,
-  extractSubsections,
-  loadWiktionaryDump,
-  regexp_extract_all
+import com.foreignlanguagereader.jobs.definitions.{
+  DefinitionsParsingJob,
+  Wiktionary,
+  WiktionaryRawEntry
 }
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
@@ -122,7 +121,7 @@ object SimpleWiktionary
   override def loadFromPath(path: String)(implicit
       spark: SparkSession
   ): Dataset[SimpleWiktionaryDefinitionEntry] =
-    parseSimple(loadWiktionaryDump(path))
+    parseSimple(Wiktionary.loadWiktionaryDump(path))
 
   def parseSimple(
       data: Dataset[WiktionaryRawEntry]
@@ -132,11 +131,11 @@ object SimpleWiktionary
       .withColumn("ipa", regexp_extract(col("text"), ipaRegex, 1))
       .withColumn(
         "subdefinitions",
-        regexp_extract_all(subdefinitionsRegex, 1)(col("definition"))
+        Wiktionary.regexp_extract_all(subdefinitionsRegex, 1)(col("definition"))
       )
       .withColumn(
         "examplesRaw",
-        regexp_extract_all(examplesRegex, 1)(col("definition"))
+        Wiktionary.regexp_extract_all(examplesRegex, 1)(col("definition"))
       )
 
     addOptionalSections(splitDefinitions)
@@ -150,7 +149,8 @@ object SimpleWiktionary
   )
 
   def splitWordsByPartOfSpeech(data: Dataset[WiktionaryRawEntry]): DataFrame =
-    extractSections(data, SimpleWiktionary.partsOfSpeech)
+    Wiktionary
+      .extractSections(data, SimpleWiktionary.partsOfSpeech)
       .select(col("token"), col("text"), posexplode(partOfSpeechCols))
       .filter("col not like ''")
       .drop(partOfSpeechCols)
@@ -175,7 +175,8 @@ object SimpleWiktionary
       )
 
   def addOptionalSections(data: DataFrame): DataFrame = {
-    val extracted = extractSubsections(data, subsectionMap.keySet.toArray)
+    val extracted =
+      Wiktionary.extractSubsections(data, subsectionMap.keySet.toArray)
     subsectionsToCombine.foldLeft(extracted)((acc, subsection) => {
       val (subsectionName, subsectionColumns) = subsection
       val columnsToDrop: Array[String] =

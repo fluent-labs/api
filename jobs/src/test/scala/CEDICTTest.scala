@@ -1,5 +1,5 @@
 import com.foreignlanguagereader.content.types.external.definition.cedict.CEDICTDefinitionEntry
-import com.foreignlanguagereader.jobs.definitions.CEDICT
+import com.foreignlanguagereader.jobs.definitions.source.CEDICT
 import org.scalatest.funspec.AnyFunSpec
 
 class CEDICTTest extends AnyFunSpec {
