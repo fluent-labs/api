@@ -1,8 +1,5 @@
-import com.foreignlanguagereader.jobs.definitions.WiktionaryGenericText
-import com.foreignlanguagereader.jobs.definitions.exploration.{
-  TemplateExtractor,
-  WiktionaryGenericText
-}
+package com.foreignlanguagereader.jobs.definitions.exploration
+
 import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.scalatest.funspec.AnyFunSpec

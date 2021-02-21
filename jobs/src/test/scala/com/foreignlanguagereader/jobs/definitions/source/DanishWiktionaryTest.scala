@@ -1,3 +1,5 @@
+package com.foreignlanguagereader.jobs.definitions.source
+
 import org.scalatest.funspec.AnyFunSpec
 
 class DanishWiktionaryTest extends AnyFunSpec {
