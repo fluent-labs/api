@@ -55,10 +55,6 @@ object Wiktionary {
     metaArticleTitles.forall(prefix => !title.startsWith(prefix))
   }
 
-  def repeat(token: String, count: Int): String = {
-    (0 to count).map(_ => token).mkString
-  }
-
   val caseInsensitiveFlag = "(?i)"
   val periodMatchesNewlineFlag = "(?s)"
   val oneOrMoreEqualsSign = "=+"
@@ -72,13 +68,12 @@ object Wiktionary {
   val nextSectionOrEndOfFile = s"(?>$nextSection|\\Z)+"
 
   def headingRegex(equalsCount: Int): String =
-    repeat(
-      "=",
+    "=".repeat(
       equalsCount
-    ) + optionalWhiteSpace + anythingButEqualsSign + optionalWhiteSpace + repeat(
-      "=",
-      equalsCount
-    ) + anythingButEqualsSign // Needed or else outer equals will be ignored
+    ) + optionalWhiteSpace + anythingButEqualsSign + optionalWhiteSpace + "="
+      .repeat(
+        equalsCount
+      ) + anythingButEqualsSign // Needed or else outer equals will be ignored
   // Subtle but '== Test ==' will match '=== Test ===' at this point: '="== Test =="='
 
   def sectionRegex(sectionName: String): String =
