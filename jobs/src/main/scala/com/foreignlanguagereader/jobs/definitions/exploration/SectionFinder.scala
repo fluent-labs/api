@@ -13,9 +13,10 @@ object SectionFinder {
     "s3a://foreign-language-reader-content/definitions/wiktionary/"
 
   val backups = Map(
-    "simple" -> "simplewiktionary-20200301-pages-meta-current.xml",
+    "chinese" -> "zhwiktionary-20210201-pages-meta-current.xml",
     "danish" -> "dawiktionary-20210201-pages-meta-current.xml",
     "english" -> "enwiktionary-20210201-pages-meta-current.xml",
+    "simple_english" -> "simplewiktionary-20200301-pages-meta-current.xml",
     "spanish" -> "eswiktionary-20210201-pages-meta-current.xml"
   )
 
