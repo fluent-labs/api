@@ -17,20 +17,6 @@ object Application extends App {
   val simpleWiktionary = SimpleWiktionary.loadFromPath(SIMPLE_WIKTIONARY_PATH)
   simpleWiktionary.limit(500).coalesce(1).write.json("simple")
 
-  // Use this when you want to know what kind of sections a backup has. Good for getting the rough structure of the dump
-  def findSections(
-      backupFilePath: String,
-      sectionCount: Int,
-      outputFileName: String
-  ): Unit = {
-    val wiktionaryRaw = Wiktionary
-      .loadWiktionaryDump(backupFilePath)
-    Wiktionary
-      .getHeadings(wiktionaryRaw, sectionCount)
-      .write
-      .csv(outputFileName)
-  }
-
   // Use this when you want to see what is in each section you found up above
   // eg: is it common? Do I care about what's in it?
   def exploreSections(
