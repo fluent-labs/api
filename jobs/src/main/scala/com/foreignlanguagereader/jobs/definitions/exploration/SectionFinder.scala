@@ -4,6 +4,8 @@ import com.foreignlanguagereader.jobs.definitions.Wiktionary
 import org.apache.log4j.{LogManager, Logger}
 import org.apache.spark.sql.SparkSession
 
+import scala.util.{Failure, Success, Try}
+
 // Use this when you want to know what kind of sections a backup has. Good for getting the rough structure of the dump
 object SectionFinder {
   val jobName = "Wiktionary Section Extractor"
@@ -24,23 +26,38 @@ object SectionFinder {
       .appName(jobName)
       .getOrCreate()
 
-    backups.foreach {
+    val errorCount = backups.map {
       case (dictionary, path) =>
         findSectionsFromBackup(
           s"$backupsBasePath/$path",
           s"$backupsBasePath/sections/$dictionary"
         )
+    }.sum
+
+    if (errorCount > 0) {
+      throw new IllegalStateException(s"Failed to extract $errorCount backups.")
     }
   }
 
   def findSectionsFromBackup(path: String, resultPath: String)(implicit
       spark: SparkSession
-  ): Unit = {
-    val wiktionaryRaw = Wiktionary
-      .loadWiktionaryDump(path)
-    Wiktionary
-      .getHeadings(wiktionaryRaw, 1)
-      .write
-      .csv(resultPath)
+  ): Int = {
+    log.info(s"Extracting from $path to $resultPath")
+
+    log.info(s"Extracting wiktionary dump from $path")
+    Try(Wiktionary.loadWiktionaryDump(path)).map(wiktionaryRaw => {
+      log.info(s"Successfully extracted dump")
+      Wiktionary
+        .getHeadings(wiktionaryRaw, 1)
+        .write
+        .csv(resultPath)
+    }) match {
+      case _: Success[Unit] =>
+        log.info("Successfully found sections")
+        0
+      case Failure(e) =>
+        log.error("Failed to extract sections", e)
+        1
+    }
   }
 }
