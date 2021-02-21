@@ -1,6 +1,11 @@
 package com.foreignlanguagereader.jobs.definitions.exploration
 
 import com.databricks.spark.xml._
+import com.foreignlanguagereader.jobs.definitions.{
+  WiktionaryRawText,
+  WiktionaryTemplate,
+  WiktionaryTemplateInstance
+}
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions.{col, element_at, posexplode, udf}
 import org.apache.spark.sql.{Dataset, SparkSession}
@@ -54,7 +59,7 @@ object TemplateExtractor {
 
   def loadWiktionaryDump(
       path: String
-  )(implicit spark: SparkSession): Dataset[WiktionaryGenericText] = {
+  )(implicit spark: SparkSession): Dataset[WiktionaryRawText] = {
     import spark.implicits._
 
     spark.read
@@ -62,11 +67,11 @@ object TemplateExtractor {
       .xml(path)
       .select("revision.text._VALUE")
       .withColumnRenamed("_VALUE", "text")
-      .as[WiktionaryGenericText]
+      .as[WiktionaryRawText]
   }
 
   def extractTemplateInstances(
-      data: Dataset[WiktionaryGenericText]
+      data: Dataset[WiktionaryRawText]
   )(implicit spark: SparkSession): Dataset[WiktionaryTemplateInstance] = {
     import spark.implicits._
 
@@ -111,7 +116,3 @@ object TemplateExtractor {
     extractTemplatesFromString
   )
 }
-
-case class WiktionaryGenericText(text: String)
-case class WiktionaryTemplateInstance(name: String, arguments: String)
-case class WiktionaryTemplate(name: String, count: BigInt)

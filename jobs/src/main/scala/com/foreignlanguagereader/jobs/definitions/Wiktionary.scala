@@ -8,8 +8,6 @@ import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
 
 import scala.util.{Failure, Success, Try}
 
-case class WiktionaryRawEntry(id: Long, token: String, text: String)
-
 object Wiktionary {
   @transient lazy val log: Logger =
     LogManager.getLogger(this.getClass.getName)
@@ -89,15 +87,14 @@ object Wiktionary {
       equalsCount: Integer
   ): DataFrame = {
     data
-      .select(explode(findHeadings(equalsCount)(col("text"))))
+      .select(explode(getHeadingsUDF(equalsCount)(col("text"))))
       .distinct()
       .coalesce(1)
       .sort(col("col"))
   }
 
-  def findHeadings: Int => UserDefinedFunction =
-    (equalsCount: Int) =>
-      udf((text: String) => getHeadingsFromDocument(text, equalsCount))
+  def getHeadingsUDF(equalsCount: Int): UserDefinedFunction =
+    udf((text: String) => getHeadingsFromDocument(text, equalsCount))
 
   def getHeadingsFromDocument(text: String, equalsCount: Int): Array[String] = {
     Try(
@@ -107,7 +104,8 @@ object Wiktionary {
         .toArray
     ) match {
       case Success(headings) => headings
-      case Failure(e) =>
+      case Failure(e)        =>
+        // Most likely means an issue with the filter clause above
         log.error(s"Failed to parse document $text", e)
         Array()
     }
