@@ -1,4 +1,5 @@
-import com.foreignlanguagereader.jobs.definitions.{
+import com.foreignlanguagereader.jobs.definitions.WiktionaryGenericText
+import com.foreignlanguagereader.jobs.definitions.exploration.{
   TemplateExtractor,
   WiktionaryGenericText
 }
