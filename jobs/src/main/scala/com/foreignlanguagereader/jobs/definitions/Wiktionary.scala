@@ -1,13 +1,19 @@
 package com.foreignlanguagereader.jobs.definitions
 
 import com.databricks.spark.xml._
+import org.apache.log4j.{LogManager, Logger}
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
 
+import scala.util.{Failure, Success, Try}
+
 case class WiktionaryRawEntry(id: Long, token: String, text: String)
 
 object Wiktionary {
+  @transient lazy val log: Logger =
+    LogManager.getLogger(this.getClass.getName)
+
   val metaArticleTitles: Set[String] =
     Set(
       "MediaWiki:",
@@ -81,6 +87,8 @@ object Wiktionary {
   def subSectionRegex(sectionName: String): String =
     periodMatchesNewlineFlag + caseInsensitiveFlag + tripleEqualsSign + optionalWhiteSpace + sectionName + optionalWhiteSpace + tripleEqualsSign + lazyMatchAnything + nextSectionOrEndOfFile
 
+  // Heading extraction below here
+
   def getHeadings(
       data: Dataset[WiktionaryRawEntry],
       equalsCount: Integer
@@ -91,16 +99,35 @@ object Wiktionary {
       .coalesce(1)
       .sort(col("col"))
   }
+
   def findHeadings: Int => UserDefinedFunction =
     (equalsCount: Int) =>
-      udf((text: String) =>
-        text.linesIterator
-          .filter(line => line.matches(headingRegex(equalsCount)))
-          .map(line =>
-            line.replaceAll(repeat("=", equalsCount), "").trim().toLowerCase
-          )
-          .toArray
-      )
+      udf((text: String) => getHeadingsFromDocument(text, equalsCount))
+
+  def getHeadingsFromDocument(text: String, equalsCount: Int): Array[String] = {
+    Try(
+      text.linesIterator
+        .filter(line => line.matches(headingRegex(equalsCount)))
+        .map(line => getHeadingFromLine(line, equalsCount))
+        .toArray
+    ) match {
+      case Success(headings) => headings
+      case Failure(e) =>
+        log.error(s"Failed to parse document $text", e)
+        Array()
+    }
+  }
+
+  def getHeadingFromLine(line: String, equalsCount: Int): String = {
+    Try(line.replaceAll("=".repeat(equalsCount), "").trim.toLowerCase) match {
+      case Success(heading) => heading
+      case Failure(e) =>
+        log.error(s"Failed to parse line $line", e)
+        "ERROR"
+    }
+  }
+
+  // Section extraction down here
 
   def extractSection(data: DataFrame, name: String): DataFrame =
     data.withColumn(
