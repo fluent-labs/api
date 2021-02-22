@@ -53,6 +53,9 @@ object Wiktionary {
     metaArticleTitles.forall(prefix => !title.startsWith(prefix))
   }
 
+  // String.repeat is only implemented on some JVMs
+  // Removing this has burned me twice.
+  // Run the unit tests in the docker container before trying to remove it again.
   def repeat(token: String, count: Int): String = {
     (0 to count).map(_ => token).mkString
   }
@@ -117,7 +120,7 @@ object Wiktionary {
   }
 
   def getHeadingFromLine(line: String, equalsCount: Int): String = {
-    Try(line.replaceAll("=".repeat(equalsCount), "").trim.toLowerCase) match {
+    Try(line.replaceAll(repeat("=", equalsCount), "").trim.toLowerCase) match {
       case Success(heading) => heading
       case Failure(e) =>
         log.error(s"Failed to parse line $line", e)
