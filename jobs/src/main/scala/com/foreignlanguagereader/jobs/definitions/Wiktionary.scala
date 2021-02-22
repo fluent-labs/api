@@ -57,7 +57,7 @@ object Wiktionary {
   // Removing this has burned me twice.
   // Run the unit tests in the docker container before trying to remove it again.
   def repeat(token: String, count: Int): String = {
-    (0 to count).map(_ => token).mkString
+    (0 until count).map(_ => token).mkString
   }
 
   val caseInsensitiveFlag = "(?i)"
