@@ -42,6 +42,7 @@ class WiktionaryTest extends AnyFunSpec {
       )
     }
   }
+
   describe("can get headings") {
     describe("for a single line") {
       it("on the happy path") {
@@ -50,6 +51,35 @@ class WiktionaryTest extends AnyFunSpec {
       }
       it("without error if there is no heading") {
         assert(Wiktionary.getHeadingFromLine("", 2) == "")
+      }
+      it("and returns error if there is bad input") {
+        assert(Wiktionary.getHeadingFromLine(null, 2) == "ERROR")
+      }
+    }
+
+    describe("for a document") {
+      it("on the happy path") {
+        val text =
+          """== This is a heading ==
+            |another document item
+            |=== subheading that should be ignored ===
+            |another garbage thing
+            |== This is another heading ==
+            |= heading level that doesn't exist =
+            |== uneven heading ===
+            |=== uneven in a different way ==
+            |""".stripMargin
+        assert(
+          Wiktionary.getHeadingsFromDocument(text, 2) sameElements Array(
+            "this is a heading",
+            "this is another heading"
+          )
+        )
+      }
+      it("and correctly handles bad input") {
+        assert(
+          Wiktionary.getHeadingsFromDocument(null, 2).isEmpty
+        )
       }
     }
   }
