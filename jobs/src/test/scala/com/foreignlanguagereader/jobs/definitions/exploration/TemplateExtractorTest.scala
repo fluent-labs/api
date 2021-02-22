@@ -1,5 +1,6 @@
 package com.foreignlanguagereader.jobs.definitions.exploration
 
+import com.foreignlanguagereader.jobs.definitions.WiktionaryRawText
 import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.scalatest.funspec.AnyFunSpec
@@ -26,8 +27,8 @@ class TemplateExtractorTest extends AnyFunSpec {
   val textWithNoArgumentsTemplate: String = text + "\n* {{test}}"
   val emptyText = ""
 
-  def getDatasetFromText(input: String): Dataset[WiktionaryGenericText] =
-    Seq(WiktionaryGenericText(input)).toDS()
+  def getDatasetFromText(input: String): Dataset[WiktionaryRawText] =
+    Seq(WiktionaryRawText(input)).toDS()
 
   describe("it can extract templates with arguments from an entry") {
     val data = getDatasetFromText(text)
