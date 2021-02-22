@@ -10,7 +10,7 @@ import scala.util.{Failure, Success, Try}
 object SectionFinder {
   val jobName = "Wiktionary Section Extractor"
   val backupsBasePath =
-    "s3a://foreign-language-reader-content/definitions/wiktionary/"
+    "s3a://foreign-language-reader-content/definitions/wiktionary"
 
   val backups = Map(
     "chinese" -> "zhwiktionary-20210201-pages-meta-current.xml",
@@ -32,7 +32,7 @@ object SectionFinder {
       case (dictionary, path) =>
         findSectionsFromBackup(
           s"$backupsBasePath/$path",
-          s"$backupsBasePath/sections/$dictionary"
+          s"$backupsBasePath/sections/$dictionary.csv"
         )
     }.sum
 
