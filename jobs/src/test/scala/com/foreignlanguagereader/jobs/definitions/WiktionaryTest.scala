@@ -53,7 +53,9 @@ class WiktionaryTest extends AnyFunSpec {
         assert(Wiktionary.getHeadingFromLine("", 2) == "")
       }
       it("and returns error if there is bad input") {
-        assert(Wiktionary.getHeadingFromLine(null, 2) == "ERROR")
+        assert(
+          Wiktionary.getHeadingFromLine(null, 2) == "ERROR" // scalastyle:ignore
+        )
       }
     }
 
@@ -78,7 +80,9 @@ class WiktionaryTest extends AnyFunSpec {
       }
       it("and correctly handles bad input") {
         assert(
-          Wiktionary.getHeadingsFromDocument(null, 2).isEmpty
+          Wiktionary
+            .getHeadingsFromDocument(null, 2) // scalastyle:ignore
+            .isEmpty
         )
       }
     }
