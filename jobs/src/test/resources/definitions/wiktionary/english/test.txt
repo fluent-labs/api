@@ -1,0 +1,871 @@
+{{also|Test|TEST|țest|tesť}}
+==English==
+
+===Pronunciation===
+* {{IPA|en|/tɛst/}}
+* {{audio|en|en-us-test.ogg|Audio (US)}}
+* {{audio|en|En-uk-a test.ogg|Audio (UK)}}
+* {{rhymes|en|ɛst}}
+* {{a|South African}} {{IPA|en|/test/}}
+
+===Etymology 1===
+From {{inh|en|enm|test}}, {{m|enm|teste}}, from {{der|en|fro|test}}, {{m|fro|teste|t=an earthen vessel, especially a pot in which metals were tried}}, from {{der|en|la|testum|t=the lid of an earthen vessel, an earthen vessel, an earthen pot}}, from {{m|la|*terstus}}, past participle of the root {{m|la|*tersa||dry land}}. See [[terra]], [[thirst]].
+
+====Noun====
+{{en-noun}}
+
+# A [[challenge#Noun|challenge]], [[trial]].
+#* {{quote-journal|en|year=2012|month=March-April| author=Colin Allen| title=Do I See What You See?| volume=100| issue=2| page=168| magazine={{w|American Scientist}}| url=http://www.americanscientist.org/bookshelf/pub/do-i-see-what-you-see| passage=Numerous experimental '''tests''' and other observations have been offered in favor of animal mind reading, and although many scientists are skeptical, others assert that humans are not the only species capable of representing what others do and don’t perceive and know.}}
+# A [[cupel]] or cupelling hearth in which precious metals are melted for trial and refinement.
+# {{lb|en|academia}} An [[examination]], given often during the academic [[term]].
+# A [[session]] in which a product or piece of equipment is [[examine]]d under everyday or extreme conditions to [[evaluate]] its [[durability]], etc.
+# {{lb|en|cricket|normally “[[Test]]”}} A [[Test match]].
+# {{lb|en|marine biology}} The external [[calciferous]] shell, or [[endoskeleton]], of an [[echinoderm]], e.g. [[sand dollar|sand dollars]] and [[sea urchin|sea urchins]].[[Image:Sea urchin tests.jpg|thumb|right|Two sea urchin tests]]
+# {{lb|en|botany}} [[testa|Testa]]; [[seed coat]].
+# {{lb|en|obsolete}} [[judgment|Judgment]]; [[distinction]]; [[discrimination]].
+#* {{RQ:Dryden Aureng-zebe|passage=Who would excel, when few can make a '''test''' / Betwixt indifferent writing and the best?}}
+
+=====Synonyms=====
+* {{sense|challenge, trial}} {{seeSynonyms|en|test}}
+* {{sense|academics: examination}} {{l|en|examination}}, {{l|en|quiz}}
+
+=====Antonyms=====
+* {{sense|academics: examination}} {{l|en|recess}}
+
+=====Hyponyms=====
+{{checksense|en}}
+{{col3|en|title=Hyponyms of ''test''
+|acid test
+|babysitter test
+|blood test
+|duck test
+|field test
+|flame test
+|inkblot test
+|litmus test
+|multiple-choice test
+|nose test
+|Rorschach test
+|single-choice test
+|smell test
+|smoke test
+|sniff test
+|software test
+|stress test
+}}
+
+=====Derived terms=====
+{{der3|en
+|breath test
+|crash test
+|DNA test
+|driving test
+|DUT
+|final test
+|foretest
+|Pap test
+|paternity test
+|pregnancy test
+|put to the test
+|speaking test
+|test card
+|test case
+|test data
+|test drive
+|tester
+|test flight
+|test run
+|test subject
+|test track
+|test tube
+|unit test
+}}
+
+=====Descendants=====
+{{col-top|3}}
+* {{desc|bor=1|az|test}}
+* {{desc|bor=1|ca|test}}
+* {{desc|bor=1|cs|test}}
+* {{desc|bor=1|da|test}}
+* {{desc|bor=1|nl|test}}
+* {{desc|bor=1|fi|testi}}
+* {{desc|bor=1|fr|test}}
+* {{desc|bor=1|de|Test}}
+* {{desc|bor=1|hu|teszt}}
+* {{desc|bor=1|it|test}}
+* {{desc|bor=1|ja|テスト|tr=tesuto}}
+* {{desc|bor=1|ko|테스트}}
+* {{desc|bor=1|mk|тест}}
+* {{desc|bor=1|no|-}} {{l|nb|test}}
+* {{desc|bor=1|fa|تست|tr=test}}
+* {{desc|bor=1|pl|test}}
+* {{desc|bor=1|pt|teste}}
+* {{desc|bor=1|ro|test}}
+* {{desc|bor=1|ru|тест}}
+* {{desc|bor=1|sh|-}}
+*: {{desc|sclb=1|sh|тест}}
+*: {{desc|sclb=1|sh|test}}
+* {{desc|bor=1|sl|test}}
+* {{desc|bor=1|es|test}}
+* {{desc|bor=1|sv|test}}
+* {{desc|bor=1|tr|test}}
+* {{desc|bor=1|uk|тест}}
+{{col-bottom}}
+
+=====Translations=====
+{{trans-top|challenge, trial}}
+* Albanian: {{t+|sq|provë}} {{qualifier|indefinite}}, {{t|sq|prova}} {{qualifier|definite}}
+* Arabic: {{t|ar|اِخْتِبَار|m}}, {{t|ar|تَجْرِبَة|f}}
+* Asturian: {{t|ast|prueba|f}}
+* Azerbaijani: {{t+|az|sınaq}}
+* Belarusian: {{t|be|тэст|m}}, {{t|be|выпрабава́нне|n}}
+* Bulgarian: {{t+|bg|тест|m}}, {{t+|bg|изпита́ние|n}}
+* Burmese: {{t+|my|အစမ်း}}
+* Catalan: {{t+|ca|prova|f}}, {{t+|ca|test|m}}
+* Chinese:
+*: Mandarin: {{t+|cmn|試驗}}, {{t+|cmn|试验|tr=shìyàn}}
+* Czech: {{t+|cs|test|m}}, {{t+|cs|zkouška|f}}
+* Danish: {{t+|da|prøve|c}}, {{t|da|prøvelse|c}}, {{t|da|forsøg|n}}
+* Dutch: {{t+|nl|test|m}}, {{t+|nl|proef|m}}
+* Esperanto: {{t|eo|provi}}
+* Finnish: {{t+|fi|koe}}, {{t+|fi|koetus}}
+* French: {{t+|fr|épreuve|f}}
+* Friulian: {{t|fur|prove|f}}
+* Galician: {{t+|gl|proba|f}}, {{t|gl|test|m}}
+* German: {{t+|de|Probe|f}}
+* Greek: {{t+|el|δοκιμασία|f}}, {{t+|el|δοκιμή|f}}
+*: Ancient: {{t|grc|πεῖρα|f}}, {{t|grc|δοκιμή|f}}
+* Hebrew: {{t+|he|מִבְחָן|m|tr=mivkhán}}
+* Hindi: {{t+|hi|चुनौती|f}}
+* Hungarian: {{t+|hu|próba}}
+* Italian: {{t+|it|prova}}, {{t+|it|verifica}}
+* Japanese: {{t+|ja|実験|tr=じっけん, jikken}}, {{t|ja|試練|tr=しれん, shiren}}
+* Korean: {{t+|ko|검사}}
+* Ladin: {{t|lld|proa|f}}
+{{trans-mid}}
+* Luxembourgish: {{t|lb|Prouf|f}}
+* Malay: {{t|ms|ujian}}
+* Norwegian:
+*: Bokmål: {{t+|nb|test|m}}, {{t+|nb|prøve|m|f}}, {{t+|nb|forsøk|n}}
+* Persian: {{t+|fa|آزمایش|tr=âzmâyeš}}
+* Plautdietsch: {{t|pdt|Test|m}}, {{t|pdt|Proow|f}}
+* Portuguese: {{t+|pt|prova|f}}, {{t+|pt|teste}}
+* Romanian: {{t+|ro|probă|f}}
+* Russian: {{t+|ru|про́ба|f}}, {{t+|ru|тест|m|tr=tɛst}}, {{t+|ru|испыта́ние|n}}
+* Sanskrit: {{t+|sa|परीक्षा|f}}
+* Sardinian: {{t|sc|proa|f}}, {{t|sc|proba}}, {{t|sc|prova}}
+* Scottish Gaelic: {{t|gd|dearbhadh|m}}, {{t|gd|feuchainn|f}}
+* Serbo-Croatian:
+*: Cyrillic: {{t|sh|те̏ст|m}}
+*: Roman: {{t+|sh|tȅst|m}}
+* Sicilian: {{t|scn|prova|f}}
+* Slovak: {{t|sk|test}}
+* Slovene: {{t|sl|preizkus|m}}, {{t|sl|preizkušnja|f}}
+* Spanish: {{t+|es|prueba|f}}, {{t|es|probatura}}
+* Swahili: {{t+|sw|jaribio}}
+* Swedish: {{t+|sv|prov|n}}, {{t+|sv|prövning|c}}, {{t+|sv|försök|n}}
+* Tajik: {{t+|tg|озмоиш}}
+* Turkish: {{t+|tr|test}}, {{t+|tr|deneme}}
+* Ukrainian: {{t|uk|тест|m}}, {{t|uk|випро́бування|n}}
+* Venetian: {{t|vec|prova|f}}
+* Vietnamese: {{t|vi|sự [[thử thách]]}}
+* Zazaki: {{t|zza|cerbnayen}}, {{t|zza|test kerden}}
+* Zulu: {{t-needed|zu}}
+{{trans-bottom}}
+
+{{trans-top|academics: examination}}
+* Albanian: {{t+|sq|provim}} {{qualifier|indefinite}}, {{t|sq|provimi}} {{qualifier|definite}}
+* Arabic: {{t+|ar|اِمْتِحَان|m}}, {{t|ar|اِخْتِبَار|m}}
+* Armenian: {{t+|hy|քննություն}}, {{t+|hy|ստուգարք}}, {{t+|hy|ստուգողական}}
+* Azerbaijani: {{t+|az|test}}, {{t+|az|sınaq}}
+* Basque: {{t|eu|azterketa}}
+* Belarusian: {{t|be|экза́мен|m}}, {{t|be|тэст|m}}, {{t|be|кантро́льная рабо́та|f}} {{qualifier|control work}}
+* Bengali: {{t|bn|পরীক্ষা}}, {{t|bn|ইমতেহান}}
+* Bulgarian: {{t+|bg|и́зпит|m}}, {{t+|bg|тест|m}}
+* Burmese: {{t+|my|စာမေးပွဲ}}
+* Catalan: {{t+|ca|examen|m}}, {{t+|ca|prova|f}}, {{t+|ca|test|m}}
+* Chinese:
+*: Cantonese: {{t|yue|考試}}, {{t|yue|考试|tr=haau2 si5}}
+*: Mandarin: {{t+|cmn|考試}}, {{t+|cmn|考试|tr=kǎoshì}}
+* Czech: {{t+|cs|zkouška|f}}
+* Danish: {{t|da|eksamen|c}}
+* Dutch: {{t+|nl|examen|n}}, {{t+|nl|test|m}}
+* Esperanto: {{t|eo|ekzameno}}
+* Finnish: {{t+|fi|koe}}, {{t+|fi|tentti}}
+* French: {{t+|fr|test|m}}, {{t+|fr|examen|m}}
+* Galician: {{t+|gl|proba|f}}, {{t|gl|exame|m}}, {{t|gl|test|m}}
+* German: {{t+|de|Examen|n}}, {{t+|de|Prüfung|f}}
+* Greek: {{t+|el|διαγώνισμα|n}}
+* Hebrew: {{t+|he|מִבְחָן|m|tr=mivkhán}}
+* Hindi: {{t+|hi|परीक्षा|m}}, {{t+|hi|परख|f}}, {{t+|hi|इम्तहान|m}}
+* Hungarian: {{t+|hu|vizsga}}
+* Irish: {{t|ga|scrúdú|m}}
+* Italian: {{t+|it|esame|m}}
+* Japanese: {{t+|ja|試験|tr=しけん, shiken}}, {{t+|ja|テスト|tr=tesuto}}
+* Korean: {{t+|ko|시험}} ({{t+|ko|試驗}}), {{t+|ko|테스트}}
+{{trans-mid}}
+* Kurdish:
+*: Central Kurdish: {{t|ckb|تاقیکردنەوە}}
+* Lao: {{t|lo|ການສອບ}}
+* Macedonian: {{t+|mk|тест|m}}, {{t|mk|испит|m}}
+* Malay: {{t|ms|ujian}}
+* Persian: {{t+|fa|آزمایش|tr=âzmâyeš}}, {{t+|fa|امتحان|tr=emtehân}}, {{t+|fa|تست|tr=test}}
+* Plautdietsch: {{t|pdt|Test|m}}
+* Polish: {{t+|pl|sprawdzian|m}}
+* Portuguese: {{t+|pt|exame|m}}, {{t+|pt|teste|m}}, {{t+|pt|prova}}
+* Romanian: {{t+|ro|examen|n}}
+* Russian: {{t+|ru|экза́мен|m}}, {{t+|ru|тест|m|tr=tɛst}}, {{t|ru|контро́льная рабо́та|f}} {{qualifier|control work}}
+* Scottish Gaelic: {{t|gd|feuchainn|f}}
+* Serbo-Croatian:
+*: Cyrillic: {{t|sh|те̏ст|m}}, {{t|sh|ѝспит|m}}
+*: Roman: {{t+|sh|tȅst|m}}, {{t+|sh|ìspit|m}}
+* Sicilian: {{t+|scn|esami|f}}
+* Slovak: {{t|sk|skúška|f}}, {{t|sk|test}}
+* Slovene: {{t|sl|test|m}}, {{t+|sl|izpit|m}}
+* Spanish: {{t+|es|examen|m}}, {{t+|es|test|m}}
+* Swedish: {{t+|sv|prov|n}}, {{t+|sv|tentamen|c}}, {{t+|sv|tenta|c}}, {{t+|sv|dugga|c}}
+* Tagalog: {{t|tl|pagsusulit}}, {{t|tl|subok}}
+* Telugu: {{t+|te|పరీక్ష}}
+* Thai: {{t+|th|สอบ}}, {{t+|th|การสอบ}}
+* Turkish: {{t+|tr|sınav}}, {{t+|tr|test}}
+* Ukrainian: {{t|uk|екза́мен|m}}, {{t|uk|тест|m}}
+* Urdu: {{t+|ur|امتحان|m|tr=imtahān}}
+* Vietnamese: {{t|vi|bài [[thi]]}}
+{{trans-bottom}}
+
+{{trans-top|product examination}}
+* Arabic: {{t+|ar|اِمْتِحَان|m}}, {{t|ar|اِخْتِبَار|m}}
+* Armenian: {{t+|hy|փորձարկում}}
+* Belarusian: {{t|be|тэст|m}}
+* Bulgarian: {{t+|bg|тест|m}}
+* Catalan: {{t+|ca|test|m}}
+* Chinese:
+*: Mandarin: {{t+|cmn|測試}}, {{t+|cmn|测试|tr=cèshì}}, {{t+|cmn|檢查}}, {{t+|cmn|检查|tr=jiǎnchá}}
+* Czech: {{t+|cs|test|m}}
+* Danish: {{t+|da|test|c}}
+* Dutch: {{t+|nl|test|m}}
+* Finnish: {{t+|fi|testi}}, {{t|fi|käyttökoe}}
+* French: {{t+|fr|test|m}}
+* Galician: {{t+|gl|proba|f}}, {{t|gl|test|m}}
+* German: {{t+|de|Test}}, {{t+|de|Prüfung|f}}
+* Greek: {{t+|el|εξέταση|f}}
+* Hindi: {{t|hi|आज़माइश|f}}, {{t+|hi|इम्तहान|m}}, {{t+|hi|प्रयोग|m}}, {{t+|hi|परीक्षा|m}}
+* Hungarian: {{t+|hu|teszt}}, {{t+|hu|vizsgálat}}
+* Irish: {{t|ga|tástáil|f}}
+* Japanese: {{t+|ja|検査|tr=けんさ, kensa}}, {{t+|ja|テスト|tr=tesuto}}
+* Korean: {{t+|ko|테스트}}, {{t+|ko|검사}}
+* Macedonian: {{t+|mk|тест|m}}
+* Malay: {{t|ms|ujian}}
+{{trans-mid}}
+* Persian: {{t+|fa|آزمایش|tr=âzmâyeš}}, {{t+|fa|امتحان|tr=emtehân}}
+* Polish: {{t+|pl|sprawdzian|m}}, {{t+|pl|test|m}}
+* Portuguese: {{t+|pt|teste|m}}
+* Romanian: {{t+|ro|probă|f}}, {{t+|ro|test|n}}
+* Russian: {{t+|ru|тест|m|tr=tɛst}}, {{t+|ru|испыта́ние|n}}
+* Scottish Gaelic: {{t|gd|dearbhadh|m}}, {{t|gd|feuchainn|f}}
+* Serbo-Croatian:
+*: Cyrillic: {{t|sh|тест|m}}
+*: Roman: {{t+|sh|test|m}}
+* Slovak: {{t|sk|test|m}}
+* Slovene: {{t|sl|test|m}}
+* Spanish: {{t+|es|prueba|f}}, {{t+|es|test|m}}
+* Swedish: {{t+|sv|test|n}}, {{t|sv|provning|c}}, {{t+|sv|prov|c}}
+* Tajik: {{t+|tg|озмоиш}}, {{t+|tg|имтиҳон}}
+* Telugu: {{t+|te|పరీక్ష}}
+* Thai: {{t+|th|การทดลอง}}
+* Ukrainian: {{t|uk|тест|m}}
+* Urdu: {{t+|ur|آزمائش|f|tr=āzmāiś}}, {{t+|ur|امتحان|m|tr=imtahān}}
+* Vietnamese: {{t|vi|phép [[kiểm thử]]}}, {{t|vi|phép [[kiểm tra]]}}
+{{trans-bottom}}
+
+{{trans-top|cricket: test game}}
+{{trans-mid}}
+* Vietnamese: {{t|vi|cuộc [[thi đấu]]}}
+{{trans-bottom}}
+
+{{trans-top|external calciferous shell}}
+* Finnish: {{t+|fi|kuori}}
+{{trans-mid}}
+* Galician: {{t+|gl|testo|m}}
+{{trans-bottom}}
+
+====Verb====
+{{en-verb}}
+
+# To [[challenge#Verb|challenge]].
+#: ''Climbing the mountain '''tested''' our stamina.''
+# To [[refine]] (gold, silver, etc.) in a [[test]] or [[cupel]]; to subject to [[cupellation]].
+# To put to the proof; to prove the truth, genuineness, or quality of by experiment, or by some principle or standard; to try.
+#: ''to '''test''' the soundness of a principle; to '''test''' the validity of an argument''
+#* ''' September 17, 1796''', {{w|George Washington}}, ''[[s:Washington's Farewell Address|Farewell Address]]''
+#*: Experience is the surest standard by which to '''test''' the real tendency of the existing constitution.
+# {{lb|en|academics}} To administer or assign an examination, often given during the academic term, to (somebody).
+# To place a product or piece of equipment under everyday and/or extreme conditions and examine it for its durability, etc.
+#* {{quote-journal|en|year=2013|month=May-June|author=[http://www.americanscientist.org/authors/detail/charles-t-ambrose Charles T. Ambrose]
+|title=[http://www.americanscientist.org/issues/feature/2013/3/alzheimerrsquos-disease-the-great-morbidity-of-the-21st-century Alzheimer’s Disease]
+|volume=101|issue=3|page=200|magazine={{w|American Scientist}}
+|passage=Similar studies of rats have employed four different intracranial resorbable, slow sustained release systems&mdash;&nbsp;[&hellip;]. Such a slow-release device containing angiogenic factors could be placed on the pia mater covering the cerebral cortex and '''tested''' in persons with senile dementia in long term studies.}}
+# {{lb|en|copulative}} To be shown to be by test.
+#: {{ux|en|He '''tested''' positive for cancer.}}
+#* '''2015''', Leta Stetter Hollingworth, Harry Levi Hollingworth, ''Children Above 180 IQ Stanford-Binet: Origin and Development''
+#*: It is probable that children who '''test''' above 180 IQ are actually present in our juvenile population in greater frequency than at the rate of one in a million.
+# {{lb|en|chemistry}} To examine or try, as by the use of some [[reagent]].
+#: ''to '''test''' a solution by litmus paper''
+
+=====Descendants=====
+* {{desc|de|testen}}
+
+=====Translations=====
+{{trans-top|to challenge}}
+* Azerbaijani: {{t+|az|sınamaq}}, {{t|az|sınaqdan keçirmək}}
+* Catalan: {{t|ca|posar a prova}}
+* Chinese:
+*: Mandarin: {{t+|cmn|測試}}, {{t+|cmn|测试|tr=cèshì}}
+* Danish: {{t|da|udfordre}}
+* Finnish: {{t+|fi|testata}}, {{t|fi|koestaa}}, {{t+|fi|haastaa}}
+* French: {{t+|fr|tester}}, {{t+|fr|mettre à l'épreuve}}
+* Gothic: {{t|got|𐌺𐌹𐌿𐍃𐌰𐌽}}
+* Greek: {{t+|el|δοκιμάζω}}
+*: Ancient: {{t|grc|ἐλέγχω}}
+* Hungarian: {{t+|hu|kihív}}
+* Italian: {{t+|it|testare}}, {{t|it|mettere alla prova}}
+* Japanese: {{t+|ja|試す|tr=ためす, tamesu}}
+{{trans-mid}}
+* Latin: {{t+|la|perīclitor}}
+* Malay: {{t|ms|menguji}}
+* Portuguese: {{t+|pt|testar}}
+* Romanian: {{t+|ro|proba}}, {{t+|ro|încerca}}, {{t+|ro|testa}}
+* Russian: {{t+|ru|испы́тывать|impf}}, {{t+|ru|испыта́ть|pf}}, {{t+|ru|тести́ровать|impf|tr=tɛstírovatʹ}}, {{t+|ru|протести́ровать|pf|tr=protɛstírovatʹ}}
+* Scottish Gaelic: {{t|gd|feuch}}
+* Slovak: {{t|sk|testovať}}, {{t|sk|otestovať}}
+* Slovene: {{t|sl|preizkusiti}}
+* Spanish: {{t+|es|probar}}, {{t+|es|testear}}
+* Swahili: {{t|sw|-[[jaribu]]}}
+* Ukrainian: {{t|uk|випробовувати}}, {{t|uk|тестувати}}
+* Vietnamese: {{t+|vi|thử}}, {{t+|vi|thử thách}}
+{{trans-bottom}}
+
+{{trans-top|to administer an examination during the academic term}}
+* Azerbaijani: {{t|az|sınaqdan keçirmək}}, {{t+|az|sınamaq}}
+* Catalan: {{t+|ca|examinar}}
+* Chinese:
+*: Mandarin: {{t+|cmn|測驗}}, {{t+|cmn|测验|tr=cèyàn}}, {{t+|cmn|考驗}}, {{t+|cmn|考验|tr=kǎoyàn}}
+* Danish: {{t+|da|teste}}
+* Finnish: {{t|fi|[[järjestää]] [[tentti]]}}
+* French: {{t+|fr|tester}}
+* Greek: {{t+|el|εξετάζω}}
+{{trans-mid}}
+* Hungarian: {{t|hu|vizsgázik}}, {{t|hu|vizsgáztat}}
+* Japanese: {{t|ja|[[テスト]]する|tr=tesuto suru}}
+* Latin: {{t+|la|specto}}
+* Russian: {{t+|ru|тести́ровать|impf|tr=tɛstírovatʹ}}, {{t+|ru|протести́ровать|pf|tr=protɛstírovatʹ}}
+* Scottish Gaelic: {{t|gd|feuch}}
+* Slovak: {{t|sk|skúšať}}, {{t|sk|vyskúšať}}
+* Tagalog: {{t|tl|subukin}}
+* Vietnamese: {{t+|vi|đưa}} {{t|vi|bài thi}}
+{{trans-bottom}}
+
+{{trans-top|to place a product or piece of equipment under everyday and/or extreme conditions}}
+* Azerbaijani: {{t+|az|sınamaq}}, {{t|az|sınaqdan keçirmək}}
+* Catalan: {{t+|ca|provar}}
+* Czech: {{t+|cs|testovat}}
+* Danish: {{t+|da|teste}}
+* Finnish: {{t+|fi|testata}}
+* French: {{t+|fr|tester}}
+* German: {{t-needed|de}}
+* Greek: {{t+|el|δοκιμάζω}}, {{t|el|θέτω υπό δοκιμασία}}
+* Hungarian: {{t+|hu|tesztel}}, {{t+|hu|vizsgál}}
+{{trans-mid}}
+* Irish: {{t|ga|tástáil|f}}
+* Italian: {{t+|it|testare}}
+* Latin: {{t|la|experior}}
+* Portuguese: {{t+|pt|testar}}
+* Russian: {{t+|ru|тести́ровать|impf|tr=tɛstírovatʹ}}, {{t+|ru|протести́ровать|pf|tr=protɛstírovatʹ}}
+* Slovak: {{t|sk|testovať}}
+* Slovene: {{t|sl|testirati}}, {{t|sl|preizkusiti}}
+* Spanish: {{t+|es|examinar}}, {{t+|es|probar}}, {{t+|es|testear}}
+* Vietnamese: {{t|vi|kiểm thử}}, {{t+|vi|kiểm tra}}
+{{trans-bottom}}
+
+{{trans-top|to be shown to be by test}}
+* Finnish: {{t+|fi|testata}}
+{{trans-mid}}
+{{trans-bottom}}
+
+{{checktrans-top}}
+* Albanian: {{t+check|sq|provoj}}
+* Arabic: {{t-check|ar|اِخْتَبَرَ}}
+* Dutch: {{t+check|nl|test}}, {{t+check|nl|testen}}
+* German: {{t+check|de|testen}}
+* Indonesian: {{t+check|id|coba}}
+* Italian: {{t+check|it|esaminare}}, {{t+check|it|provare}}, {{t+check|it|valutare}}, {{t+check|it|verificare}}
+* {{ttbc|cmn}}:
+*: Simplified: [[测试]] (cèshì), [[测验]] (cèyàn), [[考验]] (kǎoyàn), [[化验]] (huàyàn)
+*: Traditional: [[測試]] (cèshì), [[測驗]] (cèyàn), [[考驗]] (kǎoyàn), [[化驗]] (huàyàn)
+{{trans-mid}}
+* Norwegian: {{t-check|no|å teste}}, {{t-check|no|tester}}, {{t+check|no|testet}}, {{t-check|no|har testet}}
+* Spanish: {{t+check|es|examinar}}, {{t+check|es|probar}}
+* Swedish: {{t+check|sv|utmana}}, {{t+check|sv|testa}}
+* Telugu: {{t+check|te|పరీక్షించు}}
+* Thai: {{t+check|th|ทดสอบ}}
+{{trans-bottom}}
+
+===Etymology 2===
+From {{inh|en|enm|teste}}, from {{der|en|fro|teste}}, {{m|fro|test}} and {{der|en|la|testis|t=one who attests, a witness}}.
+
+====Noun====
+{{en-noun}}
+
+# {{lb|en|obsolete}} A [[witness]].
+#* '''1523-1525''', {{w|John Bourchier, 2nd Baron Berners}}, ''Froissart's Chronicles''
+#*: Prelates and great lords of England, who were for the more surety '''tests''' of that deed.
+
+====Verb====
+{{en-verb}}
+
+# {{lb|en|obsolete|transitive}} To [[attest]] (a document) legally, and [[date]] it.
+# {{lb|en|obsolete|intransitive}} To make a [[testament]], or [[will]].
+
+=====Related terms=====
+* {{l|en|attest}}
+* {{l|en|contest}}
+* {{l|en|detest}}
+* {{l|en|protest}}
+
+===Etymology 3===
+{{clipping|en|testosterone}}.
+
+====Noun====
+{{en-noun|-}}
+
+# {{lb|en|informal|slang|body building}} [[testosterone]]
+
+===Further reading===
+* {{R:Webster 1913}}
+* {{R:Century 1911}}
+
+===Anagrams===
+* {{anagrams|en|a=estt|ETTs|Etts|TETS|TETs|Tets|sett|stet|tets}}
+
+----
+
+==Breton==
+
+===Noun===
+{{head|br|nouns}}
+
+# [[witness]]
+
+----
+
+==Catalan==
+
+===Etymology 1===
+{{rfe|ca}}. Compare Spanish {{l|es|tiesto}}
+
+====Noun====
+{{ca-noun|m|testos}}
+
+# [[flowerpot]]
+# piece of [[clay]]
+
+===Etymology 2===
+{{rfe|es}}
+
+====Noun====
+{{ca-noun|m|tests}}
+
+# {{l|en|test}} {{gloss|exam or challenge}}
+
+----
+
+==Czech==
+
+===Pronunciation===
+* {{cs-IPA}}
+* {{hyphenation|cs|test}}
+
+===Noun===
+{{cs-noun|g=m-in}}
+
+# {{l|en|test}}
+
+====Declension====
+{{cs-decl-noun
+|test|testu|testu|test|teste|testu|testem
+|testy|testů|testům|testy|testy|testech|testy
+}}
+
+====Derived terms====
+* {{l|cs|testovat}}
+* {{l|cs|testovací}}
+* {{l|cs|testový}}
+
+===Further reading===
+* {{R:PSJC}}
+* {{R:SSJC}}
+
+----
+
+==Danish==
+
+===Etymology===
+From {{bor|da|en|test}}.
+
+===Noun===
+{{da-noun}}
+
+# {{l|en|test}} {{rfclarify|da}}
+
+===Further reading===
+* {{R:DDO}}
+
+----
+
+==Dutch==
+
+===Pronunciation===
+* {{IPA|nl|/tɛst/}}
+* {{audio|nl|Nl-test.ogg|Audio}}
+* {{hyphenation|nl|test}}
+* {{rhymes|nl|ɛst}}
+
+===Etymology 1===
+Borrowed from {{bor|nl|en|test}}.
+
+====Noun====
+{{nl-noun|m|-en|pl2=-s|testje}}
+
+# {{l|en|test}}
+
+=====Synonyms=====
+* {{l|nl|experiment}}
+* {{l|nl|proef}}
+
+=====Derived terms=====
+* {{l|nl|geluidstest}}
+* {{l|nl|piepjestest}}
+* {{l|nl|shuttleruntest}}
+* {{l|nl|sneltest}}
+* {{l|nl|testen}}
+
+====Descendants====
+* {{desc|id|bor=1|tes}}
+
+===Etymology 2===
+From {{inh|nl|dum|test}}, from {{der|nl|fro|test}}, from {{der|nl|la|testum}}, from {{m|la|testa}}.
+
+====Noun====
+{{nl-noun|m|-en|pl2=-s|testje}}
+
+# A {{l|en|test}}, an [[earthen]] [[bowl]] or [[pot]].
+# A {{l|en|test}}, a [[cupel]] (used in smelting).
+
+=====Derived terms=====
+* {{l|nl|vergiettest}}
+* {{l|nl|vuurtest}}
+
+=====Descendants=====
+* {{desc|af|tessie}}
+
+----
+
+==French==
+
+===Pronunciation===
+* {{fr-IPA}}
+
+===Etymology 1===
+From {{der|fr|fro|test}}, from {{der|fr|la|testum}}. The orthography of this form reflects semi-learned influence; compare the doublet {{doublet|fr|têt|notext=1}}.
+
+====Noun====
+{{fr-noun|m}}
+
+# [[test#English|test]], a [[cupel]] or cupelling hearth in which precious metals are melted for trial and refinement.
+# {{lb|fr|marine biology}} [[test#English|test]], the external [[calciferous]] shell, or [[endoskeleton]], of an [[echinoderm]].
+
+===Etymology 2===
+Borrowed from {{bor|fr|en|test}}, itself from the same {{der|fr|fro|test}} as above.
+
+====Noun====
+{{fr-noun|m}}
+
+# a [[test#English|test]], a [[tryout]], a [[review]]
+
+=====Derived terms=====
+* {{l|fr|tester}}
+
+===Further reading===
+* {{R:TLFi}}
+
+----
+
+==Hungarian==
+
+===Etymology===
+{{unk|hu|title=Of unknown origin.}}<ref>{{R:Zaicz 2006}}</ref>
+
+===Pronunciation===
+* {{hu-IPA}}
+* {{audio|hu|Hu-test.ogg|Audio}}
+* {{hyphenation|hu|test}}
+* {{rhymes|hu|ɛʃt}}
+
+===Noun===
+{{hu-noun|ek}}
+
+# {{lb|hu|anatomy}} [[body]]
+# {{lb|hu|geometry}} [[solid]] {{gloss|three-dimensional figure}}
+# {{lb|hu|algebra}} [[field]] {{gloss|commutative ring}}
+{{wikipedia|lang=hu|Test (algebra)}}
+
+====Declension====
+{{hu-infl-nom|teste|e}}{{hu-pos-etek|test||ei}}
+
+====Derived terms====
+{{der4|hu
+|testecs
+|testecske
+|testes
+|testi
+|testű
+}}
+{{der4|hu|title=Compound words
+|forgástest
+|fűtőtest
+|hajótest
+|holttest
+|testalkat
+|testápolás
+|testépítés
+|testnevelés
+|testőr
+|testrész
+|testvér
+|vértest
+}}
+{{der4|hu|title=Expressions
+|a lélek kész, de a test erőtlen
+|arkhimédészi test
+|platóni test
+|testre szab
+}}
+
+===References===
+<references/>
+
+===Further reading===
+* {{R:ErtSz}}
+
+----
+
+==Italian==
+
+===Etymology===
+Borrowed from {{bor|it|en|test}}.
+
+===Noun===
+{{it-noun|m|-}}
+
+# {{l|en|test}}
+
+----
+
+==Ladin==
+
+===Noun===
+{{lld-noun|m}}
+
+# [[text]]
+
+----
+
+==Latvian==
+
+===Verb===
+{{lv-verb}}
+
+# to [[beat]]
+# to [[knock about]]
+# to [[flog]]
+
+----
+
+==Norwegian Bokmål==
+
+===Etymology 1===
+From {{der|nb|en|test}}
+
+====Noun====
+{{nb-noun-m1}}
+
+# a {{l|en|test}}
+
+=====Derived terms=====
+* {{l|nb|synstest}}
+
+=====Related terms=====
+* {{l|nb|teste}}
+
+===Etymology 2===
+
+====Verb====
+{{head|nb|verb form}}
+
+# {{imperative of|nb|teste}}
+
+===References===
+* {{R:The Bokmål Dictionary}}
+
+----
+
+==Norwegian Nynorsk==
+
+===Etymology===
+From {{der|nn|en|test}}
+
+===Noun===
+{{nn-noun-m1}}
+
+# a {{l|en|test}}
+
+====Derived terms====
+* {{l|nn|synstest}}
+
+===References===
+* {{R:The Nynorsk Dictionary}}
+
+----
+
+==Old French==
+
+===Etymology===
+From {{inh|fro|la|testum}}.
+
+===Noun===
+{{fro-noun|m}}
+
+# {{lb|fro|uncountable}} [[clay]]
+# {{lb|fro|countable}} a [[pot]], usually made out of clay
+
+====Descendants====
+* {{desc|fr|test}}
+* {{desc|fr|têt}}
+* {{desc|bor=1|enm|test}}
+** {{desc|en|test}} {{see desc}}
+** {{desc|sco|test}}
+* {{desc|bor=1|gmh|test}}
+** {{desc|de|Test}}
+
+===References===
+* {{R:Godefroy}}
+
+----
+
+==Polish==
+
+===Pronunciation===
+* {{pl-IPA-auto}}
+
+===Noun===
+{{pl-noun|m-in}}
+
+# {{l|en|test}}
+
+====Declension====
+{{pl-decl-noun-masc-inani|te|st|u}}
+
+----
+
+==Serbo-Croatian==
+
+===Pronunciation===
+* {{IPA|sh|/têst/}}
+
+===Noun===
+{{sh-noun|g=m|head=tȅst}}
+
+# {{l|en|test}} (challenge, trial)
+# {{l|en|test}} (academics)
+# {{l|en|test}} (product examination)
+
+====Declension====
+{{sh-decl-noun
+|tȅst|tèstovi
+|testa|testova
+|testu|testovima
+|test|testove
+|teste|testovi
+|testu|testovima
+|testom|testovima
+}}
+
+----
+
+==Spanish==
+
+===Pronunciation===
+* {{es-IPA|testh}}
+
+===Noun===
+{{es-noun|m|tests}}
+
+# [[test#English|test]]
+#: {{syn|es|prueba}}
+
+[[Category:Spanish 1-syllable words]]
+
+----
+
+==Swedish==
+
+===Noun===
+{{sv-noun|c|g2=n}}
+
+# a {{l|en|test}}, an [[examination]], a [[trial]]
+# a test, an [[attempt]], an [[experiment]]
+# a piece of [[hair]] {{g|c}}
+
+====Declension====
+{{sv-infl-noun-n-zero|definitions=1, 2}}
+{{sv-infl-noun-c-er|definitions=1, 2}}
+{{sv-infl-noun-c-ar|definitions=3}}
+
+====Synonyms====
+* {{l|sv|examen}}
+* {{l|sv|försök}}
+* {{l|sv|experiment}}
+* {{l|sv|prov}}
+* {{l|sv|skrivning}}
+* {{l|sv|tofs}}
+* {{l|sv|tuss}}
+
+====Related terms====
+* {{l|sv|betatest}}
+* {{l|sv|hårtest}}
+* {{l|sv|testa}}
+
+===Anagrams===
+* {{anagrams|sv|a=estt|sett}}
+
+----
+
+==Turkish==
+
+===Etymology===
+From {{der|tr|en|test}}.
+
+===Pronunciation===
+* {{IPA|tr|/ˈtest/}}
+* {{hyph|tr|test}}
+
+===Noun===
+{{tr-noun|i|ler}}
+
+# [[#English|test]]
+
+====Declension====
+{{tr-infl-noun-c|e|poss=1}}
+
+====Derived terms====
+{{der4|tr|testçi|testçik|testçilik|testle|testli|testse|testsiz}}
