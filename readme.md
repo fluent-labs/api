@@ -1,5 +1,5 @@
-# Foreign Language Reader
-A site for learning to read foreign languages.
+# FluentLabs Reader
+A site for learning to read second languages.
 Note: This is a work in progress. Part of the reason I'm doing it is to build an entire application from the ground up.
 
 ## Parts
