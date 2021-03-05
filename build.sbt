@@ -1,7 +1,7 @@
 import sbtassembly.AssemblyPlugin.autoImport.assemblyMergeStrategy
 import Dependencies._
 
-name := "foreign-language-reader-parent"
+name := "fluentlabs-parent"
 scalaVersion in ThisBuild := "2.12.12"
 
 /*
@@ -101,8 +101,8 @@ lazy val compilerOptions = Seq(
  */
 
 lazy val assemblySettings = Seq(
-  organization := "com.foreignlanguagereader",
-  githubOwner := "foreign-language-reader",
+  organization := "io.fluentlabs",
+  githubOwner := "fluent-labs",
   githubRepository := "api",
   // Used for building jobs fat jars
   assemblyJarName in assembly := name.value + ".jar",
