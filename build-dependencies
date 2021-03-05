@@ -1,6 +1,6 @@
 import Dependencies._
 
-name := "foreign-language-reader-parent"
+name := "fluentlabs-parent"
 scalaVersion in ThisBuild := "2.12.12"
 
 lazy val dependencies = project
