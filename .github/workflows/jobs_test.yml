@@ -1,12 +1,6 @@
 name: Jobs PR Review
 
-on:
-  pull_request:
-    paths:
-      - "content/*"
-      - "content/**/*"
-      - "jobs/*"
-      - "jobs/**/*"
+on: [pull_request]
 
 jobs:
   build:
