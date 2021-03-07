@@ -1,20 +1,20 @@
 package com.foreignlanguagereader.dto.v1.word;
 
-import com.foreignlanguagereader.dto.v1.definition.DefinitionDTO;
-
-import java.util.List;
-
 public class WordDTO {
     private final String token;
     private final String processedToken;
     private final String tag;
     private final String lemma;
+    private final Boolean isPunctuation;
+    private final Boolean isNumber;
 
-    public WordDTO(String token, String processedToken, String tag, String lemma) {
+    public WordDTO(String token, String processedToken, String tag, String lemma, Boolean isPunctuation, Boolean isNumber) {
         this.token = token;
         this.processedToken = processedToken;
         this.tag = tag;
         this.lemma = lemma;
+        this.isPunctuation = isPunctuation;
+        this.isNumber = isNumber;
     }
 
     public String getTag() {
@@ -31,5 +31,13 @@ public class WordDTO {
 
     public String getProcessedToken() {
         return processedToken;
+    }
+
+    public Boolean getIsPunctuation() {
+        return isPunctuation;
+    }
+
+    public Boolean getIsNumber() {
+        return isNumber;
     }
 }
