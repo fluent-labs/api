@@ -29,7 +29,6 @@ class VocabularyService @Inject() (
             word.token,
             word.tag,
             word.lemma,
-            List(),
             None,
             None,
             None,

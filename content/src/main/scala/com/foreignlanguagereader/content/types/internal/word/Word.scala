@@ -1,20 +1,17 @@
 package com.foreignlanguagereader.content.types.internal.word
 
 import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.internal.definition.Definition
 import com.foreignlanguagereader.content.types.internal.word.Count.Count
 import com.foreignlanguagereader.content.types.internal.word.GrammaticalGender.GrammaticalGender
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.WordTense.WordTense
 import com.foreignlanguagereader.dto.v1.word.WordDTO
-import scala.collection.JavaConverters._
 
 case class Word(
     language: Language,
     token: String,
     tag: PartOfSpeech,
     lemma: String,
-    definitions: Seq[Definition],
     gender: Option[GrammaticalGender],
     number: Option[Count],
     proper: Option[Boolean],
@@ -26,8 +23,7 @@ case class Word(
       token,
       processedToken,
       tag.toString,
-      lemma,
-      definitions.map(_.toDTO).asJava
+      lemma
     )
 }
 object Word {
@@ -37,7 +33,6 @@ object Word {
       language = language,
       tag = PartOfSpeech.UNKNOWN,
       lemma = token,
-      definitions = List(),
       gender = None,
       number = None,
       proper = None,

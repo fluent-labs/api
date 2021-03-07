@@ -9,14 +9,12 @@ public class WordDTO {
     private final String processedToken;
     private final String tag;
     private final String lemma;
-    private final List<DefinitionDTO> definitions;
 
-    public WordDTO(String token, String processedToken, String tag, String lemma, List<DefinitionDTO> definitions) {
+    public WordDTO(String token, String processedToken, String tag, String lemma) {
         this.token = token;
         this.processedToken = processedToken;
         this.tag = tag;
         this.lemma = lemma;
-        this.definitions = definitions;
     }
 
     public String getTag() {
@@ -25,10 +23,6 @@ public class WordDTO {
 
     public String getLemma() {
         return lemma;
-    }
-
-    public List<DefinitionDTO> getDefinitions() {
-        return definitions;
     }
 
     public String getToken() {

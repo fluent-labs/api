@@ -74,7 +74,6 @@ class LanguageServiceClient @Inject() (
             tag = LanguageServiceClient
               .spacyPartOfSpeechToDomainPartOfSpeech(word.tag),
             lemma = word.lemma,
-            definitions = List(),
             gender = None,
             number = None,
             tense = None,
