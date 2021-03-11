@@ -26,7 +26,7 @@ jobs:
         java-version: 15.0.1
 
     - name: Load SBT cache
-      uses: coursier/cache-action@v5
+      uses: coursier/cache-action@v6
 
     - name: Compile
       run: sbt compile
