@@ -16,7 +16,7 @@ import javax.inject.{Inject, Singleton}
 class MetricsReporter @Inject() (holder: MetricHolder, config: Configuration) {
   // JVM metrics
   val getJvmMetrics: Boolean =
-    config.getOptional[Boolean]("metrics.reportJVM").getOrElse(true)
+    config.getOptional[Boolean]("metrics.reportJVM").getOrElse(false)
 
   def initialize(): Unit = {
     if (getJvmMetrics) {
