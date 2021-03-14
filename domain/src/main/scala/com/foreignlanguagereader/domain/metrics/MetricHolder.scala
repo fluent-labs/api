@@ -168,7 +168,7 @@ class MetricHolder {
 }
 
 object MetricHolder {
-  val namespace = "flr_"
+  val namespace = "fluentlabs_api_"
   val logger: Logger = Logger(this.getClass)
 
   // Handle duplicate registry when running locally
