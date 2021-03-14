@@ -15,6 +15,8 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class MetricsReporter @Inject() (holder: MetricHolder, config: Configuration) {
   // JVM metrics
+  // Should stay off unless we need to troubleshoot something specific.
+  // We will pay a lot of money for grafana cloud if we have to turn this on.
   val getJvmMetrics: Boolean =
     config.getOptional[Boolean]("metrics.reportJVM").getOrElse(false)
 

@@ -1,14 +1,6 @@
 name: Scala code test
 
-on:
-  pull_request:
-    paths:
-      - "*.scala"
-      - "**/*.scala"
-      - "*.sbt"
-      - "**/*.sbt"
-      - "*.conf"
-      - "**/*.conf"
+on: [pull_request]
 
 jobs:
   test:
