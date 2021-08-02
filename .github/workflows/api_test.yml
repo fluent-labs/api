@@ -24,23 +24,29 @@ jobs:
       with:
         dockerfile: Dockerfile
     
-    - name: Login to Docker Hub
-      uses: docker/login-action@v1.8.0
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    # - name: Login to Docker Hub
+    #   uses: docker/login-action@v1.8.0
+    #   with:
+    #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+    #     password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - uses: dorny/paths-filter@v2.9.2
-      name: Check if dependencies have changed
-      id: changed_dependencies
+      name: Check which docker images to rebuild
+      id: changed_files
       with:
         filters: |
+          base:
+            - 'Dockerfile_base'
           dependencies:
             - 'project/Dependencies.scala'
+    
+    - name: Build base image
+      if: steps.changed_files.outputs.base == 'true'
+      run: docker build . -f Dockerfile_base -t lkjaero/foreign-language-reader-api:base
 
     # Remember not to push
     - name: Build dependencies image
-      if: steps.changed_dependencies.outputs.dependencies == 'true'
+      if: steps.changed_files.outputs.dependencies == 'true' || steps.changed_files.outputs.base == 'true'
       run: docker build . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
 
     - name: Build container
