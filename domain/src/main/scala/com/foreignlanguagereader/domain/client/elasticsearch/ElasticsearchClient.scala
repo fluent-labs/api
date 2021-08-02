@@ -2,7 +2,7 @@ package com.foreignlanguagereader.domain.client.elasticsearch
 
 import akka.actor.ActorSystem
 import cats.data.Nested
-import cats.implicits._
+import cats.syntax.all._
 import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerResult,
   Circuitbreaker

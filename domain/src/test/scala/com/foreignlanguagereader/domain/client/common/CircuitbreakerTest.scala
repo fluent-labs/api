@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.domain.client.common
 
-import cats.implicits._
+import cats.syntax.all._
 import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,
