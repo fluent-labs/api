@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
-import cats.implicits._
+import cats.syntax.all._
 import org.elasticsearch.action.ActionRequest
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.update.UpdateRequest

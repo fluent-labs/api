@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.content.types.internal.word
 
-import cats.implicits._
+import cats.syntax.all._
 import com.foreignlanguagereader.dto.v1.word.PartOfSpeechDTO
 import play.api.libs.json.{Reads, Writes}
 

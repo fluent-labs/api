@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.content.difficulty
 
-import cats.implicits._
+import cats.syntax.all._
 import play.api.libs.json.{Reads, Writes}
 
 object CEFRDifficultyLevel extends Enumeration {
