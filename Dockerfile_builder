@@ -6,7 +6,7 @@ ENV INSTALL_DIR /usr/local
 ENV SBT_HOME /usr/local/sbt
 ENV PATH ${PATH}:${SBT_HOME}/bin
 
-WORKDIR /build
+WORKDIR /app
 
 # Sadly needed because package publishing requires this for all lifecycle steps.
 ENV GITHUB_TOKEN faketoken
