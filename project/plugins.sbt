@@ -15,4 +15,4 @@ addSbtPlugin("com.codecommit" % "sbt-github-packages" % "0.5.2")
 addSbtPlugin(
   "com.typesafe.play" % "sbt-plugin" % "2.8.7" exclude ("org.webjars", "npm")
 )
-libraryDependencies += "org.webjars" % "npm" % "4.2.0"
+libraryDependencies += "org.webjars" % "npm" % "4.4.4"
