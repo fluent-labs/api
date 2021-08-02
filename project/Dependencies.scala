@@ -9,7 +9,7 @@ object Dependencies {
   val elasticsearchVersion = "7.10.1"
   val hadoopVersion = "2.7.4"
   val jacksonVersion = "2.11.3"
-  val log4jVersion = "2.14.0"
+  val log4jVersion = "2.14.1"
   val playSlickVersion = "5.0.0"
   val prometheusVersion = "0.9.0"
   val scalatestVersion = "3.2.2"
