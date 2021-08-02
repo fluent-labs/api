@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Launch Scala Steward
     env:
+      # Required for the sbt-release plugin to work.
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Launch Scala Steward
