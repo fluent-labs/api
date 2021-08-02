@@ -7,7 +7,7 @@ import sbt._
 
 object Dependencies {
   val elasticsearchVersion = "7.10.1"
-  val hadoopVersion = "2.7.4"
+  val hadoopVersion = "2.7.7"
   val jacksonVersion = "2.11.3"
   val log4jVersion = "2.14.0"
   val playSlickVersion = "5.0.0"
