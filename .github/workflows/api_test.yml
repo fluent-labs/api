@@ -31,28 +31,22 @@ jobs:
     #     password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - uses: dorny/paths-filter@v2.9.2
-      name: Check if base image has changed
-      id: changed_base
+      name: Check which docker images to rebuild
+      id: changed_files
       with:
         filters: |
           base:
             - 'Dockerfile_base'
-    
-    - name: Build base image
-      if: steps.changed_base.outputs.base == 'true'
-      run: docker build . -f Dockerfile_base -t lkjaero/foreign-language-reader-api:base
-
-    - uses: dorny/paths-filter@v2.9.2
-      name: Check if dependencies have changed
-      id: changed_dependencies
-      with:
-        filters: |
           dependencies:
             - 'project/Dependencies.scala'
+    
+    - name: Build base image
+      if: steps.changed_files.outputs.base == 'true'
+      run: docker build . -f Dockerfile_base -t lkjaero/foreign-language-reader-api:base
 
     # Remember not to push
     - name: Build dependencies image
-      if: steps.changed_dependencies.outputs.dependencies == 'true' || steps.changed_base.outputs.base == 'true'
+      if: steps.changed_files.outputs.dependencies == 'true' || steps.changed_files.outputs.base == 'true'
       run: docker build . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
 
     - name: Build container
