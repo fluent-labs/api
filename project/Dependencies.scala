@@ -25,7 +25,7 @@ object Dependencies {
     "org.testcontainers" % "elasticsearch" % "1.15.0"
 
   // Language helpers
-  val cats = "org.typelevel" %% "cats-core" % "2.0.0"
+  val cats = "org.typelevel" %% "cats-core" % "2.6.1"
   val lombok = "org.projectlombok" % "lombok" % "1.18.16"
 
   // Logging
