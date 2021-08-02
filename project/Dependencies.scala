@@ -47,7 +47,7 @@ object Dependencies {
   val sparkCore =
     "org.apache.spark" %% "spark-core" % sparkVersion
   val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
-  val sparkXml = "com.databricks" %% "spark-xml" % "0.10.0"
+  val sparkXml = "com.databricks" %% "spark-xml" % "0.12.0"
   val hadoop = "org.apache.hadoop" % "hadoop-common" % hadoopVersion
   val hadoopClient = "org.apache.hadoop" % "hadoop-client" % hadoopVersion
   val hadoopAWS = "org.apache.hadoop" % "hadoop-aws" % hadoopVersion
