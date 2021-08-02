@@ -77,7 +77,7 @@ object Dependencies {
   // Auth
   val jwtPlay = "com.pauldijou" %% "jwt-play" % "4.3.0"
   val jwtCore = "com.pauldijou" %% "jwt-core" % "4.3.0"
-  val jwksRsa = "com.auth0" % "jwks-rsa" % "0.15.0"
+  val jwksRsa = "com.auth0" % "jwks-rsa" % "0.19.0"
 
   // Hacks for guava incompatibility
   val hadoopMapreduceClient =
