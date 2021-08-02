@@ -65,7 +65,7 @@ object Dependencies {
     "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % elasticsearchVersion
   val oslib = "com.lihaoyi" %% "os-lib" % "0.7.1"
   val googleCloudClient =
-    "com.google.cloud" % "google-cloud-language" % "1.101.9"
+    "com.google.cloud" % "google-cloud-language" % "1.103.2"
 
   // Database
   val h2 = "com.h2database" % "h2" % "1.4.192"
