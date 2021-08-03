@@ -4,8 +4,7 @@ import cats.syntax.all._
 import com.foreignlanguagereader.dto.v1.word.PartOfSpeechDTO
 import play.api.libs.json.{Reads, Writes}
 
-/**
-  * This is a crude bucketing of all possible parts of speech in a language.
+/** This is a crude bucketing of all possible parts of speech in a language.
   *
   * All models are going to have a different set of parts of speech,
   * but we need a common set to work with.

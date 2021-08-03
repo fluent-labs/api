@@ -7,13 +7,13 @@ import sbt._
 
 object Dependencies {
   val elasticsearchVersion = "7.10.1"
-  val hadoopVersion = "2.7.7"
+  val hadoopVersion = "2.10.1"
   val jacksonVersion = "2.11.3"
   val log4jVersion = "2.14.1"
   val playSlickVersion = "5.0.0"
   val prometheusVersion = "0.11.0"
-  val scalatestVersion = "3.2.2"
-  val sparkVersion = "3.1.2"
+  val scalatestVersion = "3.2.9"
+  val sparkVersion = "3.0.3"
 
   // Testing
   val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
@@ -51,7 +51,7 @@ object Dependencies {
   val hadoop = "org.apache.hadoop" % "hadoop-common" % hadoopVersion
   val hadoopClient = "org.apache.hadoop" % "hadoop-client" % hadoopVersion
   val hadoopAWS = "org.apache.hadoop" % "hadoop-aws" % hadoopVersion
-  val awsJavaSDK = "com.amazonaws" % "aws-java-sdk" % "1.7.15"
+  val awsJavaSDK = "com.amazonaws" % "aws-java-sdk" % "1.12.38"
   // Enable this when it is build for scala 2.12 in main
   // And remove our local version
   //    val elasticsearchHadoop =
@@ -69,14 +69,14 @@ object Dependencies {
 
   // Database
   val h2 = "com.h2database" % "h2" % "1.4.200"
-  val postgres = "org.postgresql" % "postgresql" % "42.2.18"
+  val postgres = "org.postgresql" % "postgresql" % "42.2.23"
   val playSlick = "com.typesafe.play" %% "play-slick" % playSlickVersion
   val playSlickEvolutions =
     "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion
 
   // Auth
-  val jwtPlay = "com.pauldijou" %% "jwt-play" % "4.3.0"
-  val jwtCore = "com.pauldijou" %% "jwt-core" % "4.3.0"
+  val jwtPlay = "com.pauldijou" %% "jwt-play" % "5.0.0"
+  val jwtCore = "com.pauldijou" %% "jwt-core" % "5.0.0"
   val jwksRsa = "com.auth0" % "jwks-rsa" % "0.19.0"
 
   // Hacks for guava incompatibility

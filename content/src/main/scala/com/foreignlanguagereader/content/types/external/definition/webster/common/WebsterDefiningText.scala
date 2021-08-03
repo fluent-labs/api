@@ -13,8 +13,7 @@ case class WebsterDefiningText(
 )
 object WebsterDefiningText {
 
-  /**
-    * This class uses a data type of a series of nested arrays
+  /** This class uses a data type of a series of nested arrays
     * See NestedArrayHelper for details
     */
   implicit val reads: Reads[WebsterDefiningText] = JsPath

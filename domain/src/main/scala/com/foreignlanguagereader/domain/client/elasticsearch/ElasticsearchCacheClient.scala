@@ -28,9 +28,7 @@ class ElasticsearchCacheClient @Inject() (
 ) {
   val logger: Logger = Logger(this.getClass)
 
-  /**
-    *
-    * We cache in elasticsearch because some content sources have request rate limits.
+  /** We cache in elasticsearch because some content sources have request rate limits.
     * This caching prevents us from using requests for things we have already searched for,
     * and puts a limit on the number of times we will retry a search that hasn't given us results before.
     *

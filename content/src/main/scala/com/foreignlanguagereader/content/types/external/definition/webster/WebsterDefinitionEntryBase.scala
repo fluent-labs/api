@@ -30,8 +30,8 @@ trait WebsterDefinitionEntryBase {
   val subdefinitions: List[String] = {
     val d = WebsterFormatter.formatSeq(
       definitions
-      // senseSequence: Option[Seq[Seq[WebsterSense]]]
-      // remove the nones
+        // senseSequence: Option[Seq[Seq[WebsterSense]]]
+        // remove the nones
         .flatMap(_.senseSequence)
         // Our data model needs them flattened to one list
         .flatten
@@ -48,8 +48,8 @@ trait WebsterDefinitionEntryBase {
     //definitions: Seq[WebsterDefinition]
     val e = WebsterFormatter.formatSeq(
       definitions
-      // senseSequence: Option[Seq[Seq[WebsterSense]]]
-      // remove the nones
+        // senseSequence: Option[Seq[Seq[WebsterSense]]]
+        // remove the nones
         .flatMap(_.senseSequence)
         // Our data model needs them flattened to one list
         .flatten

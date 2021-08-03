@@ -20,8 +20,8 @@ object WebsterNestedArrayHelper {
         typeString -> row(1)
       })
       .groupBy { case (key, _) => key }
-      .map {
-        case (key, values) => key -> values.map { case (_, value) => value }
+      .map { case (key, values) =>
+        key -> values.map { case (_, value) => value }
       }
 
   def buildLookupMapFromNested(

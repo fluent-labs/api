@@ -30,12 +30,11 @@ class LanguageServiceClientTest extends AsyncFunSpec {
         "something else" -> PartOfSpeech.UNKNOWN
       )
 
-      assertions.foreach {
-        case (language, domain) =>
-          assert(
-            LanguageServiceClient
-              .spacyPartOfSpeechToDomainPartOfSpeech(language) == domain
-          )
+      assertions.foreach { case (language, domain) =>
+        assert(
+          LanguageServiceClient
+            .spacyPartOfSpeechToDomainPartOfSpeech(language) == domain
+        )
       }
       succeed
     }

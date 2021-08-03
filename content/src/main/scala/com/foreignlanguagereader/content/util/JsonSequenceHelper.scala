@@ -2,8 +2,7 @@ package com.foreignlanguagereader.content.util
 
 import play.api.libs.json.{JsValue, Reads, Writes}
 
-/**
-  * This helper class exists to get rid of all the boilerplate with nested json parsers
+/** This helper class exists to get rid of all the boilerplate with nested json parsers
   * The macros don't handle nested types without being told that they can.
   * So this tells them that they can
   *

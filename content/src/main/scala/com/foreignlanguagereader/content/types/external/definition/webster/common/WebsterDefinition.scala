@@ -17,7 +17,7 @@ object WebsterDefinition {
     val senseSequence: Option[List[List[WebsterSense]]] = sseq match {
       case Some(seq) =>
         WebsterNestedArrayHelper
-        // Gives us a List[Map[String, List[WebsterSense]]] although we haven't parsed the senses yet
+          // Gives us a List[Map[String, List[WebsterSense]]] although we haven't parsed the senses yet
           .buildLookupMapFromNested(seq)
           // We only care about the senses in this array, other types can be safely ignored.
           .flatMap(_.get("sense"))
