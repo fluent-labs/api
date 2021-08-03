@@ -3,9 +3,7 @@ package com.foreignlanguagereader.dto.v1.health
 import com.foreignlanguagereader.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.libs.json._
 
-/**
-  *
-  * @param database Whether service can connect to database to get user data
+/** @param database Whether service can connect to database to get user data
   * @param content  Whether service can connect to elasticsearch to get language content
   */
 case class Readiness(

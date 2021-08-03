@@ -31,8 +31,8 @@ object ChinesePronunciationGenerator {
     (pronunciation, tones) match {
       case (Some(p), Some(t)) =>
         p.zip(t)
-          .map {
-            case (pron, tone) => pron.toDomain(List(tone))
+          .map { case (pron, tone) =>
+            pron.toDomain(List(tone))
           }
           .reduce(_ + _)
       case (Some(p), None) =>

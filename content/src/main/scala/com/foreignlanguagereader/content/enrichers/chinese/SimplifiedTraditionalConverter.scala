@@ -25,8 +25,7 @@ object SimplifiedTraditionalConverter {
     }
   }
 
-  /**
-    * Character simplification collapsed many characters into one.
+  /** Character simplification collapsed many characters into one.
     * Given this, one simplified character can have one or more traditional counterparts.
     * eg: 干 => [幹, 乾]
     *
@@ -61,8 +60,8 @@ object SimplifiedTraditionalConverter {
             case (_, None) => true
             case _         => false
           }
-          .map {
-            case (char, _) => char
+          .map { case (char, _) =>
+            char
           }
         logger.error(
           s"Failed to convert $simplified to traditional because these characters failed conversion: ${errors

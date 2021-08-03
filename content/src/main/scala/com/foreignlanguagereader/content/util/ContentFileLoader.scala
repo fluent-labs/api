@@ -30,8 +30,7 @@ object ContentFileLoader {
     }
   }
 
-  /**
-    * Loads a json file from the path, or fails trying.
+  /** Loads a json file from the path, or fails trying.
     *
     * Use this if you want to stop the server from coming up if you can't load this file
     *

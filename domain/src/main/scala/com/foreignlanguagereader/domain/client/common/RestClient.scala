@@ -15,8 +15,7 @@ import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
 
-/**
-  * Common behavior for rest clients that we implement using WS
+/** Common behavior for rest clients that we implement using WS
   */
 case class RestClient(
     ws: WSClient,

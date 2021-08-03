@@ -25,8 +25,7 @@ import play.api.{Configuration, Logger}
 
 import scala.concurrent.ExecutionContext
 
-/**
-  * Language specific handling for Chinese.
+/** Language specific handling for Chinese.
   * We have two dictionaries here, so we should combine them to produce the best possible results
   * In particular, CEDICT has a minimum level of quality, but doesn't have as many definitions.
   */
