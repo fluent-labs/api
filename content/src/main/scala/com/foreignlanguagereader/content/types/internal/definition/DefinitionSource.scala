@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.content.types.internal.definition
 
-import cats.implicits._
+import cats.syntax.all._
 import com.foreignlanguagereader.dto.v1.definition.DefinitionSourceDTO
 import play.api.libs.json._
 

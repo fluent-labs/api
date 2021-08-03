@@ -1,18 +1,18 @@
 // Quality
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.6.1")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.8.2")
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.10.0-RC1")
 
 // Make fat jars for Spark jobs
-addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.15.0")
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "1.0.0")
 
 // Publishing
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.13")
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "1.0.0")
-addSbtPlugin("com.codecommit" % "sbt-github-packages" % "0.5.2")
+addSbtPlugin("com.codecommit" % "sbt-github-packages" % "0.5.3")
 
 // Api
 // Workaround for missing npm sources
 addSbtPlugin(
-  "com.typesafe.play" % "sbt-plugin" % "2.8.7" exclude ("org.webjars", "npm")
+  "com.typesafe.play" % "sbt-plugin" % "2.8.8" exclude ("org.webjars", "npm")
 )
-libraryDependencies += "org.webjars" % "npm" % "4.2.0"
+libraryDependencies += "org.webjars" % "npm" % "5.0.0-2"
