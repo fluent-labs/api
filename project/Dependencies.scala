@@ -6,7 +6,7 @@ import sbt._
  */
 
 object Dependencies {
-  val elasticsearchVersion = "7.10.1"
+  val elasticsearchVersion = "7.10.2"
   val hadoopVersion = "3.3.1"
   val jacksonVersion = "2.11.3"
   val log4jVersion = "2.14.1"
