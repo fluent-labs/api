@@ -13,7 +13,7 @@ object Dependencies {
   val playSlickVersion = "5.0.0"
   val prometheusVersion = "0.11.0"
   val scalatestVersion = "3.2.2"
-  val sparkVersion = "3.0.1"
+  val sparkVersion = "3.0.3"
 
   // Testing
   val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
