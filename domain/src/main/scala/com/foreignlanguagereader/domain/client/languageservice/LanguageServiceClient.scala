@@ -2,7 +2,7 @@ package com.foreignlanguagereader.domain.client.languageservice
 
 import akka.actor.ActorSystem
 import cats.data.Nested
-import cats.implicits._
+import cats.syntax.all._
 import com.foreignlanguagereader.content.types.Language.Language
 import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.content.types.internal.word.{
