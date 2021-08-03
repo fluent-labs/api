@@ -16,9 +16,7 @@ import play.api.libs.json.{Reads, Writes}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
 
-/**
-  *
-  * Turns the raw elasticsearch response into the query result.
+/** Turns the raw elasticsearch response into the query result.
   * This decides whether we will need to refetch from the original content source.
   *
   * @param index The elasticsearch index to cache the data. Should just be the type
@@ -173,21 +171,20 @@ case class ElasticsearchSearchResponse[T](
             queried = queried
           )
       }
-      .recover {
-        case e: Exception =>
-          logger.error(
-            s"Failed to call fetcher on index=$index for fields=$fields due to error ${e.getMessage}",
-            e
-          )
-          ElasticsearchSearchResult(
-            index = index,
-            fields = fields,
-            result = List(),
-            fetchCount = fetchCount + 1,
-            lookupId = lookupId,
-            refetched = true,
-            queried = queried
-          )
+      .recover { case e: Exception =>
+        logger.error(
+          s"Failed to call fetcher on index=$index for fields=$fields due to error ${e.getMessage}",
+          e
+        )
+        ElasticsearchSearchResult(
+          index = index,
+          fields = fields,
+          result = List(),
+          fetchCount = fetchCount + 1,
+          lookupId = lookupId,
+          refetched = true,
+          queried = queried
+        )
 
       }
   }
@@ -210,8 +207,8 @@ object ElasticsearchSearchResponse {
     // Basically removes the ElasticsearchCacheable[] outer wrapper
     val unwrappedResult = Nested
       .apply(result)
-      .map {
-        case (items, attempts) => (items.mapValues(_.item), attempts)
+      .map { case (items, attempts) =>
+        (items.mapValues(_.item), attempts)
       }
       .value
 

@@ -39,11 +39,11 @@ class MetricsHolderTest extends AsyncFunSpec with MockitoSugar {
 
     it("initializes every metric") {
       holder.initializeMetricsToZero()
-      holder.unlabeledCounters.foreach {
-        case (_, counter) => assert(counter.get() == 0)
+      holder.unlabeledCounters.foreach { case (_, counter) =>
+        assert(counter.get() == 0)
       }
-      holder.gauges.foreach {
-        case (_, gauge) => assert(gauge.get() == 0)
+      holder.gauges.foreach { case (_, gauge) =>
+        assert(gauge.get() == 0)
       }
 
       testMetricValues(

@@ -28,8 +28,7 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
 // $COVERAGE-OFF$
-/**
-  * Lower level elasticsearch client. We implement other logic on top of this.
+/** Lower level elasticsearch client. We implement other logic on top of this.
   * @param config An already configured elasticsearch client.
   * @param system Thread pool setup for client
   */
@@ -173,8 +172,8 @@ class ElasticsearchClient @Inject() (
       case JsSuccess(value, _) => Some(hit.getId -> value)
       case JsError(errors) =>
         val errs = errors
-          .map {
-            case (path, e) => s"At path $path: ${e.mkString(", ")}"
+          .map { case (path, e) =>
+            s"At path $path: ${e.mkString(", ")}"
           }
           .mkString("\n")
         logger.error(

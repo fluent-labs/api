@@ -190,8 +190,8 @@ object MetricHolder {
   ): Map[Metric, T] = {
     metrics
       .map(metric => metric -> safelyMakeMetric(metric)(() => builder(metric)))
-      .collect {
-        case (metric, Some(counter)) => metric -> counter
+      .collect { case (metric, Some(counter)) =>
+        metric -> counter
       }
       .toMap
   }
@@ -200,12 +200,11 @@ object MetricHolder {
       builder: (Metric, Seq[String]) => T
   ): Map[Metric, T] = {
     metrics
-      .map {
-        case (metric, labels) =>
-          metric -> safelyMakeMetric(metric)(() => builder(metric, labels))
+      .map { case (metric, labels) =>
+        metric -> safelyMakeMetric(metric)(() => builder(metric, labels))
       }
-      .collect {
-        case (metric, Some(counter)) => metric -> counter
+      .collect { case (metric, Some(counter)) =>
+        metric -> counter
       }
   }
 
