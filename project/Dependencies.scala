@@ -58,7 +58,7 @@ object Dependencies {
   //      "org.elasticsearch" % "elasticsearch-hadoop" % elasticsearchVersion
 
   // NLP tools
-  val opencc4j = "com.github.houbb" % "opencc4j" % "1.6.0"
+  val opencc4j = "com.github.houbb" % "opencc4j" % "1.6.1"
 
   // External clients
   val elasticsearchHighLevelClient =
