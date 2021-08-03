@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.content.types
 
-import cats.implicits._
+import cats.syntax.all._
 import play.api.libs.json.{Reads, Writes}
 import play.api.mvc.PathBindable
 

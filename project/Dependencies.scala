@@ -6,26 +6,26 @@ import sbt._
  */
 
 object Dependencies {
-  val elasticsearchVersion = "7.10.2"
-  val hadoopVersion = "2.7.4"
+  val elasticsearchVersion = "7.10.1"
+  val hadoopVersion = "2.7.7"
   val jacksonVersion = "2.11.3"
-  val log4jVersion = "2.14.0"
+  val log4jVersion = "2.14.1"
   val playSlickVersion = "5.0.0"
-  val prometheusVersion = "0.9.0"
+  val prometheusVersion = "0.11.0"
   val scalatestVersion = "3.2.2"
-  val sparkVersion = "3.0.1"
+  val sparkVersion = "3.0.3"
 
   // Testing
   val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
   val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion
   val scalatestPlay =
     "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
-  val mockito = "org.mockito" %% "mockito-scala" % "1.16.0" % Test
+  val mockito = "org.mockito" %% "mockito-scala" % "1.16.37" % Test
   val elasticsearchContainer =
-    "org.testcontainers" % "elasticsearch" % "1.15.0"
+    "org.testcontainers" % "elasticsearch" % "1.16.0"
 
   // Language helpers
-  val cats = "org.typelevel" %% "cats-core" % "2.0.0"
+  val cats = "org.typelevel" %% "cats-core" % "2.6.1"
   val lombok = "org.projectlombok" % "lombok" % "1.18.16"
 
   // Logging
@@ -47,28 +47,28 @@ object Dependencies {
   val sparkCore =
     "org.apache.spark" %% "spark-core" % sparkVersion
   val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
-  val sparkXml = "com.databricks" %% "spark-xml" % "0.10.0"
+  val sparkXml = "com.databricks" %% "spark-xml" % "0.12.0"
   val hadoop = "org.apache.hadoop" % "hadoop-common" % hadoopVersion
   val hadoopClient = "org.apache.hadoop" % "hadoop-client" % hadoopVersion
   val hadoopAWS = "org.apache.hadoop" % "hadoop-aws" % hadoopVersion
-  val awsJavaSDK = "com.amazonaws" % "aws-java-sdk" % "1.7.4"
+  val awsJavaSDK = "com.amazonaws" % "aws-java-sdk" % "1.7.15"
   // Enable this when it is build for scala 2.12 in main
   // And remove our local version
   //    val elasticsearchHadoop =
   //      "org.elasticsearch" % "elasticsearch-hadoop" % elasticsearchVersion
 
   // NLP tools
-  val opencc4j = "com.github.houbb" % "opencc4j" % "1.6.0"
+  val opencc4j = "com.github.houbb" % "opencc4j" % "1.6.1"
 
   // External clients
   val elasticsearchHighLevelClient =
     "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % elasticsearchVersion
-  val oslib = "com.lihaoyi" %% "os-lib" % "0.7.1"
+  val oslib = "com.lihaoyi" %% "os-lib" % "0.7.8"
   val googleCloudClient =
     "com.google.cloud" % "google-cloud-language" % "1.103.2"
 
   // Database
-  val h2 = "com.h2database" % "h2" % "1.4.192"
+  val h2 = "com.h2database" % "h2" % "1.4.200"
   val postgres = "org.postgresql" % "postgresql" % "42.2.18"
   val playSlick = "com.typesafe.play" %% "play-slick" % playSlickVersion
   val playSlickEvolutions =
@@ -77,7 +77,7 @@ object Dependencies {
   // Auth
   val jwtPlay = "com.pauldijou" %% "jwt-play" % "4.3.0"
   val jwtCore = "com.pauldijou" %% "jwt-core" % "4.3.0"
-  val jwksRsa = "com.auth0" % "jwks-rsa" % "0.15.0"
+  val jwksRsa = "com.auth0" % "jwks-rsa" % "0.19.0"
 
   // Hacks for guava incompatibility
   val hadoopMapreduceClient =
