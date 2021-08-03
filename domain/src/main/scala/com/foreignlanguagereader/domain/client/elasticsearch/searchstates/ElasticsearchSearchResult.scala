@@ -8,9 +8,7 @@ import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.common.xcontent.XContentType
 import play.api.libs.json.{Json, Writes}
 
-/**
-  *
-  * Holds the final result from an elasticsearch lookup,
+/** Holds the final result from an elasticsearch lookup,
   * Decides whether we need to cache data back to elasticsearch,
   * and also updates the search count.
   *

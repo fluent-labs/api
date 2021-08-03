@@ -28,12 +28,11 @@ object SectionFinder {
       .appName(jobName)
       .getOrCreate()
 
-    val errorCount = backups.map {
-      case (dictionary, path) =>
-        findSectionsFromBackup(
-          s"$backupsBasePath/$path",
-          s"$backupsBasePath/sections/$dictionary.csv"
-        )
+    val errorCount = backups.map { case (dictionary, path) =>
+      findSectionsFromBackup(
+        s"$backupsBasePath/$path",
+        s"$backupsBasePath/sections/$dictionary.csv"
+      )
     }.sum
 
     if (errorCount > 0) {

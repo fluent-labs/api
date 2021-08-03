@@ -37,12 +37,11 @@ object TemplateExtractor {
       .appName(s"Wiktionary Template Extractor")
       .getOrCreate()
 
-    backups.foreach {
-      case (dictionary, path) =>
-        extractTemplatesFromBackup(
-          s"$backupsBasePath/$path",
-          s"$backupsBasePath/templates/$dictionary"
-        )
+    backups.foreach { case (dictionary, path) =>
+      extractTemplatesFromBackup(
+        s"$backupsBasePath/$path",
+        s"$backupsBasePath/templates/$dictionary"
+      )
     }
   }
 

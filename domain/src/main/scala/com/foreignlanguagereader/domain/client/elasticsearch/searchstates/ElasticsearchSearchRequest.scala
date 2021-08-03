@@ -7,8 +7,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder
 
 import scala.concurrent.Future
 
-/**
-  * Takes the absolute minimum information from the caller
+/** Takes the absolute minimum information from the caller
   * and generates the correct elasticsearch queries to cache this type.
   *
   * @param index The elasticsearch index to cache the data. Should just be the type
@@ -29,9 +28,8 @@ case class ElasticsearchSearchRequest[T](
   // It'll be used later to know if we should try to fetch if there are no elasticsearch results
   val attemptsQuery: SearchRequest = {
     val q = fields
-      .foldLeft(QueryBuilders.boolQuery()) {
-        case (acc, (field, value)) =>
-          acc.must(QueryBuilders.matchQuery(s"fields.$field", value))
+      .foldLeft(QueryBuilders.boolQuery()) { case (acc, (field, value)) =>
+        acc.must(QueryBuilders.matchQuery(s"fields.$field", value))
       }
       .must(QueryBuilders.matchQuery("index", index))
     new SearchRequest()

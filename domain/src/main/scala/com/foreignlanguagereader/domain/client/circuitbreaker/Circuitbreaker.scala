@@ -29,9 +29,8 @@ class Circuitbreaker(
       callTimeout = timeout,
       resetTimeout = resetTimeout
     ).onOpen(
-        logger.error(s"Circuit breaker for $name opening due to failures")
-      )
-      .onHalfOpen(logger.info(s"Circuit breaker for $name resetting"))
+      logger.error(s"Circuit breaker for $name opening due to failures")
+    ).onHalfOpen(logger.info(s"Circuit breaker for $name resetting"))
       .onClose(logger.info(s"Circuit breaker for $name reset"))
 
   def defaultIsFailure(error: Throwable): Boolean = true

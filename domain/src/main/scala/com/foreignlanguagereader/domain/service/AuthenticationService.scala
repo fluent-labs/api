@@ -9,8 +9,7 @@ import play.api.Configuration
 import java.time.Clock
 import scala.util.{Failure, Success, Try}
 
-/**
-  * Parses the JWT generated from auth 0
+/** Parses the JWT generated from auth 0
   * Taken from https://auth0.com/blog/build-and-secure-a-scala-play-framework-api/
   * @param config
   */
@@ -55,22 +54,20 @@ class AuthenticationService @Inject() (config: Configuration) {
   // As the header and claims data are base64-encoded, this function
   // decodes those elements
   private val decodeElements = (data: Try[(String, String, String)]) =>
-    data map {
-      case (header, body, sig) =>
-        (JwtBase64.decodeString(header), JwtBase64.decodeString(body), sig)
+    data map { case (header, body, sig) =>
+      (JwtBase64.decodeString(header), JwtBase64.decodeString(body), sig)
     }
 
   // Gets the JWK from the JWKS endpoint using the jwks-rsa library
   private val getJwk = (token: String) =>
-    (splitToken andThen decodeElements)(token) flatMap {
-      case (header, _, _) =>
-        val jwtHeader = JwtJson.parseHeader(header) // extract the header
-        val jwkProvider = new UrlJwkProvider(s"https://$domain")
+    (splitToken andThen decodeElements)(token) flatMap { case (header, _, _) =>
+      val jwtHeader = JwtJson.parseHeader(header) // extract the header
+      val jwkProvider = new UrlJwkProvider(s"https://$domain")
 
-        // Use jwkProvider to load the JWKS data and return the JWK
-        jwtHeader.keyId.map { k =>
-          Try(jwkProvider.get(k))
-        } getOrElse Failure(new Exception("Unable to retrieve JWK"))
+      // Use jwkProvider to load the JWKS data and return the JWK
+      jwtHeader.keyId.map { k =>
+        Try(jwkProvider.get(k))
+      } getOrElse Failure(new Exception("Unable to retrieve JWK"))
     }
 
   // Validates the claims inside the token. 'isValid' checks the issuedAt, expiresAt,
