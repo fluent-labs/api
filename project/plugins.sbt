@@ -3,7 +3,7 @@ addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.8.2")
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.10.0-RC1")
 
 // Make fat jars for Spark jobs
-addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.15.0")
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "1.0.0")
 
 // Publishing
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.13")
