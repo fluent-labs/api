@@ -51,7 +51,7 @@ object Dependencies {
   val hadoop = "org.apache.hadoop" % "hadoop-common" % hadoopVersion
   val hadoopClient = "org.apache.hadoop" % "hadoop-client" % hadoopVersion
   val hadoopAWS = "org.apache.hadoop" % "hadoop-aws" % hadoopVersion
-  val awsJavaSDK = "com.amazonaws" % "aws-java-sdk" % "1.7.15"
+  val awsJavaSDK = "com.amazonaws" % "aws-java-sdk" % "1.12.38"
   // Enable this when it is build for scala 2.12 in main
   // And remove our local version
   //    val elasticsearchHadoop =
