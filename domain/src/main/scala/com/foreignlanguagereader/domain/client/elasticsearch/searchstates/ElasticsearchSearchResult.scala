@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
-import cats.implicits._
+import cats.syntax.all._
 import com.foreignlanguagereader.content.types.internal.ElasticsearchCacheable
 import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
 import org.elasticsearch.action.index.IndexRequest
