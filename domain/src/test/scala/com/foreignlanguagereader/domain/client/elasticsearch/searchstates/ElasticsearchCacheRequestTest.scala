@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
-import cats.implicits._
+import cats.syntax.all._
 import com.foreignlanguagereader.domain.client.elasticsearch.LookupAttempt
 import com.foreignlanguagereader.domain.util.ElasticsearchTestUtil
 import org.scalatest.funspec.AnyFunSpec
