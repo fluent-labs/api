@@ -64,9 +64,25 @@ jobs:
           filters: |
             dependencies:
               - 'project/Dependencies.scala'
+      
+      - uses: dorny/paths-filter@v2.10.2
+        name: Check which docker images to rebuild
+        id: changed_files
+        with:
+          filters: |
+            base:
+              - 'Dockerfile_base'
+            dependencies:
+              - 'project/Dependencies.scala'
+    
+      - name: Rebuild base image
+        if: steps.changed_files.outputs.base == 'true'
+        run: |
+          docker build . -f Dockerfile_base -t lkjaero/foreign-language-reader-api:base
+          ocker push lkjaero/foreign-language-reader-api:base
 
-      - name: Pull and rebuild dependencies docker image
-        if: steps.changed_dependencies.outputs.dependencies == 'true'
+      - name: Rebuild dependencies image
+        if: steps.changed_files.outputs.dependencies == 'true'
         run: |
           docker build . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
           docker push lkjaero/foreign-language-reader-api:builder
@@ -91,7 +107,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_sKEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
 
       - name: Save kubeconfig
