@@ -1,9 +1,9 @@
 package com.foreignlanguagereader.domain.service.definition
 
-import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.internal.word.Word
-import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.internal.definition.Definition
+import io.fluentlabs.content.types.Language
+import io.fluentlabs.content.types.internal.word.Word
+import io.fluentlabs.content.types.Language.Language
+import io.fluentlabs.content.types.internal.definition.Definition
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 

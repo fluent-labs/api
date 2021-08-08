@@ -1,9 +1,9 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
-import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
-import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
+import io.fluentlabs.content.types.Language
+import io.fluentlabs.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
+import io.fluentlabs.content.types.internal.definition.DefinitionSource
+import io.fluentlabs.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,
   CircuitBreakerNonAttempt,

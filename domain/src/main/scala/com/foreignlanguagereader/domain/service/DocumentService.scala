@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.domain.service
 
-import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.internal.word.Word
+import io.fluentlabs.content.types.Language.Language
+import io.fluentlabs.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,

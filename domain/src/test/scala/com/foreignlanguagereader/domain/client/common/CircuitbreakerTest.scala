@@ -8,7 +8,7 @@ import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerResult,
   Circuitbreaker
 }
-import com.foreignlanguagereader.dto.v1.health.ReadinessStatus
+import io.fluentlabs.dto.v1.health.ReadinessStatus
 import com.typesafe.config.ConfigFactory
 import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec

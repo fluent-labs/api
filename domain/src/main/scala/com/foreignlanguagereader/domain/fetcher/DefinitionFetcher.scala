@@ -1,11 +1,11 @@
 package com.foreignlanguagereader.domain.fetcher
 
-import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
-import com.foreignlanguagereader.content.types.internal.definition.Definition
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
-import com.foreignlanguagereader.content.types.internal.word.Word
+import io.fluentlabs.content.types.Language.Language
+import io.fluentlabs.content.types.external.definition.DefinitionEntry
+import io.fluentlabs.content.types.internal.definition.Definition
+import io.fluentlabs.content.types.internal.definition.DefinitionSource.DefinitionSource
+import io.fluentlabs.content.types.internal.word.PartOfSpeech.PartOfSpeech
+import io.fluentlabs.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerResult
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.ElasticsearchSearchRequest

@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.domain.metrics
 
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
+import io.fluentlabs.content.types.internal.definition.DefinitionSource
 import com.foreignlanguagereader.domain.metrics.Metric.Metric
 import com.foreignlanguagereader.domain.metrics.label.{
   ElasticsearchMethod,

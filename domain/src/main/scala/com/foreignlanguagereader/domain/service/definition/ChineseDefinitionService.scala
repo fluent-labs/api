@@ -1,16 +1,16 @@
 package com.foreignlanguagereader.domain.service.definition
 
 import cats.implicits._
-import com.foreignlanguagereader.content.enrichers.chinese.SimplifiedTraditionalConverter
-import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.internal.definition
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.content.types.internal.definition.{
+import io.fluentlabs.content.enrichers.chinese.SimplifiedTraditionalConverter
+import io.fluentlabs.content.types.Language
+import io.fluentlabs.content.types.Language.Language
+import io.fluentlabs.content.types.internal.definition
+import io.fluentlabs.content.types.internal.definition.DefinitionSource.DefinitionSource
+import io.fluentlabs.content.types.internal.definition.{
   ChineseDefinition,
   DefinitionSource
 }
-import com.foreignlanguagereader.content.types.internal.word.Word
+import io.fluentlabs.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
 import com.foreignlanguagereader.domain.fetcher.chinese.{

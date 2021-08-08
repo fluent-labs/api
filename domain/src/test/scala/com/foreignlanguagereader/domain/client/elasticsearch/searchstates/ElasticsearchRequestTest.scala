@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
-import com.foreignlanguagereader.content.types.internal.definition.Definition
+import io.fluentlabs.content.types.internal.definition.Definition
 import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerAttempt
 import org.elasticsearch.action.search.{MultiSearchRequest, SearchRequest}
 import org.elasticsearch.index.query.QueryBuilders

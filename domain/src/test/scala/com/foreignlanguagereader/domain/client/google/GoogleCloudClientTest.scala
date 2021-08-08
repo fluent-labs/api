@@ -1,8 +1,8 @@
 package com.foreignlanguagereader.domain.client.google
 
 import akka.actor.ActorSystem
-import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.internal.word.{
+import io.fluentlabs.content.types.Language
+import io.fluentlabs.content.types.internal.word.{
   Count,
   GrammaticalGender,
   PartOfSpeech,

@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.domain.repository
 
-import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
+import io.fluentlabs.content.types.Language
+import io.fluentlabs.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerResult
 import com.foreignlanguagereader.domain.client.database.DatabaseClient
 import com.foreignlanguagereader.domain.dao.{WordDAO, WordSchema}

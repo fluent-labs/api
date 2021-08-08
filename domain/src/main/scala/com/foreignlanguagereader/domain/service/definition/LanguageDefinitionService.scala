@@ -1,9 +1,9 @@
 package com.foreignlanguagereader.domain.service.definition
 
-import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.internal.definition.Definition
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.content.types.internal.word.Word
+import io.fluentlabs.content.types.Language.Language
+import io.fluentlabs.content.types.internal.definition.Definition
+import io.fluentlabs.content.types.internal.definition.DefinitionSource.DefinitionSource
+import io.fluentlabs.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient
 import com.foreignlanguagereader.domain.fetcher.DefinitionFetcher
 import com.foreignlanguagereader.domain.metrics.MetricsReporter

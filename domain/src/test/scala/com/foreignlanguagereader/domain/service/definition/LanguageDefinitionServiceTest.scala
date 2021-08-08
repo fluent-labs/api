@@ -1,21 +1,18 @@
 package com.foreignlanguagereader.domain.service.definition
 
-import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
-import com.foreignlanguagereader.content.types.external.definition.webster.WebsterSpanishDefinitionEntry
-import com.foreignlanguagereader.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
-import com.foreignlanguagereader.content.types.internal.definition.{
+import io.fluentlabs.content.types.Language
+import io.fluentlabs.content.types.Language.Language
+import io.fluentlabs.content.types.external.definition.DefinitionEntry
+import io.fluentlabs.content.types.external.definition.webster.WebsterSpanishDefinitionEntry
+import io.fluentlabs.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
+import io.fluentlabs.content.types.internal.definition.DefinitionSource.DefinitionSource
+import io.fluentlabs.content.types.internal.definition.{
   Definition,
   DefinitionSource,
   EnglishDefinition,
   SpanishDefinition
 }
-import com.foreignlanguagereader.content.types.internal.word.{
-  PartOfSpeech,
-  Word
-}
+import io.fluentlabs.content.types.internal.word.{PartOfSpeech, Word}
 import com.foreignlanguagereader.domain.client.MirriamWebsterClient
 import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerResult
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchCacheClient

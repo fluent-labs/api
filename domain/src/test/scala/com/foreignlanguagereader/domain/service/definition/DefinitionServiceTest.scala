@@ -1,16 +1,13 @@
 package com.foreignlanguagereader.domain.service.definition
 
-import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.internal.definition.{
+import io.fluentlabs.content.types.Language
+import io.fluentlabs.content.types.internal.definition.{
   ChineseDefinition,
   DefinitionSource,
   EnglishDefinition,
   SpanishDefinition
 }
-import com.foreignlanguagereader.content.types.internal.word.{
-  PartOfSpeech,
-  Word
-}
+import io.fluentlabs.content.types.internal.word.{PartOfSpeech, Word}
 import org.mockito.MockitoSugar
 import org.scalatest.funspec.AsyncFunSpec
 

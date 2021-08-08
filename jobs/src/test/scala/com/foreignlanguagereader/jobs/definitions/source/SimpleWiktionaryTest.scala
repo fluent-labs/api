@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.jobs.definitions.source
 
-import com.foreignlanguagereader.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
-import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
+import io.fluentlabs.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
+import io.fluentlabs.content.types.internal.word.PartOfSpeech
 import com.foreignlanguagereader.jobs.definitions.WiktionaryRawEntry
 import org.apache.spark.sql.SparkSession
 import org.scalatest.funspec.AnyFunSpec
