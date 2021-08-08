@@ -2,7 +2,7 @@ package com.foreignlanguagereader.api.controller.v1.language
 
 import com.foreignlanguagereader.api.error.BadInputException
 import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.Language.Language
+import com.foreignlanguagereader.content.types.Language.{Language, fromString}
 import com.foreignlanguagereader.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.foreignlanguagereader.domain.metrics.label.RequestPath
@@ -25,6 +25,17 @@ class DefinitionController @Inject() (
     implicit val ec: ExecutionContext
 ) extends BaseController {
   val logger: Logger = Logger(this.getClass)
+
+  implicit def pathBinder: PathBindable[Language] =
+    new PathBindable[Language] {
+      override def bind(key: String, value: String): Either[String, Language] =
+        fromString(value) match {
+          case Some(language) =>
+            Right(language)
+          case _ => Left(value)
+        }
+      override def unbind(key: String, value: Language): String = value.toString
+    }
 
   def definition(wordLanguage: Language, word: String): Action[AnyContent] =
     Action.async {

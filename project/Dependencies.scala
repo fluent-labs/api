@@ -15,7 +15,7 @@ object Dependencies {
   val scalatestVersion = "3.2.9"
   val sparkVersion = "3.1.2"
 
-  val dto = "io.fluentlabs" % "dto" % "1.0.3"
+  val content = "io.fluentlabs" %% "content" % "1.0.1"
 
   // Testing
   val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
@@ -141,14 +141,9 @@ object ProjectDependencies {
       Dependencies.postgres
     )
 
-  val contentDependencies: Seq[ModuleID] = commonDependencies ++ Seq(
-    Dependencies.scalatestPlay,
-    Dependencies.opencc4j,
-    Dependencies.dto
-  )
-
   val domainDependencies: Seq[ModuleID] =
     commonDependencies ++ Seq(
+      Dependencies.content,
       // Dependency injection
       guice,
       // Used to generate elasticsearch matchers
@@ -173,6 +168,7 @@ object ProjectDependencies {
 
   val jobsDependencies: Seq[ModuleID] =
     commonDependencies ++ log4jDependencies ++ Seq(
+      Dependencies.content,
       Dependencies.sparkCore % "provided",
       Dependencies.sparkSql % "provided",
       Dependencies.sparkXml,
