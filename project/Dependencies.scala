@@ -15,6 +15,8 @@ object Dependencies {
   val scalatestVersion = "3.2.9"
   val sparkVersion = "3.1.2"
 
+  val dto = "io.fluentlabs" % "dto" % "1.0.3"
+
   // Testing
   val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
   val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion
@@ -141,7 +143,8 @@ object ProjectDependencies {
 
   val contentDependencies: Seq[ModuleID] = commonDependencies ++ Seq(
     Dependencies.scalatestPlay,
-    Dependencies.opencc4j
+    Dependencies.opencc4j,
+    Dependencies.dto
   )
 
   val domainDependencies: Seq[ModuleID] =
@@ -168,8 +171,6 @@ object ProjectDependencies {
       Dependencies.jwksRsa
     )
 
-  val dtoDependencies: Seq[ModuleID] = commonDependencies
-
   val jobsDependencies: Seq[ModuleID] =
     commonDependencies ++ log4jDependencies ++ Seq(
       Dependencies.sparkCore % "provided",
@@ -181,7 +182,4 @@ object ProjectDependencies {
       Dependencies.hadoopAWS,
       Dependencies.awsJavaSDK
     )
-
-  val allDependencies: Seq[ModuleID] =
-    apiDependencies ++ contentDependencies ++ domainDependencies ++ dtoDependencies ++ jobsDependencies
 }

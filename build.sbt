@@ -29,7 +29,7 @@ lazy val global = project
     assemblySettings,
     dependencyOverrides ++= ProjectDependencies.forcedDependencies
   )
-  .aggregate(api, content, domain, dto, jobs)
+  .aggregate(api, content, domain, jobs)
 
 lazy val api = project
   .enablePlugins(PlayService, PlayLayoutPlugin)
@@ -50,7 +50,6 @@ lazy val content = project
     libraryDependencies ++= ProjectDependencies.contentDependencies,
     dependencyOverrides ++= ProjectDependencies.forcedDependencies
   )
-  .dependsOn(dto)
 
 lazy val domain = project
   .settings(
@@ -60,14 +59,6 @@ lazy val domain = project
     dependencyOverrides ++= ProjectDependencies.forcedDependencies
   )
   .dependsOn(content)
-
-lazy val dto = project
-  .settings(
-    settings,
-    assemblySettings,
-    libraryDependencies ++= ProjectDependencies.dtoDependencies,
-    dependencyOverrides ++= ProjectDependencies.forcedDependencies
-  )
 
 lazy val jobs = project
   .enablePlugins(AssemblyPlugin)
