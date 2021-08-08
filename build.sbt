@@ -1,4 +1,5 @@
 import sbtassembly.AssemblyPlugin.autoImport.assemblyMergeStrategy
+import play.sbt.routes.RoutesKeys
 import Dependencies._
 
 name := "fluentlabs-parent"
@@ -39,7 +40,8 @@ lazy val api = project
     assemblySettings,
     libraryDependencies ++= ProjectDependencies.apiDependencies,
     dependencyOverrides ++= ProjectDependencies.forcedDependencies,
-    javaOptions += "-Dlog4j.configurationFile=log4j2.xml"
+    javaOptions += "-Dlog4j.configurationFile=log4j2.xml",
+    RoutesKeys.routesImport += "com.foreignlanguagereader.api.controller.v1.PathBinders._"
   )
   .dependsOn(domain)
 
