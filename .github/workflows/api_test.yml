@@ -47,7 +47,7 @@ jobs:
     # Remember not to push
     - name: Build dependencies image
       if: steps.changed_files.outputs.dependencies == 'true' || steps.changed_files.outputs.base == 'true'
-      run: docker build --build-arg GITHUB_TOKEN=$GITHUB_TOKEN . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
+      run: docker build --build-arg github=$GITHUB_TOKEN . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

@@ -1,7 +1,8 @@
 # Use this to cache project dependencies for easy building
 FROM lkjaero/foreign-language-reader-api:base
 
-ARG GITHUB_TOKEN
+ARG github
+ENV GITHUB_TOKEN=$github
 
 ENV SBT_VERSION 1.3.9
 ENV INSTALL_DIR /usr/local
