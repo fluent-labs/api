@@ -178,4 +178,7 @@ object ProjectDependencies {
       Dependencies.hadoopAWS,
       Dependencies.awsJavaSDK
     )
+
+  val allDependencies: Seq[ModuleID] =
+    apiDependencies ++ domainDependencies ++ jobsDependencies
 }
