@@ -1,15 +1,15 @@
 # Use this to cache project dependencies for easy building
 FROM lkjaero/foreign-language-reader-api:base
 
+ARG GITHUB_TOKEN
+ENV GITHUB_TOKEN=$GITHUB_TOKEN
+
 ENV SBT_VERSION 1.3.9
 ENV INSTALL_DIR /usr/local
 ENV SBT_HOME /usr/local/sbt
 ENV PATH ${PATH}:${SBT_HOME}/bin
 
 WORKDIR /app
-
-# Sadly needed because package publishing requires this for all lifecycle steps.
-ENV GITHUB_TOKEN faketoken
 
 # Keep failing pipe command from reporting success to the build.
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]

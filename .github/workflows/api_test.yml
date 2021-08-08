@@ -47,10 +47,14 @@ jobs:
     # Remember not to push
     - name: Build dependencies image
       if: steps.changed_files.outputs.dependencies == 'true' || steps.changed_files.outputs.base == 'true'
-      run: docker build . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
+      run: docker build --build-arg GITHUB_TOKEN . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build container
-      run: docker build . -t api
+      run: docker build --build-arg GITHUB_TOKEN . -t api
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Enforce security rules
       uses: anchore/scan-action@v2.0.4
