@@ -3,7 +3,7 @@ package com.foreignlanguagereader.api.controller.v1
 import io.fluentlabs.content.types.Language.{Language, fromString}
 import play.api.mvc.PathBindable
 
-class PathBinders {
+object PathBinders {
   implicit def languagePathBinder: PathBindable[Language] =
     new PathBindable[Language] {
       override def bind(key: String, value: String): Either[String, Language] =
