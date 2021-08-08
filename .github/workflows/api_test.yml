@@ -14,10 +14,10 @@ jobs:
       with:
         dockerfile: Dockerfile_base
     
-#    - uses: brpaz/hadolint-action@v1.5.0
-#      name: Lint builder image
-#      with:
-#        dockerfile: Dockerfile_builder
+    - uses: brpaz/hadolint-action@v1.5.0
+      name: Lint builder image
+      with:
+        dockerfile: Dockerfile_builder
     
     - uses: brpaz/hadolint-action@v1.5.0
       name: Lint production image
