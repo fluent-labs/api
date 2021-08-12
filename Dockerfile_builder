@@ -14,8 +14,6 @@ WORKDIR /app
 # Keep failing pipe command from reporting success to the build.
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
-RUN if [ -z "$GITHUB_TOKEN" ] then echo "not defined"
-
 # Install sbt
 RUN apk add --no-cache wget=1.20.3-r1 && \
     mkdir -p "$SBT_HOME" && \
