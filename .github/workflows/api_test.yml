@@ -51,8 +51,6 @@ jobs:
         mv build-dependencies build.sbt
         sbt compile
         ls ~/.ivy2/cache
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
     # Remember not to push
