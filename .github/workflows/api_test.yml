@@ -44,6 +44,17 @@ jobs:
       if: steps.changed_files.outputs.base == 'true'
       run: docker build . -f Dockerfile_base -t lkjaero/foreign-language-reader-api:base
 
+    - name: Download dependencies
+      if: steps.changed_files.outputs.dependencies == 'true' || steps.changed_files.outputs.base == 'true'
+      run: |
+        mv build.sbt build-real-sbt
+        mv build-dependencies build.sbt
+        sbt compile
+        ls ~/.ivy2/cache
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
     # Remember not to push
     - name: Build dependencies image
       if: steps.changed_files.outputs.dependencies == 'true' || steps.changed_files.outputs.base == 'true'
