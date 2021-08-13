@@ -51,6 +51,8 @@ jobs:
         mv build-dependencies build.sbt
         sbt compile
         ls ~/.sbt/1.0
+        mv build.sbt build-dependencies
+        mv build-real-sbt build.sbt
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
