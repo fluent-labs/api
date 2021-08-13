@@ -50,7 +50,7 @@ jobs:
         mv build.sbt build-real-sbt
         mv build-dependencies build.sbt
         sbt compile
-        ls -la ~/.cache/coursier/v1/https/maven.pkg.github.com
+        cp ~/.cache/coursier/v1/https/maven.pkg.github.com ./github_packages
         mv build.sbt build-dependencies
         mv build-real-sbt build.sbt
       env:
@@ -60,7 +60,9 @@ jobs:
     # Remember not to push
     - name: Build dependencies image
       if: steps.changed_files.outputs.dependencies == 'true' || steps.changed_files.outputs.base == 'true'
-      run: docker build . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
+      run: |
+        docker build . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
+        rm -rf ./github_packages
 
     - name: Build container
       run: docker build . -t api
