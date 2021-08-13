@@ -50,7 +50,7 @@ jobs:
         mv build.sbt build-real-sbt
         mv build-dependencies build.sbt
         sbt compile
-        cp ~/.cache/coursier/v1/https/maven.pkg.github.com ./github_packages
+        cp -r ~/.cache/coursier/v1/https/maven.pkg.github.com ./github_packages
         mv build.sbt build-dependencies
         mv build-real-sbt build.sbt
       env:
