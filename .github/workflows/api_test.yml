@@ -50,7 +50,7 @@ jobs:
         mv build.sbt build-real-sbt
         mv build-dependencies build.sbt
         sbt compile
-        ls ~/.ivy2/cache
+        ls ~/.sbt
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
