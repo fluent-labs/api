@@ -7,5 +7,9 @@ lazy val dependencies = project
   .in(file("."))
   .settings(
     libraryDependencies ++= ProjectDependencies.allDependencies,
-    dependencyOverrides ++= ProjectDependencies.forcedDependencies
+    dependencyOverrides ++= ProjectDependencies.forcedDependencies,
+    githubTokenSource := TokenSource.Or(
+      TokenSource.Environment("GITHUB_TOKEN"),
+      TokenSource.GitConfig("github.token")
+    )
   )
