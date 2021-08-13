@@ -50,12 +50,10 @@ jobs:
         mv build.sbt build-real-sbt
         mv build-dependencies build.sbt
         sbt compile
-        echo "CACHE"
-        ls -la ~/.cache/
-        echo "COURSIER"
-        ls -la ~/.cache/coursier/
         echo "V1"
         ls -la ~/.cache/coursier/v1
+        echo "https"
+        ls -la ~/.cache/coursier/v1/https
         mv build.sbt build-dependencies
         mv build-real-sbt build.sbt
       env:
