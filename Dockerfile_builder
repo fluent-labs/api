@@ -24,6 +24,6 @@ RUN apk add --no-cache wget=1.20.3-r1 && \
 # Cache dependencies
 COPY project project
 COPY build-dependencies build.sbt
-COPY ~/.cache/coursier/v1/https/maven.pkg.github.com ~/.cache/coursier/v1/https/maven.pkg.github.com
+COPY /home/runner/.cache/coursier/v1/https/maven.pkg.github.com ~/.cache/coursier/v1/https/maven.pkg.github.com
 RUN sbt compile && \
     rm build.sbt
