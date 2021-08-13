@@ -50,7 +50,7 @@ jobs:
         mv build.sbt build-real-sbt
         mv build-dependencies build.sbt
         sbt compile
-        ls ~
+        ls -la ~
         mv build.sbt build-dependencies
         mv build-real-sbt build.sbt
       env:
