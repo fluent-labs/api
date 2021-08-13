@@ -11,5 +11,8 @@ lazy val dependencies = project
     githubTokenSource := TokenSource.Or(
       TokenSource.Environment("GITHUB_TOKEN"),
       TokenSource.GitConfig("github.token")
-    )
+    ),
+    organization := "io.fluentlabs",
+    githubOwner := "fluent-labs",
+    githubRepository := "api",
   )
