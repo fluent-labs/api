@@ -43,7 +43,16 @@ jobs:
     - name: Build base image
       if: steps.changed_files.outputs.base == 'true'
       run: docker build . -f Dockerfile_base -t lkjaero/foreign-language-reader-api:base
+    
+    - name: Cache sbt packages
+      if: steps.changed_files.outputs.dependencies == 'true' || steps.changed_files.outputs.base == 'true'
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/coursier/v1/
 
+    ## Why do we do this here instead of in the docker image?
+    ## It's because github package repository needs auth
+    ## And we DO NOT want that auth inside the docker image
     - name: Download dependencies
       if: steps.changed_files.outputs.dependencies == 'true' || steps.changed_files.outputs.base == 'true'
       run: |
