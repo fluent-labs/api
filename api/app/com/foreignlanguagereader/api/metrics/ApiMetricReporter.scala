@@ -1,8 +1,8 @@
 package com.foreignlanguagereader.api.metrics
 
 import io.fluentlabs.content.types.Language
-import com.foreignlanguagereader.domain.metrics.label.RequestPath
-import com.foreignlanguagereader.domain.metrics.label.RequestPath.RequestPath
+import io.fluentlabs.domain.metrics.label.RequestPath.RequestPath
+import io.fluentlabs.domain.metrics.label.RequestPath
 
 import scala.util.matching.Regex
 

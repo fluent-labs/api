@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.api.controller.v1
 
-import com.foreignlanguagereader.domain.metrics.MetricsReporter
-import com.foreignlanguagereader.domain.service.AuthenticationService
+import io.fluentlabs.domain.metrics.MetricsReporter
+import io.fluentlabs.domain.service.AuthenticationService
 import org.mockito.MockitoSugar
 import pdi.jwt.JwtClaim
 import play.api.Application

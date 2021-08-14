@@ -3,9 +3,9 @@ package com.foreignlanguagereader.api.controller.v1.language
 import com.foreignlanguagereader.api.error.BadInputException
 import io.fluentlabs.content.types.Language
 import io.fluentlabs.content.types.Language.{Language, fromString}
-import com.foreignlanguagereader.domain.metrics.MetricsReporter
-import com.foreignlanguagereader.domain.metrics.label.RequestPath
-import com.foreignlanguagereader.domain.service.DocumentService
+import io.fluentlabs.domain.metrics.MetricsReporter
+import io.fluentlabs.domain.metrics.label.RequestPath
+import io.fluentlabs.domain.service.DocumentService
 import io.fluentlabs.dto.v1.document.DocumentRequest
 import play.api.Logger
 import play.api.libs.json._

@@ -1,9 +1,9 @@
 package com.foreignlanguagereader.api.metrics
 
 import akka.stream.Materializer
-import com.foreignlanguagereader.domain.metrics.MetricsReporter
-import com.foreignlanguagereader.domain.metrics.label.RequestPath
-import com.foreignlanguagereader.domain.metrics.label.RequestPath.RequestPath
+import io.fluentlabs.domain.metrics.MetricsReporter
+import io.fluentlabs.domain.metrics.label.RequestPath.RequestPath
+import io.fluentlabs.domain.metrics.label.RequestPath
 import play.api.mvc.{Filter, RequestHeader, Result}
 
 import javax.inject.Inject

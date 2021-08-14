@@ -3,9 +3,9 @@ package com.foreignlanguagereader.api.controller.v1.language
 import com.foreignlanguagereader.api.controller.v1.PlaySpec
 import com.foreignlanguagereader.api.error.ServiceException
 import io.fluentlabs.content.types.Language
-import com.foreignlanguagereader.domain.metrics.MetricsReporter
-import com.foreignlanguagereader.domain.metrics.label.RequestPath
-import com.foreignlanguagereader.domain.service.DocumentService
+import io.fluentlabs.domain.metrics.MetricsReporter
+import io.fluentlabs.domain.metrics.label.RequestPath
+import io.fluentlabs.domain.service.DocumentService
 import io.fluentlabs.dto.v1.document.DocumentRequest
 import io.prometheus.client.Histogram
 import org.mockito.{Mockito, MockitoSugar}

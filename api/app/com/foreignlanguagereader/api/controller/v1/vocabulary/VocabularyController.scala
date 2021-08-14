@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.controller.v1.vocabulary
 
-import com.foreignlanguagereader.domain.service.VocabularyService
+import io.fluentlabs.domain.service.VocabularyService
 import play.api.Logger
 import play.api.mvc._
 import play.libs.{Json => JavaJson}

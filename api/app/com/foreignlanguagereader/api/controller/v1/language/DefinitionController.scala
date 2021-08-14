@@ -4,9 +4,9 @@ import com.foreignlanguagereader.api.error.BadInputException
 import io.fluentlabs.content.types.Language
 import io.fluentlabs.content.types.Language.{Language, fromString}
 import io.fluentlabs.content.types.internal.word.Word
-import com.foreignlanguagereader.domain.metrics.MetricsReporter
-import com.foreignlanguagereader.domain.metrics.label.RequestPath
-import com.foreignlanguagereader.domain.service.definition.DefinitionService
+import io.fluentlabs.domain.metrics.MetricsReporter
+import io.fluentlabs.domain.metrics.label.RequestPath
+import io.fluentlabs.domain.service.definition.DefinitionService
 import io.fluentlabs.dto.v1.definition.DefinitionsRequest
 import play.api.Logger
 import play.api.libs.json.{JsError, JsPath, JsSuccess, JsValue, Reads}

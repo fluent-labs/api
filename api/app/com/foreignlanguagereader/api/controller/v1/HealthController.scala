@@ -4,9 +4,9 @@ import com.foreignlanguagereader.api.authentication.{
   AuthenticatedAction,
   AuthenticatedRequest
 }
-import com.foreignlanguagereader.domain.client.MirriamWebsterClient
-import com.foreignlanguagereader.domain.client.database.DatabaseClient
-import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchClient
+import io.fluentlabs.domain.client.MirriamWebsterClient
+import io.fluentlabs.domain.client.database.DatabaseClient
+import io.fluentlabs.domain.client.elasticsearch.ElasticsearchClient
 import io.fluentlabs.dto.v1.health.{Readiness, ReadinessStatus}
 import io.prometheus.client.CollectorRegistry
 import io.prometheus.client.exporter.common.TextFormat

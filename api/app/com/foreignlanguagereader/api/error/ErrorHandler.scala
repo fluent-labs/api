@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.api.error
 
 import com.foreignlanguagereader.api.metrics.ApiMetricReporter
-import com.foreignlanguagereader.domain.metrics.MetricsReporter
+import io.fluentlabs.domain.metrics.MetricsReporter
 import play.api.Logger
 import play.api.http.HttpErrorHandler
 import play.api.libs.json.Json

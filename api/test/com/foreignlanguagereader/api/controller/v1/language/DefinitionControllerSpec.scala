@@ -4,9 +4,9 @@ import com.foreignlanguagereader.api.controller.v1.PlaySpec
 import com.foreignlanguagereader.api.error.ServiceException
 import io.fluentlabs.content.types.Language
 import io.fluentlabs.content.types.internal.word.Word
-import com.foreignlanguagereader.domain.metrics.MetricsReporter
-import com.foreignlanguagereader.domain.metrics.label.RequestPath
-import com.foreignlanguagereader.domain.service.definition.DefinitionService
+import io.fluentlabs.domain.metrics.MetricsReporter
+import io.fluentlabs.domain.metrics.label.RequestPath
+import io.fluentlabs.domain.service.definition.DefinitionService
 import io.fluentlabs.dto.v1.definition.DefinitionsRequest
 import io.prometheus.client.Histogram
 import org.mockito.{Mockito, MockitoSugar}

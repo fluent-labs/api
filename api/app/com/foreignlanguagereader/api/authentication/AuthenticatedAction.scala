@@ -2,9 +2,9 @@ package com.foreignlanguagereader.api.authentication
 
 import com.foreignlanguagereader.api.error.ServiceException
 import com.foreignlanguagereader.api.metrics.ApiMetricReporter
-import com.foreignlanguagereader.domain.metrics.MetricsReporter
-import com.foreignlanguagereader.domain.metrics.label.RequestPath.RequestPath
-import com.foreignlanguagereader.domain.service.AuthenticationService
+import io.fluentlabs.domain.metrics.label.RequestPath.RequestPath
+import io.fluentlabs.domain.metrics.MetricsReporter
+import io.fluentlabs.domain.service.AuthenticationService
 import play.api.Logger
 
 import javax.inject.Inject
