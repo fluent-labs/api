@@ -1,4 +1,3 @@
-import sbtassembly.AssemblyPlugin.autoImport.assemblyMergeStrategy
 import play.sbt.routes.RoutesKeys
 import Dependencies._
 
@@ -11,10 +10,15 @@ scalaVersion in ThisBuild := "2.12.12"
 
 lazy val settings = Seq(
   scalacOptions ++= compilerOptions,
+  // Github  packages
+  organization := "io.fluentlabs",
+  githubOwner := "fluent-labs",
+  githubRepository := "api",
   githubTokenSource := TokenSource.Or(
     TokenSource.Environment("GITHUB_TOKEN"),
     TokenSource.GitConfig("github.token")
   ),
+  // Making semver releases
   releaseVersionBump := sbtrelease.Version.Bump.Bugfix,
   publishConfiguration := publishConfiguration.value.withOverwrite(true),
   publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(
@@ -24,20 +28,17 @@ lazy val settings = Seq(
 
 lazy val global = project
   .in(file("."))
-  .disablePlugins(AssemblyPlugin)
   .settings(
     settings,
-    assemblySettings,
     dependencyOverrides ++= ProjectDependencies.forcedDependencies
   )
-  .aggregate(api, domain, jobs)
+  .aggregate(api, domain)
 
 lazy val api = project
   .enablePlugins(PlayService, PlayLayoutPlugin)
   .disablePlugins(PlayLogback)
   .settings(
     settings,
-    assemblySettings,
     libraryDependencies ++= ProjectDependencies.apiDependencies,
     dependencyOverrides ++= ProjectDependencies.forcedDependencies,
     javaOptions += "-Dlog4j.configurationFile=log4j2.xml",
@@ -48,17 +49,7 @@ lazy val api = project
 lazy val domain = project
   .settings(
     settings,
-    assemblySettings,
     libraryDependencies ++= ProjectDependencies.domainDependencies,
-    dependencyOverrides ++= ProjectDependencies.forcedDependencies
-  )
-
-lazy val jobs = project
-  .enablePlugins(AssemblyPlugin)
-  .settings(
-    settings,
-    assemblySettings,
-    libraryDependencies ++= ProjectDependencies.jobsDependencies,
     dependencyOverrides ++= ProjectDependencies.forcedDependencies
   )
 
@@ -78,22 +69,6 @@ lazy val compilerOptions = Seq(
 // Add these back in when we can get to scala 2.13
 //  "-Wdead-code",
 //  "-Wvalue-discard",
-
-/*
- * Release
- */
-
-lazy val assemblySettings = Seq(
-  organization := "io.fluentlabs",
-  githubOwner := "fluent-labs",
-  githubRepository := "api",
-  // Used for building jobs fat jars
-  assemblyJarName in assembly := name.value + ".jar",
-  assemblyMergeStrategy in assembly := {
-    case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
-    case _                                   => MergeStrategy.first
-  }
-)
 
 /*
  * Quality
