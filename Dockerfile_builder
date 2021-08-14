@@ -25,8 +25,14 @@ RUN apk add --no-cache wget=1.20.3-r1 && \
 COPY project project
 COPY build-dependencies build.sbt
 COPY github_packages ~/.cache/coursier/v1/https/maven.pkg.github.com
-RUN ls ~/.cache/coursier/v1/https/maven.pkg.github.com
-RUN ls ~/.cache/coursier/v1/https/maven.pkg.github.com/fluent-labs/_/
-RUN ls ~/.cache/coursier/v1/https/maven.pkg.github.com/fluent-labs/_/io/fluentlabs/
+RUN echo $HOME
+RUN ls $HOME/
+RUN ls $HOME/.cache
+RUN ls $HOME/.cache/coursier
+RUN ls $HOME/.cache/coursier/v1
+RUN ls $HOME/.cache/coursier/v1/https
+RUN ls $HOME/.cache/coursier/v1/https/maven.pkg.github.com
+RUN ls $HOME/.cache/coursier/v1/https/maven.pkg.github.com/fluent-labs/_/
+RUN ls $HOME/.cache/coursier/v1/https/maven.pkg.github.com/fluent-labs/_/io/fluentlabs/
 RUN sbt compile && \
     rm build.sbt
