@@ -45,20 +45,6 @@ object Dependencies {
   val prometheusHotspot =
     "io.prometheus" % "simpleclient_hotspot" % prometheusVersion
 
-  // Content batch jobs
-  val sparkCore =
-    "org.apache.spark" %% "spark-core" % sparkVersion
-  val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
-  val sparkXml = "com.databricks" %% "spark-xml" % "0.12.0"
-  val hadoop = "org.apache.hadoop" % "hadoop-common" % hadoopVersion
-  val hadoopClient = "org.apache.hadoop" % "hadoop-client" % hadoopVersion
-  val hadoopAWS = "org.apache.hadoop" % "hadoop-aws" % hadoopVersion
-  val awsJavaSDK = "com.amazonaws" % "aws-java-sdk" % "1.12.42"
-  // Enable this when it is build for scala 2.12 in main
-  // And remove our local version
-  //    val elasticsearchHadoop =
-  //      "org.elasticsearch" % "elasticsearch-hadoop" % elasticsearchVersion
-
   // NLP tools
   val opencc4j = "com.github.houbb" % "opencc4j" % "1.6.1"
 
@@ -124,7 +110,6 @@ object ProjectDependencies {
     Dependencies.jacksonCore,
     Dependencies.lombok,
     Dependencies.htrace,
-    Dependencies.hadoop,
     Dependencies.avro,
     Dependencies.log4jApi,
     Dependencies.log4jCore,
@@ -166,19 +151,6 @@ object ProjectDependencies {
       Dependencies.jwksRsa
     )
 
-  val jobsDependencies: Seq[ModuleID] =
-    commonDependencies ++ log4jDependencies ++ Seq(
-      Dependencies.content,
-      Dependencies.sparkCore % "provided",
-      Dependencies.sparkSql % "provided",
-      Dependencies.sparkXml,
-      // S3 support
-      Dependencies.hadoop,
-      Dependencies.hadoopClient,
-      Dependencies.hadoopAWS,
-      Dependencies.awsJavaSDK
-    )
-
   val allDependencies: Seq[ModuleID] =
-    apiDependencies ++ domainDependencies ++ jobsDependencies
+    apiDependencies ++ domainDependencies
 }
