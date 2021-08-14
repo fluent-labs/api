@@ -10,10 +10,15 @@ scalaVersion in ThisBuild := "2.12.12"
 
 lazy val settings = Seq(
   scalacOptions ++= compilerOptions,
+  // Github  packages
+  organization := "io.fluentlabs",
+  githubOwner := "fluent-labs",
+  githubRepository := "api",
   githubTokenSource := TokenSource.Or(
     TokenSource.Environment("GITHUB_TOKEN"),
     TokenSource.GitConfig("github.token")
   ),
+  // Making semver releases
   releaseVersionBump := sbtrelease.Version.Bump.Bugfix,
   publishConfiguration := publishConfiguration.value.withOverwrite(true),
   publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(
