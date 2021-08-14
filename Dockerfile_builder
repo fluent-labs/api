@@ -1,15 +1,16 @@
 # Use this to cache project dependencies for easy building
 FROM lkjaero/foreign-language-reader-api:base
 
+# Needed because sbt will barf if we don't have one
+# Even though we aren't actually accessing the maven package repository
+ENV GITHUB_TOKEN faketoken
+
 ENV SBT_VERSION 1.3.9
 ENV INSTALL_DIR /usr/local
 ENV SBT_HOME /usr/local/sbt
 ENV PATH ${PATH}:${SBT_HOME}/bin
 
 WORKDIR /app
-
-# Sadly needed because package publishing requires this for all lifecycle steps.
-ENV GITHUB_TOKEN faketoken
 
 # Keep failing pipe command from reporting success to the build.
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
@@ -23,5 +24,6 @@ RUN apk add --no-cache wget=1.20.3-r1 && \
 # Cache dependencies
 COPY project project
 COPY build-dependencies build.sbt
+COPY coursier_cache /root/.cache/coursier/v1/
 RUN sbt compile && \
     rm build.sbt

@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.domain.service
 
-import com.foreignlanguagereader.content.types.internal.word.Word
+import io.fluentlabs.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerAttempt
 import com.foreignlanguagereader.domain.repository.WordRepository
 

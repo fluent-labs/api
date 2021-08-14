@@ -1,11 +1,11 @@
 package com.foreignlanguagereader.domain.client
 
 import akka.actor.ActorSystem
-import com.foreignlanguagereader.content.types.external.definition.webster.{
+import io.fluentlabs.content.types.external.definition.webster.{
   WebsterLearnersDefinitionEntry,
   WebsterSpanishDefinitionEntry
 }
-import com.foreignlanguagereader.content.types.internal.word.Word
+import io.fluentlabs.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerResult
 import com.foreignlanguagereader.domain.client.common.{
   RestClient,
@@ -13,7 +13,7 @@ import com.foreignlanguagereader.domain.client.common.{
 }
 import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.foreignlanguagereader.domain.metrics.label.WebsterDictionary
-import com.foreignlanguagereader.dto.v1.health.ReadinessStatus.ReadinessStatus
+import io.fluentlabs.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.libs.json.Reads
 import play.api.{Configuration, Logger}
 

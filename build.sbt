@@ -1,4 +1,5 @@
 import sbtassembly.AssemblyPlugin.autoImport.assemblyMergeStrategy
+import play.sbt.routes.RoutesKeys
 import Dependencies._
 
 name := "fluentlabs-parent"
@@ -29,7 +30,7 @@ lazy val global = project
     assemblySettings,
     dependencyOverrides ++= ProjectDependencies.forcedDependencies
   )
-  .aggregate(api, content, domain, dto, jobs)
+  .aggregate(api, domain, jobs)
 
 lazy val api = project
   .enablePlugins(PlayService, PlayLayoutPlugin)
@@ -39,33 +40,16 @@ lazy val api = project
     assemblySettings,
     libraryDependencies ++= ProjectDependencies.apiDependencies,
     dependencyOverrides ++= ProjectDependencies.forcedDependencies,
-    javaOptions += "-Dlog4j.configurationFile=log4j2.xml"
+    javaOptions += "-Dlog4j.configurationFile=log4j2.xml",
+    RoutesKeys.routesImport += "com.foreignlanguagereader.api.controller.v1.PathBinders._"
   )
   .dependsOn(domain)
-
-lazy val content = project
-  .settings(
-    settings,
-    assemblySettings,
-    libraryDependencies ++= ProjectDependencies.contentDependencies,
-    dependencyOverrides ++= ProjectDependencies.forcedDependencies
-  )
-  .dependsOn(dto)
 
 lazy val domain = project
   .settings(
     settings,
     assemblySettings,
     libraryDependencies ++= ProjectDependencies.domainDependencies,
-    dependencyOverrides ++= ProjectDependencies.forcedDependencies
-  )
-  .dependsOn(content)
-
-lazy val dto = project
-  .settings(
-    settings,
-    assemblySettings,
-    libraryDependencies ++= ProjectDependencies.dtoDependencies,
     dependencyOverrides ++= ProjectDependencies.forcedDependencies
   )
 
@@ -77,7 +61,6 @@ lazy val jobs = project
     libraryDependencies ++= ProjectDependencies.jobsDependencies,
     dependencyOverrides ++= ProjectDependencies.forcedDependencies
   )
-  .dependsOn(content)
 
 /*
  * Build

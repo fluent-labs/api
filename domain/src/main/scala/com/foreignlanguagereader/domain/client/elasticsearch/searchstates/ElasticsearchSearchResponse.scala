@@ -2,7 +2,7 @@ package com.foreignlanguagereader.domain.client.elasticsearch.searchstates
 
 import cats.data.Nested
 import cats.syntax.all._
-import com.foreignlanguagereader.content.types.internal.ElasticsearchCacheable
+import io.fluentlabs.content.types.internal.ElasticsearchCacheable
 import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,

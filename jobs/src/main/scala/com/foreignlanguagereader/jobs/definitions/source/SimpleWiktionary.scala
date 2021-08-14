@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.jobs.definitions.source
 
-import com.foreignlanguagereader.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
+import io.fluentlabs.content.types.external.definition.wiktionary.SimpleWiktionaryDefinitionEntry
+import io.fluentlabs.content.types.internal.definition.DefinitionSource
 import com.foreignlanguagereader.jobs.definitions.{
   DefinitionsParsingJob,
   Wiktionary,

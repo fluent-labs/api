@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.jobs.definitions
 
-import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
+import io.fluentlabs.content.types.external.definition.DefinitionEntry
+import io.fluentlabs.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.jobs.SparkSessionBuilder
 import org.apache.log4j.{LogManager, Logger}
 import org.apache.spark.sql.{Dataset, SparkSession}

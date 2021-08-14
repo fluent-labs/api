@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.domain.metrics
 
-import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource.DefinitionSource
+import io.fluentlabs.content.types.Language.Language
+import io.fluentlabs.content.types.internal.definition.DefinitionSource.DefinitionSource
 import com.foreignlanguagereader.domain.metrics.label.DatabaseMethod.DatabaseMethod
 import com.foreignlanguagereader.domain.metrics.label.ElasticsearchMethod.ElasticsearchMethod
 import com.foreignlanguagereader.domain.metrics.label.RequestPath.RequestPath

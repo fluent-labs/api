@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.jobs.definitions.source
 
-import com.foreignlanguagereader.content.types.external.definition.cedict.CEDICTDefinitionEntry
-import com.foreignlanguagereader.content.types.internal.definition.DefinitionSource
+import io.fluentlabs.content.types.external.definition.cedict.CEDICTDefinitionEntry
+import io.fluentlabs.content.types.internal.definition.DefinitionSource
 import com.foreignlanguagereader.jobs.definitions.DefinitionsParsingJob
 import org.apache.spark.sql.{Dataset, SparkSession}
 

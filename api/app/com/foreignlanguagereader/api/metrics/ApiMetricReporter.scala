@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.api.metrics
 
-import com.foreignlanguagereader.content.types.Language
+import io.fluentlabs.content.types.Language
 import com.foreignlanguagereader.domain.metrics.label.RequestPath
 import com.foreignlanguagereader.domain.metrics.label.RequestPath.RequestPath
 

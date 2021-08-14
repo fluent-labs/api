@@ -2,8 +2,8 @@ package com.foreignlanguagereader.domain.client.circuitbreaker
 
 import akka.actor.ActorSystem
 import akka.pattern.{CircuitBreaker, CircuitBreakerOpenException}
-import com.foreignlanguagereader.dto.v1.health.ReadinessStatus
-import com.foreignlanguagereader.dto.v1.health.ReadinessStatus.ReadinessStatus
+import io.fluentlabs.dto.v1.health.ReadinessStatus
+import io.fluentlabs.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.Logger
 
 import java.util.concurrent.TimeUnit

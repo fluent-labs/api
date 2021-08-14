@@ -1,7 +1,7 @@
 package com.foreignlanguagereader.domain.dao
 
-import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
+import io.fluentlabs.content.types.Language.Language
+import io.fluentlabs.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import com.foreignlanguagereader.domain.client.database.DatabaseConnection.dc.profile.api._
 import com.foreignlanguagereader.domain.repository.EnumImplicits._
 import slick.lifted.ProvenShape

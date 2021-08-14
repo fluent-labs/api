@@ -1,11 +1,11 @@
 package com.foreignlanguagereader.domain.fetcher.chinese
 
-import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.external.definition.DefinitionEntry
-import com.foreignlanguagereader.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
-import com.foreignlanguagereader.content.types.internal.definition.ChineseDefinition
-import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
-import com.foreignlanguagereader.content.types.internal.word.Word
+import io.fluentlabs.content.types.Language.Language
+import io.fluentlabs.content.types.external.definition.DefinitionEntry
+import io.fluentlabs.content.types.external.definition.wiktionary.WiktionaryDefinitionEntry
+import io.fluentlabs.content.types.internal.definition.ChineseDefinition
+import io.fluentlabs.content.types.internal.word.PartOfSpeech.PartOfSpeech
+import io.fluentlabs.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.client.circuitbreaker.{
   CircuitBreakerFailedAttempt,
   CircuitBreakerResult

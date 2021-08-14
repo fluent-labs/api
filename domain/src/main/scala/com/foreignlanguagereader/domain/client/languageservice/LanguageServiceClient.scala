@@ -3,19 +3,16 @@ package com.foreignlanguagereader.domain.client.languageservice
 import akka.actor.ActorSystem
 import cats.data.Nested
 import cats.syntax.all._
-import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
-import com.foreignlanguagereader.content.types.internal.word.{
-  PartOfSpeech,
-  Word
-}
+import io.fluentlabs.content.types.Language.Language
+import io.fluentlabs.content.types.internal.word.PartOfSpeech.PartOfSpeech
+import io.fluentlabs.content.types.internal.word.{PartOfSpeech, Word}
 import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerResult
 import com.foreignlanguagereader.domain.client.common.{
   RestClient,
   RestClientBuilder
 }
 import com.foreignlanguagereader.domain.metrics.MetricsReporter
-import com.foreignlanguagereader.dto.v1.health.ReadinessStatus.ReadinessStatus
+import io.fluentlabs.dto.v1.health.ReadinessStatus.ReadinessStatus
 import play.api.libs.json.{JsObject, Json}
 import play.api.{Configuration, Logger}
 

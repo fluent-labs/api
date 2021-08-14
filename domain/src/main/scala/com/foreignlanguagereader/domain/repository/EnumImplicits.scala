@@ -1,12 +1,12 @@
 package com.foreignlanguagereader.domain.repository
 
-import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.internal.word.Count.Count
-import com.foreignlanguagereader.content.types.internal.word.GrammaticalGender.GrammaticalGender
-import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech.PartOfSpeech
-import com.foreignlanguagereader.content.types.internal.word.WordTense.WordTense
-import com.foreignlanguagereader.content.types.internal.word.{
+import io.fluentlabs.content.types.Language
+import io.fluentlabs.content.types.Language.Language
+import io.fluentlabs.content.types.internal.word.Count.Count
+import io.fluentlabs.content.types.internal.word.GrammaticalGender.GrammaticalGender
+import io.fluentlabs.content.types.internal.word.PartOfSpeech.PartOfSpeech
+import io.fluentlabs.content.types.internal.word.WordTense.WordTense
+import io.fluentlabs.content.types.internal.word.{
   Count,
   GrammaticalGender,
   PartOfSpeech,

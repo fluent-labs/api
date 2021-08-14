@@ -7,7 +7,7 @@ import com.foreignlanguagereader.api.authentication.{
 import com.foreignlanguagereader.domain.client.MirriamWebsterClient
 import com.foreignlanguagereader.domain.client.database.DatabaseClient
 import com.foreignlanguagereader.domain.client.elasticsearch.ElasticsearchClient
-import com.foreignlanguagereader.dto.v1.health.{Readiness, ReadinessStatus}
+import io.fluentlabs.dto.v1.health.{Readiness, ReadinessStatus}
 import io.prometheus.client.CollectorRegistry
 import io.prometheus.client.exporter.common.TextFormat
 import play.api.Logger

@@ -1,5 +1,9 @@
 FROM lkjaero/foreign-language-reader-api:builder as builder
 
+# Needed because sbt will barf if we don't have one
+# Even though we aren't actually accessing the maven package repository
+ENV GITHUB_TOKEN faketoken
+
 # Compile the service
 COPY . /app/
 RUN sbt clean coverageOff dist

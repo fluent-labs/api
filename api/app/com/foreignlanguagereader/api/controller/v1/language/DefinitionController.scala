@@ -1,13 +1,13 @@
 package com.foreignlanguagereader.api.controller.v1.language
 
 import com.foreignlanguagereader.api.error.BadInputException
-import com.foreignlanguagereader.content.types.Language
-import com.foreignlanguagereader.content.types.Language.Language
-import com.foreignlanguagereader.content.types.internal.word.Word
+import io.fluentlabs.content.types.Language
+import io.fluentlabs.content.types.Language.{Language, fromString}
+import io.fluentlabs.content.types.internal.word.Word
 import com.foreignlanguagereader.domain.metrics.MetricsReporter
 import com.foreignlanguagereader.domain.metrics.label.RequestPath
 import com.foreignlanguagereader.domain.service.definition.DefinitionService
-import com.foreignlanguagereader.dto.v1.definition.DefinitionsRequest
+import io.fluentlabs.dto.v1.definition.DefinitionsRequest
 import play.api.Logger
 import play.api.libs.json.{JsError, JsPath, JsSuccess, JsValue, Reads}
 import play.api.mvc._

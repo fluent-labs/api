@@ -1,6 +1,6 @@
 package com.foreignlanguagereader.domain.client.languageservice
 
-import com.foreignlanguagereader.content.types.internal.word.PartOfSpeech
+import io.fluentlabs.content.types.internal.word.PartOfSpeech
 import org.scalatest.funspec.AsyncFunSpec
 
 class LanguageServiceClientTest extends AsyncFunSpec {
