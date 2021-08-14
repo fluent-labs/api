@@ -6,10 +6,6 @@ import io.fluentlabs.content.types.external.definition.wiktionary.WiktionaryDefi
 import io.fluentlabs.content.types.internal.definition.ChineseDefinition
 import io.fluentlabs.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import io.fluentlabs.content.types.internal.word.Word
-import com.foreignlanguagereader.domain.client.circuitbreaker.{
-  CircuitBreakerFailedAttempt,
-  CircuitBreakerResult
-}
 import io.fluentlabs.domain.client.circuitbreaker.{
   CircuitBreakerFailedAttempt,
   CircuitBreakerResult

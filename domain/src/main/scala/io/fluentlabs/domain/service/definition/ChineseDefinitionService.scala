@@ -11,10 +11,6 @@ import io.fluentlabs.content.types.internal.definition.{
   DefinitionSource
 }
 import io.fluentlabs.content.types.internal.word.Word
-import com.foreignlanguagereader.domain.fetcher.chinese.{
-  CEDICTFetcher,
-  WiktionaryChineseFetcher
-}
 import com.github.houbb.opencc4j.util.ZhConverterUtil
 import io.fluentlabs.domain.client.elasticsearch.ElasticsearchCacheClient
 import io.fluentlabs.domain.fetcher.DefinitionFetcher

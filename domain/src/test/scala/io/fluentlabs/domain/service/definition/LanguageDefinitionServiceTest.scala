@@ -13,10 +13,6 @@ import io.fluentlabs.content.types.internal.definition.{
   SpanishDefinition
 }
 import io.fluentlabs.content.types.internal.word.{PartOfSpeech, Word}
-import com.foreignlanguagereader.domain.fetcher.spanish.{
-  WebsterSpanishToEnglishFetcher,
-  WiktionarySpanishFetcher
-}
 import io.fluentlabs.domain.client.MirriamWebsterClient
 import io.fluentlabs.domain.client.circuitbreaker.CircuitBreakerResult
 import io.fluentlabs.domain.client.elasticsearch.ElasticsearchCacheClient

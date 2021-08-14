@@ -7,10 +7,6 @@ import io.fluentlabs.content.types.internal.definition.{
   DefinitionSource,
   EnglishDefinition
 }
-import com.foreignlanguagereader.domain.fetcher.english.{
-  WebsterEnglishToSpanishFetcher,
-  WebsterLearnersFetcher
-}
 import io.fluentlabs.domain.client.elasticsearch.ElasticsearchCacheClient
 import io.fluentlabs.domain.fetcher.DefinitionFetcher
 import io.fluentlabs.domain.fetcher.english.{

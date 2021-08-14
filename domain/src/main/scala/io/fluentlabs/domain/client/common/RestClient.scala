@@ -1,7 +1,6 @@
 package io.fluentlabs.domain.client.common
 
 import akka.actor.ActorSystem
-import com.foreignlanguagereader.domain.client.circuitbreaker.CircuitBreakerResult
 import io.fluentlabs.domain.client.circuitbreaker.{
   CircuitBreakerResult,
   Circuitbreaker

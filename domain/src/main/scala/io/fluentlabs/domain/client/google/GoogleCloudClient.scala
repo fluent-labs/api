@@ -11,10 +11,6 @@ import io.fluentlabs.content.types.internal.word.GrammaticalGender.GrammaticalGe
 import io.fluentlabs.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import io.fluentlabs.content.types.internal.word.WordTense.WordTense
 import io.fluentlabs.content.types.internal.word._
-import com.foreignlanguagereader.domain.client.circuitbreaker.{
-  CircuitBreakerResult,
-  Circuitbreaker
-}
 import com.google.cloud.language.v1.Document.Type
 import com.google.cloud.language.v1.PartOfSpeech.{
   Gender,

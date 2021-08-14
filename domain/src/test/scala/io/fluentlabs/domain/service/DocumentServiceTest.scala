@@ -3,11 +3,6 @@ package io.fluentlabs.domain.service
 import io.fluentlabs.content.types.Language
 import io.fluentlabs.content.types.internal.word
 import io.fluentlabs.content.types.internal.word.{PartOfSpeech, Word}
-import com.foreignlanguagereader.domain.client.circuitbreaker.{
-  CircuitBreakerAttempt,
-  CircuitBreakerFailedAttempt,
-  CircuitBreakerNonAttempt
-}
 import io.fluentlabs.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,

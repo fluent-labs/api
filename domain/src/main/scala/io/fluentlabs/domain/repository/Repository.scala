@@ -1,10 +1,5 @@
 package io.fluentlabs.domain.repository
 
-import com.foreignlanguagereader.domain.client.circuitbreaker.{
-  CircuitBreakerAttempt,
-  CircuitBreakerFailedAttempt,
-  CircuitBreakerNonAttempt
-}
 import io.fluentlabs.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,

@@ -2,7 +2,6 @@ package io.fluentlabs.domain.repository
 
 import io.fluentlabs.content.types.Language
 import io.fluentlabs.content.types.internal.word.PartOfSpeech
-import com.foreignlanguagereader.domain.dao.WordSchema
 import io.fluentlabs.domain.client.circuitbreaker.CircuitBreakerResult
 import io.fluentlabs.domain.client.database.DatabaseClient
 import io.fluentlabs.domain.dao.{WordDAO, WordSchema}

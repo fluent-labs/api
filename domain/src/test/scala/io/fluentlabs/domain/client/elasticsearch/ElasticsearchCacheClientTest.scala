@@ -8,15 +8,6 @@ import io.fluentlabs.content.types.internal.definition.{
   EnglishDefinition
 }
 import io.fluentlabs.content.types.internal.word.PartOfSpeech
-import com.foreignlanguagereader.domain.client.circuitbreaker.{
-  CircuitBreakerAttempt,
-  CircuitBreakerFailedAttempt,
-  CircuitBreakerResult
-}
-import com.foreignlanguagereader.domain.client.elasticsearch.searchstates.{
-  ElasticsearchCacheRequest,
-  ElasticsearchSearchRequest
-}
 import io.fluentlabs.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,
   CircuitBreakerFailedAttempt,

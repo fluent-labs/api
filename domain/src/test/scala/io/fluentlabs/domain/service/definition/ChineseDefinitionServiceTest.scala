@@ -10,10 +10,6 @@ import io.fluentlabs.content.types.internal.definition.{
   DefinitionSource
 }
 import io.fluentlabs.content.types.internal.word.{PartOfSpeech, Word}
-import com.foreignlanguagereader.domain.fetcher.chinese.{
-  CEDICTFetcher,
-  WiktionaryChineseFetcher
-}
 import io.fluentlabs.domain.client.elasticsearch.ElasticsearchCacheClient
 import io.fluentlabs.domain.fetcher.chinese.{
   CEDICTFetcher,

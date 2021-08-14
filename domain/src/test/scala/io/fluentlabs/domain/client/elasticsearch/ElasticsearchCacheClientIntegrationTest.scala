@@ -1,10 +1,5 @@
 package io.fluentlabs.domain.client.elasticsearch
 
-import com.foreignlanguagereader.domain.client.circuitbreaker.{
-  CircuitBreakerAttempt,
-  CircuitBreakerFailedAttempt,
-  CircuitBreakerNonAttempt
-}
 import com.typesafe.config.ConfigFactory
 import io.fluentlabs.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,

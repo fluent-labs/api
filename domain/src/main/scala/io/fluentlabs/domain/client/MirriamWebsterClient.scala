@@ -6,10 +6,6 @@ import io.fluentlabs.content.types.external.definition.webster.{
   WebsterSpanishDefinitionEntry
 }
 import io.fluentlabs.content.types.internal.word.Word
-import com.foreignlanguagereader.domain.client.common.{
-  RestClient,
-  RestClientBuilder
-}
 import io.fluentlabs.domain.client.circuitbreaker.CircuitBreakerResult
 import io.fluentlabs.domain.client.common.{RestClient, RestClientBuilder}
 import io.fluentlabs.domain.metrics.MetricsReporter

@@ -3,10 +3,6 @@ package io.fluentlabs.domain.client.elasticsearch
 import akka.actor.ActorSystem
 import cats.data.Nested
 import cats.syntax.all._
-import com.foreignlanguagereader.domain.client.circuitbreaker.{
-  CircuitBreakerResult,
-  Circuitbreaker
-}
 import io.fluentlabs.domain.client.circuitbreaker.{
   CircuitBreakerResult,
   Circuitbreaker

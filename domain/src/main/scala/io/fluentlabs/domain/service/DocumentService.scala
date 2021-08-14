@@ -2,11 +2,6 @@ package io.fluentlabs.domain.service
 
 import io.fluentlabs.content.types.Language.Language
 import io.fluentlabs.content.types.internal.word.Word
-import com.foreignlanguagereader.domain.client.circuitbreaker.{
-  CircuitBreakerAttempt,
-  CircuitBreakerFailedAttempt,
-  CircuitBreakerNonAttempt
-}
 import com.google.inject.Inject
 import io.fluentlabs.domain.client.circuitbreaker.{
   CircuitBreakerAttempt,

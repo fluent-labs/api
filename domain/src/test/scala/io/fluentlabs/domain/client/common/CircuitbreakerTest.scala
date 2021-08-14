@@ -1,13 +1,6 @@
 package io.fluentlabs.domain.client.common
 
 import cats.syntax.all._
-import com.foreignlanguagereader.domain.client.circuitbreaker.{
-  CircuitBreakerAttempt,
-  CircuitBreakerFailedAttempt,
-  CircuitBreakerNonAttempt,
-  CircuitBreakerResult,
-  Circuitbreaker
-}
 import io.fluentlabs.dto.v1.health.ReadinessStatus
 import com.typesafe.config.ConfigFactory
 import io.fluentlabs.domain.client.circuitbreaker.{

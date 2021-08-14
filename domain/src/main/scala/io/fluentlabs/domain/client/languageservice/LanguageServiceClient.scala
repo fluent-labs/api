@@ -6,10 +6,6 @@ import cats.syntax.all._
 import io.fluentlabs.content.types.Language.Language
 import io.fluentlabs.content.types.internal.word.PartOfSpeech.PartOfSpeech
 import io.fluentlabs.content.types.internal.word.{PartOfSpeech, Word}
-import com.foreignlanguagereader.domain.client.common.{
-  RestClient,
-  RestClientBuilder
-}
 import io.fluentlabs.domain.client.circuitbreaker.CircuitBreakerResult
 import io.fluentlabs.domain.client.common.{RestClient, RestClientBuilder}
 import io.fluentlabs.domain.metrics.MetricsReporter

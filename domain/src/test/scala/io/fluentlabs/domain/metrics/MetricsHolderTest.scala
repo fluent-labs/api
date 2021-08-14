@@ -2,11 +2,6 @@ package io.fluentlabs.domain.metrics
 
 import io.fluentlabs.content.types.internal.definition.DefinitionSource
 import Metric.Metric
-import com.foreignlanguagereader.domain.metrics.label.{
-  ElasticsearchMethod,
-  RequestPath,
-  WebsterDictionary
-}
 import io.fluentlabs.domain.metrics.label.{
   ElasticsearchMethod,
   RequestPath,

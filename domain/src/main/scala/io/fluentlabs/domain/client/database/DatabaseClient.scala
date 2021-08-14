@@ -1,10 +1,6 @@
 package io.fluentlabs.domain.client.database
 
 import akka.actor.ActorSystem
-import com.foreignlanguagereader.domain.client.circuitbreaker.{
-  CircuitBreakerResult,
-  Circuitbreaker
-}
 import io.fluentlabs.domain.metrics.label.DatabaseMethod.DatabaseMethod
 import io.fluentlabs.domain.client.circuitbreaker.{
   CircuitBreakerResult,
