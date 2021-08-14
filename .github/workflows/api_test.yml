@@ -48,6 +48,7 @@ jobs:
       if: steps.changed_files.outputs.dependencies == 'true' || steps.changed_files.outputs.base == 'true'
       uses: actions/cache@v2
       with:
+        key: sbt_cache
         path: ~/.cache/coursier/v1/
 
     ## Why do we do this here instead of in the docker image?
