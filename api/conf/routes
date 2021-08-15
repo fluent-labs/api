@@ -1,12 +1,12 @@
 # Health checks for K8s to know how to handle this service
-GET    /health       com.foreignlanguagereader.api.controller.v1.HealthController.health
-GET    /metrics    com.foreignlanguagereader.api.controller.v1.HealthController.getMetrics
-GET    /readiness    com.foreignlanguagereader.api.controller.v1.HealthController.readiness
+GET    /health       io.fluentlabs.api.controller.v1.HealthController.health
+GET    /metrics    io.fluentlabs.api.controller.v1.HealthController.getMetrics
+GET    /readiness    io.fluentlabs.api.controller.v1.HealthController.readiness
 
 # Rip this out when we've gotten working authentication end to end
-GET    /auth    com.foreignlanguagereader.api.controller.v1.HealthController.checkAuthentication
+GET    /auth    io.fluentlabs.api.controller.v1.HealthController.checkAuthentication
 
-GET    /v1/language/definition/:wordlanguage/:word/ com.foreignlanguagereader.api.controller.v1.language.DefinitionController.definition(wordlanguage: io.fluentlabs.content.types.Language.Language, word: String)
-POST   /v1/language/definitions/:wordlanguage/:definitionLanguage/ com.foreignlanguagereader.api.controller.v1.language.DefinitionController.definitions(wordlanguage: io.fluentlabs.content.types.Language.Language, definitionLanguage: io.fluentlabs.content.types.Language.Language)
-POST   /v1/language/document/:wordlanguage/ com.foreignlanguagereader.api.controller.v1.language.DocumentController.document(wordlanguage: io.fluentlabs.content.types.Language.Language)
-GET    /v1/vocabulary/words com.foreignlanguagereader.api.controller.v1.vocabulary.VocabularyController.getAllWords
+GET    /v1/language/definition/:wordlanguage/:word/ io.fluentlabs.api.controller.v1.language.DefinitionController.definition(wordlanguage: io.fluentlabs.content.types.Language.Language, word: String)
+POST   /v1/language/definitions/:wordlanguage/:definitionLanguage/ io.fluentlabs.api.controller.v1.language.DefinitionController.definitions(wordlanguage: io.fluentlabs.content.types.Language.Language, definitionLanguage: io.fluentlabs.content.types.Language.Language)
+POST   /v1/language/document/:wordlanguage/ io.fluentlabs.api.controller.v1.language.DocumentController.document(wordlanguage: io.fluentlabs.content.types.Language.Language)
+GET    /v1/vocabulary/words io.fluentlabs.api.controller.v1.vocabulary.VocabularyController.getAllWords

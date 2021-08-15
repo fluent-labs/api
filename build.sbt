@@ -42,7 +42,7 @@ lazy val api = project
     libraryDependencies ++= ProjectDependencies.apiDependencies,
     dependencyOverrides ++= ProjectDependencies.forcedDependencies,
     javaOptions += "-Dlog4j.configurationFile=log4j2.xml",
-    RoutesKeys.routesImport += "com.foreignlanguagereader.api.controller.v1.PathBinders._"
+    RoutesKeys.routesImport += "io.fluentlabs.api.controller.v1.PathBinders._"
   )
   .dependsOn(domain)
 
@@ -75,5 +75,5 @@ lazy val compilerOptions = Seq(
  */
 
 // Code coverage settings
-coverageMinimum := 70
+coverageMinimumStmtTotal := 70
 coverageFailOnMinimum := false
