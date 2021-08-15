@@ -51,9 +51,9 @@ jobs:
         key: sbt_cache
         path: ~/.cache/coursier/v1/
 
-    ## Why do we do this here instead of in the docker image?
-    ## It's because github package repository needs auth
-    ## And we DO NOT want that auth inside the docker image
+    # Why do we do this here instead of in the docker image?
+    # It's because github package repository needs auth
+    # And we DO NOT want that auth inside the docker image
     - name: Download dependencies
       if: steps.changed_files.outputs.dependencies == 'true' || steps.changed_files.outputs.base == 'true'
       run: |
@@ -65,7 +65,6 @@ jobs:
         mv build-real-sbt build.sbt
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 
     # Remember not to push
     - name: Build dependencies image
