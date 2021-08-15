@@ -75,5 +75,5 @@ lazy val compilerOptions = Seq(
  */
 
 // Code coverage settings
-coverageMinimum := 70
+coverageMinimumStmtTotal := 70
 coverageFailOnMinimum := false
