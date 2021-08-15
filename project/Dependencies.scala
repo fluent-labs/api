@@ -78,6 +78,8 @@ object Dependencies {
     "com.fasterxml.jackson.core" % "jackson-databind" % jacksonVersion
   val jacksonCore =
     "com.fasterxml.jackson.core" % "jackson-core" % jacksonVersion
+
+  // Do these still apply without spark?
   val htrace = "org.apache.htrace" % "htrace-core" % "4.0.0-incubating"
   val avro = "org.apache.avro" % "avro" % "1.10.0"
 }
