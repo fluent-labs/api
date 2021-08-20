@@ -28,13 +28,18 @@ class ElasticsearchCacheClient @Inject() (
 ) {
   val logger: Logger = Logger(this.getClass)
 
-  /** We cache in elasticsearch because some content sources have request rate limits.
-    * This caching prevents us from using requests for things we have already searched for,
-    * and puts a limit on the number of times we will retry a search that hasn't given us results before.
+  /** We cache in elasticsearch because some content sources have request rate
+    * limits. This caching prevents us from using requests for things we have
+    * already searched for, and puts a limit on the number of times we will
+    * retry a search that hasn't given us results before.
     *
-    * @param request The search request to cache.
-    * @param tag The class of T, captured at runtime. This is needed to make a Seq of an arbitrary type due to JVM type erasure.
-    * @tparam T A case class with Reads[T] and Writes[T]
+    * @param request
+    *   The search request to cache.
+    * @param tag
+    *   The class of T, captured at runtime. This is needed to make a Seq of an
+    *   arbitrary type due to JVM type erasure.
+    * @tparam T
+    *   A case class with Reads[T] and Writes[T]
     * @return
     */
   def findFromCacheOrRefetch[T](request: ElasticsearchSearchRequest[T])(implicit

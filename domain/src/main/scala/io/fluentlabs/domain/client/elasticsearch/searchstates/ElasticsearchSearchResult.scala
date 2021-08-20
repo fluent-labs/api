@@ -8,17 +8,24 @@ import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.common.xcontent.XContentType
 import play.api.libs.json.{Json, Writes}
 
-/** Holds the final result from an elasticsearch lookup,
-  * Decides whether we need to cache data back to elasticsearch,
-  * and also updates the search count.
+/** Holds the final result from an elasticsearch lookup, Decides whether we need
+  * to cache data back to elasticsearch, and also updates the search count.
   *
-  * @param index The elasticsearch index to cache the data. Should just be the type
-  * @param fields The fields needed to look up the correct item. Think of this as the primary key.
-  * @param result The final result of the query
-  * @param fetchCount How many times has fetch been called?
-  * @param lookupId What lookup attempt should we update?
-  * @param refetched Did we need to go outside of elasticsearch?
-  * @tparam T A case class with Reads[T] and Writes[T] defined.
+  * @param index
+  *   The elasticsearch index to cache the data. Should just be the type
+  * @param fields
+  *   The fields needed to look up the correct item. Think of this as the
+  *   primary key.
+  * @param result
+  *   The final result of the query
+  * @param fetchCount
+  *   How many times has fetch been called?
+  * @param lookupId
+  *   What lookup attempt should we update?
+  * @param refetched
+  *   Did we need to go outside of elasticsearch?
+  * @tparam T
+  *   A case class with Reads[T] and Writes[T] defined.
   */
 case class ElasticsearchSearchResult[T: Writes](
     index: String,

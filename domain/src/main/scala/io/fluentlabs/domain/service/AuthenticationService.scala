@@ -9,8 +9,8 @@ import play.api.Configuration
 import java.time.Clock
 import scala.util.{Failure, Success, Try}
 
-/** Parses the JWT generated from auth 0
-  * Taken from https://auth0.com/blog/build-and-secure-a-scala-play-framework-api/
+/** Parses the JWT generated from auth 0 Taken from
+  * https://auth0.com/blog/build-and-secure-a-scala-play-framework-api/
   * @param config
   */
 class AuthenticationService @Inject() (config: Configuration) {
