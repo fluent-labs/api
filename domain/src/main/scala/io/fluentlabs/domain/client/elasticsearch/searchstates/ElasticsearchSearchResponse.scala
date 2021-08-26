@@ -16,17 +16,30 @@ import play.api.libs.json.{Reads, Writes}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
 
-/** Turns the raw elasticsearch response into the query result.
-  * This decides whether we will need to refetch from the original content source.
+/** Turns the raw elasticsearch response into the query result. This decides
+  * whether we will need to refetch from the original content source.
   *
-  * @param index The elasticsearch index to cache the data. Should just be the type
-  * @param fields The fields needed to look up the correct item. Think of this as the primary key.
-  * @param fetcher A function to be called if results are not in elasticsearch, which can try to get the results again.
-  * @param maxFetchAttempts If we don't have any results, how many times should we search for this? Highly source dependent.
-  * @param response The elasticsearch response created by using the query in ElasticsearchRequest
-  * @param tag The class of T so that sequences can be initialized. Automatically given.
-  * @param ec Automatically taken from the implicit val near the caller. This is the thread pool to block on when fetching.
-  * @tparam T A case class.
+  * @param index
+  *   The elasticsearch index to cache the data. Should just be the type
+  * @param fields
+  *   The fields needed to look up the correct item. Think of this as the
+  *   primary key.
+  * @param fetcher
+  *   A function to be called if results are not in elasticsearch, which can try
+  *   to get the results again.
+  * @param maxFetchAttempts
+  *   If we don't have any results, how many times should we search for this?
+  *   Highly source dependent.
+  * @param response
+  *   The elasticsearch response created by using the query in
+  *   ElasticsearchRequest
+  * @param tag
+  *   The class of T so that sequences can be initialized. Automatically given.
+  * @param ec
+  *   Automatically taken from the implicit val near the caller. This is the
+  *   thread pool to block on when fetching.
+  * @tparam T
+  *   A case class.
   */
 case class ElasticsearchSearchResponse[T](
     index: String,

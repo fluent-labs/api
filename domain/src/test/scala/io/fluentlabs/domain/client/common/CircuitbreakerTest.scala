@@ -61,7 +61,7 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
         )
         .map {
           case CircuitBreakerAttempt("testString") => succeed
-          case _                                   => fail("This is the wrong result")
+          case _ => fail("This is the wrong result")
         }
     }
 
@@ -90,7 +90,7 @@ class CircuitbreakerTest extends AsyncFunSpec with MockitoSugar {
         )
         .map {
           case CircuitBreakerFailedAttempt(e) => assert(called.contains(e))
-          case _                              => fail("This is the wrong result")
+          case _ => fail("This is the wrong result")
         }
     }
 

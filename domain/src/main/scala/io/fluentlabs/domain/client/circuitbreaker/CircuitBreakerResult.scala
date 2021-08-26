@@ -17,7 +17,7 @@ object CircuitBreakerResult {
         fa match {
           case CircuitBreakerNonAttempt()     => CircuitBreakerNonAttempt()
           case CircuitBreakerFailedAttempt(e) => CircuitBreakerFailedAttempt(e)
-          case CircuitBreakerAttempt(result)  => CircuitBreakerAttempt(f(result))
+          case CircuitBreakerAttempt(result) => CircuitBreakerAttempt(f(result))
         }
 
       override def pure[A](x: A): CircuitBreakerResult[A] =

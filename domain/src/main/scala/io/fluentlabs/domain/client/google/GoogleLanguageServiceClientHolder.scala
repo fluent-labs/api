@@ -13,8 +13,7 @@ import scala.collection.JavaConverters._
 import scala.util.{Failure, Success, Try}
 
 // $COVERAGE-OFF$
-/** Holder for the google cloud client.
-  * Allows us to swap this out for testing
+/** Holder for the google cloud client. Allows us to swap this out for testing
   */
 @Singleton
 class GoogleLanguageServiceClientHolder {

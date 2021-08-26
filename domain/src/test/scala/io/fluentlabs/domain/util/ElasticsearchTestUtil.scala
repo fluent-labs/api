@@ -7,7 +7,8 @@ import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.common.xcontent.XContentType
 import play.api.libs.json.{Json, Writes}
 
-/** Helper library to get rid of boilerplate when testing elasticsearch responses
+/** Helper library to get rid of boilerplate when testing elasticsearch
+  * responses
   */
 object ElasticsearchTestUtil {
   def lookupIndexRequestFrom(attempt: LookupAttempt): IndexRequest = {

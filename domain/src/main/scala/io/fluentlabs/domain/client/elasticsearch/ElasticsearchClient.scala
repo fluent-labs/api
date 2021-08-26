@@ -29,8 +29,10 @@ import scala.util.{Failure, Success, Try}
 
 // $COVERAGE-OFF$
 /** Lower level elasticsearch client. We implement other logic on top of this.
-  * @param config An already configured elasticsearch client.
-  * @param system Thread pool setup for client
+  * @param config
+  *   An already configured elasticsearch client.
+  * @param system
+  *   Thread pool setup for client
   */
 @Singleton
 class ElasticsearchClient @Inject() (

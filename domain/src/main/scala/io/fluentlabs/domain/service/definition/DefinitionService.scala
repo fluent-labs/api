@@ -18,11 +18,14 @@ class DefinitionService @Inject() (
 ) {
   val logger: Logger = Logger(this.getClass)
 
-  /** Gets definitions for a list of tokens
-    * Definition language currently only supports English but in the future this won't be so.
-    * @param wordLanguage Which language the token is in
-    * @param definitionLanguage What language the definitions should be in.
-    * @param word The token to search for.
+  /** Gets definitions for a list of tokens Definition language currently only
+    * supports English but in the future this won't be so.
+    * @param wordLanguage
+    *   Which language the token is in
+    * @param definitionLanguage
+    *   What language the definitions should be in.
+    * @param word
+    *   The token to search for.
     * @return
     */
   def getDefinition(

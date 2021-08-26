@@ -7,14 +7,22 @@ import org.elasticsearch.search.builder.SearchSourceBuilder
 
 import scala.concurrent.Future
 
-/** Takes the absolute minimum information from the caller
-  * and generates the correct elasticsearch queries to cache this type.
+/** Takes the absolute minimum information from the caller and generates the
+  * correct elasticsearch queries to cache this type.
   *
-  * @param index The elasticsearch index to cache the data. Should just be the type
-  * @param fields The fields needed to look up the correct item. Think of this as the primary key.
-  * @param fetcher A function to be called if results are not in elasticsearch, which can try to get the results again.
-  * @param maxFetchAttempts If we don't have any results, how many times should we search for this? Highly source dependent.
-  * @tparam T A case class with Reads[T] and Writes[T] defined.
+  * @param index
+  *   The elasticsearch index to cache the data. Should just be the type
+  * @param fields
+  *   The fields needed to look up the correct item. Think of this as the
+  *   primary key.
+  * @param fetcher
+  *   A function to be called if results are not in elasticsearch, which can try
+  *   to get the results again.
+  * @param maxFetchAttempts
+  *   If we don't have any results, how many times should we search for this?
+  *   Highly source dependent.
+  * @tparam T
+  *   A case class with Reads[T] and Writes[T] defined.
   */
 case class ElasticsearchSearchRequest[T](
     index: String,
