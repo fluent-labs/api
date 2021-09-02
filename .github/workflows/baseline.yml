@@ -71,7 +71,7 @@ jobs:
 
     - name: Container security scan
       id: scan
-      uses: anchore/scan-action@v2.0.4
+      uses: anchore/scan-action@v3
       with:
         image: "api:latest"
         acs-report-enable: true
