@@ -11,7 +11,7 @@ object Dependencies {
   val jacksonVersion = "2.11.3"
   val log4jVersion = "2.14.1"
   val playSlickVersion = "5.0.0"
-  val prometheusVersion = "0.11.0"
+  val prometheusVersion = "0.12.0"
   val scalatestVersion = "3.2.9"
   val sparkVersion = "3.1.2"
 
