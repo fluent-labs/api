@@ -63,8 +63,8 @@ object Dependencies {
     "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion
 
   // Auth
-  val jwtPlay = "com.pauldijou" %% "jwt-play" % "5.0.0"
-  val jwtCore = "com.pauldijou" %% "jwt-core" % "5.0.0"
+  val jwtPlay = "com.pauldijou" %% "jwt-play" % "6.0.0"
+  val jwtCore = "com.pauldijou" %% "jwt-core" % "6.0.0"
   val jwksRsa = "com.auth0" % "jwks-rsa" % "0.19.0"
 
   // Hacks for guava incompatibility
