@@ -2,7 +2,7 @@ import play.sbt.routes.RoutesKeys
 import Dependencies._
 
 name := "fluentlabs-parent"
-scalaVersion in ThisBuild := "2.12.12"
+scalaVersion in ThisBuild := "2.12.15"
 
 /*
  * Project Setup
