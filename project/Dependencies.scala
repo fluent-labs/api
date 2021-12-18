@@ -78,6 +78,7 @@ object Dependencies {
     "com.fasterxml.jackson.core" % "jackson-databind" % jacksonVersion
   val jacksonCore =
     "com.fasterxml.jackson.core" % "jackson-core" % jacksonVersion
+  val commonsCompress = "org.apache.commons" % "commons-compress" % "1.21"
 
   // Do these still apply without spark?
   val htrace = "org.apache.htrace" % "htrace-core" % "4.0.0-incubating"
@@ -116,7 +117,8 @@ object ProjectDependencies {
     Dependencies.log4jApi,
     Dependencies.log4jCore,
     Dependencies.log4jImplementation,
-    Dependencies.log4jJson
+    Dependencies.log4jJson,
+    Dependencies.commonsCompress
   )
 
   val apiDependencies: Seq[ModuleID] =

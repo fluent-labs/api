@@ -14,9 +14,11 @@ FROM openjdk:15-ea-jdk-alpine3.12
 
 LABEL maintainer="reader@lucaskjaerozhang.com"
 WORKDIR /app
+
+# The play framework runners are bash scripts, so we need this to run the service.
 RUN apk add --no-cache bash=5.0.17-r0
 
-# Manually  upgrade all packages to avoid security vulnerabilities
+# Manually upgrade all packages to avoid security vulnerabilities
 RUN apk add --upgrade apk-tools=2.10.8-r0 \
                       busybox=1.31.1-r21 \
                       libcrypto1.1=1.1.1l-r0 \
