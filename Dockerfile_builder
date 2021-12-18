@@ -20,7 +20,7 @@ RUN apk add --no-cache wget=1.21.2-r2 && \
     mkdir -p "$SBT_HOME" && \
     wget -qO - --no-check-certificate "https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz" |  tar xz -C $INSTALL_DIR && \
     echo "- with sbt $SBT_VERSION" >> /root/.built && \
-    apk delete wget
+    apk del wget
 
 # Cache dependencies
 COPY project project
