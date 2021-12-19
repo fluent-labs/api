@@ -16,7 +16,8 @@ LABEL maintainer="reader@lucaskjaerozhang.com"
 WORKDIR /app
 
 # Upgrade to Alpine 3.13
-RUN sed -i -e 's/v2\.12/v2.13/g' /etc/apk/repositories && \
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.13/main \
+          http://dl-cdn.alpinelinux.org/alpine/v3.13/community" > /etc/apk/repositories && \
     apk update
 
 RUN cat /etc/apk/repositories
