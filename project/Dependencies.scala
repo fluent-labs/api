@@ -11,7 +11,7 @@ object Dependencies {
   val jacksonVersion = "2.11.3"
   val log4jVersion = "2.17.0"
   val playSlickVersion = "5.0.0"
-  val prometheusVersion = "0.12.0"
+  val prometheusVersion = "0.14.0"
   val scalatestVersion = "3.2.9"
   val sparkVersion = "3.1.2"
 
@@ -22,12 +22,12 @@ object Dependencies {
   val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion
   val scalatestPlay =
     "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
-  val mockito = "org.mockito" %% "mockito-scala" % "1.16.39" % Test
+  val mockito = "org.mockito" %% "mockito-scala" % "1.16.49" % Test
   val elasticsearchContainer =
     "org.testcontainers" % "elasticsearch" % "1.16.0"
 
   // Language helpers
-  val cats = "org.typelevel" %% "cats-core" % "2.6.1"
+  val cats = "org.typelevel" %% "cats-core" % "2.7.0"
   val lombok = "org.projectlombok" % "lombok" % "1.18.16"
 
   // Logging
@@ -51,12 +51,12 @@ object Dependencies {
   // External clients
   val elasticsearchHighLevelClient =
     "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % elasticsearchVersion
-  val oslib = "com.lihaoyi" %% "os-lib" % "0.7.8"
+  val oslib = "com.lihaoyi" %% "os-lib" % "0.8.0"
   val googleCloudClient =
-    "com.google.cloud" % "google-cloud-language" % "2.1.0"
+    "com.google.cloud" % "google-cloud-language" % "2.1.4"
 
   // Database
-  val h2 = "com.h2database" % "h2" % "1.4.200"
+  val h2 = "com.h2database" % "h2" % "2.0.202"
   val postgres = "org.postgresql" % "postgresql" % "42.2.23"
   val playSlick = "com.typesafe.play" %% "play-slick" % playSlickVersion
   val playSlickEvolutions =
