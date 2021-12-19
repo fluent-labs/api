@@ -6,13 +6,13 @@ import sbt._
  */
 
 object Dependencies {
-  val elasticsearchVersion = "7.14.1"
+  val elasticsearchVersion = "7.14.2"
   val hadoopVersion = "3.3.1"
   val jacksonVersion = "2.11.3"
   val log4jVersion = "2.17.0"
   val playSlickVersion = "5.0.0"
   val prometheusVersion = "0.14.0"
-  val scalatestVersion = "3.2.9"
+  val scalatestVersion = "3.2.10"
   val sparkVersion = "3.1.2"
 
   val content = "io.fluentlabs" %% "content" % "1.0.1"
@@ -22,9 +22,9 @@ object Dependencies {
   val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion
   val scalatestPlay =
     "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
-  val mockito = "org.mockito" %% "mockito-scala" % "1.16.49" % Test
+  val mockito = "org.mockito" %% "mockito-scala" % "1.16.46" % Test
   val elasticsearchContainer =
-    "org.testcontainers" % "elasticsearch" % "1.16.0"
+    "org.testcontainers" % "elasticsearch" % "1.16.2"
 
   // Language helpers
   val cats = "org.typelevel" %% "cats-core" % "2.7.0"
@@ -65,7 +65,7 @@ object Dependencies {
   // Auth
   val jwtPlay = "com.pauldijou" %% "jwt-play" % "5.0.0"
   val jwtCore = "com.pauldijou" %% "jwt-core" % "5.0.0"
-  val jwksRsa = "com.auth0" % "jwks-rsa" % "0.19.0"
+  val jwksRsa = "com.auth0" % "jwks-rsa" % "0.20.0"
 
   // Hacks for guava incompatibility
   val hadoopMapreduceClient =
