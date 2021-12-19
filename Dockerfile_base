@@ -19,6 +19,8 @@ WORKDIR /app
 RUN sed -i -e 's/v2\.12/v2.13/g' /etc/apk/repositories && \
     apk update
 
+RUN cat /etc/apk/repositories
+
 # The play framework runners are bash scripts, so we need this to run the service.
 RUN apk add --no-cache bash=5.0.17-r0
 
