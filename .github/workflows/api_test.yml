@@ -38,7 +38,9 @@ jobs:
           base:
             - 'Dockerfile_base'
           dependencies:
+            - 'project/build.properties'
             - 'project/Dependencies.scala'
+            - 'project/plugins.sbt'
     
     - name: Build base image
       if: steps.changed_files.outputs.base == 'true'
