@@ -22,9 +22,9 @@ object Dependencies {
   val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion
   val scalatestPlay =
     "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
-  val mockito = "org.mockito" %% "mockito-scala" % "1.16.49" % Test
+  val mockito = "org.mockito" %% "mockito-scala" % "1.16.46" % Test
   val elasticsearchContainer =
-    "org.testcontainers" % "elasticsearch" % "1.16.0"
+    "org.testcontainers" % "elasticsearch" % "1.16.2"
 
   // Language helpers
   val cats = "org.typelevel" %% "cats-core" % "2.7.0"
@@ -57,7 +57,7 @@ object Dependencies {
 
   // Database
   val h2 = "com.h2database" % "h2" % "2.0.202"
-  val postgres = "org.postgresql" % "postgresql" % "42.2.23"
+  val postgres = "org.postgresql" % "postgresql" % "42.2.24"
   val playSlick = "com.typesafe.play" %% "play-slick" % playSlickVersion
   val playSlickEvolutions =
     "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion
