@@ -63,7 +63,7 @@ jobs:
     # Remember not to push
     - name: Build dependencies image
       run: |
-        docker pull lkjaero/foreign-language-reader-api:builder
+        docker build . -f Dockerfile_base -t lkjaero/foreign-language-reader-api:base
         docker build . -f Dockerfile_builder -t lkjaero/foreign-language-reader-api:builder
 
     - name: Build container

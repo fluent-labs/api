@@ -63,14 +63,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - uses: dorny/paths-filter@v2.10.2
-        name: Check if dependencies have changed
-        id: changed_dependencies
-        with:
-          filters: |
-            dependencies:
-              - 'project/Dependencies.scala'
       
       - uses: dorny/paths-filter@v2.10.2
         name: Check which docker images to rebuild
@@ -80,6 +72,7 @@ jobs:
             base:
               - 'Dockerfile_base'
             dependencies:
+              - 'Dockerfile_base'
               - 'project/Dependencies.scala'
     
       - name: Rebuild base image
