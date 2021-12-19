@@ -6,13 +6,13 @@ import sbt._
  */
 
 object Dependencies {
-  val elasticsearchVersion = "7.14.1"
+  val elasticsearchVersion = "7.14.2"
   val hadoopVersion = "3.3.1"
   val jacksonVersion = "2.11.3"
-  val log4jVersion = "2.14.1"
+  val log4jVersion = "2.17.0"
   val playSlickVersion = "5.0.0"
-  val prometheusVersion = "0.12.0"
-  val scalatestVersion = "3.2.9"
+  val prometheusVersion = "0.14.0"
+  val scalatestVersion = "3.2.10"
   val sparkVersion = "3.1.2"
 
   val content = "io.fluentlabs" %% "content" % "1.0.1"
@@ -22,12 +22,12 @@ object Dependencies {
   val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion
   val scalatestPlay =
     "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
-  val mockito = "org.mockito" %% "mockito-scala" % "1.16.39" % Test
+  val mockito = "org.mockito" %% "mockito-scala" % "1.16.49" % Test
   val elasticsearchContainer =
     "org.testcontainers" % "elasticsearch" % "1.16.0"
 
   // Language helpers
-  val cats = "org.typelevel" %% "cats-core" % "2.6.1"
+  val cats = "org.typelevel" %% "cats-core" % "2.7.0"
   val lombok = "org.projectlombok" % "lombok" % "1.18.16"
 
   // Logging
@@ -51,12 +51,12 @@ object Dependencies {
   // External clients
   val elasticsearchHighLevelClient =
     "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % elasticsearchVersion
-  val oslib = "com.lihaoyi" %% "os-lib" % "0.7.8"
+  val oslib = "com.lihaoyi" %% "os-lib" % "0.8.0"
   val googleCloudClient =
-    "com.google.cloud" % "google-cloud-language" % "2.1.0"
+    "com.google.cloud" % "google-cloud-language" % "2.1.4"
 
   // Database
-  val h2 = "com.h2database" % "h2" % "1.4.200"
+  val h2 = "com.h2database" % "h2" % "2.0.202"
   val postgres = "org.postgresql" % "postgresql" % "42.2.23"
   val playSlick = "com.typesafe.play" %% "play-slick" % playSlickVersion
   val playSlickEvolutions =
@@ -65,7 +65,7 @@ object Dependencies {
   // Auth
   val jwtPlay = "com.pauldijou" %% "jwt-play" % "5.0.0"
   val jwtCore = "com.pauldijou" %% "jwt-core" % "5.0.0"
-  val jwksRsa = "com.auth0" % "jwks-rsa" % "0.19.0"
+  val jwksRsa = "com.auth0" % "jwks-rsa" % "0.20.0"
 
   // Hacks for guava incompatibility
   val hadoopMapreduceClient =
@@ -78,6 +78,7 @@ object Dependencies {
     "com.fasterxml.jackson.core" % "jackson-databind" % jacksonVersion
   val jacksonCore =
     "com.fasterxml.jackson.core" % "jackson-core" % jacksonVersion
+  val commonsCompress = "org.apache.commons" % "commons-compress" % "1.21"
 
   // Do these still apply without spark?
   val htrace = "org.apache.htrace" % "htrace-core" % "4.0.0-incubating"
@@ -116,7 +117,8 @@ object ProjectDependencies {
     Dependencies.log4jApi,
     Dependencies.log4jCore,
     Dependencies.log4jImplementation,
-    Dependencies.log4jJson
+    Dependencies.log4jJson,
+    Dependencies.commonsCompress
   )
 
   val apiDependencies: Seq[ModuleID] =
