@@ -56,7 +56,7 @@ object Dependencies {
     "com.google.cloud" % "google-cloud-language" % "2.1.4"
 
   // Database
-  val h2 = "com.h2database" % "h2" % "1.4.200"
+  val h2 = "com.h2database" % "h2" % "2.0.202"
   val postgres = "org.postgresql" % "postgresql" % "42.2.23"
   val playSlick = "com.typesafe.play" %% "play-slick" % playSlickVersion
   val playSlickEvolutions =
