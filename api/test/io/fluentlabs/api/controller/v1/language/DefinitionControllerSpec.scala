@@ -122,6 +122,7 @@ class DefinitionControllerSpec extends PlaySpec with MockitoSugar {
       val goodResponse = route(app, request).get
 
       status(goodResponse) mustBe OK
+      println("FAILURE HERE Error response: = " + contentAsString(goodResponse))
       contentAsString(goodResponse) must include("{}")
     }
 
