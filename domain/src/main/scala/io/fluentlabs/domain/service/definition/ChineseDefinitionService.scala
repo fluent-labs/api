@@ -90,8 +90,14 @@ class ChineseDefinitionService @Inject() (
       word: Word,
       definitions: Map[DefinitionSource, List[ChineseDefinition]]
   ): List[ChineseDefinition] = {
-    val cedict = definitions.get(DefinitionSource.CEDICT)
-    val wiktionary = definitions.get(DefinitionSource.WIKTIONARY)
+    val cedict = definitions.get(DefinitionSource.CEDICT) match {
+      case Some(c) if c.nonEmpty => Some(c)
+      case _ => None
+    }
+    val wiktionary = definitions.get(DefinitionSource.WIKTIONARY) match {
+      case Some(w) if w.nonEmpty => Some(w)
+      case _ => None
+    }
     logger.info(
       s"Enhancing results for $word using cedict with ${cedict.size} cedict results and ${wiktionary.size} wiktionary results"
     )
@@ -109,7 +115,7 @@ class ChineseDefinitionService @Inject() (
       case (Some(cedict), None) =>
         logger.info(s"Using cedict definitions for $word")
         cedict
-      case (None, Some(wiktionary)) if cedict.isEmpty =>
+      case (None, Some(wiktionary)) =>
         logger.info(s"Using wiktionary definitions for $word")
         wiktionary
       // This should not happen. If it does then it's important to log it.
