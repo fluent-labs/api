@@ -33,10 +33,12 @@ class Circuitbreaker(
     ).onHalfOpen(logger.info(s"Circuit breaker for $name resetting"))
       .onClose(logger.info(s"Circuit breaker for $name reset"))
 
-  def defaultIsFailure(error: Throwable): Boolean = true
-  def defaultIsSuccess[T](result: T): Boolean = true
+  def defaultIsFailure(_error: Throwable): Boolean = true
+  def defaultIsSuccess[T](_result: T): Boolean = true
 
-  def onClose(body: => Unit): Unit = breaker.onClose(body)
+  def onClose(body: => Unit): Unit = {
+    val _closeResponse = breaker.onClose(body)
+  }
   def isClosed: Boolean = breaker.isClosed
 
   def health(): ReadinessStatus =
