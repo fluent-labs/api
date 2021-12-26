@@ -1,7 +1,7 @@
 package io.fluentlabs.domain.client.elasticsearch
 
 import java.util.concurrent.ConcurrentLinkedQueue
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import io.fluentlabs.domain.client.elasticsearch.searchstates.ElasticsearchCacheRequest
 
 class CacheQueue {

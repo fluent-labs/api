@@ -2,7 +2,7 @@ import play.sbt.routes.RoutesKeys
 import Dependencies._
 
 name := "fluentlabs-parent"
-scalaVersion in ThisBuild := "2.12.15"
+ThisBuild / scalaVersion := "2.13.7"
 
 /*
  * Project Setup
@@ -64,11 +64,9 @@ lazy val compilerOptions = Seq(
   "-feature",
   "-unchecked",
   "-Xfatal-warnings",
-  "-Ypartial-unification" // Remove me in scala 2.13
+  "-Wdead-code",
+  "-Wvalue-discard"
 )
-// Add these back in when we can get to scala 2.13
-//  "-Wdead-code",
-//  "-Wvalue-discard",
 
 /*
  * Quality

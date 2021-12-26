@@ -112,7 +112,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
       entries: List[CEDICTDefinitionEntry]
   ): Unit = {
     val entriesAsDefinitions = entries.map(_.toDefinition(word.tag))
-    when(
+    val _testResult = when(
       cedictMock.fetchDefinitions(
         any(classOf[ElasticsearchCacheClient]),
         MockitoEq("definitions-null"),
@@ -135,7 +135,7 @@ class ChineseDefinitionServiceTest extends AsyncFunSpec with MockitoSugar {
     val entriesAsDefinitions = entries.map(entry =>
       DefinitionEntry.buildChineseDefinition(entry, word.tag)
     )
-    when(
+    val _testResult = when(
       wiktionaryMock.fetchDefinitions(
         any(classOf[ElasticsearchCacheClient]),
         MockitoEq("definitions-null"),
