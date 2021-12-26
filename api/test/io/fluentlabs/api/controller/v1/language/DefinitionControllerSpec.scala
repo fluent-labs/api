@@ -19,7 +19,7 @@ import play.api.test.Helpers._
 import play.api.test._
 import play.libs.{Json => JavaJson}
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.concurrent.Future
 
 class DefinitionControllerSpec extends PlaySpec with MockitoSugar {
