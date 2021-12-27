@@ -84,7 +84,8 @@ class DefinitionController @Inject() (
                 Ok(
                   JavaJson
                     .stringify(
-                      JavaJson.toJson(definitions.view.mapValues(_.map(_.toDTO)))
+                      JavaJson
+                        .toJson(definitions.view.mapValues(_.map(_.toDTO)))
                     )
                 )
               })
