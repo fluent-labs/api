@@ -19,7 +19,7 @@ import play.api.test.Helpers._
 import play.api.test._
 import play.libs.{Json => JavaJson}
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.concurrent.Future
 
 class DefinitionControllerSpec extends PlaySpec with MockitoSugar {
@@ -122,7 +122,7 @@ class DefinitionControllerSpec extends PlaySpec with MockitoSugar {
       val goodResponse = route(app, request).get
 
       status(goodResponse) mustBe OK
-      contentAsString(goodResponse) must include("{}")
+      contentAsString(goodResponse) must include("[]")
     }
 
     "appropriately handle bad requests from the router" in {

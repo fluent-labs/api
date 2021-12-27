@@ -102,8 +102,8 @@ class MetricHolder {
 
   // Initialize everything so metrics always show up
   def initializeMetricsToZero(): Unit = {
-    unlabeledCounters.mapValues(_.inc(0))
-    gauges.mapValues(_.inc(0))
+    unlabeledCounters.view.mapValues(_.inc(0))
+    gauges.view.mapValues(_.inc(0))
 
     initializeLabeledCounter(
       Metric.ELASTICSEARCH_CALLS,
@@ -137,8 +137,8 @@ class MetricHolder {
     )
 
     val languageLabels: Set[List[String]] = for {
-      learningLanguage <- Language.values.map(_.toString)
-      baseLanguage <- Language.values.map(_.toString)
+      learningLanguage <- Language.values.map(_.toString).unsorted
+      baseLanguage <- Language.values.map(_.toString).unsorted
     } yield List(learningLanguage, baseLanguage)
     initializeLabeledCounter(
       Metric.LEARNER_LANGUAGE_REQUESTS,

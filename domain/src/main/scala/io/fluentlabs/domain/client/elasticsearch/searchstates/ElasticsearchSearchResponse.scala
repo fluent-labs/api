@@ -3,12 +3,7 @@ package io.fluentlabs.domain.client.elasticsearch.searchstates
 import cats.data.Nested
 import cats.syntax.all._
 import io.fluentlabs.content.types.internal.ElasticsearchCacheable
-import io.fluentlabs.domain.client.circuitbreaker.{
-  CircuitBreakerAttempt,
-  CircuitBreakerFailedAttempt,
-  CircuitBreakerNonAttempt,
-  CircuitBreakerResult
-}
+import io.fluentlabs.domain.client.circuitbreaker.{CircuitBreakerAttempt, CircuitBreakerFailedAttempt, CircuitBreakerNonAttempt, CircuitBreakerResult}
 import io.fluentlabs.domain.client.elasticsearch.LookupAttempt
 import play.api.Logger
 import play.api.libs.json.{Reads, Writes}
@@ -218,10 +213,10 @@ object ElasticsearchSearchResponse {
       ec: ExecutionContext
   ): ElasticsearchSearchResponse[T] = {
     // Basically removes the ElasticsearchCacheable[] outer wrapper
-    val unwrappedResult = Nested
+    val unwrappedResult: CircuitBreakerResult[Option[(Map[String, T], Map[String, LookupAttempt])]] = Nested
       .apply(result)
       .map { case (items, attempts) =>
-        (items.mapValues(_.item), attempts)
+        (items map { case (key, value) => (key, value.item)}, attempts)
       }
       .value
 
