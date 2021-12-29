@@ -92,11 +92,11 @@ class ChineseDefinitionService @Inject() (
   ): List[ChineseDefinition] = {
     val cedict = definitions.get(DefinitionSource.CEDICT) match {
       case Some(c) if c.nonEmpty => Some(c)
-      case _ => None
+      case _                     => None
     }
     val wiktionary = definitions.get(DefinitionSource.WIKTIONARY) match {
       case Some(w) if w.nonEmpty => Some(w)
-      case _ => None
+      case _                     => None
     }
     logger.info(
       s"Enhancing results for $word using cedict with ${cedict.size} cedict results and ${wiktionary.size} wiktionary results"
