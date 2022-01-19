@@ -15,7 +15,7 @@ object Dependencies {
   val scalatestVersion = "3.2.10"
   val sparkVersion = "3.1.2"
 
-  val content = "io.fluentlabs" %% "content" % "1.0.14"
+  val content = "io.fluentlabs" %% "content" % "1.0.16"
 
   // Testing
   val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
