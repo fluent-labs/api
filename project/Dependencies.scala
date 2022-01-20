@@ -24,7 +24,7 @@ object Dependencies {
     "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
   val mockito = "org.mockito" %% "mockito-scala" % "1.16.46" % Test
   val elasticsearchContainer =
-    "org.testcontainers" % "elasticsearch" % "1.16.2"
+    "org.testcontainers" % "elasticsearch" % "1.16.3"
 
   // Language helpers
   val cats = "org.typelevel" %% "cats-core" % "2.7.0"
