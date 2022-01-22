@@ -9,6 +9,7 @@ object Dependencies {
   val elasticsearchVersion = "7.14.2"
   val hadoopVersion = "3.3.1"
   val jacksonVersion = "2.11.3"
+  val jwtPlayVersion = "6.0.0"
   val log4jVersion = "2.17.1"
   val playSlickVersion = "5.0.0"
   val prometheusVersion = "0.14.1"
@@ -63,8 +64,8 @@ object Dependencies {
     "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion
 
   // Auth
-  val jwtPlay = "com.pauldijou" %% "jwt-play" % "5.0.0"
-  val jwtCore = "com.pauldijou" %% "jwt-core" % "5.0.0"
+  val jwtPlay = "com.pauldijou" %% "jwt-play" % jwtPlayVersion
+  val jwtCore = "com.pauldijou" %% "jwt-core" % jwtPlayVersion
   val jwksRsa = "com.auth0" % "jwks-rsa" % "0.20.1"
 
   // Hacks for guava incompatibility
