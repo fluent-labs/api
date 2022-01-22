@@ -1,0 +1,4 @@
+ignore:
+  - fix-state: not-fixed
+  - fix-state: wont-fix
+  - fix-state: unknown
