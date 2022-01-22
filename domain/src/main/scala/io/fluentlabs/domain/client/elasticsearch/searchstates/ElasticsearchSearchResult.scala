@@ -5,7 +5,7 @@ import io.fluentlabs.content.types.internal.ElasticsearchCacheable
 import io.fluentlabs.domain.client.elasticsearch.LookupAttempt
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.update.UpdateRequest
-import org.elasticsearch.common.xcontent.XContentType
+import org.elasticsearch.xcontent.XContentType
 import play.api.libs.json.{Json, Writes}
 
 /** Holds the final result from an elasticsearch lookup, Decides whether we need
