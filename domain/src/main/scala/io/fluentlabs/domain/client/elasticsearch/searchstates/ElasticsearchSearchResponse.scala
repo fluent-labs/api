@@ -218,10 +218,12 @@ object ElasticsearchSearchResponse {
       ec: ExecutionContext
   ): ElasticsearchSearchResponse[T] = {
     // Basically removes the ElasticsearchCacheable[] outer wrapper
-    val unwrappedResult = Nested
+    val unwrappedResult: CircuitBreakerResult[
+      Option[(Map[String, T], Map[String, LookupAttempt])]
+    ] = Nested
       .apply(result)
       .map { case (items, attempts) =>
-        (items.mapValues(_.item), attempts)
+        (items map { case (key, value) => (key, value.item) }, attempts)
       }
       .value
 

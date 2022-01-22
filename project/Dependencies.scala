@@ -9,22 +9,22 @@ object Dependencies {
   val elasticsearchVersion = "7.14.2"
   val hadoopVersion = "3.3.1"
   val jacksonVersion = "2.11.3"
-  val log4jVersion = "2.17.0"
+  val log4jVersion = "2.17.1"
   val playSlickVersion = "5.0.0"
-  val prometheusVersion = "0.14.0"
+  val prometheusVersion = "0.14.1"
   val scalatestVersion = "3.2.10"
   val sparkVersion = "3.1.2"
 
-  val content = "io.fluentlabs" %% "content" % "1.0.1"
+  val content = "io.fluentlabs" %% "content" % "1.0.16"
 
   // Testing
   val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
   val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion
   val scalatestPlay =
     "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
-  val mockito = "org.mockito" %% "mockito-scala" % "1.16.46" % Test
+  val mockito = "org.mockito" %% "mockito-scala" % "1.16.55" % Test
   val elasticsearchContainer =
-    "org.testcontainers" % "elasticsearch" % "1.16.2"
+    "org.testcontainers" % "elasticsearch" % "1.16.3"
 
   // Language helpers
   val cats = "org.typelevel" %% "cats-core" % "2.7.0"
@@ -53,11 +53,11 @@ object Dependencies {
     "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % elasticsearchVersion
   val oslib = "com.lihaoyi" %% "os-lib" % "0.8.0"
   val googleCloudClient =
-    "com.google.cloud" % "google-cloud-language" % "2.1.4"
+    "com.google.cloud" % "google-cloud-language" % "2.1.5"
 
   // Database
-  val h2 = "com.h2database" % "h2" % "2.0.202"
-  val postgres = "org.postgresql" % "postgresql" % "42.2.24"
+  val h2 = "com.h2database" % "h2" % "2.1.210"
+  val postgres = "org.postgresql" % "postgresql" % "42.3.1"
   val playSlick = "com.typesafe.play" %% "play-slick" % playSlickVersion
   val playSlickEvolutions =
     "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion
@@ -65,7 +65,7 @@ object Dependencies {
   // Auth
   val jwtPlay = "com.pauldijou" %% "jwt-play" % "5.0.0"
   val jwtCore = "com.pauldijou" %% "jwt-core" % "5.0.0"
-  val jwksRsa = "com.auth0" % "jwks-rsa" % "0.20.0"
+  val jwksRsa = "com.auth0" % "jwks-rsa" % "0.20.1"
 
   // Hacks for guava incompatibility
   val hadoopMapreduceClient =

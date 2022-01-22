@@ -158,7 +158,7 @@ class ElasticsearchClient @Inject() (
   }
 
   def createIndex(index: String): Unit = {
-    javaClient
+    val _indexResponse = javaClient
       .indices()
       .create(new CreateIndexRequest(index), RequestOptions.DEFAULT)
   }
