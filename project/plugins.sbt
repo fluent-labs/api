@@ -10,6 +10,6 @@ addSbtPlugin("com.codecommit" % "sbt-github-packages" % "0.5.3")
 // Api
 // Workaround for missing npm sources
 addSbtPlugin(
-  "com.typesafe.play" % "sbt-plugin" % "2.8.8" exclude ("org.webjars", "npm")
+  "com.typesafe.play" % "sbt-plugin" % "2.8.13" exclude ("org.webjars", "npm")
 )
 libraryDependencies += "org.webjars" % "npm" % "5.0.0-2"

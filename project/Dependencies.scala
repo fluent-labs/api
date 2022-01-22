@@ -46,7 +46,7 @@ object Dependencies {
     "io.prometheus" % "simpleclient_hotspot" % prometheusVersion
 
   // NLP tools
-  val opencc4j = "com.github.houbb" % "opencc4j" % "1.7.1"
+  val opencc4j = "com.github.houbb" % "opencc4j" % "1.7.2"
 
   // External clients
   val elasticsearchHighLevelClient =
