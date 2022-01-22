@@ -14,7 +14,7 @@ import play.api.mvc._
 import play.libs.{Json => JavaJson}
 
 import javax.inject._
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -84,7 +84,8 @@ class DefinitionController @Inject() (
                 Ok(
                   JavaJson
                     .stringify(
-                      JavaJson.toJson(definitions.mapValues(_.map(_.toDTO)))
+                      JavaJson
+                        .toJson(definitions.view.mapValues(_.map(_.toDTO)))
                     )
                 )
               })

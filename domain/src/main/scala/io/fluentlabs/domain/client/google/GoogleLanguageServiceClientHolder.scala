@@ -9,7 +9,7 @@ import com.google.cloud.language.v1.{
 import play.api.Logger
 
 import javax.inject.Singleton
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.util.{Failure, Success, Try}
 
 // $COVERAGE-OFF$
