@@ -51,7 +51,7 @@ object Dependencies {
   // External clients
   val elasticsearchHighLevelClient =
     "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % elasticsearchVersion
-  val oslib = "com.lihaoyi" %% "os-lib" % "0.8.0"
+  val oslib = "com.lihaoyi" %% "os-lib" % "0.8.1"
   val googleCloudClient =
     "com.google.cloud" % "google-cloud-language" % "2.1.5"
 
