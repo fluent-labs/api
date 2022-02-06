@@ -96,8 +96,8 @@ class ElasticsearchClient @Inject() (
           .withBreaker(e => {
             logger.error(
               s"Failed to search on index(es) ${request
-                .indices()
-                .mkString(",")}: ${request.source().query().toString}",
+                  .indices()
+                  .mkString(",")}: ${request.source().query().toString}",
               e
             )
             metrics
