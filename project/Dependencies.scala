@@ -11,11 +11,11 @@ object Dependencies {
   val jacksonVersion = "2.11.3"
   val log4jVersion = "2.17.1"
   val playSlickVersion = "5.0.0"
-  val prometheusVersion = "0.14.1"
+  val prometheusVersion = "0.15.0"
   val scalatestVersion = "3.2.11"
   val sparkVersion = "3.1.2"
 
-  val content = "io.fluentlabs" %% "content" % "1.0.16"
+  val content = "io.fluentlabs" %% "content" % "1.0.19"
 
   // Testing
   val scalactic = "org.scalactic" %% "scalactic" % scalatestVersion
@@ -51,21 +51,21 @@ object Dependencies {
   // External clients
   val elasticsearchHighLevelClient =
     "org.elasticsearch.client" % "elasticsearch-rest-high-level-client" % elasticsearchVersion
-  val oslib = "com.lihaoyi" %% "os-lib" % "0.8.0"
+  val oslib = "com.lihaoyi" %% "os-lib" % "0.8.1"
   val googleCloudClient =
-    "com.google.cloud" % "google-cloud-language" % "2.1.5"
+    "com.google.cloud" % "google-cloud-language" % "2.1.6"
 
   // Database
   val h2 = "com.h2database" % "h2" % "2.1.210"
-  val postgres = "org.postgresql" % "postgresql" % "42.3.1"
+  val postgres = "org.postgresql" % "postgresql" % "42.3.2"
   val playSlick = "com.typesafe.play" %% "play-slick" % playSlickVersion
   val playSlickEvolutions =
     "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion
 
   // Auth
-  val jwtPlay = "com.pauldijou" %% "jwt-play" % "9.0.3"
-  val jwtCore = "com.pauldijou" %% "jwt-core" % "9.0.3"
-  val jwksRsa = "com.auth0" % "jwks-rsa" % "0.20.1"
+  val jwtPlay = "com.pauldijou" %% "jwt-play" % "5.0.0"
+  val jwtCore = "com.pauldijou" %% "jwt-core" % "5.0.0"
+  val jwksRsa = "com.auth0" % "jwks-rsa" % "0.20.2"
 
   // Hacks for guava incompatibility
   val hadoopMapreduceClient =
