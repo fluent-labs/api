@@ -22,7 +22,7 @@ object Dependencies {
   val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion
   val scalatestPlay =
     "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
-  val mockito = "org.mockito" %% "mockito-scala" % "1.17.0" % Test
+  val mockito = "org.mockito" %% "mockito-scala" % "1.17.5" % Test
   val elasticsearchContainer =
     "org.testcontainers" % "elasticsearch" % "1.16.3"
 
