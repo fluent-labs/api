@@ -48,7 +48,7 @@ jobs:
     
     - name: Cache sbt packages
       if: steps.changed_files.outputs.dependencies == 'true' || steps.changed_files.outputs.base == 'true'
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: sbt_cache
         path: ~/.cache/coursier/v1/
