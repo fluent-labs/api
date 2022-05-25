@@ -57,7 +57,7 @@ object Dependencies {
 
   // Database
   val h2 = "com.h2database" % "h2" % "2.1.210"
-  val postgres = "org.postgresql" % "postgresql" % "42.3.2"
+  val postgres = "org.postgresql" % "postgresql" % "42.3.6"
   val playSlick = "com.typesafe.play" %% "play-slick" % playSlickVersion
   val playSlickEvolutions =
     "com.typesafe.play" %% "play-slick-evolutions" % playSlickVersion
