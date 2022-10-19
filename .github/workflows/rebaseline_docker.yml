@@ -78,7 +78,7 @@ jobs:
       - uses: actions/checkout@v2.4.0
 
       - name: Log into DigitalOcean
-        uses: digitalocean/action-doctl@v2.1.0
+        uses: digitalocean/action-doctl@v2.2.0
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
