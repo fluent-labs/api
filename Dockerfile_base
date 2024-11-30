@@ -4,7 +4,7 @@
 # - Prevent re-pulling from docker hub, to avoid rate limiting.
 
 
-FROM openjdk:15-ea-jdk-alpine3.12
+FROM openjdk:17-ea-jdk-alpine3.12
 # This docker image isn't maintained anymore, the latest version that's still getting updates is 17.
 # Unfortunately, the current guice supports java <= 16, pending this issue:
 # https://github.com/google/guice/issues/1536
